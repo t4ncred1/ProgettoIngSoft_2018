@@ -23,8 +23,13 @@
       <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="459">
               <caret line="27" selection-start-line="27" selection-end-line="27" />
+=======
+            <state relative-caret-position="255">
+              <caret line="15" column="42" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
+>>>>>>> 672e3ee1a55dfb082178a74aab62ef3d0cc43ec3
             </state>
           </provider>
         </entry>
@@ -135,7 +140,11 @@
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Designer" order="2" />
+<<<<<<< HEAD
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20595238" />
+=======
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.123880595" />
+>>>>>>> 672e3ee1a55dfb082178a74aab62ef3d0cc43ec3
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
@@ -147,6 +156,10 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
+<<<<<<< HEAD
+=======
+      <window_info anchor="bottom" id="Messages" order="7" visible="true" weight="0.32857144" />
+>>>>>>> 672e3ee1a55dfb082178a74aab62ef3d0cc43ec3
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -155,13 +168,19 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="459">
           <caret line="27" selection-start-line="27" selection-end-line="27" />
+=======
+        <state relative-caret-position="255">
+          <caret line="15" column="42" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
+>>>>>>> 672e3ee1a55dfb082178a74aab62ef3d0cc43ec3
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="459">
           <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
         </state>
@@ -171,6 +190,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
           <caret line="27" selection-start-line="27" selection-end-line="27" />
+=======
+        <state relative-caret-position="255">
+          <caret line="15" column="42" selection-start-line="15" selection-start-column="42" selection-end-line="15" selection-end-column="42" />
+>>>>>>> 672e3ee1a55dfb082178a74aab62ef3d0cc43ec3
         </state>
       </provider>
     </entry>
