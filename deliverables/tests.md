@@ -1,7 +1,7 @@
-#Tests implemented 8/05#
+﻿# Tests implemented 8/05
 
 
-##**Box** class tests##
+## **Box** class tests
 
 * boxPositions 				√
 * boxValue				√
@@ -17,19 +17,19 @@
 * equalsColor				√
 * differentColor			√
 
-##**DicePool** class tests##
+## **DicePool** class tests
 
 * checkPoolSize				√
 * checkDieToRemove			√
 
-##**Die** class tests##
+## **Die** class tests
 
 * dieValue				√
 * dieColor				√
 * bothValidParameters			√
 * colorNotCapsSensitive			√
 
-##**Grid** class tests##
+## **Grid** class tests
 
 * nullStringPassed			√
 * invalidDifficultyPassed		√
@@ -49,6 +49,6 @@
 * tryToInsertDieReturnFalse             √
 * tryToInsertDieReturnTrue              √
 
-##**PrivateObjective** class tests##
+## **PrivateObjective** class tests
 
 * checkColor				√
