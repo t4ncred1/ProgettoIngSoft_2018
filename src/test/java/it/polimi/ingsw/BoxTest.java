@@ -11,22 +11,21 @@ public class BoxTest {
 
 //Tests sui costruttori
     @Test
-    public void boxPositions() throws NotProperParameterException{
-//        thrown.expect(NotProperParameterException.class);
+    public void boxPositions(){
         assertThrows(NotProperParameterException.class,
                 () ->{
                 Box test_Box = new Box(9, 10);
                 });
     }
     @Test
-    public void boxValue() throws NotProperParameterException{
+    public void boxValue(){
         assertThrows(NotProperParameterException.class,
                 () -> {
                     Box test_box = new Box(9, 0, 0);
                 });
     }
     @Test
-    public void boxColor() throws NotProperParameterException{
+    public void boxColor(){
         assertThrows(NotProperParameterException.class,
                 () -> {
                     Box test_box = new Box("ciao",0,0);
@@ -35,11 +34,11 @@ public class BoxTest {
 
 //Test sulla funzione update
     @Test
-    public void update_Test() throws NotProperParameterException{
+    public void update_Test(){
 
-        Box test_box = new Box(0,0);
         assertThrows(NotProperParameterException.class,
                 () -> {
+                    Box test_box = new Box(0,0);
                     test_box.update(false, new DieToCostraintsAdapter(new Die("Red",4)), 9, 6);
                 });
 
