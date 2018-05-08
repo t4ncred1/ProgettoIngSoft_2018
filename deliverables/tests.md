@@ -49,3 +49,6 @@
 * tryToInsertDieReturnFalse             √
 * tryToInsertDieReturnTrue              √
 
+##**PrivateObjective** class tests##
+
+* checkColor				√
