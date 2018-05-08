@@ -7,18 +7,19 @@ public class Die {
     private String color;
 
     public Die (String color, int value) throws NotProperParameterException{
-        final String expectedColorType= new String("Color: red, yellow, green, blue, purple");
-        final String expectedValueType= new String("Value: 1, 2, 3, 4, 5, 6");
-        final String strValue;
-        if(color.equals("red")||color.equals("green")||color.equals("yellow")||color.equals("blue")||color.equals("purple"))
-           this.color=color.toLowerCase();
-        else throw new NotProperParameterException(color,expectedColorType);
-        if(value>=1&&value<=6)
-            this.value=value;
+        final String expectedColor= new String("Color: red, yellow, green, blue, purple");
+        final String expectedValue= new String("Value: 1, 2, 3, 4, 5, 6");
+
+        color=color.toLowerCase(); //NB
+
+        if(!(color.equals("red")||color.equals("green")||color.equals("yellow")||color.equals("blue")||color.equals("purple")))
+            throw new NotProperParameterException(color,expectedColor);
+        else if(!(value>=1&&value<=6))
+            throw new NotProperParameterException(""+value,expectedValue);
         else {
-            strValue=((Integer)value).toString();
-            throw new NotProperParameterException(strValue, expectedValueType);
-             }
+            this.color = color;
+            this.value = value;
+        }
     }
 
 
