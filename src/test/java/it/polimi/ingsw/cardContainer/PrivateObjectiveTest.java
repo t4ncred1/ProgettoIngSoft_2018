@@ -1,6 +1,6 @@
 package it.polimi.ingsw.cardContainer;
 
-import it.polimi.ingsw.CustomException.NotProperParameterException;
+import it.polimi.ingsw.customException.NotProperParameterException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

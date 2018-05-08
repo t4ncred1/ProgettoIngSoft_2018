@@ -1,4 +1,4 @@
-package it.polimi.ingsw.CustomException;
+package it.polimi.ingsw.customException;
 
 public class LimitValueException extends Exception {
     public LimitValueException(String attribute, String actualValue, String valueLimit){

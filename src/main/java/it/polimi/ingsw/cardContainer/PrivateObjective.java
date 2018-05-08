@@ -1,6 +1,5 @@
 package it.polimi.ingsw.cardContainer;
-import it.polimi.ingsw.*;
-import it.polimi.ingsw.CustomException.NotProperParameterException;
+import it.polimi.ingsw.customException.NotProperParameterException;
 
 public class PrivateObjective implements Objective {
     private String color;
@@ -23,7 +22,7 @@ public class PrivateObjective implements Objective {
     }
 
 //    @Override
-//    public int calculatePoints(PlayerModel player){
+//    public int calculatePoints(PlayerData player){
 //      return player.checkPrivateObjPoints(this.color);
 //    }
 

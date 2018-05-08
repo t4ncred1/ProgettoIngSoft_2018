@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
-import it.polimi.ingsw.CustomException.LimitValueException;
-import it.polimi.ingsw.CustomException.NotProperParameterException;
+import it.polimi.ingsw.customException.LimitValueException;
+import it.polimi.ingsw.customException.NotProperParameterException;
 
 import java.util.ArrayList;
 
@@ -98,16 +98,19 @@ public class Box implements BoxObserver, BoxSubject{
         return observerList.size() <= 0;
     }
 
-    public boolean tryToInsertDie(boolean colorCheck, boolean valueCheck, Die die){
-        if(die==null)
+    public boolean tryToInsertDie(boolean colorCheck, boolean valueCheck, Die passedDie){
+        DieCostraints toCheck= new DieToCostraintsAdapter(passedDie);
+        if(this.die!=null)
             return false;
-        DieCostraints toCheck= new DieToCostraintsAdapter(die);
         if(this.opened==0)
             return false;
         if(colorCheck && (colorRestriction[toCheck.getColorRestriction()]>0))
             return false;
+        if(valueCheck && (valueRestriction[toCheck.getValueRestriction()]>0))
+            return false;
 
-        return !valueCheck || (valueRestriction[toCheck.getValueRestriction()] <= 0);
+        return true;
+
     }
 
     //modifier

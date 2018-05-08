@@ -1,9 +1,9 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.CustomException.NotProperParameterException;
+import it.polimi.ingsw.customException.NotProperParameterException;
 import it.polimi.ingsw.cardContainer.PrivateObjective;
 
-public class PlayerModel{
+public class PlayerData {
 
     //gestiti da PlayerHandler
     private boolean connected;
@@ -13,14 +13,7 @@ public class PlayerModel{
     private boolean inQueue;
     private boolean inGame;
 
-    //gestiti da PlayerController
-//    private Grid gameGrid;  //TODO make a setter to initialize grid.
-    private PrivateObjective privateObjective;
-//    private MatchModel game;
-    private int points;
-
-
-    public PlayerModel(String username, String password) throws NotProperParameterException {
+    public PlayerData(String username, String password) throws NotProperParameterException {
         if (username == null || password.equals("")) throw new NotProperParameterException("username : null or empty.", "a not null string.");
         if (password == null || password.equals("")) throw new NotProperParameterException("username : null or empty.", "a not null string.");
         this.connected=false;
@@ -46,10 +39,6 @@ public class PlayerModel{
         return this.inQueue;
     }
 
-//    public int calculatePrivateObjectivePoints(String color) throws NotProperParameterException{
-//        return this.gameGrid.calcPrivateObjPoints(color);
-//    }
-
 
     //modificatori
     public synchronized void setConnected(boolean connected) {
@@ -64,18 +53,6 @@ public class PlayerModel{
         this.inGame= inGame;
     }
 
-
-
-
-    //
-
-    private void throwDiceForPool(){
-        //TODO
-    }
-
-    public void useToolCard(){
-        //TODO
-    }
 
 
 
