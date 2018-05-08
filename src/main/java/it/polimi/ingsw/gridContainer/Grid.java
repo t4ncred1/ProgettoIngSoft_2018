@@ -1,5 +1,6 @@
 package it.polimi.ingsw.gridContainer;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.Box;
 import it.polimi.ingsw.Die;
 import it.polimi.ingsw.customException.InvalidOperationException;
@@ -13,10 +14,6 @@ public class Grid {
     private String name;
     private int difficulty;
     private Box[][] gameGrid;
-
-    protected Grid(String jsonSting){
-        //per creazione da file json
-    }
 
     protected Grid(int difficulty, String name) throws NotProperParameterException {
         final String expectedData= new String("Difficulty should have a value between 3 and 6 (both included)");
@@ -56,11 +53,16 @@ public class Grid {
             String colorConstraint = constraint;
             if (colorConstraint.equals("none")) {
                 this.gameGrid[x][y] = new Box(x, y);
+                if(this.gameGrid[x][y].getCoordX()==0||this.gameGrid[x][y].getCoordX()==rowNumber-1||this.gameGrid[x][y].getCoordY()==0||this.gameGrid[x][y].getCoordY()==columnNumber-1)
+                    this.gameGrid[x][y].setToOpened();
             } else {
                 this.gameGrid[x][y] = new Box(colorConstraint, x, y);
+                if(this.gameGrid[x][y].getCoordX()==0||this.gameGrid[x][y].getCoordX()==rowNumber-1||this.gameGrid[x][y].getCoordY()==0||this.gameGrid[x][y].getCoordY()==columnNumber-1)
+                    this.gameGrid[x][y].setToOpened();
             }
         }
     }
+
 
     public void insertDieInXY(int x, int y, boolean colorCheck, boolean valueCheck, Die die) throws NotProperParameterException, InvalidOperationException {
         final String indexOutOfBound = new String("coordinates should be: 0<=x<=3 and 0<=y<=4");

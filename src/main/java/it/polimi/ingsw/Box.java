@@ -114,6 +114,10 @@ public class Box implements BoxObserver, BoxSubject{
     }
 
     //modifier
+    public void setToOpened() {
+        this.opened=1;
+    }
+
     public void insertDie(Die chosenDie) //mossa standard per inserire un dado
     {
         if (chosenDie==null) throw new NullPointerException();
@@ -202,4 +206,6 @@ public class Box implements BoxObserver, BoxSubject{
         else
             return 0;
     }
+
+
 }

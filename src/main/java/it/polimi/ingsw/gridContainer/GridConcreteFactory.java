@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class GridConcreteFactory implements GridFactory{
 
     private static final String pathToGetData = "./src/jsonFiles/GridsPaths.json";
+    private static final int gridsToPlayer =4;
 
     private ArrayList<String> dataPaths;
 

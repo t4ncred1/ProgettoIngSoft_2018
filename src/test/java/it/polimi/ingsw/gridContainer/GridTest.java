@@ -263,6 +263,36 @@ public class GridTest {
         toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint);
     }
 
+    @Test
+    public void checkBoxOpened() throws NotProperParameterException, InvalidOperationException {
+        //Given
+        String passedConstraint = "none";
+        int passedCoordinateX1= 0;
+        int passedCoordinateY1= 0;
+        int passedCoordinateX2= 1;
+        int passedCoordinateY2= 1;
+
+        Grid toTest1=null;
+        try {
+            toTest1 = new Grid(3, "name");
+        }
+        catch (NotProperParameterException e){
+            System.err.println("Create a valid Grid!");
+        }
+
+
+        //When
+        toTest1.createBoxInXY(passedCoordinateX1, passedCoordinateY1, passedConstraint);
+        toTest1.createBoxInXY(passedCoordinateX2, passedCoordinateY2, passedConstraint);
+
+        //Assert
+        //this box is opened, methods ends without throwing exceptions
+        toTest1.insertDieInXY(passedCoordinateX1, passedCoordinateY1, true, true, new Die("red",1));
+        thrown.expect(InvalidOperationException.class);
+        toTest1.insertDieInXY(passedCoordinateX2,passedCoordinateY2,true, true, new Die("red",1));
+    }
+
+
     /*-**************************************************************************************************-*/
     //                         insertDieInXY(int x, int y, String constraint)
     /*-**************************************************************************************************-*/
@@ -333,8 +363,57 @@ public class GridTest {
         toTest.insertDieInXY(passedCoordinateX, passedCoordinateY,colorCheck,valueCheck, passedDie);
     }
 
-    //missing tests:
-    //All tryToInsertDieTestCases --> lanciano InvalidOperationException nel caso sia false;
-    //insert avvenuta correttamente
+    public void tryToInsertDieReturnFalse() throws NotProperParameterException, InvalidOperationException {
+
+        //Assert
+        thrown.expect(InvalidOperationException.class);
+
+        //Given
+        int passedCoordinateX= 1;
+        int passedCoordinateY= 1;
+        boolean colorCheck=true, valueCheck=true;
+        String passedConstraint = "none";
+        Die passedDie= new Die("red", 1);
+
+        Grid toTest= null;
+        try {
+            toTest = new Grid(3, "name");
+            toTest.createBoxInXY(passedCoordinateX, passedCoordinateY, passedConstraint); //insert in a closed box
+        }
+        catch (NotProperParameterException e){
+            System.err.println("Create a valid Grid!");
+        }
+
+        //When
+        toTest.insertDieInXY(passedCoordinateX, passedCoordinateY, colorCheck, valueCheck, passedDie);
+
+    }
+
+    public void tryToInsertDieReturnTrue() throws NotProperParameterException, InvalidOperationException {
+
+        //Given
+        int passedCoordinateX= 0;
+        int passedCoordinateY= 0;
+        boolean colorCheck=true, valueCheck=true;
+        String passedConstraint = "none";
+        Die passedDie= new Die("red", 1);
+
+        Grid toTest= null;
+        try {
+            toTest = new Grid(3, "name");
+            toTest.createBoxInXY(passedCoordinateX, passedCoordinateY, passedConstraint);
+        }
+        catch (NotProperParameterException e){
+            System.err.println("Create a valid Grid!");
+        }
+
+        //When
+        toTest.insertDieInXY(passedCoordinateX, passedCoordinateY, colorCheck, valueCheck, passedDie); //insert in a opened box
+
+        //Assert
+        thrown.expect(InvalidOperationException.class);
+        toTest.insertDieInXY(passedCoordinateX, passedCoordinateY, colorCheck, valueCheck, passedDie); //reinsert should throw an exception.
+    }
+
 
 }
