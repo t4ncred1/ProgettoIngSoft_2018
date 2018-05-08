@@ -1,19 +1,16 @@
 package it.polimi.ingsw.cardContainer;
-
 import it.polimi.ingsw.customException.NotProperParameterException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PrivateObjectiveTest {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 //test
     @Test
     public void checkColor() throws NotProperParameterException{
-        thrown.expect(NotProperParameterException.class);
-        PrivateObjective privateObjective_test = new PrivateObjective("black");
+        assertThrows(NotProperParameterException.class, ()-> {
+            PrivateObjective privateObjective_test = new PrivateObjective("black");
+        });
     }
 
 }

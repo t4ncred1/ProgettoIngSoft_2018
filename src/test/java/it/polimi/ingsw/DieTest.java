@@ -1,27 +1,27 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.customException.NotProperParameterException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static org.junit.Assert.*;
 
 
 public class DieTest{
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 //tests
     @Test
-    public void dieValue() throws NotProperParameterException{
-        thrown.expect(NotProperParameterException.class);
-        Die test_die = new Die("green",10);
+    public void dieValue(){
+        assertThrows(NotProperParameterException.class, () ->{
+            Die test_die = new Die("green",10);
+        });
     }
     @Test
     public void dieColor() throws NotProperParameterException{
-        thrown.expect(NotProperParameterException.class);
-        Die test_die = new Die("gray",5);
+        assertThrows(NotProperParameterException.class, ()-> {
+            Die test_die = new Die("gray", 5);
+        });
     }
 
     @Test
