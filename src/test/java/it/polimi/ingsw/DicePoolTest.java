@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.customException.NotInPoolException;
-import it.polimi.ingsw.customException.NotProperParameterException;
+import it.polimi.ingsw.customException.NotValidParameterException;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -12,7 +12,7 @@ public class DicePoolTest {
     @Test
     public void checkPoolSize(){
         DicePool test_dicepool = new DicePool();
-        assertThrows(NotProperParameterException.class,
+        assertThrows(NotValidParameterException.class,
                 () -> test_dicepool.generateDiceForPull(1));
     }
 //test for getDieFromPool

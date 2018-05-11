@@ -1,12 +1,9 @@
 package it.polimi.ingsw.gridContainer;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.Box;
 import it.polimi.ingsw.Die;
 import it.polimi.ingsw.customException.InvalidOperationException;
-import it.polimi.ingsw.customException.NotProperParameterException;
-
-import java.awt.dnd.InvalidDnDOperationException;
+import it.polimi.ingsw.customException.NotValidParameterException;
 
 public class Grid {
     private final static int rowNumber=4;
@@ -15,11 +12,11 @@ public class Grid {
     private int difficulty;
     private Box[][] gameGrid;
 
-    protected Grid(int difficulty, String name) throws NotProperParameterException {
+    protected Grid(int difficulty, String name) throws NotValidParameterException {
         final String expectedData= new String("Difficulty should have a value between 3 and 6 (both included)");
 
         if(name==null) throw new NullPointerException();
-        if(difficulty<3||difficulty>6) throw new NotProperParameterException(""+difficulty,expectedData);
+        if(difficulty<3||difficulty>6) throw new NotValidParameterException(""+difficulty,expectedData);
         gameGrid= new Box[rowNumber][columnNumber];
         this.difficulty= difficulty;
         this.name=name;
@@ -35,15 +32,15 @@ public class Grid {
     }
 
     //Modifier
-    protected void createBoxInXY(int x, int y, String constraint) throws NotProperParameterException {
+    protected void createBoxInXY(int x, int y, String constraint) throws NotValidParameterException {
         final String indexOutOfBound = new String("coordinates should be: 0<=x<=3 and 0<=y<=4");
         final String expectedEmptyBox = new String("other coordinates: in this place already exist a Box!");
         //constraint == null isn't accepted
         if(constraint==null) throw new NullPointerException();
         //index out of bound for gameGrid;
-        if(x<0||x>rowNumber-1||y<0||y>columnNumber-1) throw new NotProperParameterException("("+x+","+y+")", indexOutOfBound);
+        if(x<0||x>rowNumber-1||y<0||y>columnNumber-1) throw new NotValidParameterException("("+x+","+y+")", indexOutOfBound);
         //this function should be used to just once for each box in gameGrid
-        if(gameGrid[x][y]!=null) throw new NotProperParameterException("("+x+","+y+")", expectedEmptyBox);
+        if(gameGrid[x][y]!=null) throw new NotValidParameterException("("+x+","+y+")", expectedEmptyBox);
 
 
         try{
@@ -64,12 +61,12 @@ public class Grid {
     }
 
 
-    public void insertDieInXY(int x, int y, boolean colorCheck, boolean valueCheck, Die die) throws NotProperParameterException, InvalidOperationException {
+    public void insertDieInXY(int x, int y, boolean colorCheck, boolean valueCheck, Die die) throws NotValidParameterException, InvalidOperationException {
         final String indexOutOfBound = new String("coordinates should be: 0<=x<=3 and 0<=y<=4");
 
         if(die == null) throw new NullPointerException();
 
-        if(x<0||x>rowNumber-1||y<0||y>columnNumber-1) throw new NotProperParameterException("("+x+","+y+")", indexOutOfBound);
+        if(x<0||x>rowNumber-1||y<0||y>columnNumber-1) throw new NotValidParameterException("("+x+","+y+")", indexOutOfBound);
 
         if(gameGrid[x][y].tryToInsertDie(colorCheck, valueCheck, die)==false)
             throw new InvalidOperationException();
