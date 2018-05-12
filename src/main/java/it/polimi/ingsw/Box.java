@@ -39,14 +39,14 @@ public class Box implements BoxObserver, BoxSubject{
 
     //creators
     public Box(int x, int y) throws NotValidParameterException {
-        final String expectedDataType= new String ("Coord expected value: 0<x<4 and 0<y<3");
+        final String expectedDataType= "Coord expected value: 0<x<4 and 0<y<3";
         if((x<0||x>4)||(y<0||y>3)) throw new NotValidParameterException("Coord: "+x+", "+ y,expectedDataType);
         this.coordX= x;
         this.coordY= y;
         die=null;
         colorRestriction = new int[5];
         valueRestriction = new int[6];
-        observerList= new ArrayList<BoxObserver>();
+        observerList= new ArrayList<>();
 
         opened=0;
         for (int i = 0; i<colorRestriction.length; i++ ) colorRestriction[i] = 0;
@@ -56,7 +56,7 @@ public class Box implements BoxObserver, BoxSubject{
 
     public Box(String color, int x, int y) throws NotValidParameterException {
         this(x,y);
-        final String expectedDataType= new String("Color: red, yellow, green, blue, purple");
+        final String expectedDataType= "Color: red, yellow, green, blue, purple";
 
         if(color.equals("red")||color.equals("green")||color.equals("yellow")||color.equals("blue")||color.equals("purple")){
             DieConstraints die = new DieToConstraintsAdapter(new Die(color, 1));
@@ -70,7 +70,7 @@ public class Box implements BoxObserver, BoxSubject{
     }
     public Box(int value, int x, int y) throws NotValidParameterException {
         this(x,y);
-        final String expectedDataType= new String("Value: 1, 2, 3, 4, 5, 6");
+        final String expectedDataType= "Value: 1, 2, 3, 4, 5, 6";
 
         if(value>=1&&value<=6){
             DieConstraints die = new DieToConstraintsAdapter(new Die("red", value)); //the color isn't important, so it was randomly chosen by the author
