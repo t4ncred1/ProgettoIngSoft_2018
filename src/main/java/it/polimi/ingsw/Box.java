@@ -30,7 +30,6 @@ public class Box implements BoxObserver, BoxSubject{
     private DieConstraints die;
     private int[] colorRestriction;
     private int[] valueRestriction;
-    //private boolean colorConstraint;
     private int constraintIndex;
     private int opened;
     private ArrayList<BoxObserver> observerList;
@@ -60,7 +59,6 @@ public class Box implements BoxObserver, BoxSubject{
 
         if(color.equals("red")||color.equals("green")||color.equals("yellow")||color.equals("blue")||color.equals("purple")){
             DieConstraints dieSample = new DieToConstraintsAdapter(new Die(color, 1));
-            //colorConstraint =true;
             constraintIndex = dieSample.getColorRestriction();
             for(int i=0; i<colorRestriction.length; i++)
                 if(i!= constraintIndex)colorRestriction[i]=1;
@@ -74,7 +72,6 @@ public class Box implements BoxObserver, BoxSubject{
 
         if(value>=1&&value<=6){
             DieConstraints dieSample = new DieToConstraintsAdapter(new Die("red", value)); //the color isn't important, so it was randomly chosen by the author
-            //colorConstraint =false;
             constraintIndex =dieSample.getValueRestriction();
             for(int i=0; i<valueRestriction.length; i++)
                 if(i!=constraintIndex)valueRestriction[i]=1;

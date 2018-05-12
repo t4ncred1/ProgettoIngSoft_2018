@@ -13,7 +13,7 @@ public class Grid {
     private Box[][] gameGrid;
 
     protected Grid(int difficulty, String name) throws NotValidParameterException {
-        final String expectedData= new String("Difficulty should have a value between 3 and 6 (both included)");
+        final String expectedData= "Difficulty should have a value between 3 and 6 (both included)";
 
         if(name==null) throw new NullPointerException();
         if(difficulty<3||difficulty>6) throw new NotValidParameterException(""+difficulty,expectedData);

@@ -10,6 +10,6 @@ public class App
 {
     public static void main( String[] args )
     {
-        
+        //todo server side task, initialization of socket handler and match handler
     }
 }
