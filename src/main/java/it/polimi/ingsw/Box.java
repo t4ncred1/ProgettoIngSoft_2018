@@ -95,7 +95,7 @@ public class Box implements BoxObserver, BoxSubject{
 
 
     public boolean areObserversNotInitialized() {
-        return observerList.size() <= 0;
+        return observerList.isEmpty();
     }
 
     public boolean tryToInsertDie(boolean colorCheck, boolean valueCheck, Die passedDie){
