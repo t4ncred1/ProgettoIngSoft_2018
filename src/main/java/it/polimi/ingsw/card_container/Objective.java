@@ -1,4 +1,4 @@
-package it.polimi.ingsw.cardContainer;
+package it.polimi.ingsw.card_container;
 
 public interface Objective {
 

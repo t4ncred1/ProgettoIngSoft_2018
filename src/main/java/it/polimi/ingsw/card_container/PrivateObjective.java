@@ -1,5 +1,5 @@
-package it.polimi.ingsw.cardContainer;
-import it.polimi.ingsw.customException.NotValidParameterException;
+package it.polimi.ingsw.card_container;
+import it.polimi.ingsw.custom_exception.NotValidParameterException;
 
 public class PrivateObjective implements Objective {
     private String color;

@@ -1,8 +1,8 @@
-package it.polimi.ingsw.gridContainer;
+package it.polimi.ingsw.grid_container;
 
 import it.polimi.ingsw.Die;
-import it.polimi.ingsw.customException.InvalidOperationException;
-import it.polimi.ingsw.customException.NotValidParameterException;
+import it.polimi.ingsw.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.custom_exception.NotValidParameterException;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;

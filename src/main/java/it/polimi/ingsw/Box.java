@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
-import it.polimi.ingsw.customException.LimitValueException;
-import it.polimi.ingsw.customException.NotValidParameterException;
+import it.polimi.ingsw.custom_exception.LimitValueException;
+import it.polimi.ingsw.custom_exception.NotValidParameterException;
 
 import java.util.ArrayList;
 

@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.customException.NotInPoolException;
-import it.polimi.ingsw.customException.NotValidParameterException;
+import it.polimi.ingsw.custom_exception.NotInPoolException;
+import it.polimi.ingsw.custom_exception.NotValidParameterException;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;

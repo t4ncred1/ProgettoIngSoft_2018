@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 import java.util.ArrayList;
-import it.polimi.ingsw.customException.*;
+import it.polimi.ingsw.custom_exception.*;
 
 public class DicePool {
     private ArrayList<Die> pool;
