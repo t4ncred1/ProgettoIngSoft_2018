@@ -11,19 +11,19 @@ public class DicePool {
 
 
     public DicePool(){
-        this.pool= new ArrayList<Die>();
-        this.availableColors = new ArrayList<String>();
-        for(int i=0;i<diceForEachColor; i++) this.availableColors.add(new String("green"));
-        for(int i=0;i<diceForEachColor; i++) this.availableColors.add(new String("red"));
-        for(int i=0;i<diceForEachColor; i++) this.availableColors.add(new String("blue"));
-        for(int i=0;i<diceForEachColor; i++) this.availableColors.add(new String("yellow"));
-        for(int i=0;i<diceForEachColor; i++) this.availableColors.add(new String("purple"));
+        this.pool= new ArrayList<>();
+        this.availableColors = new ArrayList<>();
+        for(int i=0;i<diceForEachColor; i++) this.availableColors.add("green");
+        for(int i=0;i<diceForEachColor; i++) this.availableColors.add("red");
+        for(int i=0;i<diceForEachColor; i++) this.availableColors.add("blue");
+        for(int i=0;i<diceForEachColor; i++) this.availableColors.add("yellow");
+        for(int i=0;i<diceForEachColor; i++) this.availableColors.add("purple");
     }
 
     public void generateDiceForPull(int number) throws NotValidParameterException {
         String randomAvaiableColor;
         int randomDieValue;
-        final String expectedValueType= new String("Value: 3, 4, 5, 6, 7, 8, 9");
+        final String expectedValueType= "Value: 3, 4, 5, 6, 7, 8, 9";
         final String strValue;
         if(number>=3&&number<=9){
             for(int i=0; i<number;i++) {
@@ -39,7 +39,7 @@ public class DicePool {
 
 
     public void showDiceInPool(){
-
+        //TODO should return a list of dice in pool
     }
 
     public Die getDieFromPool(int index) throws NotInPoolException {

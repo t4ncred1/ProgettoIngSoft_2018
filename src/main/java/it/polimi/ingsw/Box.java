@@ -30,7 +30,7 @@ public class Box implements BoxObserver, BoxSubject{
     private DieConstraints die;
     private int[] colorRestriction;
     private int[] valueRestriction;
-    private boolean colorConstraint;
+    //private boolean colorConstraint;
     private int constraintIndex;
     private int opened;
     private ArrayList<BoxObserver> observerList;
@@ -59,9 +59,9 @@ public class Box implements BoxObserver, BoxSubject{
         final String expectedDataType= "Color: red, yellow, green, blue, purple";
 
         if(color.equals("red")||color.equals("green")||color.equals("yellow")||color.equals("blue")||color.equals("purple")){
-            DieConstraints die = new DieToConstraintsAdapter(new Die(color, 1));
-            colorConstraint =true;
-            constraintIndex = die.getColorRestriction();
+            DieConstraints dieSample = new DieToConstraintsAdapter(new Die(color, 1));
+            //colorConstraint =true;
+            constraintIndex = dieSample.getColorRestriction();
             for(int i=0; i<colorRestriction.length; i++)
                 if(i!= constraintIndex)colorRestriction[i]=1;
         }
@@ -73,9 +73,9 @@ public class Box implements BoxObserver, BoxSubject{
         final String expectedDataType= "Value: 1, 2, 3, 4, 5, 6";
 
         if(value>=1&&value<=6){
-            DieConstraints die = new DieToConstraintsAdapter(new Die("red", value)); //the color isn't important, so it was randomly chosen by the author
-            colorConstraint =false;
-            constraintIndex = die.getValueRestriction();
+            DieConstraints dieSample = new DieToConstraintsAdapter(new Die("red", value)); //the color isn't important, so it was randomly chosen by the author
+            //colorConstraint =false;
+            constraintIndex =dieSample.getValueRestriction();
             for(int i=0; i<valueRestriction.length; i++)
                 if(i!=constraintIndex)valueRestriction[i]=1;
         }
@@ -162,9 +162,6 @@ public class Box implements BoxObserver, BoxSubject{
 
     @Override
     public void update(boolean remove, DieConstraints nearDie, int x, int y) throws NotValidParameterException {
-        //se le casella in cui ho inserito il dado non è diagonali aggiorno i costraints di colore e valore
-//        if (nearDie.getValueRestriction()<0 || nearDie.getValueRestriction()>5)  throw new NotValidParameterException("value constraint of the near box: "+ nearDie.getValueRestriction(),"value between 0 and 5");      //these tests are not meant here but in DieToConstraintsAdapter class
-//        if (nearDie.getColorRestriction()<0 || nearDie.getColorRestriction()>4)  throw new NotValidParameterException("color constraint of the near box: "+ nearDie.getColorRestriction(),"value between 0 and 4");
         if (x!=this.getCoordX()-1 && x!=this.getCoordX()+1 && y!=this.getCoordY()+1 && y!=this.getCoordY()-1) throw new NotValidParameterException("Position of the near box:"+ String.valueOf(x) +", "+String.valueOf(y), "this box should not be between the observers of the box which called the update");
         if(this.coordX==x||this.coordY==y) {
                 this.updateValue(remove, nearDie.getValueRestriction());

@@ -54,7 +54,7 @@ public class DieToConstraintsAdapter implements DieConstraints {
 
     @Override
     public void modifyDie(){
-        //TODO
+        //TODO modifier for die
     }
 
 }

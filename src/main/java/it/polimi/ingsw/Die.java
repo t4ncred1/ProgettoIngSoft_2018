@@ -7,8 +7,8 @@ public class Die {
     private String color;
 
     public Die (String color, int value) throws NotValidParameterException {
-        final String expectedColor= new String("Color: red, yellow, green, blue, purple");
-        final String expectedValue= new String("Value: 1, 2, 3, 4, 5, 6");
+        final String expectedColor= "Color: red, yellow, green, blue, purple";
+        final String expectedValue= "Value: 1, 2, 3, 4, 5, 6";
 
         color=color.toLowerCase(); //NB
 
@@ -32,7 +32,7 @@ public class Die {
     }
 
     public void modifyDie(){
-
+        //TODO should be able to modify the die
     }
 }
 
