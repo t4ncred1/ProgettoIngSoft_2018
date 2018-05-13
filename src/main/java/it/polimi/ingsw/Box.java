@@ -32,7 +32,7 @@ public class Box implements BoxObserver, BoxSubject{
     private int[] valueRestriction;
     private int constraintIndex;
     private int opened;
-    private ArrayList<BoxObserver> observerList;
+    private transient ArrayList<BoxObserver> observerList;
     private int coordX;
     private int coordY;
 
@@ -79,6 +79,23 @@ public class Box implements BoxObserver, BoxSubject{
         else
             throw new NotValidParameterException(((Integer)value).toString(), expectedDataType); //hat to put a cast in order to make it an object
 
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder build = new StringBuilder("color Restriction: ");
+        for (int i : colorRestriction){
+            build.append(Integer.toString(i));
+            build.append("; ");
+        }
+        build.append("| value Restriction: ");
+        for (int j : valueRestriction){
+            build.append(Integer.toString(j));
+            build.append("; ");
+        }
+        build.append("| Open = "+Integer.toString(opened));
+        build.append(" | position = ("+Integer.toString(coordX)+","+Integer.toString(coordY)+")");
+        return build.toString();
     }
 
     //Observer
