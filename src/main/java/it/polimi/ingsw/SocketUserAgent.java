@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.customException.InvalidOperationException;
+
+import it.polimi.ingsw.custom_exception.DisconnectionException;
+import it.polimi.ingsw.custom_exception.InvalidOperationException;
 
 import java.io.*;
 import java.net.Socket;
@@ -28,22 +30,27 @@ public class SocketUserAgent extends Thread implements ClientInterface{
 
     @Override
     public void run(){
-        System.out.println("Connected");
+        System.out.println("Connection request received");
         try {
             MatchHandler.login(this);
+            System.out.println("Connection protocol ended. Connected");
             try {
-                System.out.println("Connection protocol ended.");
                 outputStream.writeUTF("Connected");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } catch (InvalidOperationException e) {
+            System.out.println("Connection protocol ended. Server is full");
             e.printStackTrace();
             try {
                 outputStream.writeUTF("Server is full, can't connect!");
             } catch (IOException e2) {
                 e2.printStackTrace();
             }
+            return;
+        } catch (DisconnectionException e) {
+            System.out.println("Connection protocol ended. Client disconnected.");
+            e.printStackTrace();
             return;
         }
     }
@@ -67,22 +74,22 @@ public class SocketUserAgent extends Thread implements ClientInterface{
 
 
     //-----------------------------------------------------------------------------
-    //funzioni per login
+    //                             funzioni per login
     //-----------------------------------------------------------------------------
     @Override
-    public void chooseUsername() {
+    public void chooseUsername() throws DisconnectionException {
         final String chooseUsername = new String("Chose a username: ");
         try {
             outputStream.writeUTF(chooseUsername);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DisconnectionException();
         }
     }
 
-    public void arrangeForUsername() throws InvalidOperationException {
+    public void arrangeForUsername() throws InvalidOperationException, DisconnectionException {
 
         boolean result;
-        final String notAvailableMessage = new String("not available");
+        final String notAvailableMessage = new String("Not available, choose another username:");
         int trials = 0;
         do
         {
@@ -90,10 +97,9 @@ public class SocketUserAgent extends Thread implements ClientInterface{
             try {
                 if(trials>1) outputStream.writeUTF(notAvailableMessage);
                 username= inputStream.readUTF();
-                System.out.println("letto: " + username);
+                System.out.println("received: " + username);
             } catch (IOException e) {
-                e.printStackTrace();
-                //mettere qualcosa per bloccare ciclo infinito in caso di disconnessione
+                throw new DisconnectionException();
             }
             result = MatchHandler.getInstance().requestUsername(username);
         }

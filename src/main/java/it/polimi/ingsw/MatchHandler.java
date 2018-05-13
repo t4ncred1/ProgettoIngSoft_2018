@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.customException.InvalidOperationException;
+
+import it.polimi.ingsw.custom_exception.DisconnectionException;
+import it.polimi.ingsw.custom_exception.InvalidOperationException;
 
 import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
@@ -37,6 +39,25 @@ public class MatchHandler extends Thread {
             instance= new MatchHandler();
         return instance;
     }
+
+
+    //Observer
+    public int connectedPlayers(){
+        synchronized (connectedPlayers) {
+            return connectedPlayers.size();
+        }
+    }
+
+    public int notSincronizedConnectedPlayers(){  //use only fot tests
+        return connectedPlayers.size();
+    }
+
+    public int getMaximumMatchNumber(){
+        return this.maximumMatchNumber;
+    }
+
+
+    //
 
     public static void notifyTimeout() {
         instance.timeout=true;
@@ -93,16 +114,22 @@ public class MatchHandler extends Thread {
             condition.await();
 
             System.out.println("Resumed. Timeout: "+instance.timeout);
-            if(startingMatch.playerIngame()==4){
-                it.polimi.ingsw.SocketHandler.closeConnection();
-                timer.stop();
-                return true;
-            }
-            else if(instance.timeout&&startingMatch.playerIngame()>1) {
-                instance.timeout=false;
-                timer.stop();
-                return true;
+            synchronized (startingMatch) {
+                synchronized (startedMatches) {
+                    if (startingMatch.playerIngame() == 4) {
+                        startedMatches.add(startingMatch);
+                        startingMatch = null;
+                        timer.stop();
+                        return true;
+                    } else if (instance.timeout && startingMatch.playerIngame() > 1) {
+                        instance.timeout = false;
+                        startedMatches.add(startingMatch);
+                        startingMatch = null;
+                        timer.stop();
+                        return true;
 
+                    }
+                }
             }
 
         } catch (InterruptedException e) {
@@ -116,19 +143,19 @@ public class MatchHandler extends Thread {
 
     private void startGame() {
         System.out.println("Game Started");
-        startedMatches.add(startingMatch);
-        startingMatch=null;
     }
 
 
-    public static void login(ClientInterface client) throws InvalidOperationException {
+    public static void login(ClientInterface client) throws InvalidOperationException, DisconnectionException {
         client.chooseUsername();
         synchronized (connectedPlayers) {
             client.arrangeForUsername();
             connectedPlayers.add(client);
         }
         lock.lock();
-        startingMatch.insert(client);
+        synchronized (startingMatch) {
+            startingMatch.insert(client);
+        }
         condition.signal();
         lock.unlock();
         System.out.println("Player inserted");
@@ -136,25 +163,29 @@ public class MatchHandler extends Thread {
 
     public boolean requestUsername(String username) {
         if(username.equals("")) return false;
-        System.out.println("size " +connectedPlayers.size());
-        for(ClientInterface cl: connectedPlayers){
-            if(cl.getUsername().equals(username)) {
-                System.out.println("Cheked with: " + cl.getUsername());
-                return false;
+        synchronized (connectedPlayers) {
+            for (ClientInterface cl : connectedPlayers) {
+                if (cl.getUsername().equals(username)) {
+                    System.out.println("Cheked with: " + cl.getUsername());
+                    return false;
+                }
             }
         }
         return true;
     }
 
     public void tryToConnect(String username) throws InvalidOperationException {
-        if(startedMatches.size()==maximumMatchNumber){
-            for(ClientInterface cl: disconnectedInGamePlayers){
-                if(cl.getUsername()==username)
-                    return;
+        synchronized (startedMatches) {
+            if (startedMatches.size() == maximumMatchNumber) {
+                for (ClientInterface cl : disconnectedInGamePlayers) {
+                    if (cl.getUsername() == username)
+                        return;
+                }
+                throw new InvalidOperationException();
             }
-            throw new InvalidOperationException();
         }
 
         return;
     }
+
 }

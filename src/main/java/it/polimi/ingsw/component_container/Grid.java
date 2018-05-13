@@ -1,7 +1,5 @@
-package it.polimi.ingsw.grid_container;
+package it.polimi.ingsw.component_container;
 
-import it.polimi.ingsw.Box;
-import it.polimi.ingsw.Die;
 import it.polimi.ingsw.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.custom_exception.NotValidParameterException;
 
