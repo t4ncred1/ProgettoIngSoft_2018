@@ -7,9 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -83,7 +81,7 @@ public class MatchHandlerTest {
 //
 //        //Assert
 //        assertEquals("Not available, choose another username:", result);
-//        assertEquals(1, matchHandler.notSincronizedConnectedPlayers());
+//        assertEquals(1, matchHandler.notSynchronizedConnectedPlayers());
 //
 //        //When username2 is valid.
 //        username2 = new String("ValidUsername");
@@ -178,11 +176,10 @@ public class MatchHandlerTest {
 //        inputStream2.readUTF();
 //
 //
-//
 //        //When
 //        Thread.sleep(2000);
 //        socket2.close();
-//        Thread.sleep(20000); //waiting timeout
+//        Thread.sleep(20000); //FIXME when timer is changed
 //
 //        //Assert
 //        assertEquals(1, matchHandler.connectedPlayers());

@@ -40,7 +40,7 @@ public class MainClient {
                 result = inputStream.readUTF();
 
             }
-            while (result.equals("not available"));
+            while (result.equals("Not available, choose another username:"));
 
             System.out.println(result);
         }

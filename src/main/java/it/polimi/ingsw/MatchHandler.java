@@ -49,7 +49,7 @@ public class MatchHandler extends Thread {
         }
     }
 
-    public int notSincronizedConnectedPlayers(){  //use only fot tests
+    public int notSynchronizedConnectedPlayers(){  //use only fot tests
         return connectedPlayers.size();
     }
 
@@ -109,7 +109,7 @@ public class MatchHandler extends Thread {
         try {
             if(instance.timeout){
                 System.out.println("A game will start soon...");
-                //TODO notify player that a game will start soon
+                //TODO notify players that a game will start soon
                 timer =new GameTimer("game");
                 timeout=false;
             }
@@ -148,7 +148,7 @@ public class MatchHandler extends Thread {
 
     private void startGame(long currentGame) {
         System.out.println("Game Started");
-        //TODO notify player that the game is started
+        //TODO notify players that the game is started
     }
 
 
