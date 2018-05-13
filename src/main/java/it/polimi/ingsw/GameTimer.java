@@ -8,7 +8,7 @@ public class GameTimer {
     private int secondsPassed = 0;
     private int minutesPassed = 0;
     private long timerSet;
-    private long timerToStart=30;
+    private long timerToStart=15;
 
     private final int secondsToMinutesRatio = 60;
 

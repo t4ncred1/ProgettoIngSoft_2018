@@ -24,6 +24,7 @@ public class MatchHandler extends Thread {
     private final int maximumMatchNumber =1;
     private ArrayList<MatchController> startedMatches; //nel caso volessimo implementare multi-game
     private GameTimer timer;
+    private static long currentGame=0;
 
     private MatchHandler(){
         connectedPlayers= new ArrayList<ClientInterface>();
@@ -89,7 +90,7 @@ public class MatchHandler extends Thread {
                 ok=startGameCountdown();
             }
             while (!ok);
-            startGame();
+            startGame(currentGame);
             while(startedMatches.size()==maximumMatchNumber){
                 lock.lock();
                 try {
@@ -108,13 +109,14 @@ public class MatchHandler extends Thread {
         try {
             if(instance.timeout){
                 System.out.println("A game will start soon...");
+                //TODO notify player that a game will start soon
                 timer =new GameTimer("game");
                 timeout=false;
             }
             condition.await();
 
             System.out.println("Resumed. Timeout: "+instance.timeout);
-            synchronized (startingMatch) {
+                synchronized (startingMatch) {
                 synchronized (startedMatches) {
                     if (startingMatch.playerIngame() == 4) {
                         startedMatches.add(startingMatch);
@@ -129,6 +131,9 @@ public class MatchHandler extends Thread {
                         return true;
 
                     }
+                    else if (instance.timeout && startingMatch.playerIngame() <= 1){
+                        timer.stop();
+                    }
                 }
             }
 
@@ -141,8 +146,9 @@ public class MatchHandler extends Thread {
         return false;
     }
 
-    private void startGame() {
+    private void startGame(long currentGame) {
         System.out.println("Game Started");
+        //TODO notify player that the game is started
     }
 
 
@@ -188,4 +194,14 @@ public class MatchHandler extends Thread {
         return;
     }
 
+    public void notifyAboutDisconnection(ClientInterface client, boolean gameStarted) {
+        synchronized (connectedPlayers){
+            if(gameStarted){
+                //TODO handle this case.
+            }
+            else {
+                connectedPlayers.remove(client);
+            }
+        }
+    }
 }

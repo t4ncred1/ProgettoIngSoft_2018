@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 public class MatchController {
     private ArrayList<ClientInterface> playersInMatch;
+    private boolean gameStarted;
 
     public MatchController(){
         this.playersInMatch= new ArrayList<ClientInterface>();
@@ -15,7 +16,8 @@ public class MatchController {
 
            for (int i=0; i<playersInMatch.size();i++) {
                if(!playersInMatch.get(i).isConnected()){
-                   playersInMatch.remove(i);
+                   //in this instruction player is removed both from playersInMatch and connectedPlayers
+                   MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(i), gameStarted);
                }
             }
             System.out.println("player in queue: "+playersInMatch.size());
