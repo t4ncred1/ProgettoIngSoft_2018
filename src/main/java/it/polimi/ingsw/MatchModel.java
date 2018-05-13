@@ -2,7 +2,7 @@ package it.polimi.ingsw;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.grid_container.Grid;
+import it.polimi.ingsw.component_container.Grid;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
