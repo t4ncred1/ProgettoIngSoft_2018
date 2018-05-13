@@ -27,7 +27,7 @@ public class Grid {
         build.append(this.getName());
         build.append("\tDifficoltà: ");
         build.append(this.getDifficulty());
-        build.append("\nBoxes di Grid:\n");
+        build.append("\nBoxes di " +this.getName()+ ":\n");
         int k=0;
         int n;
         for(Box[] i : gameGrid){
