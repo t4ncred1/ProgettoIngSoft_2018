@@ -1,10 +1,10 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.component_container;
 import it.polimi.ingsw.custom_exception.LimitValueException;
 import it.polimi.ingsw.custom_exception.NotValidParameterException;
 
 import java.util.ArrayList;
 
-public class Box implements BoxObserver, BoxSubject{
+public class Box implements BoxObserver, BoxSubject {
 
 
     /*

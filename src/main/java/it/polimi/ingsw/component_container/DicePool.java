@@ -1,6 +1,7 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.component_container;
 
 import java.util.ArrayList;
+
 import it.polimi.ingsw.custom_exception.*;
 
 public class DicePool {

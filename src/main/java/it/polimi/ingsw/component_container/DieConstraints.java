@@ -1,4 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.component_container;
+
+import it.polimi.ingsw.component_container.Die;
 
 public interface DieConstraints {
     public int getColorRestriction();

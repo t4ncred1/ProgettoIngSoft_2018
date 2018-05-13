@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.component_container.DicePool;
 import it.polimi.ingsw.custom_exception.NotInPoolException;
 import it.polimi.ingsw.custom_exception.NotValidParameterException;
 
