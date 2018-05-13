@@ -21,7 +21,6 @@ public class MainClient {
             inputStream = new DataInputStream(socket.getInputStream());
             outputStream= new DataOutputStream(socket.getOutputStream());
             Scanner scanner = new Scanner(System.in);
-            BufferedReader tastiera;
             String message= inputStream.readUTF();
             System.out.println(message);
             int trials = 0;
@@ -35,14 +34,13 @@ public class MainClient {
                     }
                     scritto= scanner.nextLine();
                     outputStream.writeUTF(scritto);
-                    System.out.println("inviato: "+ scritto);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 result = inputStream.readUTF();
 
             }
-            while (result.equals("not available"));
+            while (result.equals("Not available, choose another username:"));
 
             System.out.println(result);
         }
