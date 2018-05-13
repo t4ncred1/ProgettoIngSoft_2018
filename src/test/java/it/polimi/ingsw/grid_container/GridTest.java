@@ -1,8 +1,8 @@
-package it.polimi.ingsw.gridContainer;
+package it.polimi.ingsw.grid_container;
 
 import it.polimi.ingsw.Die;
-import it.polimi.ingsw.customException.InvalidOperationException;
-import it.polimi.ingsw.customException.NotProperParameterException;
+import it.polimi.ingsw.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.custom_exception.NotValidParameterException;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -42,14 +42,14 @@ public class GridTest {
         int passedDifficulty=1;
 
         //Assert
-        Throwable exception = assertThrows(NotProperParameterException.class, () -> {
+        Throwable exception = assertThrows(NotValidParameterException.class, () -> {
             Grid testGrid = new Grid(passedDifficulty, passedName);
         });
         assertEquals("Parameter: 1. Expected: Difficulty should have a value between 3 and 6 (both included)",exception.getMessage());
     }
 
     @Test
-    public void validParameterPassed() throws NotProperParameterException{
+    public void validParameterPassed() throws NotValidParameterException {
         //Given
         String passedName="nomeGrid";
         int passedDifficulty=3;
@@ -75,7 +75,7 @@ public class GridTest {
     /*-**************************************************************************************************-*/
 
     @Test
-    public void nullConstraintPassed() throws NotProperParameterException {
+    public void nullConstraintPassed() throws NotValidParameterException {
 
         //Given
         String passedConstraint= null;
@@ -88,7 +88,7 @@ public class GridTest {
     }
 
     @Test
-    public void createIndexesOutOfBound() throws NotProperParameterException {
+    public void createIndexesOutOfBound() throws NotValidParameterException {
 
         //Given
         String passedConstraint = "red";
@@ -97,13 +97,13 @@ public class GridTest {
         Grid toTest=new Grid(3, "name");
 
         //Assert
-        Throwable exception = assertThrows(NotProperParameterException.class, () -> toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
+        Throwable exception = assertThrows(NotValidParameterException.class, () -> toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
         assertEquals("Parameter: (10,10). Expected: coordinates should be: 0<=x<=3 and 0<=y<=4", exception.getMessage());
 
     }
 
     @Test
-    public void boxAlreadyCreated() throws NotProperParameterException {
+    public void boxAlreadyCreated() throws NotValidParameterException {
 
         //Given
         String passedConstraint = "red";
@@ -113,12 +113,12 @@ public class GridTest {
         toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint); //box filled, can't create another one here
 
         //Assert
-        Throwable exception = assertThrows(NotProperParameterException.class, ()-> toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
+        Throwable exception = assertThrows(NotValidParameterException.class, ()-> toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
         assertEquals("Parameter: (0,0). Expected: other coordinates: in this place already exist a Box!", exception.getMessage());
     }
 
     @Test
-    public void invalidStringPassed() throws NotProperParameterException { //invalid color and invalid string are the same case
+    public void invalidStringPassed() throws NotValidParameterException { //invalid color and invalid string are the same case
 
 
         //Given
@@ -128,12 +128,12 @@ public class GridTest {
         Grid toTest = new Grid(3, "name");
 
         //Assert
-        Throwable exception = assertThrows(NotProperParameterException.class, () -> toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
+        Throwable exception = assertThrows(NotValidParameterException.class, () -> toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
         assertEquals("Parameter: invalidString. Expected: Color: red, yellow, green, blue, purple", exception.getMessage());
     }
 
     @Test
-    public void invalidValueConstraintPassed() throws NotProperParameterException {
+    public void invalidValueConstraintPassed() throws NotValidParameterException {
 
         //Given
         String passedConstraint = "10";
@@ -142,12 +142,12 @@ public class GridTest {
         Grid toTest=new Grid(3, "name");
 
         //Assert
-        Throwable exception = assertThrows(NotProperParameterException.class, ()->toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
+        Throwable exception = assertThrows(NotValidParameterException.class, ()->toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
         assertEquals("Parameter: 10. Expected: Value: 1, 2, 3, 4, 5, 6", exception.getMessage());
     }
 
     @Test
-    public void validValueConstraintPassed() throws NotProperParameterException{
+    public void validValueConstraintPassed() throws NotValidParameterException {
         //Given
         String passedConstraint = "5";
         int passedCoordinateX= 0;
@@ -156,12 +156,12 @@ public class GridTest {
         toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint);
 
         //Assert
-        Throwable exception = assertThrows(NotProperParameterException.class, () -> toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
+        Throwable exception = assertThrows(NotValidParameterException.class, () -> toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
         assertEquals("Parameter: (0,0). Expected: other coordinates: in this place already exist a Box!", exception.getMessage());
     }
 
     @Test
-    public void validColorConstraintPassed() throws NotProperParameterException{
+    public void validColorConstraintPassed() throws NotValidParameterException {
         //Given
         String passedConstraint = "red";
         int passedCoordinateX= 0;
@@ -170,12 +170,12 @@ public class GridTest {
         toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint);
 
         //Assert
-        Throwable exception = assertThrows(NotProperParameterException.class, () -> toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
+        Throwable exception = assertThrows(NotValidParameterException.class, () -> toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
         assertEquals("Parameter: (0,0). Expected: other coordinates: in this place already exist a Box!", exception.getMessage());
     }
 
     @Test
-    public void validNoneConstraintPassed() throws NotProperParameterException{
+    public void validNoneConstraintPassed() throws NotValidParameterException {
         //Given
         String passedConstraint = "none";
         int passedCoordinateX= 0;
@@ -186,12 +186,12 @@ public class GridTest {
         toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint);
 
         //Assert
-        Throwable exception = assertThrows(NotProperParameterException.class, () -> toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
+        Throwable exception = assertThrows(NotValidParameterException.class, () -> toTest.createBoxInXY(passedCoordinateX,passedCoordinateY,passedConstraint));
         assertEquals("Parameter: (0,0). Expected: other coordinates: in this place already exist a Box!", exception.getMessage());
     }
 
     @Test
-    public void checkBoxOpened() throws NotProperParameterException, InvalidOperationException {
+    public void checkBoxOpened() throws NotValidParameterException, InvalidOperationException {
         //Given
         String passedConstraint = "none";
         int passedCoordinateX1= 0;
@@ -215,7 +215,7 @@ public class GridTest {
     /*-**************************************************************************************************-*/
     //                         insertDieInXY(int x, int y, String constraint)
     /*-**************************************************************************************************-*/
-    public void nullDiePassed() throws NotProperParameterException {
+    public void nullDiePassed() throws NotValidParameterException {
 
         //Given
         int passedCoordinateX= 0;
@@ -228,7 +228,7 @@ public class GridTest {
         assertThrows(NullPointerException.class, () -> toTest.insertDieInXY(passedCoordinateX, passedCoordinateY,colorCheck,valueCheck, passedDie));
     }
 
-    public void insertIndexesOutOfBound() throws NotProperParameterException {
+    public void insertIndexesOutOfBound() throws NotValidParameterException {
 
         //Given
         int passedCoordinateX= 10;
@@ -239,11 +239,11 @@ public class GridTest {
         Grid toTest= new Grid(3, "name");
 
         //Assert
-        Throwable exception = assertThrows(NotProperParameterException.class, () -> toTest.insertDieInXY(passedCoordinateX, passedCoordinateY, colorCheck, valueCheck, passedDie));
+        Throwable exception = assertThrows(NotValidParameterException.class, () -> toTest.insertDieInXY(passedCoordinateX, passedCoordinateY, colorCheck, valueCheck, passedDie));
         assertEquals("Parameter: (10,10). Expected: coordinates should be: 0<=x<=3 and 0<=y<=4", exception.getMessage());
     }
 
-    public void gridNotInitialized() throws NotProperParameterException {
+    public void gridNotInitialized() throws NotValidParameterException {
 
 
         //Given
@@ -256,10 +256,10 @@ public class GridTest {
 
         //Assert
 
-        assertThrows(NotProperParameterException.class, () -> toTest.insertDieInXY(passedCoordinateX, passedCoordinateY,colorCheck,valueCheck, passedDie));
+        assertThrows(NotValidParameterException.class, () -> toTest.insertDieInXY(passedCoordinateX, passedCoordinateY,colorCheck,valueCheck, passedDie));
     }
 
-    public void tryToInsertDieReturnFalse() throws NotProperParameterException {
+    public void tryToInsertDieReturnFalse() throws NotValidParameterException {
 
         //Given
         int passedCoordinateX= 1;
@@ -275,7 +275,7 @@ public class GridTest {
 
     }
 
-    public void tryToInsertDieReturnTrue() throws NotProperParameterException, InvalidOperationException {
+    public void tryToInsertDieReturnTrue() throws NotValidParameterException, InvalidOperationException {
 
         //Given
         int passedCoordinateX= 0;

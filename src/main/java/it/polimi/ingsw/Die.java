@@ -1,21 +1,21 @@
 package it.polimi.ingsw;
-import it.polimi.ingsw.customException.NotProperParameterException;
+import it.polimi.ingsw.custom_exception.NotValidParameterException;
 
 public class Die {
 
     private int value;
     private String color;
 
-    public Die (String color, int value) throws NotProperParameterException{
-        final String expectedColor= new String("Color: red, yellow, green, blue, purple");
-        final String expectedValue= new String("Value: 1, 2, 3, 4, 5, 6");
+    public Die (String color, int value) throws NotValidParameterException {
+        final String expectedColor= "Color: red, yellow, green, blue, purple";
+        final String expectedValue= "Value: 1, 2, 3, 4, 5, 6";
 
         color=color.toLowerCase(); //NB
 
         if(!(color.equals("red")||color.equals("green")||color.equals("yellow")||color.equals("blue")||color.equals("purple")))
-            throw new NotProperParameterException(color,expectedColor);
+            throw new NotValidParameterException(color,expectedColor);
         else if(!(value>=1&&value<=6))
-            throw new NotProperParameterException(""+value,expectedValue);
+            throw new NotValidParameterException(""+value,expectedValue);
         else {
             this.color = color;
             this.value = value;
@@ -32,7 +32,7 @@ public class Die {
     }
 
     public void modifyDie(){
-
+        //TODO should be able to modify the die
     }
 }
 

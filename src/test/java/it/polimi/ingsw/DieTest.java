@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.customException.NotProperParameterException;
+import it.polimi.ingsw.custom_exception.NotValidParameterException;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,19 +13,19 @@ public class DieTest{
 //tests
     @Test
     public void dieValue(){
-        assertThrows(NotProperParameterException.class, () ->{
+        assertThrows(NotValidParameterException.class, () ->{
             Die test_die = new Die("green",10);
         });
     }
     @Test
-    public void dieColor() throws NotProperParameterException{
-        assertThrows(NotProperParameterException.class, ()-> {
+    public void dieColor() throws NotValidParameterException {
+        assertThrows(NotValidParameterException.class, ()-> {
             Die test_die = new Die("gray", 5);
         });
     }
 
     @Test
-    public void bothValidParameters() throws NotProperParameterException {
+    public void bothValidParameters() throws NotValidParameterException {
 
         //Given
         String passedColor= "red";
@@ -40,7 +40,7 @@ public class DieTest{
     }
 
     @Test
-    public void colorNotCapsSensitive() throws NotProperParameterException {
+    public void colorNotCapsSensitive() throws NotValidParameterException {
 
         //Given
         String passedColor= "RED";

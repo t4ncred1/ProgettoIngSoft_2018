@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.customException.NotProperParameterException;
+import it.polimi.ingsw.custom_exception.NotValidParameterException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
@@ -12,21 +12,21 @@ public class BoxTest {
 //Tests sui costruttori
     @Test
     public void boxPositions(){
-        assertThrows(NotProperParameterException.class,
+        assertThrows(NotValidParameterException.class,
                 () ->{
                 Box test_Box = new Box(9, 10);
                 });
     }
     @Test
     public void boxValue(){
-        assertThrows(NotProperParameterException.class,
+        assertThrows(NotValidParameterException.class,
                 () -> {
                     Box test_box = new Box(9, 0, 0);
                 });
     }
     @Test
     public void boxColor(){
-        assertThrows(NotProperParameterException.class,
+        assertThrows(NotValidParameterException.class,
                 () -> {
                     Box test_box = new Box("ciao",0,0);
                 });
@@ -36,10 +36,10 @@ public class BoxTest {
     @Test
     public void update_Test(){
 
-        assertThrows(NotProperParameterException.class,
+        assertThrows(NotValidParameterException.class,
                 () -> {
                     Box test_box = new Box(0,0);
-                    test_box.update(false, new DieToCostraintsAdapter(new Die("Red",4)), 9, 6);
+                    test_box.update(false, new DieToConstraintsAdapter(new Die("Red",4)), 9, 6);
                 });
 
     }
@@ -48,7 +48,7 @@ public class BoxTest {
     //                                       METODO tryToInsertDie
     /*----------------------------------------------------------------------------------------------------*/
     @Test
-    public void boxFilledByADie() throws NotProperParameterException{
+    public void boxFilledByADie() throws NotValidParameterException {
 
         //Given
         Box box= new Box(0,0);
@@ -63,7 +63,7 @@ public class BoxTest {
     }
 
     @Test
-    public void boxNotOpened() throws NotProperParameterException{
+    public void boxNotOpened() throws NotValidParameterException {
 
         //Given
         Box box= new Box(0,0);
@@ -79,7 +79,7 @@ public class BoxTest {
     }
 
     @Test
-    public void boxOpened() throws NotProperParameterException{
+    public void boxOpened() throws NotValidParameterException {
 
         //Given
         Box box= new Box(0,0);
@@ -99,7 +99,7 @@ public class BoxTest {
     }
 
     @Test
-    public void boxOpenedButColorConstraintsBlock() throws NotProperParameterException{
+    public void boxOpenedButColorConstraintsBlock() throws NotValidParameterException {
 
         //Given
         Box box= new Box(0,0);
@@ -120,7 +120,7 @@ public class BoxTest {
     }
 
     @Test
-    public void boxOpenedButColorConstraintsDontBlock() throws NotProperParameterException{
+    public void boxOpenedButColorConstraintsDontBlock() throws NotValidParameterException {
 
         //Same test as before, but unchecked color constraints
 
@@ -143,7 +143,7 @@ public class BoxTest {
     }
 
     @Test
-    public void boxOpenedButValueConstraintsBlock() throws NotProperParameterException{
+    public void boxOpenedButValueConstraintsBlock() throws NotValidParameterException {
 
         //Given
         Box box= new Box(0,0);
@@ -164,7 +164,7 @@ public class BoxTest {
     }
 
     @Test
-    public void boxOpenedButValueConstraintsDontBlock() throws NotProperParameterException{
+    public void boxOpenedButValueConstraintsDontBlock() throws NotValidParameterException {
 
         //Same test as before, but unchecked value constraints
 
@@ -191,7 +191,7 @@ public class BoxTest {
     /*----------------------------------------------------------------------------------------------------*/
 
     @Test
-    public void equalsColor() throws NotProperParameterException{
+    public void equalsColor() throws NotValidParameterException {
 
         //Given
         String dieColor = "red";
@@ -208,7 +208,7 @@ public class BoxTest {
     }
 
     @Test
-    public void differentColor() throws NotProperParameterException{
+    public void differentColor() throws NotValidParameterException {
 
         //Given
         String dieColor = "red";

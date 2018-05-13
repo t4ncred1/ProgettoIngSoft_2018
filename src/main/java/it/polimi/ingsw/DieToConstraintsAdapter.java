@@ -1,12 +1,12 @@
 package it.polimi.ingsw;
 
-public class DieToCostraintsAdapter implements DieCostraints {
+public class DieToConstraintsAdapter implements DieConstraints {
 
     private Die die;
     private int colorRestriction;
     private int valueRestriction;
 
-    public DieToCostraintsAdapter(Die die){
+    public DieToConstraintsAdapter(Die die){
         //assegno die
         this.die=die;
 
@@ -54,7 +54,7 @@ public class DieToCostraintsAdapter implements DieCostraints {
 
     @Override
     public void modifyDie(){
-        //TODO
+        //TODO modifier for die
     }
 
 }

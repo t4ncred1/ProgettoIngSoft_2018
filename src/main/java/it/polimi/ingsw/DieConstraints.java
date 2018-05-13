@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-public interface DieCostraints {
+public interface DieConstraints {
     public int getColorRestriction();
 
     public int getValueRestriction();
