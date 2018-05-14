@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.component_container;
 
 import it.polimi.ingsw.component_container.DicePool;
 import it.polimi.ingsw.custom_exception.NotInPoolException;
