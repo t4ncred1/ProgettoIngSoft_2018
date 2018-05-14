@@ -1,10 +1,10 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.component_container;
 import it.polimi.ingsw.custom_exception.LimitValueException;
 import it.polimi.ingsw.custom_exception.NotValidParameterException;
 
 import java.util.ArrayList;
 
-public class Box implements BoxObserver, BoxSubject{
+public class Box implements BoxObserver, BoxSubject {
 
 
     /*
@@ -30,10 +30,9 @@ public class Box implements BoxObserver, BoxSubject{
     private DieConstraints die;
     private int[] colorRestriction;
     private int[] valueRestriction;
-    //private boolean colorConstraint;
     private int constraintIndex;
     private int opened;
-    private ArrayList<BoxObserver> observerList;
+    private transient ArrayList<BoxObserver> observerList;
     private int coordX;
     private int coordY;
 
@@ -60,7 +59,6 @@ public class Box implements BoxObserver, BoxSubject{
 
         if(color.equals("red")||color.equals("green")||color.equals("yellow")||color.equals("blue")||color.equals("purple")){
             DieConstraints dieSample = new DieToConstraintsAdapter(new Die(color, 1));
-            //colorConstraint =true;
             constraintIndex = dieSample.getColorRestriction();
             for(int i=0; i<colorRestriction.length; i++)
                 if(i!= constraintIndex)colorRestriction[i]=1;
@@ -74,7 +72,6 @@ public class Box implements BoxObserver, BoxSubject{
 
         if(value>=1&&value<=6){
             DieConstraints dieSample = new DieToConstraintsAdapter(new Die("red", value)); //the color isn't important, so it was randomly chosen by the author
-            //colorConstraint =false;
             constraintIndex =dieSample.getValueRestriction();
             for(int i=0; i<valueRestriction.length; i++)
                 if(i!=constraintIndex)valueRestriction[i]=1;
@@ -82,6 +79,23 @@ public class Box implements BoxObserver, BoxSubject{
         else
             throw new NotValidParameterException(((Integer)value).toString(), expectedDataType); //hat to put a cast in order to make it an object
 
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder build = new StringBuilder("color Restriction: ");
+        for (int i : colorRestriction){
+            build.append(Integer.toString(i));
+            build.append("; ");
+        }
+        build.append("| value Restriction: ");
+        for (int j : valueRestriction){
+            build.append(Integer.toString(j));
+            build.append("; ");
+        }
+        build.append("| Open = "+Integer.toString(opened));
+        build.append(" | position = ("+Integer.toString(coordX)+","+Integer.toString(coordY)+")");
+        return build.toString();
     }
 
     //Observer

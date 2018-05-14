@@ -1,5 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.component_container;
 
+import it.polimi.ingsw.component_container.Die;
 import it.polimi.ingsw.custom_exception.NotValidParameterException;
 
 import org.junit.jupiter.api.Test;
