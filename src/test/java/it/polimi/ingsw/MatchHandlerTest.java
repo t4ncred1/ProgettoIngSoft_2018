@@ -7,9 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,7 +51,7 @@ public class MatchHandlerTest {
 //    }
 
 //    @Test
-//    public void usernameAlreadyExist() throws IOException, InterruptedException {
+//    public void usernameAlreadyExistAndTryANewValidUser() throws IOException, InterruptedException {
 //
 //        //Given
 //        new MatchHandlerTest();
@@ -76,15 +74,25 @@ public class MatchHandlerTest {
 //        //When username2= username1
 //        String username2 = username1;
 //        System.out.println(inputStream.readUTF());
-//        outputStream.writeUTF(username1);
+//        outputStream.writeUTF(username2);
 //        System.out.println("Sent: " + username2);
 //        String result = inputStream.readUTF();
 //        System.out.println(result);
 //
 //        //Assert
 //        assertEquals("Not available, choose another username:", result);
-//        assertEquals(1, matchHandler.notSincronizedConnectedPlayers());
+//        assertEquals(1, matchHandler.notSynchronizedConnectedPlayers());
 //
+//        //When username2 is valid.
+//        username2 = new String("ValidUsername");
+//        outputStream.writeUTF(username2);
+//        System.out.println("Sent: " + username2);
+//        result = inputStream.readUTF();
+//        System.out.println(result);
+//
+//        //Assert
+//        assertEquals("Connected", result);
+//        assertEquals(2, matchHandler.connectedPlayers());
 //
 //    }
 //
@@ -143,5 +151,52 @@ public class MatchHandlerTest {
 //
 //        assertEquals("Server is full, can't connect!", result);
 //        assertEquals(maximumMatchNumber*playerForMatch, matchHandler.connectedPlayers());
+//    }
+//    @Test
+//    public void playerDisconnectWithCountdownStartedAndAfterTimeoutAnotherPlayersConnect() throws IOException, InterruptedException {
+//        //Given
+//        new MatchHandlerTest();
+//        matchHandler.start();
+//        socketHandler.start();
+//        Thread.sleep(2000);
+//        //Connection from client 1
+//        socket= new Socket(InetAddress.getLocalHost(), 11000);
+//        this.inputStream = new DataInputStream(socket.getInputStream());
+//        this.outputStream= new DataOutputStream(socket.getOutputStream());
+//        String username1 = new String("PlayerName1");
+//        outputStream.writeUTF(username1);
+//        inputStream.readUTF();
+//        //Connection from client 2
+//        Socket socket2= new Socket(InetAddress.getLocalHost(), 11000);
+//        DataInputStream inputStream2= new DataInputStream(socket2.getInputStream());
+//        DataOutputStream outputStream2= new DataOutputStream(socket2.getOutputStream());
+//        String username2 = new String("PlayerName2");
+//        inputStream2.readUTF();
+//        outputStream2.writeUTF(username2);
+//        inputStream2.readUTF();
+//
+//
+//        //When
+//        Thread.sleep(2000);
+//        socket2.close();
+//        Thread.sleep(20000); //FIXME when timer is changed
+//
+//        //Assert
+//        assertEquals(1, matchHandler.connectedPlayers());
+//        //TODO quando verrà implementata la notifica di a player di "A game will start soon..." fare una assert che la registri.
+//
+//        //When
+//        socket2= new Socket(InetAddress.getLocalHost(), 11000);
+//        inputStream2= new DataInputStream(socket2.getInputStream());
+//        outputStream2= new DataOutputStream(socket2.getOutputStream());
+//        username2 = new String("PlayerName2");
+//        inputStream2.readUTF();
+//        outputStream2.writeUTF(username2);
+//        inputStream2.readUTF();
+//
+//        //Assert
+//        assertEquals(2, matchHandler.connectedPlayers());
+//        //TODO quando verrà implementata la notifica di a player di "Game started" fare una assert che la registri.
+//
 //    }
 }
