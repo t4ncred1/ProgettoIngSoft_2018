@@ -21,36 +21,36 @@ public class MatchHandlerTest {
     DataOutputStream outputStream;
     DataInputStream inputStream;
 
-    public MatchHandlerTest() throws IOException {
-        matchHandler= MatchHandler.getInstance();
-        socketHandler= SocketHandler.getInstance();
-    }
-
-
-    @Test
-    public void connectionAccepted() throws IOException, InterruptedException {
-        //Given
-        new MatchHandlerTest();
-        matchHandler.start();
-        socketHandler.start();
-        Thread.sleep(2000);
-        socket= new Socket(InetAddress.getLocalHost(), 11000);
-        this.inputStream = new DataInputStream(socket.getInputStream());
-        this.outputStream= new DataOutputStream(socket.getOutputStream());
-
-        //When
-        String username = new String("PlayerName1");
-        System.out.println(inputStream.readUTF());
-        outputStream.writeUTF(username);
-        System.out.println("Sent: " + username);
-        String result = inputStream.readUTF();
-        System.out.println(result);
-
-        //Assert
-        assertEquals("Connected", result);
-        assertEquals(1, matchHandler.connectedPlayers());
-
-    }
+//    public MatchHandlerTest() throws IOException {
+//        matchHandler= MatchHandler.getInstance();
+//        socketHandler= SocketHandler.getInstance();
+//    }
+//
+//
+//    @Test
+//    public void connectionAccepted() throws IOException, InterruptedException {
+//        //Given
+//        new MatchHandlerTest();
+//        matchHandler.start();
+//        socketHandler.start();
+//        Thread.sleep(2000);
+//        socket= new Socket(InetAddress.getLocalHost(), 11000);
+//        this.inputStream = new DataInputStream(socket.getInputStream());
+//        this.outputStream= new DataOutputStream(socket.getOutputStream());
+//
+//        //When
+//        String username = new String("PlayerName1");
+//        System.out.println(inputStream.readUTF());
+//        outputStream.writeUTF(username);
+//        System.out.println("Sent: " + username);
+//        String result = inputStream.readUTF();
+//        System.out.println(result);
+//
+//        //Assert
+//        assertEquals("Connected", result);
+//        assertEquals(1, matchHandler.connectedPlayers());
+//
+//    }
 
 //    @Test
 //    public void usernameAlreadyExist() throws IOException, InterruptedException {
