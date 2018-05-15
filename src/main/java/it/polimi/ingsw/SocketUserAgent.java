@@ -3,6 +3,8 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.custom_exception.DisconnectionException;
 import it.polimi.ingsw.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.custom_exception.InvalidUsernameException;
+import it.polimi.ingsw.custom_exception.ReconnectionException;
 
 import java.io.*;
 import java.net.Socket;
@@ -86,27 +88,20 @@ public class SocketUserAgent extends Thread implements ClientInterface{
         }
     }
 
-    public void arrangeForUsername() throws InvalidOperationException, DisconnectionException {
-
+    public void arrangeForUsername(int trial) throws InvalidOperationException, DisconnectionException, ReconnectionException, InvalidUsernameException {
         boolean result;
         final String notAvailableMessage = new String("Not available, choose another username:");
-        int trials = 0;
-        do
-        {
-            trials++;
-            try {
-                if(trials>1) outputStream.writeUTF(notAvailableMessage);
-                username= inputStream.readUTF();
-                System.out.println("received: " + username);
-            } catch (IOException e) {
-                throw new DisconnectionException();
-            }
-            result = MatchHandler.getInstance().requestUsername(username);
+
+        try {
+            if(trial>1) outputStream.writeUTF(notAvailableMessage);
+            username= inputStream.readUTF();
+            System.out.println("received: " + username);
+        } catch (IOException e) {
+            throw new DisconnectionException();
         }
-        while (!result);
+        MatchHandler.getInstance().requestUsername(username);
+
         System.out.println(username);
-        this.username=username;
-        MatchHandler.getInstance().tryToConnect(username);
     }
 
 

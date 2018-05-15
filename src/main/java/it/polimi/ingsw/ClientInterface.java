@@ -3,6 +3,8 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.custom_exception.DisconnectionException;
 import it.polimi.ingsw.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.custom_exception.InvalidUsernameException;
+import it.polimi.ingsw.custom_exception.ReconnectionException;
 
 public interface ClientInterface {
     boolean isConnected();
@@ -11,5 +13,6 @@ public interface ClientInterface {
 
     String getUsername();
 
-    void arrangeForUsername() throws InvalidOperationException, DisconnectionException;
+    void arrangeForUsername(int trial) throws InvalidOperationException, DisconnectionException, ReconnectionException, InvalidUsernameException;
+    /*InvalidOperationException--> server full*/
 }
