@@ -2,7 +2,7 @@ package it.polimi.ingsw.card_container;
 import it.polimi.ingsw.Player;
 import it.polimi.ingsw.custom_exception.NotValidParameterException;
 
-public class PrivateObjective implements Objective {
+public class PrivateObjective extends Objective {
     private String color;
     private final static String TYPE = "private";
 
