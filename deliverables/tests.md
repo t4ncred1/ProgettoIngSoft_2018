@@ -3,52 +3,52 @@
 
 ## **Box** class tests
 
-* boxPositions 				√
-* boxValue				√
-* boxColor				√
-* updateTest				√
-* boxFilledByADie			√
-* boxNotOpened				√
-* boxOpened				√
-* boxOpenedButColorCOnstraintsBlock	√
-* boxOpenedButColorConstraintsDontBlock	√
-* boxOpenedButValueCOnstraintsBlock	√
-* boxOpenedButValueConstraintsDontBlock	√
-* equalsColor				√
-* differentColor			√
+- [x] boxPositions
+- [x] boxValue				  
+- [x] boxColor				  
+- [x] updateTest				
+- [x] boxFilledByADie			
+- [x] boxNotOpened				
+- [x] boxOpened
+- [x] boxOpenedButColorCOnstraintsBlock	
+- [x] boxOpenedButColorConstraintsDontBlock	
+- [x] boxOpenedButValueCOnstraintsBlock	
+- [x] boxOpenedButValueConstraintsDontBlock	
+- [x] equalsColor				
+- [x] differentColor			
 
 ## **DicePool** class tests
 
-* checkPoolSize				√
-* checkDieToRemove			√
+- [x] checkPoolSize				
+- [x] checkDieToRemove			
 
 ## **Die** class tests
 
-* dieValue				√
-* dieColor				√
-* bothValidParameters			√
-* colorNotCapsSensitive			√
+- [x] dieValue				
+- [x] dieColor				
+- [x] bothValidParameters			
+- [x] colorNotCapsSensitive			
 
 ## **Grid** class tests
 
-* nullStringPassed			√
-* invalidDifficultyPassed		√
-* validParameterPassed			√
-* nullConstraintPassed			√
-* createIndexesOutOfBound               √
-* boxAlreadyCreated                     √
-* invalidStringPassed                   √
-* invalidValueConstraintPassed          √
-* validValueConstraintPassed            √
-* validColorConstraintPassed            √
-* validNoneConstraintPassed             √
-* checkBoxOpened                        √
-* nullDiePassed                         √
-* insertIndexesOutOfBound               √
-* gridNotInitialized                    √
-* tryToInsertDieReturnFalse             √
-* tryToInsertDieReturnTrue              √
+- [x] nullStringPassed			
+- [x] invalidDifficultyPassed		
+- [x] validParameterPassed			
+- [x] nullConstraintPassed			
+- [x] createIndexesOutOfBound               
+- [x] boxAlreadyCreated                    
+- [x] invalidStringPassed                   
+- [x] invalidValueConstraintPassed          
+- [x] validValueConstraintPassed            
+- [x] validColorConstraintPassed            
+- [x] validNoneConstraintPassed             
+- [x] checkBoxOpened                        
+- [x] nullDiePassed                         
+- [x] insertIndexesOutOfBound               
+- [x] gridNotInitialized                    
+- [x] tryToInsertDieReturnFalse             
+- [x] tryToInsertDieReturnTrue              
 
 ## **PrivateObjective** class tests
 
-* checkColor				√
+- [x] checkColor				
