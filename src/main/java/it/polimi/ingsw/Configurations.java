@@ -1,8 +1,13 @@
 package it.polimi.ingsw;
 
-public class Configurations {
+class Configurations {
     private String gridsPath;
-    public String getGridsPath(){
+    private String publicObjectivesPath;
+    String getGridsPath(){
         return gridsPath;
+    }
+
+    String getPublicObjectivesPath() {
+        return publicObjectivesPath;
     }
 }

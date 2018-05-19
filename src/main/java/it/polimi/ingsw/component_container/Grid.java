@@ -97,4 +97,13 @@ public class Grid {
         else
             gameGrid[x][y].insertDie(die);
     }
+    public Box[][] getGrid(){
+        return gameGrid.clone();
+    }
+    public int getColumnNumber(){
+        return COLUMN_NUMBER;
+    }
+    public int getRowNumber(){
+        return ROW_NUMBER;
+    }
 }
