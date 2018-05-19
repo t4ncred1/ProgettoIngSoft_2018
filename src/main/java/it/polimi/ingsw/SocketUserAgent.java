@@ -37,7 +37,7 @@ public class SocketUserAgent extends Thread implements ClientInterface{
             MatchHandler.login(this);
             System.out.println("Connection protocol ended. Connected");
             try {
-                outputStream.writeUTF("Connected");
+                outputStream.writeUTF("logged");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -45,7 +45,7 @@ public class SocketUserAgent extends Thread implements ClientInterface{
             System.out.println("Connection protocol ended. Server is full");
             e.printStackTrace();
             try {
-                outputStream.writeUTF("Server is full, can't connect!");
+                outputStream.writeUTF("notLogged_server_full");
             } catch (IOException e2) {
                 e2.printStackTrace();
             }
@@ -55,6 +55,7 @@ public class SocketUserAgent extends Thread implements ClientInterface{
             e.printStackTrace();
             return;
         }
+
     }
 
     @Override
@@ -80,7 +81,7 @@ public class SocketUserAgent extends Thread implements ClientInterface{
     //-----------------------------------------------------------------------------
     @Override
     public void chooseUsername() throws DisconnectionException {
-        final String chooseUsername = new String("Chose a username: ");
+        final String chooseUsername = new String("login");
         try {
             outputStream.writeUTF(chooseUsername);
         } catch (IOException e) {
@@ -88,13 +89,13 @@ public class SocketUserAgent extends Thread implements ClientInterface{
         }
     }
 
+    @Override
     public void arrangeForUsername(int trial) throws InvalidOperationException, DisconnectionException, ReconnectionException, InvalidUsernameException {
-        boolean result;
-        final String notAvailableMessage = new String("Not available, choose another username:");
+        final String notAvailableMessage = new String("notLogged_username_not_available");
 
         try {
             if(trial>1) outputStream.writeUTF(notAvailableMessage);
-            username= inputStream.readUTF();
+            username= inputStream.readLine();
             System.out.println("received: " + username);
         } catch (IOException e) {
             throw new DisconnectionException();

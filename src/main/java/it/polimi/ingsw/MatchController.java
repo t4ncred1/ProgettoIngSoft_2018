@@ -6,11 +6,13 @@ import java.util.Iterator;
 public class MatchController extends Thread{
     private ArrayList<ClientInterface> playersInMatch;
     private boolean gameStarted;
+    private boolean gameStartingSoon;
 
     public MatchController(){
         this.playersInMatch= new ArrayList<ClientInterface>();
     }
 
+    @Override
     public void run(){
         while(!gameStarted){
             updateQueue();
@@ -39,6 +41,7 @@ public class MatchController extends Thread{
                     MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(i), this.gameStarted);
                 }
             }
+            if(playersInMatch.size()>1&&!this.gameStartingSoon) MatchHandler.notifyMatchCanStart();
         }
     }
 
@@ -47,4 +50,15 @@ public class MatchController extends Thread{
             playersInMatch.add(client);
         }
     }
+
+    //state Observer
+    public boolean isGameStartingSoon() {
+        return gameStarted;
+    }
+
+    //state modifier
+    public void setGameStartingSoon(boolean gameStartingSoon) {
+        this.gameStartingSoon = gameStartingSoon;
+    }
+
 }

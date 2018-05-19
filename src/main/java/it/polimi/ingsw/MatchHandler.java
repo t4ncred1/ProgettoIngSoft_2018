@@ -45,6 +45,12 @@ public class MatchHandler extends Thread {
         return instance;
     }
 
+    public static void notifyMatchCanStart() {
+        lock.lock();
+        condition.signal();
+        lock.unlock();
+    }
+
 
     //Observer
     public int connectedPlayers(){
@@ -77,7 +83,6 @@ public class MatchHandler extends Thread {
         while (true) {
             boolean ok;
             startingMatch = new MatchController();
-            startingMatch.start();
             do{
                 ok= setUpPhase();
             }while (!ok);
@@ -121,6 +126,7 @@ public class MatchHandler extends Thread {
 
     //@requires timeout=true (*at first execution*);
     private boolean startGameCountdown() {
+        final boolean setGameStartingSoon= true;
         lock.lock();
         try {
             if(instance.timeout){
@@ -134,6 +140,7 @@ public class MatchHandler extends Thread {
             System.out.println("Resumed. Timeout: "+instance.timeout);
             synchronized (startingMatchGuard) {
                 synchronized (startedMatches) {
+                    if(!startingMatch.isGameStartingSoon())startingMatch.setGameStartingSoon(setGameStartingSoon);
                     if (startingMatch.playerIngame() == 4) {
                         startedMatches.add(startingMatch);
                         startingMatch = null;
@@ -215,6 +222,8 @@ public class MatchHandler extends Thread {
                     }
                     throw new InvalidOperationException();
                 }
+                else
+                    startingMatch.updateQueue();
                 for (ClientInterface cl : connectedPlayers) {
                     if (cl.getUsername().equals(username)) {
                         throw new InvalidUsernameException();
@@ -227,12 +236,11 @@ public class MatchHandler extends Thread {
 
     //this method should be invoked when the lock on "connectedPlayers" is already acquired
     public void notifyAboutDisconnection(ClientInterface client, boolean gameStarted) {
-        synchronized (connectedPlayers) {
-            if (gameStarted) {
-                //TODO handle this case.
-            } else {
-                connectedPlayers.remove(client);
-            }
+        if(gameStarted){
+            //TODO handle this case.
+        }
+        else {
+            connectedPlayers.remove(client);
         }
     }
 }
