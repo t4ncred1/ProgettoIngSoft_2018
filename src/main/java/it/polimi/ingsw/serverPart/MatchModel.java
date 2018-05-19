@@ -2,7 +2,6 @@ package it.polimi.ingsw.serverPart;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.Configurations;
 import it.polimi.ingsw.serverPart.card_container.PublicObjective;
 import it.polimi.ingsw.serverPart.component_container.Grid;
 
