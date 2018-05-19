@@ -42,7 +42,7 @@ public class PublicObjective extends Objective{
     }
     @Override
     public int calculatePoints(Grid grid) {
-        //TODO create all the various point cases
+
         return 0;
     }
     public boolean isObjectiveOk(){

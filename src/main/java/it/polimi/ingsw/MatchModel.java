@@ -17,7 +17,7 @@ public class MatchModel{
 
         Configurations config = new Gson().fromJson(new FileReader(CONFIG_PATH), Configurations.class);
         this.lookForGrids(config.getGridsPath());
-        this.lookForPublicObjectives(config.getPublicObjectivesPath());
+        //this.lookForPublicObjectives(config.getPublicObjectivesPath());
     }
 
     private void lookForGrids(String path) throws FileNotFoundException{
@@ -27,7 +27,7 @@ public class MatchModel{
         grids = gson.fromJson(new FileReader(path), listType.getType());
         for(Grid i : grids){
             //TODO initialize grids
-                System.out.println(i.getName() + "\n");
+                System.out.println(i.toString() + "\n");
         }
 
     }
