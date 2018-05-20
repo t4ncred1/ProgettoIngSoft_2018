@@ -3,9 +3,9 @@ package it.polimi.ingsw.clientPart;
 
 //import javafx.application.Application;
 
-import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+//import javafx.scene.Scene;
+//import javafx.scene.layout.GridPane;
+//import javafx.stage.Stage;
 
 import java.util.Scanner;
 
