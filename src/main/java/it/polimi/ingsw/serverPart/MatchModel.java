@@ -13,10 +13,7 @@ public class MatchModel{
 
     private static final String CONFIG_PATH = "configurations/config.json";
 
-    public MatchModel() throws FileNotFoundException{
-
-        Configurations config = new Gson().fromJson(new FileReader(CONFIG_PATH), Configurations.class);
-        this.lookForGrids(config.getGridsPath());
+    public MatchModel(){
         //this.lookForPublicObjectives(config.getPublicObjectivesPath());
     }
 

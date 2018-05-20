@@ -18,8 +18,8 @@ public class RmiHandler implements ServerRemoteInterface{
     }
 
     @Override
-    public void login(ClientRemoteInterface client) {
-        System.out.println("Connection received from RMI system");
+    public void login(ClientRemoteInterface client) throws InvalidOperationException {
+        System.out.println("Connection request received on RMI system");
         try {
             MatchHandler.login(new ClientRemoteInterfaceAdapter(client));
         }
@@ -30,6 +30,7 @@ public class RmiHandler implements ServerRemoteInterface{
         catch (InvalidOperationException e) {
             System.out.println("Connection protocol ended. Server is full");
             e.printStackTrace();
+            throw new InvalidOperationException();
         }
     }
 }

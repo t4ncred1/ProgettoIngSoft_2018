@@ -34,7 +34,13 @@ public class SocketUserAgent extends Thread implements ClientInterface {
 
     @Override
     public void run(){
-        System.out.println("Connection request received");
+        System.out.println("Connection request received on Socket system");
+        try {
+            String hello= new String();
+            while(!hello.equals("Hello")) hello= inputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         try {
             MatchHandler.login(this);
             System.out.println("Connection protocol ended. Connected");
@@ -97,14 +103,12 @@ public class SocketUserAgent extends Thread implements ClientInterface {
 
         try {
             if(trial>1) outputStream.writeUTF(notAvailableMessage);
-            username= inputStream.readLine();
+            username= inputStream.readUTF();
             System.out.println("received: " + username);
         } catch (IOException e) {
             throw new DisconnectionException();
         }
         MatchHandler.getInstance().requestUsername(username);
-
-        System.out.println(username);
     }
 
 
