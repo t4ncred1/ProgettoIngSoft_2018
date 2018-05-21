@@ -28,10 +28,7 @@ public class MatchModel{
         grids = gson.fromJson(new FileReader(path), listType.getType());
         for(Grid i : grids){
             //TODO initialize grids with box observers
-//          System.out.println(i.toString() + "\n");
         }
-
-
     }
 
     private void lookForPublicObjectives(String path) throws FileNotFoundException {
@@ -42,8 +39,6 @@ public class MatchModel{
         publicObjectives = gson.fromJson(new FileReader(path), listType.getType());
         for (PublicObjective i : publicObjectives) {
             //TODO pass public obj to who's on duty
-
-//            System.out.println(i.toString() + "\n");
         }
     }
 }

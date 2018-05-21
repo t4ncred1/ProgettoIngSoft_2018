@@ -23,7 +23,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
     @Override
     public String requestAUsername(int trial) throws RemoteException {
         Scanner scanner= new Scanner(System.in);
-        if(trial>1) System.err.println("Username invalid, please select another one: ");
+        if(trial>1) System.err.println("This username already exist or it's invalid. Please choose another one:");
         String username = scanner.nextLine();
         return username;
     }
