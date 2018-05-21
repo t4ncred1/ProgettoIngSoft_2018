@@ -19,6 +19,7 @@ public class Grid {
         this.difficulty= difficulty;
         this.name=name;
     }
+
     @Override
     public String toString(){
         StringBuilder build = new StringBuilder("nome: ");
@@ -31,12 +32,12 @@ public class Grid {
         for(Box[] i : gameGrid){
             k++;
             n=0;
-            build.append(" riga ");
+            build.append(" colonna ");
             build.append(Integer.toString(k));
             build.append(":\n");
             for(Box j : i){
                 n++;
-                build.append("\t colonna ");
+                build.append("\t riga ");
                 build.append(Integer.toString(n));
                 build.append(": \n");
                 build.append("\t\t");
@@ -85,6 +86,7 @@ public class Grid {
     }
 
 
+
     public void insertDieInXY(int x, int y, boolean colorCheck, boolean valueCheck, Die die) throws NotValidParameterException, InvalidOperationException {
         final String indexOutOfBound = "coordinates should be: 0<=x<=3 and 0<=y<=4";
 
@@ -100,9 +102,11 @@ public class Grid {
     public Box[][] getGrid(){
         return gameGrid.clone();
     }
+
     public int getColumnNumber(){
         return COLUMN_NUMBER;
     }
+
     public int getRowNumber(){
         return ROW_NUMBER;
     }

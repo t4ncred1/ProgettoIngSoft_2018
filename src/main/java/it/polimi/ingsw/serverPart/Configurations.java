@@ -1,13 +1,14 @@
 package it.polimi.ingsw.serverPart;
 
-class Configurations {
+class Configurations implements MatchConfigurationsInterface{
     private String gridsPath;
     private String publicObjectivesPath;
-    String getGridsPath(){
+
+    public String getGridsPath(){
         return gridsPath;
     }
 
-    String getPublicObjectivesPath() {
+    public String getPublicObjectivesPath() {
         return publicObjectivesPath;
     }
 }
