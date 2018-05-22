@@ -80,7 +80,7 @@ public class PublicObjective extends Objective{
         if (on_rows&&on_columns){
             if (!on_colors) throw new NotValidParameterException("Public Objective card: "+title, "on_colors should be true when both on_rows and on_columns are active");
             for (Box[] i : actual_grid){
-                //TODO Do the diagonal calulation case.
+                //TODO Do the diagonal calulation case. this will be difficult.
             }
         }
         return return_value;
