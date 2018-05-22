@@ -26,6 +26,13 @@ public class MatchController extends Thread{
                 e.printStackTrace();
             }
         }
+
+        System.err.println("Exit.");
+
+
+
+        //TODO handle the game logic from now on.
+
     }
 
 
@@ -41,7 +48,9 @@ public class MatchController extends Thread{
             for (int i=0; i<playersInMatch.size();i++) {
                 if(!playersInMatch.get(i).isConnected()){
                     //in this instruction player is removed both from playersInMatch and connectedPlayers
+                    System.err.println("-------------------------------------------");
                     MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(i), this.gameStarted);
+                    System.err.println("-------------------------------------------");
                 }
             }
             if(playersInMatch.size()>1&&!this.gameStartingSoon) MatchHandler.notifyMatchCanStart();

@@ -187,10 +187,7 @@ public class MatchHandler extends Thread {
         do {
             try {
                 trial++;
-                synchronized (connectedPlayers) {
-                    client.arrangeForUsername(trial);
-                    connectedPlayers.add(client);
-                }
+                client.arrangeForUsername(trial);
                 lock.lock();
                 synchronized (startingMatchGuard) {
                     startingMatch.insert(client);
@@ -213,11 +210,11 @@ public class MatchHandler extends Thread {
         System.out.println("Player inserted");
     }
 
-    public void requestUsername(String username) throws InvalidOperationException, ReconnectionException, InvalidUsernameException {
+    public void requestUsername(String username, UserInterface client) throws InvalidOperationException, ReconnectionException, InvalidUsernameException {
         if(username.equals("")) throw new InvalidUsernameException();
         synchronized (startingMatchGuard) {
             synchronized (disconnectedInGamePlayers) {
-                if (startingMatch==null) {
+                if (startingMatch == null) {
                     //FIXME, disconnected list won't probably be an ArrayList of ClientInterfaces
                     for (UserInterface cl : disconnectedInGamePlayers) {
                         if (cl.getUsername() == username) {
@@ -228,11 +225,15 @@ public class MatchHandler extends Thread {
                 }
                 else
                     startingMatch.updateQueue();
+            }
+
+            synchronized (connectedPlayers) {
                 for (UserInterface cl : connectedPlayers) {
                     if (cl.getUsername().equals(username)) {
                         throw new InvalidUsernameException();
                     }
                 }
+                connectedPlayers.add(client);
             }
         }
 
@@ -240,6 +241,7 @@ public class MatchHandler extends Thread {
 
     //this method should be invoked when the lock on "connectedPlayers" is already acquired
     public void notifyAboutDisconnection(UserInterface client, boolean gameStarted) {
+        System.err.println("Client removed");
         if(gameStarted){
             //TODO handle this case.
         }
@@ -263,7 +265,7 @@ public class MatchHandler extends Thread {
         synchronized (connectedPlayers){
             connectedPlayers.remove(client);
         }
-
+        System.out.println(client.getUsername() + " disconnected.");
 
     }
 }

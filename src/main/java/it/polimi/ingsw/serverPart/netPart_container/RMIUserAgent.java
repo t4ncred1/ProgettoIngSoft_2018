@@ -56,7 +56,7 @@ public class RMIUserAgent implements UserInterface {
         } catch (RemoteException e) {
             throw new DisconnectionException();
         }
-        MatchHandler.getInstance().requestUsername(username);
+        MatchHandler.getInstance().requestUsername(username,this);
     }
 
     @Override

@@ -94,7 +94,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             return true;
         }
         catch (IOException e){
-            System.out.println("Disconnected");
+            System.err.println("A player disconnected");
             return false;
         }
     }
@@ -129,7 +129,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         } catch (IOException e) {
             throw new DisconnectionException();
         }
-        MatchHandler.getInstance().requestUsername(username);
+        MatchHandler.getInstance().requestUsername(username,this);
     }
 
     @Override
