@@ -1,11 +1,10 @@
 package it.polimi.ingsw.serverPart;
 
 import com.google.gson.Gson;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-public class Configurations {
+public class Configurations implements MatchConfigurationsInterface{
 
     private static Configurations instance;
     private static final String CONFIG_PATH="";
@@ -25,11 +24,11 @@ public class Configurations {
         return instance;
     }
 
-    String getGridsPath(){
+    public String getGridsPath(){
         return gridsPath;
     }
 
-    String getPublicObjectivesPath() {
+    public String getPublicObjectivesPath() {
         return publicObjectivesPath;
     }
 }

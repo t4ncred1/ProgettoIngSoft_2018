@@ -107,6 +107,9 @@ public class Box implements BoxObserver, BoxSubject {
         return coordY;
     }
 
+    public DieConstraints getDie() {
+        return die;
+    }
 
     public boolean areObserversNotInitialized() {
         return observerList.isEmpty();
