@@ -9,12 +9,13 @@ import it.polimi.ingsw.serverPart.custom_exception.ReconnectionException;
 
 import java.rmi.RemoteException;
 
-public class ClientRemoteInterfaceAdapter implements ClientInterface {
+public class RMIUserAgent implements UserInterface {
 
-    ClientRemoteInterface clientHandled;
-    String username;
+    private ClientRemoteInterface clientHandled;
+    private String username;
+    private int gameCode;
 
-    public ClientRemoteInterfaceAdapter(ClientRemoteInterface clientToHandle){
+    public RMIUserAgent(ClientRemoteInterface clientToHandle){
         clientHandled=clientToHandle;
     }
 
@@ -26,7 +27,7 @@ public class ClientRemoteInterfaceAdapter implements ClientInterface {
             ok=true;
         }
         catch (RemoteException e){
-            e.printStackTrace();
+            System.err.println("A player disconnected");
         }
         return ok;
     }
@@ -56,5 +57,48 @@ public class ClientRemoteInterfaceAdapter implements ClientInterface {
             throw new DisconnectionException();
         }
         MatchHandler.getInstance().requestUsername(username);
+    }
+
+    @Override
+    public void setGameCode(int i) {
+        this.gameCode=i;
+    }
+
+    @Override
+    public int getGameCode() {
+        return this.gameCode;
+    }
+
+    @Override
+    public void notifyStarting() throws DisconnectionException {
+        try {
+            clientHandled.notifyGameStarting();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            throw new DisconnectionException();
+        }
+    }
+
+    @Override
+    public void notifyStart() throws DisconnectionException {
+        try {
+            clientHandled.notifyStartedGame();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            throw new DisconnectionException();
+        }
+    }
+
+    @Override
+    public boolean equals(Object o){
+        RMIUserAgent UA;
+        if(this.getClass()==o.getClass())
+            UA= (RMIUserAgent) o;
+        else
+            return false;
+        if(UA.clientHandled.equals(this.clientHandled))
+            return true;
+        else
+            return false;
     }
 }

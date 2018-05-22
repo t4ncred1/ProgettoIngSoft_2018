@@ -1,16 +1,18 @@
 package it.polimi.ingsw.serverPart;
 
-import it.polimi.ingsw.serverPart.netPart_container.ClientInterface;
+import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
+import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.serverPart.netPart_container.UserInterface;
 
 import java.util.ArrayList;
 
 public class MatchController extends Thread{
-    private ArrayList<ClientInterface> playersInMatch;
+    private ArrayList<UserInterface> playersInMatch;
     private boolean gameStarted;
     private boolean gameStartingSoon;
 
     public MatchController(){
-        this.playersInMatch= new ArrayList<ClientInterface>();
+        this.playersInMatch= new ArrayList<UserInterface>();
     }
 
     @Override
@@ -46,7 +48,7 @@ public class MatchController extends Thread{
         }
     }
 
-    public void insert(ClientInterface client) {
+    public void insert(UserInterface client) {
         synchronized (playersInMatch) {
             playersInMatch.add(client);
         }
@@ -58,8 +60,56 @@ public class MatchController extends Thread{
     }
 
     //state modifier
-    public void setGameStartingSoon(boolean gameStartingSoon) {
-        this.gameStartingSoon = gameStartingSoon;
+    public void setGameStartingSoon() {
+        final boolean startingSoonState =true;
+        this.gameStartingSoon = startingSoonState;
+        this.notifyStartingSoonToPlayers();
     }
 
+    public void remove(UserInterface client) throws InvalidOperationException {
+        if(gameStartingSoon) throw new InvalidOperationException();
+        else {
+            synchronized (playersInMatch) {
+                playersInMatch.remove(client);
+                MatchHandler.getInstance().notifyAboutDisconnection(client, this.gameStarted);
+            }
+        }
+    }
+
+
+    private void notifyStartingSoonToPlayers() {
+        synchronized (playersInMatch){
+            for(int i=0; i<playersInMatch.size();i++){
+                try {
+                    playersInMatch.get(i).notifyStarting();
+                } catch (DisconnectionException e) {
+                    MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(i), this.gameStarted);
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void notifyStartToPlayers() {
+        synchronized (playersInMatch){
+            for(UserInterface cl: playersInMatch){
+                try {
+                    cl.notifyStart();
+                } catch (DisconnectionException e) {
+                    //FIXME if necessary
+                    MatchHandler.getInstance().notifyAboutDisconnection(cl, this.gameStarted);
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void setGameToStarted() {
+        final boolean gameStartedStatus =true;
+        final boolean gameIsNotStartingAnymore = false;
+
+        this.gameStartingSoon=gameIsNotStartingAnymore;
+        this.gameStarted=gameStartedStatus;
+        this.notifyStartToPlayers();
+    }
 }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.serverPart.netPart_container;
 
-
 import it.polimi.ingsw.serverPart.MatchController;
 import it.polimi.ingsw.serverPart.MatchHandler;
 import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
@@ -11,12 +10,13 @@ import it.polimi.ingsw.serverPart.custom_exception.ReconnectionException;
 import java.io.*;
 import java.net.Socket;
 
-public class SocketUserAgent extends Thread implements ClientInterface {
+public class SocketUserAgent extends Thread implements UserInterface {
 
     private Socket socket;
-    private MatchController currentMatch;
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
+    private int gameCode;
+    private boolean inGame;
 
     private String username;
 
@@ -41,6 +41,8 @@ public class SocketUserAgent extends Thread implements ClientInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
         try {
             MatchHandler.login(this);
             System.out.println("Connection protocol ended. Connected");
@@ -62,6 +64,25 @@ public class SocketUserAgent extends Thread implements ClientInterface {
             System.out.println("Connection protocol ended. Client disconnected.");
             e.printStackTrace();
             return;
+        }
+
+        while(!inGame){
+            try {
+                if(inputStream.available()>0){
+                    String read= inputStream.readUTF();
+                    if(read.equals("try_logout"))
+                        try {
+                            MatchHandler.getInstance().logOut(this);
+                            outputStream.writeUTF("logged_out");
+                        }
+                        catch (InvalidOperationException e){
+                            outputStream.writeUTF("game_is_starting");
+                        }
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -111,7 +132,34 @@ public class SocketUserAgent extends Thread implements ClientInterface {
         MatchHandler.getInstance().requestUsername(username);
     }
 
+    @Override
+    public void setGameCode(int i) {
+        this.gameCode=i;
+    }
 
+    @Override
+    public int getGameCode(){
+        return this.gameCode;
+    }
 
+    @Override
+    public void notifyStarting() throws DisconnectionException {
+        try {
+            outputStream.writeUTF("launching_game");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new DisconnectionException();
+        }
+    }
+
+    @Override
+    public void notifyStart() throws DisconnectionException {
+        try {
+            outputStream.writeUTF("game_started");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new DisconnectionException();
+        }
+    }
 
 }

@@ -26,6 +26,7 @@ public class App
         SocketHandler.getInstance().start();
         try {
             RmiHandler handler = new RmiHandler();
+            handler.start();
             ServerRemoteInterface stub = (ServerRemoteInterface) UnicastRemoteObject.exportObject(handler, handler.getPort());
             Registry registry = LocateRegistry.createRegistry(handler.getPort());
             registry.bind("MatchHandler", stub);

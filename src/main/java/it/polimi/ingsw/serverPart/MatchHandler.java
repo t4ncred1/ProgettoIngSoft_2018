@@ -5,7 +5,7 @@ import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.serverPart.custom_exception.ReconnectionException;
-import it.polimi.ingsw.serverPart.netPart_container.ClientInterface;
+import it.polimi.ingsw.serverPart.netPart_container.UserInterface;
 
 import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
@@ -16,8 +16,8 @@ public class MatchHandler extends Thread {
 
     private static MatchHandler instance;
 
-    private static ArrayList<ClientInterface> connectedPlayers;
-    private static ArrayList<ClientInterface> disconnectedInGamePlayers;
+    private static ArrayList<UserInterface> connectedPlayers;
+    private static ArrayList<UserInterface> disconnectedInGamePlayers;
     private static MatchController startingMatch;
     private final static Object startingMatchGuard= new Object();
     private static Lock lock;
@@ -32,11 +32,11 @@ public class MatchHandler extends Thread {
     private static long currentGame=0;
 
     private MatchHandler(){
-        connectedPlayers= new ArrayList<ClientInterface>();
+        connectedPlayers= new ArrayList<UserInterface>();
         lock= new ReentrantLock();
         condition= lock.newCondition();
         startedMatches= new ArrayList<MatchController>();
-        disconnectedInGamePlayers= new ArrayList<ClientInterface>();
+        disconnectedInGamePlayers= new ArrayList<UserInterface>();
         timeout=true;
     }
 
@@ -127,12 +127,13 @@ public class MatchHandler extends Thread {
 
     //@requires timeout=true (*at first execution*);
     private boolean startGameCountdown() {
-        final boolean setGameStartingSoon= true;
         lock.lock();
         try {
             if(instance.timeout){
                 System.out.println("A game will start soon...");
-                //TODO notify players that a game will start soon
+                synchronized (startingMatch){
+                    startingMatch.setGameStartingSoon();
+                }
                 timer =new GameTimer("game");
                 timeout=false;
             }
@@ -141,13 +142,14 @@ public class MatchHandler extends Thread {
             System.out.println("Resumed. Timeout: "+instance.timeout);
             synchronized (startingMatchGuard) {
                 synchronized (startedMatches) {
-                    if(!startingMatch.isGameStartingSoon())startingMatch.setGameStartingSoon(setGameStartingSoon);
                     if (startingMatch.playerIngame() == 4) {
+                        startingMatch.setGameToStarted();
                         startedMatches.add(startingMatch);
                         startingMatch = null;
                         timer.stop();
                         return true;
                     } else if (instance.timeout && startingMatch.playerIngame() > 1) {
+                        startingMatch.setGameToStarted();
                         instance.timeout = false;
                         startedMatches.add(startingMatch);
                         startingMatch = null;
@@ -178,7 +180,7 @@ public class MatchHandler extends Thread {
     }
 
 
-    public static void login(ClientInterface client) throws InvalidOperationException, DisconnectionException {
+    public static void login(UserInterface client) throws InvalidOperationException, DisconnectionException {
         client.chooseUsername();
         boolean ok;
         int trial =0;
@@ -192,6 +194,7 @@ public class MatchHandler extends Thread {
                 lock.lock();
                 synchronized (startingMatchGuard) {
                     startingMatch.insert(client);
+                    client.setGameCode(instance.startedMatches.size()+1);
                 }
                 condition.signal();
                 lock.unlock();
@@ -216,7 +219,7 @@ public class MatchHandler extends Thread {
             synchronized (disconnectedInGamePlayers) {
                 if (startingMatch==null) {
                     //FIXME, disconnected list won't probably be an ArrayList of ClientInterfaces
-                    for (ClientInterface cl : disconnectedInGamePlayers) {
+                    for (UserInterface cl : disconnectedInGamePlayers) {
                         if (cl.getUsername() == username) {
                             throw new ReconnectionException();
                         }
@@ -225,7 +228,7 @@ public class MatchHandler extends Thread {
                 }
                 else
                     startingMatch.updateQueue();
-                for (ClientInterface cl : connectedPlayers) {
+                for (UserInterface cl : connectedPlayers) {
                     if (cl.getUsername().equals(username)) {
                         throw new InvalidUsernameException();
                     }
@@ -236,12 +239,31 @@ public class MatchHandler extends Thread {
     }
 
     //this method should be invoked when the lock on "connectedPlayers" is already acquired
-    public void notifyAboutDisconnection(ClientInterface client, boolean gameStarted) {
+    public void notifyAboutDisconnection(UserInterface client, boolean gameStarted) {
         if(gameStarted){
             //TODO handle this case.
         }
         else {
             connectedPlayers.remove(client);
         }
+    }
+
+    public void logOut(UserInterface client) throws InvalidOperationException {
+        int gameCode;
+        synchronized (connectedPlayers){
+            gameCode= client.getGameCode();
+        }
+        synchronized (startingMatchGuard) {
+            synchronized (startedMatches) {
+                if (gameCode <= startedMatches.size()) /*TODO handle this*/ ;
+                else
+                    startingMatch.remove(client);
+            }
+        }
+        synchronized (connectedPlayers){
+            connectedPlayers.remove(client);
+        }
+
+
     }
 }

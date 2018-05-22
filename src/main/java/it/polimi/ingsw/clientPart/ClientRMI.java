@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterface{
 
+    ServerRMICommunication serverRemoteInterfaceAdapter;
 
     protected ClientRMI() throws RemoteException {
     }
@@ -26,5 +27,19 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
         if(trial>1) System.err.println("This username already exist or it's invalid. Please choose another one:");
         String username = scanner.nextLine();
         return username;
+    }
+
+    @Override
+    public void notifyGameStarting() {
+        serverRemoteInterfaceAdapter.notifyStarting();
+    }
+
+    @Override
+    public void notifyStartedGame() {
+        serverRemoteInterfaceAdapter.notifyStarted();
+    }
+
+    public void setRMICommunication(ServerRMICommunication serverRemoteInterfaceAdapter) {
+        this.serverRemoteInterfaceAdapter=serverRemoteInterfaceAdapter;
     }
 }

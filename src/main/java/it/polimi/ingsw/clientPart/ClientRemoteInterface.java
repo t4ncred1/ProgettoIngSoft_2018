@@ -9,4 +9,8 @@ public interface ClientRemoteInterface extends Remote {
     void chooseUsername() throws RemoteException;
 
     String requestAUsername(int trial) throws RemoteException;
+
+    void notifyGameStarting() throws RemoteException;
+
+    void notifyStartedGame() throws RemoteException;
 }

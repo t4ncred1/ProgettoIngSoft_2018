@@ -6,5 +6,7 @@ import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
 import java.rmi.*;
 
 public interface ServerRemoteInterface extends Remote {
-     void login(ClientRemoteInterface client) throws RemoteException, InvalidOperationException;
+    void login(ClientRemoteInterface client) throws RemoteException, InvalidOperationException;
+
+    void logout(ClientRemoteInterface client) throws RemoteException, InvalidOperationException;
 }
