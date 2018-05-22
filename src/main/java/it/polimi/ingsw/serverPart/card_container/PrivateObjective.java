@@ -1,6 +1,11 @@
 package it.polimi.ingsw.serverPart.card_container;
-import it.polimi.ingsw.serverPart.component_container.Player;
+import it.polimi.ingsw.serverPart.component_container.Box;
+import it.polimi.ingsw.serverPart.component_container.Die;
+import it.polimi.ingsw.serverPart.component_container.DieConstraints;
+import it.polimi.ingsw.serverPart.component_container.Grid;
 import it.polimi.ingsw.serverPart.custom_exception.NotValidParameterException;
+
+import java.util.Iterator;
 
 public class PrivateObjective extends Objective {
     private String color;
@@ -22,10 +27,30 @@ public class PrivateObjective extends Objective {
         return this.color;
     }
 
+    @Override
+    public int calculatePoints(Grid grid) {
+        int points_to_add,i,j;
+        String color_to_check;
+        DieConstraints die_temp=null;
+        Die die_temp1;
+        int return_value=0;
+        Box[][] actual_grid = grid.getGrid();
 
-    public void calculatePoints(Player player){
-    //todo should check player's points (should be int)
-   }
-
+        for(i=0;i<actual_grid.length;i++){
+            for(j=0;i<actual_grid[i].length;j++)
+                die_temp=actual_grid[i][j].getDie();
+                try {
+                    die_temp1 = die_temp.getDie();
+                } catch(NullPointerException e){
+                     continue;
+                }
+                color_to_check=die_temp1.getColor();
+                if (color_to_check==color){
+                    points_to_add=die_temp1.getValue();
+                    return_value=return_value+points_to_add;
+                }
+            }
+        return return_value;
+    }
 
 }
