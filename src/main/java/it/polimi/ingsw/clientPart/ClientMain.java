@@ -91,6 +91,8 @@ public class ClientMain /*extends Application*/ {
                 else if(read.equals("")) {
                     ok = instance.server.waitForGame();
                 }
+                else
+                    System.err.println("Invalid input. Enter logout or wait for a game.");
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -94,7 +94,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             return true;
         }
         catch (IOException e){
-            System.err.println("A player disconnected");
+            System.err.println(this.username+" disconnected.");
             return false;
         }
     }

@@ -22,21 +22,16 @@ public class MatchController extends Thread{
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
                 e.printStackTrace();
             }
         }
-
-        System.err.println("Exit.");
-
-
 
         //TODO handle the game logic from now on.
 
     }
 
 
-    public int playerIngame() {
+    public int playerInGame() {
 
             System.out.println("player in queue: "+playersInMatch.size());
             return playersInMatch.size();
@@ -48,12 +43,11 @@ public class MatchController extends Thread{
             for (int i=0; i<playersInMatch.size();i++) {
                 if(!playersInMatch.get(i).isConnected()){
                     //in this instruction player is removed both from playersInMatch and connectedPlayers
-                    System.err.println("-------------------------------------------");
                     MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(i), this.gameStarted);
-                    System.err.println("-------------------------------------------");
                 }
+                if(playersInMatch.size()>1&&!this.gameStartingSoon) MatchHandler.notifyMatchCanStart();
             }
-            if(playersInMatch.size()>1&&!this.gameStartingSoon) MatchHandler.notifyMatchCanStart();
+
         }
     }
 

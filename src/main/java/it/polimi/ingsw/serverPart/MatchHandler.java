@@ -84,6 +84,7 @@ public class MatchHandler extends Thread {
         while (true) {
             boolean ok;
             startingMatch = new MatchController();
+            startingMatch.start();
             do{
                 ok= setUpPhase();
             }while (!ok);
@@ -92,7 +93,6 @@ public class MatchHandler extends Thread {
                 ok=startGameCountdown();
             }
             while (!ok);
-            startGame(currentGame);
             while(startedMatches.size()==maximumMatchNumber){
                 lock.lock();
                 try {
@@ -120,7 +120,7 @@ public class MatchHandler extends Thread {
             lock.unlock();
         }
         synchronized (startingMatchGuard){
-            result =(startingMatch.playerIngame()>=minimumPlayerForAGame);
+            result =(startingMatch.playerInGame()>=minimumPlayerForAGame);
         }
         return result;
     }
@@ -142,13 +142,13 @@ public class MatchHandler extends Thread {
             System.out.println("Resumed. Timeout: "+instance.timeout);
             synchronized (startingMatchGuard) {
                 synchronized (startedMatches) {
-                    if (startingMatch.playerIngame() == 4) {
+                    if (startingMatch.playerInGame() == 4) {
                         startingMatch.setGameToStarted();
                         startedMatches.add(startingMatch);
                         startingMatch = null;
                         timer.stop();
                         return true;
-                    } else if (instance.timeout && startingMatch.playerIngame() > 1) {
+                    } else if (instance.timeout && startingMatch.playerInGame() > 1) {
                         startingMatch.setGameToStarted();
                         instance.timeout = false;
                         startedMatches.add(startingMatch);
@@ -157,7 +157,7 @@ public class MatchHandler extends Thread {
                         return true;
 
                     }
-                    else if (instance.timeout && startingMatch.playerIngame() <= 1){
+                    else if (instance.timeout && startingMatch.playerInGame() <= 1){
                         timer.stop();
                     }
                 }
@@ -172,11 +172,6 @@ public class MatchHandler extends Thread {
             lock.unlock();
         }
         return false;
-    }
-
-    private void startGame(long currentGame) {
-        System.out.println("Game Started");
-        //TODO notify players that the game is started
     }
 
 
@@ -241,7 +236,6 @@ public class MatchHandler extends Thread {
 
     //this method should be invoked when the lock on "connectedPlayers" is already acquired
     public void notifyAboutDisconnection(UserInterface client, boolean gameStarted) {
-        System.err.println("Client removed");
         if(gameStarted){
             //TODO handle this case.
         }
