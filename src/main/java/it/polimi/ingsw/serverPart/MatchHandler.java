@@ -29,6 +29,7 @@ public class MatchHandler extends Thread {
     private final int minimumPlayerForAGame =2;
     private ArrayList<MatchController> startedMatches; //nel caso volessimo implementare multi-game
     private GameTimer timer;
+    private boolean shutdown;
     private static long currentGame=0;
 
     private MatchHandler(){
@@ -38,6 +39,7 @@ public class MatchHandler extends Thread {
         startedMatches= new ArrayList<MatchController>();
         disconnectedInGamePlayers= new ArrayList<UserInterface>();
         timeout=true;
+        shutdown= false;
     }
 
     public static MatchHandler getInstance(){
@@ -81,7 +83,7 @@ public class MatchHandler extends Thread {
     @Override
     public void run() {
         System.out.println("MatchHandlerStarted");
-        while (true) {
+        while (!shutdown) {
             boolean ok;
             startingMatch = new MatchController();
             startingMatch.start();
