@@ -5,8 +5,6 @@ import it.polimi.ingsw.serverPart.component_container.DieConstraints;
 import it.polimi.ingsw.serverPart.component_container.Grid;
 import it.polimi.ingsw.serverPart.custom_exception.NotValidParameterException;
 
-import java.util.Iterator;
-
 public class PrivateObjective extends Objective {
     private String color;
     private final static String TYPE = "private";

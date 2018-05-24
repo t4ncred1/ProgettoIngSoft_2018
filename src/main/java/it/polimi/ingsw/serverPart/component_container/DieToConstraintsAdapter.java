@@ -27,11 +27,7 @@ public class DieToConstraintsAdapter implements DieConstraints {
             case "yellow":
                 this.colorRestriction=3;
                 break;
-            case "purple":
-                this.colorRestriction=4;
-                break;
-            default: //modificare, meglio lanciare eccezione?
-                this.colorRestriction=-1;
+            default : this.colorRestriction=4;
         }
     }
 
