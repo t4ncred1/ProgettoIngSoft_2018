@@ -1,23 +1,19 @@
 package it.polimi.ingsw.serverPart.card_container;
 import it.polimi.ingsw.serverPart.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.serverPart.component_container.*;
-public class PublicObjective extends Objective{
-    private boolean on_rows;
-    private boolean on_columns;
-    private boolean on_values;
-    private boolean on_colors;
-    private int value;
-    private int[] valuesconsidered;
 
-    public PublicObjective(String tit, String desc, boolean rows, boolean columns, boolean valueconst, boolean colors, int points, int[]values){
+import java.util.Arrays;
+
+public class PublicObjective extends Objective{
+
+    private int value;
+    private int cardNumber;
+
+    public PublicObjective(String tit, String desc, int card, int points){
         title=tit;
         description=desc;
-        on_rows=rows;
-        on_columns=columns;
-        on_values=valueconst;
-        on_colors=colors;
+        cardNumber=card;
         value=points;
-        valuesconsidered=values;
     }
 
 
@@ -27,15 +23,7 @@ public class PublicObjective extends Objective{
         build.append("\n");
         build.append("Description = ");
         build.append(this.getDescription());
-        build.append("\nrows = " + Boolean.toString(on_rows));
-        build.append("\ncolumns = " + Boolean.toString(on_columns));
-        build.append("\nvalues = " + Boolean.toString(on_values));
-        build.append("\ncolors = " + Boolean.toString(on_colors));
-        build.append("\npoints = " + Integer.toString(value));
-        build.append("\nvalues considered: ");
-        for (int i : valuesconsidered){
-            build.append(Integer.toString(i)+",");
-        }
+        build.append(Integer.toString(cardNumber));
         build.append("\n");
 
         return build.toString();
@@ -43,47 +31,104 @@ public class PublicObjective extends Objective{
 
     @Override
     public int calculatePoints(Grid grid) throws NotValidParameterException { //please note: on_rows and on_columns, if true, must be sided by either on_value or on_color
-        Box[][] actual_grid=grid.getGrid();
-        boolean[] controlArray;
-        int return_value=0;
-
-        if (on_rows&&on_columns){
-            actual_grid=diagonalGridLTR(grid);
-        }
-
-        else if (on_rows) actual_grid = rotatedGrid(grid);
-
-        if (on_rows^on_columns) {
-            if (!(on_colors||on_values)) throw new NotValidParameterException("Public Objective card: "+title, "on_colors or on_values to be true if on_rows or on_columns are active");
-            for (Box[] i : actual_grid) {
-                if (on_colors) controlArray = new boolean[5];
-                else if (on_values) controlArray = new boolean[6];
-                else throw new NotValidParameterException("Public Objective card: "+title, "on_colors or on_values to be true if on_rows or on_columns are active");
-                for (Box j : i) {
-                    if (on_colors){
-                        if(j.getDie().getColorRestriction()!=-1){
-                            if(controlArray[j.getDie().getColorRestriction()]) return 0;
-                            controlArray[j.getDie().getColorRestriction()]=true;
+//        Box[][] actual_grid=grid.getGrid();
+//        boolean[] controlArray;
+//        boolean valid;
+//        int return_value=0;
+//
+//        if (on_rows&&on_columns){
+//            actual_grid=diagonalGridLTR(grid);
+//        }
+//
+//        else if (on_rows) actual_grid = rotatedGrid(grid);
+//
+//        if (on_rows^on_columns) {
+//            if (!(on_colors||on_values)) throw new NotValidParameterException("Public Objective card: "+title, "on_colors or on_values to be true if on_rows or on_columns are active");
+//            for (Box[] i : actual_grid) {
+//                if (on_colors) controlArray = new boolean[]{false,false,false,false,false};
+//                else if (on_values) controlArray = new boolean[]{false,false,false,false,false,false};
+//                else throw new NotValidParameterException("Public Objective card: "+title, "on_colors or on_values to be true if on_rows or on_columns are active");
+//                valid = true;
+//                for (Box j : i) {
+//                    try {
+//                        if (on_colors) {
+//                            if (j.getDie().getColorRestriction() != -1) {
+//                                if (controlArray[j.getDie().getColorRestriction()]) valid=false;
+//                                controlArray[j.getDie().getColorRestriction()] = true;
+//                                System.out.println("ok");
+//                            }
+//                        }
+//                        if (on_values) {
+//                            if (j.getDie().getValueRestriction() != -1) {
+//                                if (controlArray[j.getDie().getValueRestriction()]) valid=false;
+//                                controlArray[j.getDie().getValueRestriction()] = true;
+//                            }
+//                        }
+//                    } catch (NullPointerException e){
+//                        valid=false;
+//                        System.out.println("what.");
+//                    }
+//                }
+//                if (valid) return_value+=value;
+//            }
+//        }
+//
+//        if (on_rows&&on_columns){
+//            if (!on_colors) throw new NotValidParameterException("Public Objective card: "+title, "on_colors should be true when both on_rows and on_columns are active");
+//            for (Box[] i : actual_grid){
+//                //TODO Do the diagonal calulation case. this will be difficult.
+//            }
+//        }
+//        return return_value;
+        Box [][] actualGrid = grid.getGrid();
+        int returnValue=0;
+        switch (cardNumber){
+            case 1 :
+                actualGrid=rotatedGrid(grid);
+            case 2 :
+                returnValue=0;
+                for(Box[] i : actualGrid) {
+                    boolean isColumnOk = true;
+                    boolean[] colorVector = new boolean[]{false, false, false, false, false};
+                    for (Box j : i) {
+                        try {
+                            if (j.getDie().getColorRestriction() != -1) {
+                                if (colorVector[j.getDie().getColorRestriction()]) {
+                                    isColumnOk = false;
+                                    break;
+                                }
+                                colorVector[j.getDie().getColorRestriction()] = true;
+                            }
+                        } catch (NullPointerException e) {
+                            isColumnOk = false;
                         }
                     }
-                    if (on_values){
-                        if(j.getDie().getValueRestriction()!=-1){
-                            if(controlArray[j.getDie().getValueRestriction()]) return 0;
-                            controlArray[j.getDie().getValueRestriction()]=true;
+                    if (isColumnOk) returnValue += value;
+                }
+                break;
+            case 9 :
+                actualGrid=diagonalGridRTL(grid);
+                boolean [][]alreadyUsed = new boolean[grid.getColumnNumber()][grid.getRowNumber()];
+                int previousColor;
+                int currentColor;
+                for (Box[] i : actualGrid){
+                    previousColor=-1;
+                    for (Box j : i){
+                        try {
+                            currentColor = j.getDie().getColorRestriction();
+                        } catch (NullPointerException e){
+                            currentColor=-1;
                         }
+                        if (currentColor==previousColor && currentColor!=-1 && !alreadyUsed[j.getCoordX()][j.getCoordY()]){
+                            returnValue++;
+                        }
+                        alreadyUsed[j.getCoordX()][j.getCoordY()] = true;
+                        previousColor=currentColor;
                     }
                 }
-                return_value+=value;
-            }
-        }
 
-        if (on_rows&&on_columns){
-            if (!on_colors) throw new NotValidParameterException("Public Objective card: "+title, "on_colors should be true when both on_rows and on_columns are active");
-            for (Box[] i : actual_grid){
-                //TODO Do the diagonal calulation case. this will be difficult.
-            }
         }
-        return return_value;
+        return returnValue;
     }
 
     private Box[][] rotatedGrid(Grid grid){
@@ -132,10 +177,6 @@ public class PublicObjective extends Objective{
             }
         }
         return diagonalGrid;
-    }
-
-    public boolean isObjectiveOk(){
-        return ((!(on_values && on_colors)) && ((!(on_rows && on_columns )) || (on_colors)) && (on_colors || on_values));
     }
 
 }
