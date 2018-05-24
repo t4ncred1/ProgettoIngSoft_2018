@@ -37,7 +37,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         System.out.println("Connection request received on Socket system");
         try {
             String hello= new String();
-            while(!hello.equals("Hello")) hello= inputStream.readUTF();
+            while(!hello.equals("hello")) hello= inputStream.readUTF();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,7 +76,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
                             outputStream.writeUTF("logged_out");
                         }
                         catch (InvalidOperationException e){
-                            outputStream.writeUTF("game_is_starting");
+                            outputStream.writeUTF("launching_game");
                         }
                 }
 
@@ -94,7 +94,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             return true;
         }
         catch (IOException e){
-            System.out.println("Disconnected");
+            System.err.println(this.username+" disconnected.");
             return false;
         }
     }
@@ -129,7 +129,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         } catch (IOException e) {
             throw new DisconnectionException();
         }
-        MatchHandler.getInstance().requestUsername(username);
+        MatchHandler.getInstance().requestUsername(username,this);
     }
 
     @Override

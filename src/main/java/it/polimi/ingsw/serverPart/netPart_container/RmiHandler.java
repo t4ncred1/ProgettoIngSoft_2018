@@ -34,6 +34,7 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 e.printStackTrace();
             }
             synchronized (clientsHandled) {

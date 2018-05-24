@@ -26,10 +26,13 @@ public class MatchController extends Thread{
                 e.printStackTrace();
             }
         }
+
+        //TODO handle the game logic from now on.
+
     }
 
 
-    public int playerIngame() {
+    public int playerInGame() {
 
             System.out.println("player in queue: "+playersInMatch.size());
             return playersInMatch.size();
@@ -43,8 +46,9 @@ public class MatchController extends Thread{
                     //in this instruction player is removed both from playersInMatch and connectedPlayers
                     MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(i), this.gameStarted);
                 }
+                if(playersInMatch.size()>1&&!this.gameStartingSoon) MatchHandler.notifyMatchCanStart();
             }
-            if(playersInMatch.size()>1&&!this.gameStartingSoon) MatchHandler.notifyMatchCanStart();
+
         }
     }
 

@@ -27,7 +27,7 @@ public class RMIUserAgent implements UserInterface {
             ok=true;
         }
         catch (RemoteException e){
-            System.err.println("A player disconnected");
+            System.err.println(this.username+ " disconnected.");
         }
         return ok;
     }
@@ -56,7 +56,7 @@ public class RMIUserAgent implements UserInterface {
         } catch (RemoteException e) {
             throw new DisconnectionException();
         }
-        MatchHandler.getInstance().requestUsername(username);
+        MatchHandler.getInstance().requestUsername(username,this);
     }
 
     @Override
