@@ -1,26 +1,30 @@
 package it.polimi.ingsw.serverPart.netPart_container;
 
 import it.polimi.ingsw.clientPart.ClientRemoteInterface;
-import it.polimi.ingsw.serverPart.MatchController;
 import it.polimi.ingsw.serverPart.MatchHandler;
 import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RmiHandler extends Thread implements ServerRemoteInterface{
 
+    private static RmiHandler instance;
     private static int port=11001;
 
-    private static ArrayList<RMIUserAgent> clientsHandled;
+    private ArrayList<RMIUserAgent> clientsHandled;
 
-    public RmiHandler(){
+    private RmiHandler(){
         clientsHandled= new ArrayList<>();
     }
     public RmiHandler(int port){
         this.port=port;
         clientsHandled= new ArrayList<>();
+    }
+
+    public static RmiHandler getInstance(){
+        if(instance==null)instance= new RmiHandler();
+        return instance;
     }
 
     public int getPort(){

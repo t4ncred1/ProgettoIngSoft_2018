@@ -214,6 +214,7 @@ public class GridTest {
     /*-**************************************************************************************************-*/
     //                         insertDieInXY(int x, int y, String constraint)
     /*-**************************************************************************************************-*/
+    @Test
     public void nullDiePassed() throws NotValidParameterException {
 
         //Given
@@ -227,6 +228,7 @@ public class GridTest {
         assertThrows(NullPointerException.class, () -> toTest.insertDieInXY(passedCoordinateX, passedCoordinateY,colorCheck,valueCheck, passedDie));
     }
 
+    @Test
     public void insertIndexesOutOfBound() throws NotValidParameterException {
 
         //Given
@@ -242,6 +244,7 @@ public class GridTest {
         assertEquals("Parameter: (10,10). Expected: coordinates should be: 0<=x<=3 and 0<=y<=4", exception.getMessage());
     }
 
+    @Test
     public void gridNotInitialized() throws NotValidParameterException {
 
 
@@ -258,7 +261,8 @@ public class GridTest {
         assertThrows(NotValidParameterException.class, () -> toTest.insertDieInXY(passedCoordinateX, passedCoordinateY,colorCheck,valueCheck, passedDie));
     }
 
-    public void tryToInsertDieReturnFalse() throws NotValidParameterException {
+    @Test
+    public void tryToInsertDieReturnFalse() throws NotValidParameterException,InvalidOperationException {
 
         //Given
         int passedCoordinateX= 1;
@@ -269,11 +273,19 @@ public class GridTest {
 
         Grid toTest= new Grid(3, "name");
 
+        for(int i=0; i<toTest.getColumnNumber(); i++){
+            for(int j=0; j<toTest.getRowNumber(); j++) {
+                toTest.createBoxInXY(i,j,"none");
+            }
+        }
+        toTest.associateBoxes();
+
         //Assert
         assertThrows(InvalidOperationException.class, () -> toTest.insertDieInXY(passedCoordinateX, passedCoordinateY, colorCheck, valueCheck, passedDie));
 
     }
 
+    @Test
     public void tryToInsertDieReturnTrue() throws NotValidParameterException, InvalidOperationException {
 
         //Given
@@ -284,6 +296,13 @@ public class GridTest {
         Die passedDie= new Die("red", 1);
 
         Grid toTest= new Grid(3, "name");
+        for(int i=0; i<toTest.getColumnNumber(); i++){
+            for(int j=0; j<toTest.getRowNumber(); j++) {
+                toTest.createBoxInXY(i,j,"none");
+            }
+        }
+        toTest.associateBoxes();
+
 
         //When
         toTest.insertDieInXY(passedCoordinateX, passedCoordinateY, colorCheck, valueCheck, passedDie); //insert in a opened box
@@ -292,5 +311,46 @@ public class GridTest {
         assertThrows(InvalidOperationException.class, () -> toTest.insertDieInXY(passedCoordinateX, passedCoordinateY, colorCheck, valueCheck, passedDie)); //reinsert should throw an exception.
     }
 
+    /*----------------------------------------------------------------------------------------------------*/
+    //                                       METODO associateObserver
+    /*----------------------------------------------------------------------------------------------------*/
+    @Test
+    public void gridIsNotinitialized(){
+        Grid toTest = null;
+        try {
+            toTest = new Grid(3, "testGrid");
+        } catch (NotValidParameterException e) {
+            fail("test failed");
+        }
+        assertThrows(NullPointerException.class, toTest::associateBoxes);
+    }
 
+    @Test
+    public void gridIsOk(){
+        Grid toTest = null;
+        try {
+            toTest = new Grid(3, "testGrid");
+            for (int i=0; i<toTest.getColumnNumber(); i++){
+                for (int j=0;j<toTest.getRowNumber();j++)
+                    toTest.createBoxInXY(i,j,"none");
+            }
+        } catch (NotValidParameterException e){
+            fail("test failed");
+        }
+        toTest.associateBoxes();
+    }
+    @Test
+    public void gridIsNotComplete(){
+        Grid toTest = null;
+        try {
+            toTest = new Grid(3, "testGrid");
+            for (int i=0; i<toTest.getColumnNumber(); i++){
+                for (int j=0;j<toTest.getRowNumber()-1;j++)
+                    toTest.createBoxInXY(i,j,"none");
+            }
+        } catch (NotValidParameterException e){
+            fail("test failed");
+        }
+        assertThrows(NullPointerException.class, toTest::associateBoxes);
+    }
 }

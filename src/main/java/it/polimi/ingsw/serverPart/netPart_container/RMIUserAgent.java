@@ -92,6 +92,7 @@ public class RMIUserAgent implements UserInterface {
     @Override
     public boolean equals(Object o){
         RMIUserAgent UA;
+        if(o==null) return false;
         if(this.getClass()==o.getClass())
             UA= (RMIUserAgent) o;
         else

@@ -94,6 +94,7 @@ public class Grid {
 
         if(x<0||x> COLUMN_NUMBER -1||y<0||y> ROW_NUMBER -1) throw new NotValidParameterException("("+x+","+y+")", indexOutOfBound);
 
+        if(gameGrid[x][y]==null) throw new NotValidParameterException("("+x+","+y+")","the box in this position should be initialized. ");
         if(gameGrid[x][y].tryToInsertDie(colorCheck, valueCheck, die)==false)
             throw new InvalidOperationException();
         else
@@ -109,5 +110,37 @@ public class Grid {
 
     public int getRowNumber(){
         return ROW_NUMBER;
+    }
+
+    public void associateBoxes() {
+        for(int i=0; i<this.getColumnNumber(); i++){
+            for(int j=0; j<this.getRowNumber(); j++){
+                if (gameGrid[i][j] == null) throw new NullPointerException();
+                if(i>0) {
+                    gameGrid[i][j].register(gameGrid[i-1][j]);
+                }
+                if(j>0){
+                    gameGrid[i][j].register(gameGrid[i][j-1]);
+                }
+                if(i<COLUMN_NUMBER-1){
+                    gameGrid[i][j].register(gameGrid[i+1][j]);
+                }
+                if(j<ROW_NUMBER-1){
+                    gameGrid[i][j].register(gameGrid[i][j+1]);
+                }
+                if(j<ROW_NUMBER-1 && i<COLUMN_NUMBER-1){
+                    gameGrid[i][j].register(gameGrid[i+1][j+1]);
+                }
+                if(j>0 && i!=0){
+                    gameGrid[i][j].register(gameGrid[i-1][j-1]);
+                }
+                if(j>0 && i<COLUMN_NUMBER-1){
+                    gameGrid[i][j].register(gameGrid[i+1][j-1]);
+                }
+                if(i>0 && j<ROW_NUMBER-1){
+                    gameGrid[i][j].register(gameGrid[i-1][j+1]);
+                }
+            }
+        }
     }
 }
