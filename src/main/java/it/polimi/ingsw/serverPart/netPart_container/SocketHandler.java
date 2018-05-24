@@ -8,7 +8,7 @@ public class SocketHandler extends Thread{
 
     private static SocketHandler instance;
 
-    private static boolean connectionOpened;
+    private static boolean shutdown;
     private ServerSocket serverSock;
     private static final int port =11000;
 
@@ -18,7 +18,7 @@ public class SocketHandler extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        connectionOpened=true;
+        shutdown=false;
     }
 
     public static SocketHandler getInstance(){
@@ -31,9 +31,8 @@ public class SocketHandler extends Thread{
     @Override
     public void run(){
         System.out.println("SocketHandlerStarted");
-        while(true){
+        while(!shutdown){
             synchronized (this){
-            if(connectionOpened){
                 try {
                     Socket client=serverSock.accept();
                     new SocketUserAgent(client).start();
@@ -41,15 +40,18 @@ public class SocketHandler extends Thread{
                     e.printStackTrace();
                 }
             }
-            }
         }
+
+        try {
+            serverSock.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("SocketHandlerShutDown");
     }
 
-    public static synchronized void openConnection(){
-        connectionOpened=true;
-    }
-
-    public static synchronized void closeConnection(){
-        connectionOpened=false;
+    public void shutdown(){
+        shutdown=true;
+        instance= null;
     }
 }

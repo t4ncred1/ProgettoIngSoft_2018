@@ -29,12 +29,12 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
         }
 
         try {
-            outputStream.writeUTF("Hello");
+            outputStream.writeUTF("hello");
             do {
                 read = inputStream.readUTF();
             }
             while (!read.equals("login"));
-            System.out.println("Welcome to Sagrada server. Please choose a username");
+            System.out.println("Welcome to Sagrada server. Please choose a username:");
             do{
                 written=scanner.nextLine();
                 outputStream.writeUTF(written);
@@ -99,10 +99,10 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
             switch (response) {
                 case "logged_out":
                     return true;
-                case "game_is_starting":
+                case "launching_game":
                     return false;
                 default:
-
+                    System.err.println(response);
             }
 
         } catch (IOException e) {

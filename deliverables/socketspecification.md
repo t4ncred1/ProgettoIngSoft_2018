@@ -1,27 +1,92 @@
 ﻿# Standard for Socket communication
+
 A list of strings to define a standard for socket communication in our Sagrada game implementation.
 
 >_**Please Note** : bold words are used to point out parameters, underlined ones indicate formatting oriented keywords._
 
 ### Login Handling
+* Client ask to server to login
+
+	`hello`
+		
 * Server requests a username from client
 	
 	`login`
 		
 * Client sends chosen username
 	
-	`username `_`<space>`_**`username`**
-* Login success
+	**`<username>`**
+* *Response #1:* Login success
 
 	`logged`
-* Login failure (ServerFull) 
+
+	>**Note**: A successfull login   automatically implies the insertion in the game queue.
+	
+* *Response #2:* Login failure (ServerFull) 
    
-   `notlogged_serverfull`
+   `notLogged_server_full`
     
-* Login failure (usernameNotAvailable)
+* *Response #3:* Login failure (usernameNotAvailable)
 
-    `notlogged_username_not_available`
+    `notLogged_username_not_available`
+    
 
+#### Relative sequence diagram
+
+```mermaid
+sequenceDiagram
+Client -->> Server: hello
+opt after  hello
+Server ->> Client: login
+alt server_full
+Client ->> Server: <username>
+Server ->> Client: notLogged_server_full
+else server_not_full
+Client ->> Server: <username>
+loop !ok username
+Server ->> Client: notLogged_username...
+Client ->> Server: <username>
+end
+Server ->> Client: logged
+end
+end
+```
+------
+### Match Start Handling
+* Logout request
+`logout`
+
+* Successfully logged out
+`logged_out`
+
+* Notify a game will start soon (sent also if you can't log out)
+`launching_game`
+
+* Notify a game is started
+`game_started`
+
+#### Relative sequence diagram
+
+```mermaid
+sequenceDiagram
+opt before_start
+Client ->> Server: logout
+Server ->> Client: logged_out
+end
+Note right of Server: Enough players to start the game countdown
+loop until start
+opt 
+Note left of Server: Can be sent only if you have not received "launching_game" yet.
+Client -->> Server: logout
+Server -->> Client: launching_game
+end
+Server -->> Client: launching_game
+Note left of Server: After a timeout
+Server -->> Client: game_started
+end
+```
+
+____
 
 ### Match Initialization Handling
 

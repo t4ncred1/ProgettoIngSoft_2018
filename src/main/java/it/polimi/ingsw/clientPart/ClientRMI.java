@@ -18,7 +18,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
 
     @Override
     public void chooseUsername() throws RemoteException {
-        System.out.println("Select your username");
+        System.out.println("Welcome to Sagrada server. Please choose a username:");
     }
 
     @Override
