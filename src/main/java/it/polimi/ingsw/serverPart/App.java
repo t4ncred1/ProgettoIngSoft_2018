@@ -25,10 +25,9 @@ public class App
         MatchHandler.getInstance().start();
         SocketHandler.getInstance().start();
         try {
-            RmiHandler handler = new RmiHandler();
-            handler.start();
-            ServerRemoteInterface stub = (ServerRemoteInterface) UnicastRemoteObject.exportObject(handler, handler.getPort());
-            Registry registry = LocateRegistry.createRegistry(handler.getPort());
+            RmiHandler.getInstance().start();
+            ServerRemoteInterface stub = (ServerRemoteInterface) UnicastRemoteObject.exportObject(RmiHandler.getInstance(), RmiHandler.getInstance().getPort());
+            Registry registry = LocateRegistry.createRegistry(RmiHandler.getInstance().getPort());
             registry.bind("MatchHandler", stub);
         } catch (RemoteException e) {
             e.printStackTrace();

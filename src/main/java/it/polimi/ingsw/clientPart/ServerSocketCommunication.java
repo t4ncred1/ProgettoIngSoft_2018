@@ -1,5 +1,8 @@
 package it.polimi.ingsw.clientPart;
 
+import it.polimi.ingsw.clientPart.custom_exception.ServerIsDownException;
+import it.polimi.ingsw.clientPart.custom_exception.ServerIsFullException;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -16,7 +19,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     private static String serverAddress="127.0.0.1";
 
     @Override
-    public void login() {
+    public void login() throws ServerIsFullException, ServerIsDownException {
         Scanner scanner= new Scanner(System.in);
         String read;
         String written;
@@ -43,17 +46,15 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
                 }
                 while (!(read.equals("logged")||read.equals("notLogged_server_full")||read.equals("notLogged_username_not_available")));
                 if(read.equals("notLogged_server_full")){
-                    System.err.println("Server is now full, retry later.");
-                    System.exit(0);
+                    throw new ServerIsFullException();
                 }
                 if(read.equals("notLogged_username_not_available")){
                     System.err.println("This username already exist or it's invalid. Please choose another one: ");
                 }
             }
             while(!read.equals("logged"));
-            System.out.println("You successfully logged. You have been inserted in game queue.");
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ServerIsDownException();
         }
 
     }

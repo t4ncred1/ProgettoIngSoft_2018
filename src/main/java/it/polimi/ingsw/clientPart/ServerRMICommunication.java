@@ -1,5 +1,7 @@
 package it.polimi.ingsw.clientPart;
 
+import it.polimi.ingsw.clientPart.custom_exception.ServerIsDownException;
+import it.polimi.ingsw.clientPart.custom_exception.ServerIsFullException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.serverPart.netPart_container.ServerRemoteInterface;
 
@@ -38,15 +40,13 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
 
     @Override
-    public void login() {
+    public void login() throws ServerIsDownException, ServerIsFullException {
         try {
             stub.login(thisClient);
-            System.out.println("You successfully logged. You have been inserted in game queue.");
         } catch (RemoteException e) {
-            e.printStackTrace();
+            throw new ServerIsDownException();
         } catch (InvalidOperationException e) {
-            System.err.println("Server is now full, retry later.");
-            System.exit(0);
+            throw new ServerIsFullException();
         }
 
     }
@@ -61,6 +61,7 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                     e.printStackTrace();
                 }
             }
