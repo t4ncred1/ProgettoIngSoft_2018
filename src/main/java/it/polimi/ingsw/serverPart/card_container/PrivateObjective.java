@@ -29,28 +29,29 @@ public class PrivateObjective extends Objective {
 
     @Override
     public int calculatePoints(Grid grid) {
-        int points_to_add,i,j;
+        int points_to_add, i, j;
         String color_to_check;
-        DieConstraints die_temp=null;
-        Die die_temp1;
-        int return_value=0;
+        DieConstraints die_temp = null;
+        Die die_temp1 = null;
+        int return_value = 0;
         Box[][] actual_grid = grid.getGrid();
 
-        for(i=0;i<actual_grid.length;i++){
-            for(j=0;i<actual_grid[i].length;j++)
-                die_temp=actual_grid[i][j].getDie();
+        for (i = 0; i < actual_grid.length; i++) {
+            for (j = 0; i < actual_grid[i].length; j++) {
+
                 try {
+                    die_temp = actual_grid[i][j].getDie();
                     die_temp1 = die_temp.getDie();
-                } catch(NullPointerException e){
-                     continue;
+                } catch (NullPointerException e) {
+                    continue;
                 }
-                color_to_check=die_temp1.getColor();
-                if (color_to_check==color){
-                    points_to_add=die_temp1.getValue();
-                    return_value=return_value+points_to_add;
+                color_to_check = die_temp1.getColor();
+                if (color_to_check.equals(color)) {
+                    points_to_add = die_temp1.getValue();
+                    return_value = return_value + points_to_add;
                 }
             }
+        }
         return return_value;
     }
-
 }

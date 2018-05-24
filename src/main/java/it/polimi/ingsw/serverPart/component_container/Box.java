@@ -179,7 +179,7 @@ public class Box implements BoxObserver, BoxSubject {
 
     @Override
     public void update(boolean remove, DieConstraints nearDie, int x, int y) throws NotValidParameterException {
-        if (x!=this.getCoordX()-1 && x!=this.getCoordX()+1 && y!=this.getCoordY()+1 && y!=this.getCoordY()-1) throw new NotValidParameterException("Position of the near box:"+ String.valueOf(x) +", "+String.valueOf(y), "this box should not be between the observers of the box which called the update");
+        if (x!=this.getCoordX()-1 && x!=this.getCoordX()+1 && y!=this.getCoordY()+1 && y!=this.getCoordY()-1) throw new NotValidParameterException("Position of the near box: "+ Integer.toString(x) +", "+Integer.toString(y), "this box should not be between the observers of the box which called the update.");
         if(this.coordX==x||this.coordY==y) {
                 this.updateValue(remove, nearDie.getValueRestriction());
                 this.updateColor(remove, nearDie.getColorRestriction());
@@ -200,7 +200,7 @@ public class Box implements BoxObserver, BoxSubject {
         for(BoxObserver e: observerList)
         {
             try {
-                e.update(remove, this.die, this.getCoordY(), this.getCoordY());
+                e.update(remove, this.die, this.getCoordX(), this.getCoordY());
             } catch(NotValidParameterException err){
                 err.printStackTrace();
             }
