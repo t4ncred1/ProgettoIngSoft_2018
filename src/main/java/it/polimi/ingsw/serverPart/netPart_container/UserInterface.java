@@ -21,4 +21,10 @@ public interface UserInterface {
     void notifyStarting() throws DisconnectionException;
 
     void notifyStart() throws DisconnectionException;
+
+    String getOperation();
+
+    void notifyAlreadyDoneOperation();
+
+    void askForOperation();
 }

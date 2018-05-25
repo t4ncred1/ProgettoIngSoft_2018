@@ -56,7 +56,7 @@ public class RMIUserAgent implements UserInterface {
         } catch (RemoteException e) {
             throw new DisconnectionException();
         }
-        MatchHandler.getInstance().requestUsername(username,this);
+        MatchHandler.getInstance().requestUsername(username);
     }
 
     @Override
@@ -87,6 +87,23 @@ public class RMIUserAgent implements UserInterface {
             e.printStackTrace();
             throw new DisconnectionException();
         }
+    }
+
+    //TODO from here.
+
+    @Override
+    public String getOperation() {
+        return null;
+    }
+
+    @Override
+    public void notifyAlreadyDoneOperation() {
+
+    }
+
+    @Override
+    public void askForOperation() {
+
     }
 
     @Override
