@@ -1,5 +1,4 @@
 package it.polimi.ingsw.serverPart.card_container;
-import it.polimi.ingsw.serverPart.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.serverPart.component_container.*;
 
 import java.util.Arrays;
@@ -23,82 +22,39 @@ public class PublicObjective extends Objective{
         build.append("\n");
         build.append("Description = ");
         build.append(this.getDescription());
+        build.append("\n");
+        build.append("Card = ");
         build.append(Integer.toString(cardNumber));
+        build.append("\n");
+        build.append("Points = ");
+        build.append(Integer.toString(value));
         build.append("\n");
 
         return build.toString();
     }
 
     @Override
-    public int calculatePoints(Grid grid) throws NotValidParameterException { //please note: on_rows and on_columns, if true, must be sided by either on_value or on_color
-//        Box[][] actual_grid=grid.getGrid();
-//        boolean[] controlArray;
-//        boolean valid;
-//        int return_value=0;
-//
-//        if (on_rows&&on_columns){
-//            actual_grid=diagonalGridLTR(grid);
-//        }
-//
-//        else if (on_rows) actual_grid = rotatedGrid(grid);
-//
-//        if (on_rows^on_columns) {
-//            if (!(on_colors||on_values)) throw new NotValidParameterException("Public Objective card: "+title, "on_colors or on_values to be true if on_rows or on_columns are active");
-//            for (Box[] i : actual_grid) {
-//                if (on_colors) controlArray = new boolean[]{false,false,false,false,false};
-//                else if (on_values) controlArray = new boolean[]{false,false,false,false,false,false};
-//                else throw new NotValidParameterException("Public Objective card: "+title, "on_colors or on_values to be true if on_rows or on_columns are active");
-//                valid = true;
-//                for (Box j : i) {
-//                    try {
-//                        if (on_colors) {
-//                            if (j.getDie().getColorRestriction() != -1) {
-//                                if (controlArray[j.getDie().getColorRestriction()]) valid=false;
-//                                controlArray[j.getDie().getColorRestriction()] = true;
-//                                System.out.println("ok");
-//                            }
-//                        }
-//                        if (on_values) {
-//                            if (j.getDie().getValueRestriction() != -1) {
-//                                if (controlArray[j.getDie().getValueRestriction()]) valid=false;
-//                                controlArray[j.getDie().getValueRestriction()] = true;
-//                            }
-//                        }
-//                    } catch (NullPointerException e){
-//                        valid=false;
-//                        System.out.println("what.");
-//                    }
-//                }
-//                if (valid) return_value+=value;
-//            }
-//        }
-//
-//        if (on_rows&&on_columns){
-//            if (!on_colors) throw new NotValidParameterException("Public Objective card: "+title, "on_colors should be true when both on_rows and on_columns are active");
-//            for (Box[] i : actual_grid){
-//                //TODO Do the diagonal calulation case. this will be difficult.
-//            }
-//        }
-//        return return_value;
+    public int calculatePoints(Grid grid) { //please note: on_rows and on_columns, if true, must be sided by either on_value or on_color
+
         Box [][] actualGrid = grid.getGrid();
         int returnValue=0;
-        switch (cardNumber){
-            case 1 :
-                actualGrid=rotatedGrid(grid);
-            case 2 :
-                returnValue=0;
-                for(Box[] i : actualGrid) {
+        switch (cardNumber) {
+
+            case 1:
+                actualGrid = rotatedGrid(grid);
+
+            case 2:
+                returnValue = 0;
+                for (Box[] i : actualGrid) {
                     boolean isColumnOk = true;
                     boolean[] colorVector = new boolean[]{false, false, false, false, false};
                     for (Box j : i) {
                         try {
-                            if (j.getDie().getColorRestriction() != -1) {
                                 if (colorVector[j.getDie().getColorRestriction()]) {
                                     isColumnOk = false;
                                     break;
                                 }
                                 colorVector[j.getDie().getColorRestriction()] = true;
-                            }
                         } catch (NullPointerException e) {
                             isColumnOk = false;
                         }
@@ -106,27 +62,165 @@ public class PublicObjective extends Objective{
                     if (isColumnOk) returnValue += value;
                 }
                 break;
-            case 9 :
-                actualGrid=diagonalGridRTL(grid);
-                boolean [][]alreadyUsed = new boolean[grid.getColumnNumber()][grid.getRowNumber()];
-                int previousColor;
-                int currentColor;
-                for (Box[] i : actualGrid){
-                    previousColor=-1;
-                    for (Box j : i){
+
+            case 3:
+                actualGrid = rotatedGrid(grid);
+
+            case 4:
+                returnValue = 0;
+                for (Box[] i : actualGrid) {
+                    boolean isColumnOk = true;
+                    boolean[] valueVector = new boolean[]{false, false, false, false, false, false};
+                    for (Box j : i) {
                         try {
-                            currentColor = j.getDie().getColorRestriction();
-                        } catch (NullPointerException e){
-                            currentColor=-1;
+                                if (valueVector[j.getDie().getValueRestriction()]) {
+                                    isColumnOk = false;
+                                    break;
+                                }
+                                valueVector[j.getDie().getValueRestriction()] = true;
+                        } catch (NullPointerException e) {
+                            isColumnOk = false;
                         }
-                        if (currentColor==previousColor && currentColor!=-1 && !alreadyUsed[j.getCoordX()][j.getCoordY()]){
-                            returnValue++;
+                    }
+                    if (isColumnOk) returnValue += value;
+                }
+                break;
+            case 5:
+                returnValue=findArraysInGrid(grid.getGrid(), new int[]{1,2})*value;
+                break;
+            case 6:
+                returnValue=findArraysInGrid(grid.getGrid(), new int[]{3,4})*value;
+                break;
+            case 7:
+                returnValue=findArraysInGrid(grid.getGrid(), new int[]{5,6})*value;
+                break;
+            case 8:
+                returnValue=findArraysInGrid(grid.getGrid(), new int[]{1,2,3,4,5,6})*value;
+                break;
+            case 9:
+                actualGrid = diagonalGridRTL(grid);
+                boolean[][] alreadyUsed = new boolean[grid.getColumnNumber()][grid.getRowNumber()];
+                returnValue = cicleThroughDiagonalgrid(alreadyUsed, returnValue, actualGrid);
+                actualGrid = diagonalGridLTR(grid);
+                returnValue = cicleThroughDiagonalgrid(alreadyUsed, returnValue, actualGrid);
+                break;
+            default: // case 10
+                returnValue=findColorArraysInGrid(grid.getGrid(), new int[]{0,1,2,3,4})*value;
+                break;
+        }
+        return returnValue;
+    }
+
+    private int findColorArraysInGrid( Box[][] actualGrid, int[] colorConstraintsToCheck){
+        boolean[][] alreadyUsed = new boolean[actualGrid.length][actualGrid[0].length]; //here we assume the matrix is rectangular
+        int returnValue=0;
+        for(int i=0; i<actualGrid.length;i++){
+            for (int j=0; j<actualGrid[0].length;j++){
+                try {
+                    if (actualGrid[i][j].getDie().getColorRestriction() == colorConstraintsToCheck[0] && !alreadyUsed[i][j]) {
+                        alreadyUsed[i][j]=true;
+                        if (colorConstraintsToCheck.length==1) returnValue++;
+                        else {
+                            if (findSingleColorArrayInGrid(alreadyUsed, actualGrid, Arrays.copyOfRange(colorConstraintsToCheck, 1, colorConstraintsToCheck.length))) {
+                                returnValue++;
+                            } else return returnValue;
                         }
+                    }
+                } catch (NullPointerException e){
+                    continue;
+                }
+            }
+        }
+        return returnValue;
+    }
+
+    private boolean findSingleColorArrayInGrid(boolean[][] alreadyUsed, Box[][] actualGrid, int[] colorConstraints){
+        for(int i=0; i<actualGrid.length;i++) {
+            for (int j = 0; j < actualGrid[0].length; j++) {
+                try{
+                    if (actualGrid[i][j].getDie().getColorRestriction() == colorConstraints[0] && !alreadyUsed[i][j]){
+                        alreadyUsed[i][j]=true;
+                        if(colorConstraints.length==1){
+                            return true;
+                        }
+                        return findSingleColorArrayInGrid(alreadyUsed,actualGrid,Arrays.copyOfRange(colorConstraints, 1, colorConstraints.length));
+                    }
+                } catch (NullPointerException e){
+                    continue;
+                }
+            }
+        }
+        return false;
+    }
+
+    private int findArraysInGrid( Box[][] actualGrid, int[] valuesToCheck){
+        boolean[][] alreadyUsed = new boolean[actualGrid.length][actualGrid[0].length]; //here we assume the matrix is rectangular
+        int returnValue=0;
+        for(int i=0; i<actualGrid.length;i++){
+            for (int j=0; j<actualGrid[0].length;j++){
+                try {
+                    if (actualGrid[i][j].getDie().getValueRestriction() + 1 == valuesToCheck[0] && !alreadyUsed[i][j]) {
+                        alreadyUsed[i][j]=true;
+                        if (valuesToCheck.length==1) returnValue++;
+                        else {
+                            if (findSingleArrayInGrid(alreadyUsed, actualGrid, Arrays.copyOfRange(valuesToCheck, 1, valuesToCheck.length))) {
+                                returnValue++;
+                            } else return returnValue;
+                        }
+                    }
+                } catch (NullPointerException e){
+                    continue;
+                }
+            }
+        }
+        return returnValue;
+
+    }
+
+    private boolean findSingleArrayInGrid(boolean[][] alreadyUsed, Box[][] actualGrid, int[] valuesToCheck){
+        for(int i=0; i<actualGrid.length;i++) {
+            for (int j = 0; j < actualGrid[0].length; j++) {
+                try{
+                    if (actualGrid[i][j].getDie().getValueRestriction() + 1 == valuesToCheck[0] && !alreadyUsed[i][j]){
+                        alreadyUsed[i][j]=true;
+                        if(valuesToCheck.length==1){
+                            return true;
+                        }
+                        return findSingleArrayInGrid(alreadyUsed,actualGrid,Arrays.copyOfRange(valuesToCheck, 1, valuesToCheck.length));
+                    }
+                } catch (NullPointerException e){
+                    continue;
+                }
+            }
+        }
+        return false;
+    }
+
+    private int cicleThroughDiagonalgrid(boolean[][] alreadyUsed, int returnValue, Box[][] actualGrid){
+        int previousColor;
+        int currentColor;
+        boolean second = true;
+        for (Box[] i : actualGrid){
+            previousColor=-1;
+            for (Box j : i){
+                try {
+                    currentColor = j.getDie().getColorRestriction();
+                } catch (NullPointerException e){
+                    currentColor=-1;
+                }
+                if (currentColor==previousColor && currentColor!=-1){
+                    if(!alreadyUsed[j.getCoordX()][j.getCoordY()]){
+                        returnValue++;
                         alreadyUsed[j.getCoordX()][j.getCoordY()] = true;
-                        previousColor=currentColor;
+                    }
+                    if (second) {
+                        returnValue++;
+                        second=false;
                     }
                 }
-
+                else second=true;
+                previousColor=currentColor;
+            }
         }
         return returnValue;
     }
