@@ -16,35 +16,44 @@ public class MatchHandler extends Thread {
 
     private static MatchHandler instance;
 
-    private static ArrayList<UserInterface> connectedPlayers;
+    private static ArrayList<String> connectedPlayers;
+    private static final Object connectedPlayersGuard= new Object();
     private static ArrayList<UserInterface> disconnectedInGamePlayers;
     private static MatchController startingMatch;
-    private final static Object startingMatchGuard= new Object();
+    private static final Object startingMatchGuard= new Object();
+    private static ArrayList<MatchController> startedMatches; //nel caso volessimo implementare multi-game
+    private static final Object startedMatchesGuard= new Object();
     private static Lock lock;
     private static Condition condition;
 
 
     private boolean timeout;
-    private final int maximumMatchNumber =1;
-    private final int minimumPlayerForAGame =2;
-    private ArrayList<MatchController> startedMatches; //nel caso volessimo implementare multi-game
+    private static int maximumMatchNumber =2;
+    private static final int MINIMUM_PLAYER_FOR_A_GAME =2;
     private GameTimer timer;
     private boolean shutdown;
-    private static long currentGame=0;
 
-    private MatchHandler(){
-        connectedPlayers= new ArrayList<UserInterface>();
-        lock= new ReentrantLock();
-        condition= lock.newCondition();
-        startedMatches= new ArrayList<MatchController>();
-        disconnectedInGamePlayers= new ArrayList<UserInterface>();
-        timeout=true;
-        shutdown= false;
-    }
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
 
     public static MatchHandler getInstance(){
-        if(instance==null)
-            instance= new MatchHandler();
+        if(instance==null) {
+            instance = new MatchHandler();
+            connectedPlayers= new ArrayList<>();
+            lock= new ReentrantLock();
+            condition= lock.newCondition();
+            startedMatches= new ArrayList<>();
+            disconnectedInGamePlayers= new ArrayList<>();
+            instance.timeout=true;
+            instance.shutdown= false;
+        }
         return instance;
     }
 
@@ -57,17 +66,14 @@ public class MatchHandler extends Thread {
 
     //Observer
     public int connectedPlayers(){
-        synchronized (connectedPlayers) {
+        synchronized (connectedPlayersGuard) {
             return connectedPlayers.size();
         }
     }
 
-    public int notSynchronizedConnectedPlayers(){  //use only fot tests
-        return connectedPlayers.size();
-    }
 
     public int getMaximumMatchNumber(){
-        return this.maximumMatchNumber;
+        return maximumMatchNumber;
     }
 
 
@@ -85,8 +91,7 @@ public class MatchHandler extends Thread {
         System.out.println("MatchHandlerStarted");
         while (!shutdown) {
             boolean ok;
-            startingMatch = new MatchController();
-            startingMatch.start();
+            MatchHandler.loadNewGame();
             do{
                 ok= setUpPhase();
             }while (!ok);
@@ -101,12 +106,17 @@ public class MatchHandler extends Thread {
                     condition.await();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                    //FIXME
                     Thread.currentThread().interrupt();
                 }
                 lock.unlock();
             }
         }
+    }
+
+    public static void loadNewGame(){
+        System.out.println(ANSI_GREEN +"A new match is ready to been handled." +ANSI_RESET);
+        startingMatch = new MatchController();
+        startingMatch.start();
     }
 
     public boolean setUpPhase(){
@@ -116,13 +126,12 @@ public class MatchHandler extends Thread {
             condition.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            //FIXME
             Thread.currentThread().interrupt();
         }finally {
             lock.unlock();
         }
         synchronized (startingMatchGuard){
-            result =(startingMatch.playerInGame()>=minimumPlayerForAGame);
+            result =(startingMatch.playerInGame()>= MINIMUM_PLAYER_FOR_A_GAME);
         }
         return result;
     }
@@ -133,17 +142,17 @@ public class MatchHandler extends Thread {
         try {
             if(instance.timeout){
                 System.out.println("A game will start soon...");
-                synchronized (startingMatch){
-                    startingMatch.setGameStartingSoon();
-                }
                 timer =new GameTimer("game");
                 timeout=false;
+            }
+            synchronized (startingMatchGuard){
+                startingMatch.setGameStartingSoon(timeout);
             }
             condition.await();
 
             System.out.println("Resumed. Timeout: "+instance.timeout);
             synchronized (startingMatchGuard) {
-                synchronized (startedMatches) {
+                synchronized (startedMatchesGuard) {
                     if (startingMatch.playerInGame() == 4) {
                         startingMatch.setGameToStarted();
                         startedMatches.add(startingMatch);
@@ -167,7 +176,6 @@ public class MatchHandler extends Thread {
 
         } catch (InterruptedException e) {
             e.printStackTrace();
-            //FIXME
             Thread.currentThread().interrupt();
 
         } finally {
@@ -207,7 +215,7 @@ public class MatchHandler extends Thread {
         System.out.println("Player inserted");
     }
 
-    public void requestUsername(String username, UserInterface client) throws InvalidOperationException, ReconnectionException, InvalidUsernameException {
+    public void requestUsername(String username) throws InvalidOperationException, ReconnectionException, InvalidUsernameException {
         if(username.equals("")) throw new InvalidUsernameException();
         synchronized (startingMatchGuard) {
             synchronized (disconnectedInGamePlayers) {
@@ -224,13 +232,13 @@ public class MatchHandler extends Thread {
                     startingMatch.updateQueue();
             }
 
-            synchronized (connectedPlayers) {
-                for (UserInterface cl : connectedPlayers) {
-                    if (cl.getUsername().equals(username)) {
+            synchronized (connectedPlayersGuard) {
+                for (String connectedUsername : connectedPlayers) {
+                    if (connectedUsername.equals(username)) {
                         throw new InvalidUsernameException();
                     }
                 }
-                connectedPlayers.add(client);
+                connectedPlayers.add(username);
             }
         }
 
@@ -242,24 +250,24 @@ public class MatchHandler extends Thread {
             //TODO handle this case.
         }
         else {
-            connectedPlayers.remove(client);
+            connectedPlayers.remove(client.getUsername());
         }
     }
 
     public void logOut(UserInterface client) throws InvalidOperationException {
         int gameCode;
-        synchronized (connectedPlayers){
+        synchronized (connectedPlayersGuard){
             gameCode= client.getGameCode();
         }
         synchronized (startingMatchGuard) {
-            synchronized (startedMatches) {
+            synchronized (startedMatchesGuard) {
                 if (gameCode <= startedMatches.size()) /*TODO handle this*/ ;
                 else
                     startingMatch.remove(client);
             }
         }
-        synchronized (connectedPlayers){
-            connectedPlayers.remove(client);
+        synchronized (connectedPlayersGuard){
+            connectedPlayers.remove(client.getUsername());
         }
         System.out.println(client.getUsername() + " disconnected.");
 

@@ -45,6 +45,17 @@ public class GridTest {
             Grid testGrid = new Grid(passedDifficulty, passedName);
         });
         assertEquals("Parameter: 1. Expected: Difficulty should have a value between 3 and 6 (both included)",exception.getMessage());
+
+        //Given
+        String passedName1="nomeGrid1";
+        int passedDifficulty1=7;
+
+        //Assert
+        Throwable exception1 = assertThrows(NotValidParameterException.class, () -> {
+            Grid testGrid1 = new Grid(passedDifficulty1, passedName1);
+        });
+        assertEquals("Parameter: 1. Expected: Difficulty should have a value between 3 and 6 (both included)",exception.getMessage());
+
     }
 
     @Test
@@ -352,5 +363,18 @@ public class GridTest {
             fail("test failed");
         }
         assertThrows(NullPointerException.class, toTest::associateBoxes);
+    }
+
+    @Test
+    public void checkToString()throws NotValidParameterException, NullPointerException {
+        Grid test=new Grid(6,"tan");
+        assertThrows(NullPointerException.class, ()-> {
+            test.toString();
+        } );
+
+
+
+
+
     }
 }
