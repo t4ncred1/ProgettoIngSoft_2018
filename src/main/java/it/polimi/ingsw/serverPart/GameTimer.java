@@ -10,7 +10,7 @@ public class GameTimer {
     private long timerSet;
     private long timerToStart=15;
 
-    private final int secondsToMinutesRatio = 60;
+    private final int SECOND_TO_MINUTE_RATIO = 60;
 
     public GameTimer(String message){
         switch (message){
@@ -27,11 +27,11 @@ public class GameTimer {
         public void run() {
             secondsPassed++;
             if (secondsPassed >= 60) {
-                secondsPassed = secondsPassed % secondsToMinutesRatio;
+                secondsPassed = secondsPassed % SECOND_TO_MINUTE_RATIO;
                 minutesPassed++;
             }
             System.out.println(minutesPassed+ ":"+secondsPassed);
-            if ((secondsPassed + minutesPassed * secondsToMinutesRatio) >= timerSet) {
+            if ((secondsPassed + minutesPassed * SECOND_TO_MINUTE_RATIO) >= timerSet) {
                 System.out.println("Timeout");
                 MatchHandler.notifyTimeout();
             }
