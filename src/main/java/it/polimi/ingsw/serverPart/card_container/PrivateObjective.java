@@ -35,7 +35,7 @@ public class PrivateObjective extends Objective {
         Box[][] actual_grid = grid.getGrid();
 
         for (i = 0; i < actual_grid.length; i++) {
-            for (j = 0; i < actual_grid[i].length; j++) {
+            for (j = 0; j < actual_grid[i].length; j++) {
 
                 try {
                     die_temp = actual_grid[i][j].getDie();
