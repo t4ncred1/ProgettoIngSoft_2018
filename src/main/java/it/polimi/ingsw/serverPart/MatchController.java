@@ -6,21 +6,20 @@ import it.polimi.ingsw.serverPart.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.serverPart.netPart_container.UserInterface;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.*;
 
 public class MatchController extends Thread{
-    private ArrayList<UserInterface> playersInMatch;
+    private NavigableMap<String,UserInterface> playersInMatch;
     private boolean gameStarted;
     private boolean gameStartingSoon;
     private MatchModel model;
 
-    private final int maxRound =10;
+    private final int MAX_ROUND =10;
     private boolean dieInserted;
     private boolean toolCardUsed;
-    private UserInterface turnPlayer;
 
     public MatchController(){
-        this.playersInMatch= new ArrayList<UserInterface>();
+        this.playersInMatch= new TreeMap<>();
     }
 
     @Override
@@ -50,7 +49,7 @@ public class MatchController extends Thread{
             }
 
         }
-        while(round <= maxRound);
+        while(round <= MAX_ROUND);
     }
 
     private void executeTurn(String username) throws InvalidUsernameException, InvalidOperationException {
@@ -60,7 +59,9 @@ public class MatchController extends Thread{
         dieInserted= false;
         toolCardUsed=false;
 
-        turnPlayer= getTurnPlayer(username);
+        if(username==null) throw new InvalidUsernameException(); //FIXME remove me when player creation will be implemented
+        UserInterface turnPlayer= playersInMatch.get(username);
+        if(turnPlayer==null) throw new InvalidUsernameException();
         boolean turnFinished= false;
         do {
             turnPlayer.askForOperation();
@@ -97,13 +98,7 @@ public class MatchController extends Thread{
         }while (!turnFinished);
     }
 
-    private UserInterface getTurnPlayer(String username) throws InvalidUsernameException{
-        for(UserInterface player: playersInMatch){
-            if (player.getUsername().equals(username))
-                return player;
-        }
-        throw new InvalidUsernameException();
-    }
+
 
 
     public int playerInGame() {
@@ -115,10 +110,13 @@ public class MatchController extends Thread{
 
     public void updateQueue(){
         synchronized (playersInMatch){
-            for (int i=0; i<playersInMatch.size();i++) {
-                if(!playersInMatch.get(i).isConnected()){
+            Set set= playersInMatch.keySet();
+            Iterator iterator=set.iterator();
+            while (iterator.hasNext()) {
+                String username = (String) iterator.next();
+                if(!playersInMatch.get(username).isConnected()){
                     //in this instruction player is removed both from playersInMatch and connectedPlayers
-                    MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(i), this.gameStarted);
+                    MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(username));
                 }
                 if(playersInMatch.size()>1&&!this.gameStartingSoon) MatchHandler.notifyMatchCanStart();
             }
@@ -128,7 +126,7 @@ public class MatchController extends Thread{
 
     public void insert(UserInterface client) {
         synchronized (playersInMatch) {
-            playersInMatch.add(client);
+            playersInMatch.put(client.getUsername(),client);
         }
     }
 
@@ -148,9 +146,10 @@ public class MatchController extends Thread{
             synchronized (playersInMatch) {
                 if(!timeout) {
                     try {
-                        playersInMatch.get(playersInMatch.size() - 1).notifyStarting();
+                        UserInterface lastConnection = playersInMatch.lastEntry().getValue();
+                        lastConnection.notifyStarting();
                     } catch (DisconnectionException e) {
-                        MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(playersInMatch.size() - 1), this.gameStarted);
+                        MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(playersInMatch.lastEntry().getKey()));
                     }
                 }
             }
@@ -162,7 +161,7 @@ public class MatchController extends Thread{
         else {
             synchronized (playersInMatch) {
                 playersInMatch.remove(client);
-                MatchHandler.getInstance().notifyAboutDisconnection(client, this.gameStarted);
+                MatchHandler.getInstance().notifyAboutDisconnection(client);
             }
         }
     }
@@ -170,12 +169,14 @@ public class MatchController extends Thread{
 
     private void notifyStartingSoonToPlayers() {
         synchronized (playersInMatch){
-            for(int i=0; i<playersInMatch.size();i++){
+            Set set= playersInMatch.keySet();
+            Iterator iterator=set.iterator();
+            while (iterator.hasNext()){
+                String username = (String) iterator.next();
                 try {
-                    playersInMatch.get(i).notifyStarting();
+                    playersInMatch.get(username).notifyStarting();
                 } catch (DisconnectionException e) {
-                    MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(i), this.gameStarted);
-                    e.printStackTrace();
+                    MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(username));
                 }
             }
         }
@@ -183,13 +184,17 @@ public class MatchController extends Thread{
 
     private void notifyStartToPlayers() {
         synchronized (playersInMatch){
-            for(UserInterface cl: playersInMatch){
+            Set set= playersInMatch.keySet();
+            Iterator iterator=set.iterator();
+            while (iterator.hasNext()){
+                String username = (String) iterator.next();
+                UserInterface client = playersInMatch.get(username);
+                MatchHandler.setPlayerInGame(client,this);
                 try {
-                    cl.notifyStart();
+                    client.notifyStart();
                 } catch (DisconnectionException e) {
                     //FIXME if necessary
-                    MatchHandler.getInstance().notifyAboutDisconnection(cl, this.gameStarted);
-                    e.printStackTrace();
+                    MatchHandler.getInstance().notifyAboutDisconnection(client);
                 }
             }
         }

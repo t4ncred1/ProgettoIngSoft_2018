@@ -8,6 +8,8 @@ import it.polimi.ingsw.serverPart.custom_exception.ReconnectionException;
 import it.polimi.ingsw.serverPart.netPart_container.UserInterface;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -16,12 +18,12 @@ public class MatchHandler extends Thread {
 
     private static MatchHandler instance;
 
-    private static ArrayList<String> connectedPlayers;
+    private static Map<String, MatchController> connectedPlayers;
     private static final Object connectedPlayersGuard= new Object();
     private static ArrayList<UserInterface> disconnectedInGamePlayers;
     private static MatchController startingMatch;
     private static final Object startingMatchGuard= new Object();
-    private static ArrayList<MatchController> startedMatches; //nel caso volessimo implementare multi-game
+    private static ArrayList<MatchController> startedMatches; //to handle multi-game.
     private static final Object startedMatchesGuard= new Object();
     private static Lock lock;
     private static Condition condition;
@@ -33,20 +35,20 @@ public class MatchHandler extends Thread {
     private GameTimer timer;
     private boolean shutdown;
 
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
+
+    //these color are used to highlight server log message and they are
+    //not supposed in any way to be part of the view.
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_BLUE = "\u001B[34m";
+    private static final String ANSI_PURPLE = "\u001B[35m";
+    private static final String ANSI_CYAN = "\u001B[36m";
 
     public static MatchHandler getInstance(){
         if(instance==null) {
             instance = new MatchHandler();
-            connectedPlayers= new ArrayList<>();
+            connectedPlayers= new HashMap<>();
             lock= new ReentrantLock();
             condition= lock.newCondition();
             startedMatches= new ArrayList<>();
@@ -57,10 +59,10 @@ public class MatchHandler extends Thread {
         return instance;
     }
 
-    public static void notifyMatchCanStart() {
-        lock.lock();
-        condition.signal();
-        lock.unlock();
+    public static void setPlayerInGame(UserInterface cl, MatchController game) {
+        synchronized (connectedPlayersGuard){
+            connectedPlayers.put(cl.getUsername(), game);
+        }
     }
 
 
@@ -81,6 +83,12 @@ public class MatchHandler extends Thread {
 
     public static void notifyTimeout() {
         instance.timeout=true;
+        lock.lock();
+        condition.signal();
+        lock.unlock();
+    }
+
+    public static void notifyMatchCanStart() {
         lock.lock();
         condition.signal();
         lock.unlock();
@@ -196,6 +204,7 @@ public class MatchHandler extends Thread {
                 lock.lock();
                 synchronized (startingMatchGuard) {
                     startingMatch.insert(client);
+                    //TODO remove game code. Now should be useless.
                     client.setGameCode(instance.startedMatches.size()+1);
                 }
                 condition.signal();
@@ -212,7 +221,7 @@ public class MatchHandler extends Thread {
         }
         while (!ok);
 
-        System.out.println("Player inserted");
+        System.out.println(ANSI_BLUE +client.getUsername()+ " connected successfully." + ANSI_RESET);
     }
 
     public void requestUsername(String username) throws InvalidOperationException, ReconnectionException, InvalidUsernameException {
@@ -233,43 +242,44 @@ public class MatchHandler extends Thread {
             }
 
             synchronized (connectedPlayersGuard) {
-                for (String connectedUsername : connectedPlayers) {
-                    if (connectedUsername.equals(username)) {
-                        throw new InvalidUsernameException();
-                    }
+                if (connectedPlayers.containsKey(username)) {
+                    throw new InvalidUsernameException();
                 }
-                connectedPlayers.add(username);
+                connectedPlayers.put(username, null);
             }
         }
 
     }
 
     //this method should be invoked when the lock on "connectedPlayers" is already acquired
-    public void notifyAboutDisconnection(UserInterface client, boolean gameStarted) {
-        if(gameStarted){
-            //TODO handle this case.
+    public void notifyAboutDisconnection(UserInterface client) {
+        String username = client.getUsername();
+        MatchController gameHandlingPlayer;
+        synchronized (connectedPlayersGuard) {
+            gameHandlingPlayer=connectedPlayers.remove(username);
         }
-        else {
-            connectedPlayers.remove(client.getUsername());
+        if (gameHandlingPlayer == null) {
+            //I don't have to do nothing. Players wasn't in a started game so he should be just removed from connected players
+        } else {
+            //TODO handle this case: player should be inserted in disconnected players.
         }
+
     }
 
     public void logOut(UserInterface client) throws InvalidOperationException {
-        int gameCode;
+        String username= client.getUsername();
+        MatchController gameHandlingClient;
         synchronized (connectedPlayersGuard){
-            gameCode= client.getGameCode();
+            gameHandlingClient = connectedPlayers.remove(username);
         }
         synchronized (startingMatchGuard) {
             synchronized (startedMatchesGuard) {
-                if (gameCode <= startedMatches.size()) /*TODO handle this*/ ;
+                if (gameHandlingClient!=null) /*TODO handle this*/ ;
                 else
                     startingMatch.remove(client);
             }
         }
-        synchronized (connectedPlayersGuard){
-            connectedPlayers.remove(client.getUsername());
-        }
-        System.out.println(client.getUsername() + " disconnected.");
+        System.out.println(ANSI_PURPLE+ username + " disconnected."+ ANSI_RESET);
 
     }
 }
