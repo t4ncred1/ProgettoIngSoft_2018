@@ -122,7 +122,7 @@ public class MatchHandler extends Thread {
     }
 
     public static void loadNewGame(){
-        System.out.println(ANSI_GREEN +"A new match is ready to been handled." +ANSI_RESET);
+        System.out.println(ANSI_GREEN +"A new match is ready to be handled." +ANSI_RESET);
         startingMatch = new MatchController();
         startingMatch.start();
     }

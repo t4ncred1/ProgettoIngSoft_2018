@@ -46,7 +46,6 @@ public class MatchModel{
         for (String i: playersUserNames){
             playersInGame.add(new Player(i));
         }
-
         currentRound=1;
         currentTurn=0;
         leftToRight =true;
