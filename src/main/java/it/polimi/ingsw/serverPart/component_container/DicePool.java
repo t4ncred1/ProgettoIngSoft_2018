@@ -1,6 +1,7 @@
 package it.polimi.ingsw.serverPart.component_container;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import it.polimi.ingsw.serverPart.custom_exception.*;
 
@@ -39,8 +40,8 @@ public class DicePool {
         }
 
 
-    public void showDiceInPool(){
-        //TODO should return a list of dice in pool
+    public List<Die> showDiceInPool(){
+        return pool;
     }
 
     public Die getDieFromPool(int index) throws NotInPoolException {

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.serverPart;
 
+import it.polimi.ingsw.serverPart.component_container.Die;
 import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidUsernameException;
+import it.polimi.ingsw.serverPart.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.serverPart.netPart_container.UserInterface;
 
 import java.io.FileNotFoundException;
@@ -50,7 +52,7 @@ public class MatchController extends Thread{
             }
 
         }
-        while(round <= MAX_ROUND);
+        while(round < MAX_ROUND);      //FIXME edited: why should it be <= MAX_ROUND?
     }
 
     private void executeTurn(String username) throws InvalidUsernameException, InvalidOperationException {
@@ -214,10 +216,19 @@ public class MatchController extends Thread{
         this.gameStartingSoon=gameIsNotStartingAnymore;
         this.gameStarted=gameStartedStatus;
         try {
-            model = new MatchModel();
-        } catch (FileNotFoundException e) {
+            Set<String> playerUsernames = playersInMatch.keySet();
+            model = new MatchModel(playerUsernames,this);
+        } catch (NotValidParameterException e) {
             e.printStackTrace();
         }
         this.notifyStartToPlayers();
+    }
+
+    public void passDicepoolToPlayers(List<Die> dice) {
+        //todo  should pass dicepool to players. //Tan.
+    }
+
+    public void updatePlayersGrids() {
+        //todo should pass every grid to its player
     }
 }

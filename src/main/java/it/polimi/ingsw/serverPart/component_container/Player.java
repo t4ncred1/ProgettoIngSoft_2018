@@ -1,7 +1,14 @@
 package it.polimi.ingsw.serverPart.component_container;
 
 public class Player {
-        //toDo complete this class.
+        private String username;
+
+        public Player(String username){
+            this.username=username;
+        }
+        public String getUsername(){
+            return username;
+        }
     }
 
 

@@ -3,30 +3,62 @@ package it.polimi.ingsw.serverPart;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.serverPart.card_container.PublicObjective;
+import it.polimi.ingsw.serverPart.component_container.DicePool;
+import it.polimi.ingsw.serverPart.component_container.Die;
 import it.polimi.ingsw.serverPart.component_container.Grid;
 import it.polimi.ingsw.serverPart.component_container.Player;
+import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.serverPart.custom_exception.NotInPoolException;
+import it.polimi.ingsw.serverPart.custom_exception.NotValidParameterException;
+import it.polimi.ingsw.serverPart.custom_exception.TooManyTurns;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class MatchModel{
 
+    //todo let these be read from file.
+    private static final int MAXPLAYERSNUMBER=4;
+    private static final int ROUNDNUMBER=10;
+
     private List<Grid> grids;
+    private List<PublicObjective> publicObjectives;
+
+    private ArrayList<Die> roundTrack;
+    private MatchController controller;
+    private DicePool matchDicepool;
     private int currentRound;
     private int currentTurn;
-    private boolean leftToRight; //FIXME verso di percorrenza.
-    private boolean justChanged; //FIXME se verso di percorrenza è appena stato cambiato
+    private boolean leftToRight;
+    private boolean justChanged;
     private ArrayList<Player> playersInGame;
+    private ArrayList<Player> playersNotInGame;
 
-    public MatchModel(/*MatchConfigurationsInterface config*/) throws FileNotFoundException{
+    MatchModel(Set<String> playersUserNames, MatchController controller) throws NotValidParameterException, NullPointerException{
+        if (controller==null) throw new NullPointerException();
+        this.controller=controller;
+        roundTrack=new ArrayList<>();
+
+        if (playersUserNames.size()<=2||playersUserNames.size()>MAXPLAYERSNUMBER) throw new NotValidParameterException("Number of players in game: "+Integer.toString(playersUserNames.size()),"Between 2 and "+Integer.toString(MAXPLAYERSNUMBER));
+        for (String i: playersUserNames){
+            playersInGame.add(new Player(i));
+        }
+
         currentRound=1;
         currentTurn=0;
         leftToRight =true;
+        justChanged =true;
         playersInGame= new ArrayList<>();
+        matchDicepool = new DicePool();
 
-        //TODO implement me.
+        try {
+            this.initializeRound(); //Please note: When Matchmodel is created, it actually initializes a new round and, so, it calls some methods of MatchController
+        } catch (NotInPoolException | TooManyTurns e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -36,23 +68,22 @@ public class MatchModel{
 
         grids = gson.fromJson(new FileReader(path), listType.getType());
         for(Grid i : grids){
-            //TODO initialize grids with box observers
+            i.associateBoxes();
         }
+        //todo pass these to who's on duty.
     }
 
     private void lookForPublicObjectives(String path) throws FileNotFoundException {
         Gson gson = new Gson();
         TypeToken<List<PublicObjective>> listType = new TypeToken<List<PublicObjective>>() {
         };
-        List<PublicObjective> publicObjectives;
         publicObjectives = gson.fromJson(new FileReader(path), listType.getType());
-        for (PublicObjective i : publicObjectives) {
-            //TODO pass public obj to who's on duty
-        }
+        //TODO pass these to who's on duty.
     }
 
     public int updateTurn(){
-        if(leftToRight){ //FIXME verso di percorrenza.
+        controller.updatePlayersGrids(); //FIXME
+        if(leftToRight){
             if(justChanged)  //Se il verso di percorrenza è appena stato modificato currentTurn non deve cambiare.
                 justChanged=false;
             else
@@ -70,28 +101,46 @@ public class MatchModel{
             if(currentTurn==0){
                 leftToRight=true;
                 justChanged=true;
+                currentRound++;
+                playersInGame.add(playersInGame.remove(0));     //reorders players for new Round.
+                try {
+                    this.initializeRound();
+                } catch (NotInPoolException | TooManyTurns e) {
+                    e.printStackTrace();
+                }
             }
         }
         return currentRound;
     }
 
+    private void initializeRound() throws NotInPoolException, TooManyTurns{
+
+        if (roundTrack.size()>=ROUNDNUMBER) throw new TooManyTurns(); // throw exception if roundtrack is more than ten.
+        roundTrack.add(matchDicepool.getDieFromPool(0));    //if there aren't any dice in DicePool at the end of the turn, throws NotInPoolException.
+        try {
+            matchDicepool.generateDiceForPull(playersInGame.size()*2+1);
+        } catch (NotValidParameterException e) {
+            e.printStackTrace();
+        }
+    }
+
     public String requestTurnPlayer() {
-        //TODO implement me.
-        return null;
+        return playersInGame.get(currentTurn).getUsername();
     }
 
     public boolean insertDieOperation() {
-        //TODO implement me. When this operation goes well have to return true; This operation could be interrupted.
+        //call the controller to get parameters (index of the die in dicepool, position of the box in grid )
+        //TODO implement me. When this operation goes well it has to return true; This operation could be interrupted.
         return false;
     }
 
     public boolean useToolCardOperation() {
         //TODO implement me.
         return false;
-
     }
 
-    //FIXME
-    //se ti servono metodi di matchController creali e lasciali vuoti con un TODO.
+    public List<Die> getDicePool(){
+        return matchDicepool.showDiceInPool();
+    }
 
 }
