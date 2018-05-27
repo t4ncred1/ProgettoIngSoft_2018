@@ -14,17 +14,19 @@ import java.util.List;
 public class MatchModel{
 
     private List<Grid> grids;
+    private MatchController controller;
     private int currentRound;
     private int currentTurn;
     private boolean leftToRight; //FIXME verso di percorrenza.
     private boolean justChanged; //FIXME se verso di percorrenza è appena stato cambiato
     private ArrayList<Player> playersInGame;
 
-    public MatchModel(/*MatchConfigurationsInterface config*/) throws FileNotFoundException{
+    public MatchModel(/*MatchConfigurationsInterface config,*/MatchController controller) throws FileNotFoundException{
         currentRound=1;
         currentTurn=0;
         leftToRight =true;
         playersInGame= new ArrayList<>();
+        this.controller=controller;
 
         //TODO implement me.
 

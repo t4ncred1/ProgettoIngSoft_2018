@@ -214,7 +214,7 @@ public class MatchController extends Thread{
         this.gameStartingSoon=gameIsNotStartingAnymore;
         this.gameStarted=gameStartedStatus;
         try {
-            model = new MatchModel();
+            model = new MatchModel(this);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

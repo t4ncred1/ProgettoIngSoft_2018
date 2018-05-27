@@ -39,7 +39,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
             while (!read.equals("login"));
             System.out.println("Welcome to Sagrada server. Please choose a username:");
             do{
-                written=scanner.nextLine();
+                written=scanner.nextLine(); //FIXME
                 outputStream.writeUTF(written);
                 do{
                     read=inputStream.readUTF();
