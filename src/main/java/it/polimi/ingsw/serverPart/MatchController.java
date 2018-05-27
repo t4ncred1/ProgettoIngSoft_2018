@@ -10,6 +10,7 @@ import java.util.*;
 
 public class MatchController extends Thread{
     private Map<String,UserInterface> playersInMatch;
+    private static final Object playersInMatchGuard = new Object();
     private boolean gameStarted;
     private boolean gameStartingSoon;
     private MatchModel model;
@@ -17,10 +18,9 @@ public class MatchController extends Thread{
     private final int MAX_ROUND =10;
     private boolean dieInserted;
     private boolean toolCardUsed;
-    private UserInterface lastConnection;
 
     public MatchController(){
-        this.playersInMatch= new HashMap<>();
+        this.playersInMatch= new LinkedHashMap<>();
     }
 
     @Override
@@ -110,14 +110,15 @@ public class MatchController extends Thread{
     }
 
     public void updateQueue(){
-        synchronized (playersInMatch){
+        synchronized (playersInMatchGuard){
             Set set= playersInMatch.keySet();
             Iterator iterator=set.iterator();
             while (iterator.hasNext()) {
                 String username = (String) iterator.next();
                 if(!playersInMatch.get(username).isConnected()){
                     //in this instruction player is removed both from playersInMatch and connectedPlayers
-                    MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(username));
+                    playersInMatch.remove(username);
+                    MatchHandler.getInstance().notifyAboutDisconnection(username);
                 }
                 if(playersInMatch.size()>1&&!this.gameStartingSoon) MatchHandler.notifyMatchCanStart();
             }
@@ -126,9 +127,8 @@ public class MatchController extends Thread{
     }
 
     public void insert(UserInterface client) {
-        synchronized (playersInMatch) {
+        synchronized (playersInMatchGuard) {
             playersInMatch.put(client.getUsername(),client);
-            lastConnection=client;
         }
     }
 
@@ -145,12 +145,18 @@ public class MatchController extends Thread{
             this.notifyStartingSoonToPlayers();
         }
         else {
-            synchronized (playersInMatch) {
+            synchronized (playersInMatchGuard) {
                 if(!timeout) {
+                    Set list = playersInMatch.keySet();
+                    Iterator iterator = list.iterator();
+                    UserInterface lastConnection= null;
+                    while (iterator.hasNext())lastConnection =playersInMatch.get(iterator.next().toString());
                     try {
-                        lastConnection.notifyStarting();
+                        if(lastConnection!=null) lastConnection.notifyStarting();
                     } catch (DisconnectionException e) {
-                        MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(lastConnection));
+                        String username = lastConnection.getUsername();
+                        playersInMatch.remove(username);
+                        MatchHandler.getInstance().notifyAboutDisconnection(username);
                     }
                 }
             }
@@ -160,16 +166,15 @@ public class MatchController extends Thread{
     public void remove(UserInterface client) throws InvalidOperationException {
         if(gameStartingSoon) throw new InvalidOperationException();
         else {
-            synchronized (playersInMatch) {
-                playersInMatch.remove(client);
-                MatchHandler.getInstance().notifyAboutDisconnection(client);
+            synchronized (playersInMatchGuard) {
+                playersInMatch.remove(client.getUsername());
             }
         }
     }
 
 
     private void notifyStartingSoonToPlayers() {
-        synchronized (playersInMatch){
+        synchronized (playersInMatchGuard){
             Set set= playersInMatch.keySet();
             Iterator iterator=set.iterator();
             while (iterator.hasNext()){
@@ -177,25 +182,26 @@ public class MatchController extends Thread{
                 try {
                     playersInMatch.get(username).notifyStarting();
                 } catch (DisconnectionException e) {
-                    MatchHandler.getInstance().notifyAboutDisconnection(playersInMatch.remove(username));
+                    playersInMatch.remove(username);
+                    MatchHandler.getInstance().notifyAboutDisconnection(username);
                 }
             }
         }
     }
 
     private void notifyStartToPlayers() {
-        synchronized (playersInMatch){
+        synchronized (playersInMatchGuard){
             Set set= playersInMatch.keySet();
             Iterator iterator=set.iterator();
             while (iterator.hasNext()){
                 String username = (String) iterator.next();
                 UserInterface client = playersInMatch.get(username);
-                MatchHandler.setPlayerInGame(client,this);
+                MatchHandler.setPlayerInGame(username,this);
                 try {
                     client.notifyStart();
                 } catch (DisconnectionException e) {
                     //FIXME if necessary
-                    MatchHandler.getInstance().notifyAboutDisconnection(client);
+                    MatchHandler.getInstance().notifyAboutDisconnection(client.getUsername());
                 }
             }
         }

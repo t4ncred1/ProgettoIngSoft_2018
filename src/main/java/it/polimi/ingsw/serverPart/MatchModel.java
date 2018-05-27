@@ -81,7 +81,7 @@ public class MatchModel{
     }
 
     public boolean insertDieOperation() {
-        //TODO implement me. When this operation goes well have to return true;
+        //TODO implement me. When this operation goes well have to return true; This operation could be interrupted.
         return false;
     }
 

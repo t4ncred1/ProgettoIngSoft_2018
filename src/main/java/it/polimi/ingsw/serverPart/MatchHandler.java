@@ -59,9 +59,9 @@ public class MatchHandler extends Thread {
         return instance;
     }
 
-    public static void setPlayerInGame(UserInterface cl, MatchController game) {
+    public static void setPlayerInGame(String username, MatchController game) {
         synchronized (connectedPlayersGuard){
-            connectedPlayers.put(cl.getUsername(), game);
+            connectedPlayers.put(username, game);
         }
     }
 
@@ -251,9 +251,8 @@ public class MatchHandler extends Thread {
 
     }
 
-    //this method should be invoked when the lock on "connectedPlayers" is already acquired
-    public void notifyAboutDisconnection(UserInterface client) {
-        String username = client.getUsername();
+
+    public void notifyAboutDisconnection(String username) {
         MatchController gameHandlingPlayer;
         synchronized (connectedPlayersGuard) {
             gameHandlingPlayer=connectedPlayers.remove(username);
@@ -279,7 +278,7 @@ public class MatchHandler extends Thread {
                     startingMatch.remove(client);
             }
         }
-        System.out.println(ANSI_PURPLE+ username + " disconnected."+ ANSI_RESET);
+        System.out.println(ANSI_PURPLE+ username + " logged out."+ ANSI_RESET);
 
     }
 }
