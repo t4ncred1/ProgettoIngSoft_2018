@@ -3,6 +3,8 @@ package it.polimi.ingsw.serverPart.netPart_container;
 
 import it.polimi.ingsw.serverPart.custom_exception.*;
 
+import java.util.ArrayList;
+
 
 public interface UserInterface {
     boolean isConnected();
@@ -27,4 +29,12 @@ public interface UserInterface {
     void notifyAlreadyDoneOperation();
 
     void askForOperation();
+
+    void sendGrids(); //Implement this in SocketUserAgent and RMIUserAgent
+
+    void notifyDisconnection();
+
+    void notifyTurnOf(String username, String status);
+
+    void sendConnectedPlayers(ArrayList<String> connectedPlayers);
 }

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.serverPart.netPart_container;
 
-import it.polimi.ingsw.serverPart.MatchController;
 import it.polimi.ingsw.serverPart.MatchHandler;
 import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
@@ -9,6 +8,7 @@ import it.polimi.ingsw.serverPart.custom_exception.ReconnectionException;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class SocketUserAgent extends Thread implements UserInterface {
 
@@ -176,6 +176,26 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     @Override
     public void askForOperation() {
+
+    }
+
+    @Override
+    public void sendGrids() {
+
+    }
+
+    @Override
+    public void notifyDisconnection() {
+
+    }
+
+    @Override
+    public void notifyTurnOf(String username, String status) {
+
+    }
+
+    @Override
+    public void sendConnectedPlayers(ArrayList<String> connectedPlayers) {
 
     }
 

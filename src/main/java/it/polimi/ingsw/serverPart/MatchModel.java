@@ -7,10 +7,9 @@ import it.polimi.ingsw.serverPart.component_container.DicePool;
 import it.polimi.ingsw.serverPart.component_container.Die;
 import it.polimi.ingsw.serverPart.component_container.Grid;
 import it.polimi.ingsw.serverPart.component_container.Player;
-import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.serverPart.custom_exception.NotInPoolException;
 import it.polimi.ingsw.serverPart.custom_exception.NotValidParameterException;
-import it.polimi.ingsw.serverPart.custom_exception.TooManyTurns;
+import it.polimi.ingsw.serverPart.custom_exception.TooManyRoundsException;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -21,15 +20,16 @@ import java.util.Set;
 public class MatchModel{
 
     //todo let these be read from file.
-    private static final int MAXPLAYERSNUMBER=4;
-    private static final int ROUNDNUMBER=10;
+    private static final int MAX_PLAYERS_NUMBER =4;
+    private static final int MIN_PLAYERS_NUMBER=2;
+    private static final int ROUND_NUMBER =10;
 
     private List<Grid> grids;
     private List<PublicObjective> publicObjectives;
 
     private ArrayList<Die> roundTrack;
     private MatchController controller;
-    private DicePool matchDicepool;
+    private DicePool matchDicePool;
     private int currentRound;
     private int currentTurn;
     private boolean leftToRight;
@@ -42,20 +42,26 @@ public class MatchModel{
         this.controller=controller;
         roundTrack=new ArrayList<>();
 
-        if (playersUserNames.size()<=2||playersUserNames.size()>MAXPLAYERSNUMBER) throw new NotValidParameterException("Number of players in game: "+Integer.toString(playersUserNames.size()),"Between 2 and "+Integer.toString(MAXPLAYERSNUMBER));
-        for (String i: playersUserNames){
-            playersInGame.add(new Player(i));
+        if (playersUserNames.size()<MIN_PLAYERS_NUMBER||playersUserNames.size()> MAX_PLAYERS_NUMBER) throw new NotValidParameterException("Number of players in game: "+Integer.toString(playersUserNames.size()),"Between 2 and "+Integer.toString(MAX_PLAYERS_NUMBER));
+
+        //player initialization:
+        playersInGame= new ArrayList<>();
+        for (String username: playersUserNames){
+            Player playerToAdd = new Player(username);
+            //FIXME here set grids to the player. Create a custom methods to choose grid
+            playerToAdd.setGridsSelection(selectGridsForPlayer());
+            //TODO NOTE: select grids for player could be a method returning an ArrayList of grids, need to be implemented.
+            playersInGame.add(playerToAdd);
         }
         currentRound=1;
         currentTurn=0;
         leftToRight =true;
         justChanged =true;
-        playersInGame= new ArrayList<>();
-        matchDicepool = new DicePool();
+        matchDicePool = new DicePool();
 
         try {
-            this.initializeRound(); //Please note: When Matchmodel is created, it actually initializes a new round and, so, it calls some methods of MatchController
-        } catch (NotInPoolException | TooManyTurns e) {
+            initializeRound();
+        } catch (NotInPoolException e) {
             e.printStackTrace();
         }
 
@@ -80,8 +86,7 @@ public class MatchModel{
         //TODO pass these to who's on duty.
     }
 
-    public int updateTurn(){
-        controller.updatePlayersGrids(); //FIXME
+    public void updateTurn(int maxRounds) throws TooManyRoundsException {
         if(leftToRight){
             if(justChanged)  //Se il verso di percorrenza è appena stato modificato currentTurn non deve cambiare.
                 justChanged=false;
@@ -103,24 +108,23 @@ public class MatchModel{
                 currentRound++;
                 playersInGame.add(playersInGame.remove(0));     //reorders players for new Round.
                 try {
-                    this.initializeRound();
-                } catch (NotInPoolException | TooManyTurns e) {
+                    this.prepareForNextRound(maxRounds);
+                } catch (NotInPoolException | NotValidParameterException e) {
                     e.printStackTrace();
                 }
             }
         }
-        return currentRound;
     }
 
-    private void initializeRound() throws NotInPoolException, TooManyTurns{
+    private void prepareForNextRound(int maxRounds) throws NotInPoolException, TooManyRoundsException, NotValidParameterException {
+        //FIXME added this method to get better logic implementation (andre)
+        if (roundTrack.size()>= maxRounds) throw new TooManyRoundsException(); // throw exception if roundtrack is more than ten.
+        initializeRound();
+    }
 
-        if (roundTrack.size()>=ROUNDNUMBER) throw new TooManyTurns(); // throw exception if roundtrack is more than ten.
-        roundTrack.add(matchDicepool.getDieFromPool(0));    //if there aren't any dice in DicePool at the end of the turn, throws NotInPoolException.
-        try {
-            matchDicepool.generateDiceForPull(playersInGame.size()*2+1);
-        } catch (NotValidParameterException e) {
-            e.printStackTrace();
-        }
+    private void initializeRound() throws NotValidParameterException, NotInPoolException {
+        matchDicePool.generateDiceForPull(playersInGame.size()*2+1); //FIXME added by andre (launching this methods later throws a nullPointerExc)
+        roundTrack.add(matchDicePool.getDieFromPool(0));    //if there aren't any dice in DicePool at the end of the turn, throws NotInPoolException.
     }
 
     public String requestTurnPlayer() {
@@ -139,7 +143,59 @@ public class MatchModel{
     }
 
     public List<Die> getDicePool(){
-        return matchDicepool.showDiceInPool();
+        return matchDicePool.showDiceInPool();
     }
 
+    private ArrayList<Grid> selectGridsForPlayer() {
+        //TODO this method should select 2 pair of grids from grids and return them. These grids will be given to a player
+        return null;
+    }
+
+    public ArrayList<Grid> getGridsForPlayer(String username) {
+        /*TODO ask to the selected player his initials grids.
+        * The idea is that when matchModel create players, it automatically takes 2 pairs of grids and put it in player
+        * in a proper field.
+        * This methods should return these grids that the model set in initialization.
+        * NOTE: this return the grids of a single player, not all the grids!
+        */
+
+        //Possible implementation
+        Player playerPassed= null;
+        for(Player player: playersInGame)
+            if(player.getUsername().equals(username)) playerPassed=player;
+        //FIXME throw an exception if playerPassed remains null ?
+        ArrayList<Grid> toReturn= playerPassed.getGridsSelection();  //FIXME throw an exception if toReturn=null ?
+        return toReturn;
+    }
+
+    public void setPlayerGrid(String player, int grid) {
+        //TODO
+        //the integer grid represent the index of the grid chosen by the player in gridSelection
+        //Set the grid and throw and exception if necessary
+    }
+
+    public boolean checkEndInitialization() {
+        //TODO return true if all players had chosen a grid
+        return false;
+    }
+
+    public boolean hasPlayerChosenAGrid(String username) {
+        //TODO this method return true if the player passed have chosen a grid.
+       return false;
+    }
+
+    public Grid getSelectedGrid(String username) {
+        //TODO return grid selected from the player
+
+        //possible implementation
+        Player playerPassed= null;
+        for(Player player: playersInGame)
+            if(player.getUsername().equals(username)) playerPassed=player;
+        Grid toReturn = playerPassed.getSelectedGrid();  //FIXME throw an exception if toReturn=null ?
+        return toReturn;
+    }
+
+    public void setPlayerToDisconnect(String username){
+        //TODO
+    }
 }

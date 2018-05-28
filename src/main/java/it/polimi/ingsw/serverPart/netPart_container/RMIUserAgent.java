@@ -8,6 +8,7 @@ import it.polimi.ingsw.serverPart.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.serverPart.custom_exception.ReconnectionException;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class RMIUserAgent implements UserInterface {
 
@@ -103,6 +104,26 @@ public class RMIUserAgent implements UserInterface {
 
     @Override
     public void askForOperation() {
+
+    }
+
+    @Override
+    public void sendGrids() {
+
+    }
+
+    @Override
+    public void notifyDisconnection() {
+
+    }
+
+    @Override
+    public void notifyTurnOf(String username, String status) {
+
+    }
+
+    @Override
+    public void sendConnectedPlayers(ArrayList<String> connectedPlayers) {
 
     }
 

@@ -23,15 +23,15 @@ public class DicePool {
     }
 
     public void generateDiceForPull(int number) throws NotValidParameterException {
-        String randomAvaiableColor;
+        String randomAvailableColor;
         int randomDieValue;
         final String expectedValueType= "Value: 3, 4, 5, 6, 7, 8, 9";
         final String strValue;
         if(number>=3&&number<=9){
             for(int i=0; i<number;i++) {
-                randomAvaiableColor = availableColors.remove((int) (Math.random() * availableColors.size()));
+                randomAvailableColor = availableColors.remove((int) (Math.random() * availableColors.size()));
                 randomDieValue = (int) (Math.random() * 6 + 1);
-                pool.add(new Die(randomAvaiableColor, randomDieValue));
+                pool.add(new Die(randomAvailableColor, randomDieValue));
             }
         } else {
                  strValue=((Integer)number).toString();

@@ -20,7 +20,8 @@ public class MatchHandler extends Thread {
 
     private static Map<String, MatchController> connectedPlayers;
     private static final Object connectedPlayersGuard= new Object();
-    private static ArrayList<UserInterface> disconnectedInGamePlayers;
+    private static Map<String, MatchController> disconnectedInGamePlayers;
+    private static final Object disconnectedInGamePlayersGuard = new Object();
     private static MatchController startingMatch;
     private static final Object startingMatchGuard= new Object();
     private static ArrayList<MatchController> startedMatches; //to handle multi-game.
@@ -52,7 +53,7 @@ public class MatchHandler extends Thread {
             lock= new ReentrantLock();
             condition= lock.newCondition();
             startedMatches= new ArrayList<>();
-            disconnectedInGamePlayers= new ArrayList<>();
+            disconnectedInGamePlayers= new HashMap<>();
             instance.timeout=true;
             instance.shutdown= false;
         }
@@ -216,7 +217,17 @@ public class MatchHandler extends Thread {
             }
             catch (ReconnectionException e){
                 ok=true;
-                //TODO handle this case.
+                MatchController game =null;
+                synchronized (disconnectedInGamePlayersGuard) {
+                    game = disconnectedInGamePlayers.remove(client.getUsername());
+                }
+                synchronized (connectedPlayersGuard){
+                    connectedPlayers.put(client.getUsername(), game);
+                    System.out.println(ANSI_BLUE+ client.getUsername() + " reinserted in game #"+startedMatches.indexOf(game) +ANSI_RESET);
+                }
+                game.handleReconnection(client);
+
+
             }
         }
         while (!ok);
@@ -227,14 +238,13 @@ public class MatchHandler extends Thread {
     public void requestUsername(String username) throws InvalidOperationException, ReconnectionException, InvalidUsernameException {
         if(username.equals("")) throw new InvalidUsernameException();
         synchronized (startingMatchGuard) {
-            synchronized (disconnectedInGamePlayers) {
-                if (startingMatch == null) {
-                    //FIXME, disconnected list won't probably be an ArrayList of ClientInterfaces
-                    for (UserInterface cl : disconnectedInGamePlayers) {
-                        if (cl.getUsername() == username) {
-                            throw new ReconnectionException();
-                        }
+            synchronized (disconnectedInGamePlayersGuard) {
+                for (Map.Entry<String,MatchController> client: disconnectedInGamePlayers.entrySet()) {
+                    if (client.getKey().equals(username)) {
+                        throw new ReconnectionException();
                     }
+                }
+                if (startingMatch == null) {
                     throw new InvalidOperationException();
                 }
                 else
@@ -260,7 +270,9 @@ public class MatchHandler extends Thread {
         if (gameHandlingPlayer == null) {
             //I don't have to do nothing. Players wasn't in a started game so he should be just removed from connected players
         } else {
-            //TODO handle this case: player should be inserted in disconnected players.
+            synchronized (disconnectedInGamePlayersGuard){
+                if(!disconnectedInGamePlayers.containsKey(username)) disconnectedInGamePlayers.put(username, gameHandlingPlayer);
+            }
         }
 
     }
