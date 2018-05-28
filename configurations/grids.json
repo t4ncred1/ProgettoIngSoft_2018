@@ -1,5 +1,1506 @@
 [{
-		"name": "Aurorae Magnificus",
+		"name": "Kaleidoscopic Dream",
+		"difficulty": 4,
+		"gameGrid": [
+			[{
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	}, {
+		"name": "Firmitas",
+		"difficulty": 5,
+		"gameGrid": [
+			[{
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	}, {
+		"name": "Fractal Drops",
+		"difficulty": 3,
+		"gameGrid": [
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	}, {
+		"name": "Ripples of Light",
+		"difficulty": 5,
+		"gameGrid": [
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	}, {
+		"name": "Lux Mundi",
+		"difficulty": 6,
+		"gameGrid": [
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	},
+	{
+		"name": "Lux Astram",
+		"difficulty": 5,
+		"gameGrid": [
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	}, {
+		"name": "Gravitas",
+		"difficulty": 5,
+		"gameGrid": [
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	}, {
+		"name": "Water of Life",
+		"difficulty": 6,
+		"gameGrid": [
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	},
+	{
+		"name": "Sun Catcher",
+		"difficulty": 3,
+		"gameGrid": [
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	}, {
+		"name": "Shadow Thief",
+		"difficulty": 5,
+		"gameGrid": [
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	}, {"name": "Aurorae Magnificus",
 		"difficulty": 5,
 		"gameGrid": [
 			[{ 
@@ -292,6 +1793,606 @@
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	}, {
+		"name": "Symphony of Lights",
+		"difficulty": 6,
+		"gameGrid": [
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 0, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 2,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	}, {
+		"name": "Virtus",
+		"difficulty": 5,
+		"gameGrid": [
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	}, {
+		"name": "Firelight",
+		"difficulty": 5,
+		"gameGrid": [
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 3
+			}]
+		]
+	}, {
+		"name": "Sun\u0027s Glory",
+		"difficulty": 6,
+		"gameGrid": [
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [1, 1, 1, 1, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 4,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
 				"opened": 1,
 				"coordX": 4,
@@ -599,758 +2700,6 @@
 			}]
 		]
 	}, {
-		"name": "Chromatic Splendor",
-		"difficulty": 3,
-		"gameGrid": [
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	},
-	{
-		"name": "Comitas",
-		"difficulty": 5,
-		"gameGrid": [
-			[{
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	}, {
-		"name": "Firelight",
-		"difficulty": 5,
-		"gameGrid": [
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	}, {
-		"name": "Firmitas",
-		"difficulty": 5,
-		"gameGrid": [
-			[{
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	},
-	{
-		"name": "Fractal Drops",
-		"difficulty": 3,
-		"gameGrid": [
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	}, {
 		"name": "Fulgor del Cielo",
 		"difficulty": 5,
 		"gameGrid": [
@@ -1501,756 +2850,7 @@
 			}]
 		]
 	}, {
-		"name": "Gravitas",
-		"difficulty": 5,
-		"gameGrid": [
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	}, {
-		"name": "Industria",
-		"difficulty": 5,
-		"gameGrid": [
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	}, {
-		"name": "Kaleidoscopic Dream",
-		"difficulty": 4,
-		"gameGrid": [
-			[{
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	}, {
-		"name": "Lux Astram",
-		"difficulty": 5,
-		"gameGrid": [
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	}, {
-		"name": "Lux Mundi",
-		"difficulty": 6,
-		"gameGrid": [
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	}, {
+		
 		"name": "Luz Celestial",
 		"difficulty": 3,
 		"gameGrid": [
@@ -2401,307 +3001,8 @@
 			}]
 		]
 	}, {
-		"name": "Ripples of Light",
-		"difficulty": 5,
-		"gameGrid": [
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	}, {
-		"name": "Shadow Thief",
-		"difficulty": 5,
-		"gameGrid": [
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	}, {
-		"name": "Sun Catcher",
+		
+		"name": "Chromatic Splendor",
 		"difficulty": 3,
 		"gameGrid": [
 			[{
@@ -2713,8 +3014,8 @@
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
@@ -2726,67 +3027,67 @@
 				"coordX": 0,
 				"coordY": 2
 			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
 			}],
 			[{
-				"colorRestriction": [1, 1, 0, 1, 1],
+				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
+				"constraintIndex": 0,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
 			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
 			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
+				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": 1,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
 			}],
 			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
+				"colorRestriction": [0, 1, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
 				"opened": 0,
 				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 0,
+				"coordX": 2,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -2799,16 +3100,16 @@
 				"coordX": 3,
 				"coordY": 0
 			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
+				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
+				"constraintIndex": 2,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
 			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
+				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
+				"constraintIndex": 4,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -2821,15 +3122,15 @@
 				"coordY": 3
 			}],
 			[{
-				"colorRestriction": [1, 1, 1, 0, 1],
+				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
+				"constraintIndex": 0,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
 				"opened": 1,
 				"coordX": 4,
@@ -2842,194 +3143,44 @@
 				"coordX": 4,
 				"coordY": 2
 			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
 			}]
 		]
 	}, {
-		"name": "Sun\u0027s Glory",
-		"difficulty": 6,
+		"name": "Comitas",
+		"difficulty": 5,
 		"gameGrid": [
 			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
 				"opened": 1,
 				"coordX": 0,
-				"coordY": 2
+				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
 				"opened": 1,
 				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [1, 1, 1, 1, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 0,
-				"coordX": 1,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
 				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 4,
+				"coordX": 0,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
 				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	}, {
-		"name": "Symphony of Light",
-		"difficulty": 6,
-		"gameGrid": [
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
 			}],
@@ -3042,102 +3193,102 @@
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
 			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
+				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
+				"constraintIndex": 0,
 				"opened": 0,
 				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 0, 1, 1, 1, 1],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 3,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 3,
+				"coordY": 1
+			}, {
+				"colorRestriction": [1, 1, 1, 0, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 3,
+				"opened": 0,
+				"coordX": 3,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
 				"opened": 1,
-				"coordX": 1,
+				"coordX": 3,
 				"coordY": 3
 			}],
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
 				"opened": 1,
-				"coordX": 2,
+				"coordX": 4,
 				"coordY": 0
 			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
+				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
 				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 0,
-				"coordX": 3,
+				"coordX": 4,
 				"coordY": 1
-			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 0, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
@@ -3301,265 +3452,115 @@
 			}]
 		]
 	}, {
-		"name": "Virtus",
+		"name": "Industria",
 		"difficulty": 5,
 		"gameGrid": [
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 0, 1, 1, 1],
-				"constraintIndex": 2,
-				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
 				"opened": 1,
+				"coordX": 0,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 0,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 0
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 0, 1, 1],
+				"constraintIndex": 3,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 0,
+				"coordX": 1,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
+				"coordX": 1,
+				"coordY": 3
+			}],
+			[{
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 0, 1, 1, 1],
+				"constraintIndex": 2,
+				"opened": 1,
+				"coordX": 2,
+				"coordY": 0
+			}, {
+				"colorRestriction": [1, 0, 1, 1, 1],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 1,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 1
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [1, 1, 1, 1, 0, 1],
+				"constraintIndex": 4,
+				"opened": 0,
+				"coordX": 2,
+				"coordY": 2
+			}, {
+				"colorRestriction": [0, 0, 0, 0, 0],
+				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"constraintIndex": 0,
+				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
 			}],
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
 				"opened": 1,
 				"coordX": 3,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 4,
-				"coordY": 3
-			}]
-		]
-	}, {
-		"name": "Water of Life",
-		"difficulty": 6,
-		"gameGrid": [
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 0, 1, 1],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 1, 1, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 0,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 0, 1],
-				"constraintIndex": 4,
 				"opened": 0,
-				"coordX": 1,
+				"coordX": 3,
 				"coordY": 1
 			}, {
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
 				"opened": 0,
-				"coordX": 1,
-				"coordY": 2
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 1, 1, 1, 1, 0],
-				"constraintIndex": 5,
-				"opened": 1,
-				"coordX": 1,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 0
-			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 1
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [1, 0, 1, 1, 1, 1],
-				"constraintIndex": 1,
-				"opened": 0,
-				"coordX": 2,
-				"coordY": 2
-			}, {
-				"colorRestriction": [1, 1, 1, 0, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 3,
-				"opened": 1,
-				"coordX": 2,
-				"coordY": 3
-			}],
-			[{
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 1,
-				"coordX": 3,
-				"coordY": 0
-			}, {
-				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
-				"opened": 0,
-				"coordX": 3,
-				"coordY": 1
-			}, {
-				"colorRestriction": [1, 1, 0, 1, 1],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 2,
-				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
 			}, {
@@ -3572,8 +3573,8 @@
 			}],
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 1, 1, 1, 1, 1],
-				"constraintIndex": 0,
+				"valueRestriction": [1, 1, 1, 1, 1, 0],
+				"constraintIndex": 5,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
@@ -3586,15 +3587,15 @@
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
-				"valueRestriction": [0, 0, 0, 0, 0, 0],
+				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
 			}, {
-				"colorRestriction": [1, 1, 1, 1, 0],
+				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 4,
+				"constraintIndex": 1,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
