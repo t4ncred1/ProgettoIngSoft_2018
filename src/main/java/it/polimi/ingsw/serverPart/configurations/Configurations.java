@@ -1,21 +1,19 @@
 package it.polimi.ingsw.serverPart.configurations;
 
-import com.google.gson.Gson;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.Serializable;
 
 class Configurations implements Serializable {
 
     private String gridsPath;
     private String publicObjectivesPath;
-    private int MaxPlayersNumber;
-    private int MinPlayersNumber;
+    private int maxPlayersNumber;
+    private int minPlayersNumber;
 
-    Configurations(String gridsPath,String publicObjectivesPath){
+    Configurations(String gridsPath,String publicObjectivesPath, int MaxPlayersNumber, int MinPlayersNumber){
         this.gridsPath=gridsPath;
         this.publicObjectivesPath=publicObjectivesPath;
+        this.minPlayersNumber=MinPlayersNumber;
+        this.maxPlayersNumber=MaxPlayersNumber;
     }
 
     String getGridsPath(){
@@ -27,10 +25,10 @@ class Configurations implements Serializable {
     }
 
     int getMaxPlayersNumber() {
-        return MaxPlayersNumber;
+        return maxPlayersNumber;
     }
 
     int getMinPlayersNumber() {
-        return MinPlayersNumber;
+        return minPlayersNumber;
     }
 }
