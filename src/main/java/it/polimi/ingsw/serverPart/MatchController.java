@@ -1,5 +1,6 @@
 package it.polimi.ingsw.serverPart;
 
+import it.polimi.ingsw.serverPart.component_container.Die;
 import it.polimi.ingsw.serverPart.component_container.Grid;
 import it.polimi.ingsw.serverPart.custom_exception.*;
 import it.polimi.ingsw.serverPart.netPart_container.UserInterface;
@@ -80,7 +81,11 @@ public class MatchController extends Thread{
 
     private void initializeGame() {
         for(Map.Entry<String,UserInterface> entry : playersInMatch.entrySet()) {
-            ArrayList<Grid> gridsToSend= model.getGridsForPlayer(entry.getKey());
+            try {
+                ArrayList<Grid> gridsToSend= (ArrayList<Grid>) model.getGridsForPlayer(entry.getKey());
+            } catch (InvalidOperationException e) {
+                e.printStackTrace();    //only thrown if player is not in match.
+            }
             entry.getValue().sendGrids(); //FIXME
         }
         GameTimer timer = new GameTimer(this, "initialization");
@@ -107,12 +112,21 @@ public class MatchController extends Thread{
             ArrayList<String> disconnectedPlayers = new ArrayList<>();
             for(Map.Entry<String,UserInterface> entry : playersInMatch.entrySet()) {
                 String username= entry.getKey();
-                Boolean hasPlayerChosenAGrid= model.hasPlayerChosenAGrid(username);
+                Boolean hasPlayerChosenAGrid= null;
+                try {
+                    hasPlayerChosenAGrid = model.hasPlayerChosenAGrid(username);
+                } catch (NotValidParameterException e) {
+                    e.printStackTrace(); //FIXME caused by "hasPlayerChosenAGrid" when username passed is not in game. Should this exception be thrown?
+                }
                 ok= ok && hasPlayerChosenAGrid;
 
                 //if timeout event occurred and player still has not chosen a grid he can be considered as disconnected.
                 if(timeout&&!hasPlayerChosenAGrid){
-                    model.setPlayerToDisconnect(username);
+                    try {
+                        model.setPlayerToDisconnect(username);
+                    } catch (NotValidParameterException e) {
+                        e.printStackTrace();    //fixme only thrown if username passe is not in current match.
+                    }
                     entry.getValue().notifyDisconnection();
                     MatchHandler.getInstance().notifyAboutDisconnection(entry.getKey());
                     disconnectedPlayers.add(username);
@@ -369,6 +383,8 @@ public class MatchController extends Thread{
             model = new MatchModel(playerUserNames,this);
         } catch (NotValidParameterException e) {
             e.printStackTrace();
+        } catch (NotValidConfigPathException e) {
+            e.printStackTrace();    //FIXME this exception is thrown if the configuration file is wrong.
         }
         this.notifyStartToPlayers();
     }
@@ -383,7 +399,11 @@ public class MatchController extends Thread{
         String player = client.getUsername();
         if(!playersInMatch.get(player).equals(client)) throw new InvalidOperationException();
         synchronized (modelGuard){
-            model.setPlayerGrid(player,grid);
+            try {
+                model.setPlayerGrid(player,grid);
+            } catch (NotValidParameterException e) {
+                e.printStackTrace();    //FIXME caused by "setPlayerGrid" when player is not in game. Should this be thrown?
+            }
         }
         lock.lock();
         condition.signal();
@@ -391,31 +411,53 @@ public class MatchController extends Thread{
     }
 
 
-    public void handleReconnection(UserInterface player){
+    public void handleReconnection(UserInterface player) throws InvalidOperationException {
 
         lock.lock();
         String username = player.getUsername();
         synchronized (playersInMatchGuard) {
             playersInMatch.put(username, player);
         }
-        if(!model.hasPlayerChosenAGrid(username)){
-            ArrayList<Grid> toSent = model.getGridsForPlayer(username);
+        try {
+            if(!model.hasPlayerChosenAGrid(username)){
+                ArrayList<Grid> toSent = (ArrayList<Grid>)model.getGridsForPlayer(username);
 
-            player.sendGrids();//FIXME
+                player.sendGrids();//FIXME
+            }
+        } catch (NotValidParameterException e) {
+            e.printStackTrace();    //FIXME caused by "hasPlayerChosenAGrid" when username passed is not in game. Should this exception be thrown?
         }
         try {
             Thread.sleep(maxReconnectionTime);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        if(!model.hasPlayerChosenAGrid(username)){
-            model.setPlayerToDisconnect(username);
-            player.notifyDisconnection();
-            MatchHandler.getInstance().notifyAboutDisconnection(username);
-            playersInMatch.remove(username);
+        try {
+            if(!model.hasPlayerChosenAGrid(username)){
+                model.setPlayerToDisconnect(username);
+                player.notifyDisconnection();
+                MatchHandler.getInstance().notifyAboutDisconnection(username);
+                playersInMatch.remove(username);
+            }
+        } catch (NotValidParameterException e) {
+            e.printStackTrace();    //FIXME caused by "hasPlayerChosenAGrid" when username passed is not in game. Should this exception be thrown?
         }
         //TODO notify player if is his turn.
         lock.unlock();
     }
 
+    public int askForDieIndex(String username) throws InvalidOperationException{
+        return 0;   //todo should ask to player about the index in the dicepool of the die he wants to put.
+        //todo should throw InvalidOperationException if user decides to abort the move.
+    }
+
+    public int[] askForDieCoordinates(String username) throws InvalidOperationException{
+        return new int[0];//todo should return a value array containing two coordinates for the die to be put in player's grid.
+        //todo should throw InvalidOperationException if user decides to abort the move.
+    }
+
+    public void sendDicePool(List<Die> dicePool, String username) {
+        //todo should send dicepool to player.
+        //should I remove this? Will you ask the model to give you the dicepool?
+    }
 }
