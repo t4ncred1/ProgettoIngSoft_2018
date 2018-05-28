@@ -50,9 +50,9 @@ public class RMIUserAgent implements UserInterface {
     }
 
     @Override
-    public void arrangeForUsername(int trial) throws InvalidOperationException, DisconnectionException, ReconnectionException, InvalidUsernameException {
+    public void arrangeForUsername() throws InvalidOperationException, DisconnectionException, ReconnectionException, InvalidUsernameException {
         try {
-            username= clientHandled.requestAUsername(trial);
+            username= clientHandled.requestAUsername();
             System.out.println("Selected username: " + username);
         } catch (RemoteException e) {
             throw new DisconnectionException();
@@ -60,15 +60,6 @@ public class RMIUserAgent implements UserInterface {
         MatchHandler.getInstance().requestUsername(username);
     }
 
-    @Override
-    public void setGameCode(int i) {
-        this.gameCode=i;
-    }
-
-    @Override
-    public int getGameCode() {
-        return this.gameCode;
-    }
 
     @Override
     public void notifyStarting() throws DisconnectionException {
