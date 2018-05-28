@@ -1,4 +1,6 @@
 {
 "gridsPath": "configurations/grids.json",
-"publicObjectivesPath": "configurations/public_objectives.json"
+"publicObjectivesPath": "configurations/public_objectives.json",
+"MaxPlayersNumber": "4",
+"MinPlayersNumber": "2"
 }
