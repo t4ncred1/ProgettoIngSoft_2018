@@ -31,6 +31,8 @@ public class MatchModel{
     private Player[] playersNotInGame;
 
     MatchModel(Set<String> playersUserNames, MatchController controller) throws NotValidParameterException, NotValidConfigPathException{
+        if (playersUserNames==null) throw new NullPointerException();
+        if (controller==null) throw new NullPointerException();
         try {
             MAXPLAYERSNUMBER=ConfigurationHandler.getMaxPlayersNumber();
         } catch (NotValidConfigPathException e) {
@@ -41,7 +43,7 @@ public class MatchModel{
         } catch (NotValidConfigPathException e) {
             e.printStackTrace();
         }
-        if (controller==null) throw new NullPointerException();
+
         this.controller=controller;
         roundTrack=new ArrayList<>();
         if (playersUserNames.size()<MINPLAYERSNUMBER||playersUserNames.size()> MAXPLAYERSNUMBER) throw new NotValidParameterException("Number of players in game: "+Integer.toString(playersUserNames.size()),"Between 2 and "+Integer.toString(MAXPLAYERSNUMBER));
@@ -205,7 +207,6 @@ public class MatchModel{
     }
 
     public Grid getSelectedGrid(String username) throws InvalidOperationException {
-
 
         //possible implementation
         Player playerPassed= null;
