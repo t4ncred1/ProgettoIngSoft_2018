@@ -79,6 +79,11 @@ public class MatchController extends Thread{
     }
 
 
+    /*
+    * --------------------------------------------------
+    *       Methods to handle initialization
+    * --------------------------------------------------
+    */
     private void initializeGame() {
         for(Map.Entry<String,UserInterface> entry : playersInMatch.entrySet()) {
             try {
@@ -143,6 +148,12 @@ public class MatchController extends Thread{
         return ok;
     }
 
+    /*
+    --------------------------------------------------
+                    Methods to handle turn.
+    --------------------------------------------------
+     */
+
     private void handleTurn() throws TooManyRoundsException {
         try {
             Thread.sleep(100);
@@ -163,16 +174,6 @@ public class MatchController extends Thread{
             System.err.println("this exception now is launched cause players in matchModel are still not created.");
             return;
             //e.printStackTrace();
-        }
-    }
-
-    private void sendConnectedPlayers() {
-        for(Map.Entry<String,UserInterface> player: playersInMatch.entrySet()){
-            ArrayList<String> connectedPlayers = new ArrayList<>();
-            for(Map.Entry<String,UserInterface> player2: playersInMatch.entrySet()){
-                if(!player.getKey().equals(player2.getKey())) connectedPlayers.add(player2.getKey());
-            }
-            player.getValue().sendConnectedPlayers(connectedPlayers);
         }
     }
 
@@ -210,6 +211,16 @@ public class MatchController extends Thread{
         }
     }
 
+    private void sendConnectedPlayers() {
+        for(Map.Entry<String,UserInterface> player: playersInMatch.entrySet()){
+            ArrayList<String> connectedPlayers = new ArrayList<>();
+            for(Map.Entry<String,UserInterface> player2: playersInMatch.entrySet()){
+                if(!player.getKey().equals(player2.getKey())) connectedPlayers.add(player2.getKey());
+            }
+            player.getValue().sendConnectedPlayers(connectedPlayers);
+        }
+    }
+
     private String getTurnPlayerOperation(String username) {
         UserInterface turnPlayer= playersInMatch.get(username);
         turnPlayer.askForOperation();
@@ -221,6 +232,9 @@ public class MatchController extends Thread{
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
+
+            //This if is executed if a the user interface of a certain player has changed.
+            //This can be caused by the fact that tha player disconnected and reconnected immediately after before running in timeout event
             if(!turnPlayer.equals(playersInMatch.get(username))){
                 turnPlayer=playersInMatch.get(username);
                 turnPlayer.askForOperation();
@@ -278,16 +292,19 @@ public class MatchController extends Thread{
         synchronized (playersInMatchGuard){
             Set set= playersInMatch.keySet();
             Iterator iterator=set.iterator();
+            ArrayList<String> toRemove = new ArrayList<>();
             while (iterator.hasNext()) {
                 String username = (String) iterator.next();
                 if(!playersInMatch.get(username).isConnected()){
                     //in this instruction player is removed both from playersInMatch and connectedPlayers
-                    playersInMatch.remove(username);
+                    toRemove.add(username);
                     MatchHandler.getInstance().notifyAboutDisconnection(username);
                 }
                 if(playersInMatch.size()>1&&!this.gameStartingSoon) MatchHandler.notifyMatchCanStart();
             }
-
+            for(String username: toRemove){
+                playersInMatch.remove(username);
+            }
         }
     }
 

@@ -32,7 +32,8 @@ public class MatchHandler extends Thread {
 
     private boolean timeout;
     private static int maximumMatchNumber =2;
-    private static final int MINIMUM_PLAYER_FOR_A_GAME =2;
+    private static final int MAX_PLAYERS_IN_GAME =4;
+    private static final int MIN_PLAYERS_IN_GAME =2;
     private GameTimer timer;
     private boolean shutdown;
 
@@ -109,6 +110,7 @@ public class MatchHandler extends Thread {
                 ok=startGameCountdown();
             }
             while (!ok);
+            System.out.println("Game started");
             while(startedMatches.size()==maximumMatchNumber){
                 lock.lock();
                 try {
@@ -140,7 +142,7 @@ public class MatchHandler extends Thread {
             lock.unlock();
         }
         synchronized (startingMatchGuard){
-            result =(startingMatch.playerInGame()>= MINIMUM_PLAYER_FOR_A_GAME);
+            result =(startingMatch.playerInGame()>= MIN_PLAYERS_IN_GAME);
         }
         return result;
     }
@@ -162,13 +164,14 @@ public class MatchHandler extends Thread {
             System.out.println("Resumed. Timeout: "+instance.timeout);
             synchronized (startingMatchGuard) {
                 synchronized (startedMatchesGuard) {
-                    if (startingMatch.playerInGame() == 4) {
+                    if (startingMatch.playerInGame() == MAX_PLAYERS_IN_GAME) {
                         startingMatch.setGameToStarted();
                         startedMatches.add(startingMatch);
                         startingMatch = null;
                         timer.stop();
                         return true;
-                    } else if (instance.timeout && startingMatch.playerInGame() > 1) {
+                    } else if (instance.timeout && startingMatch.playerInGame() >= MIN_PLAYERS_IN_GAME) {
+                        System.out.println("Here MatchHandler");
                         startingMatch.setGameToStarted();
                         instance.timeout = false;
                         startedMatches.add(startingMatch);
@@ -177,7 +180,7 @@ public class MatchHandler extends Thread {
                         return true;
 
                     }
-                    else if (instance.timeout && startingMatch.playerInGame() <= 1){
+                    else if (instance.timeout && startingMatch.playerInGame() < MIN_PLAYERS_IN_GAME){
                         timer.stop();
                     }
                 }
@@ -194,45 +197,29 @@ public class MatchHandler extends Thread {
     }
 
 
-    public static void login(UserInterface client) throws InvalidOperationException, DisconnectionException {
+    public static void login(UserInterface client) throws InvalidOperationException, DisconnectionException, InvalidUsernameException {
         client.chooseUsername();
-        boolean ok;
-        int trial =0;
-        do {
-            try {
-                trial++;
-                client.arrangeForUsername(trial);
-                lock.lock();
-                synchronized (startingMatchGuard) {
-                    startingMatch.insert(client);
-                    //TODO remove game code. Now should be useless.
-                    client.setGameCode(instance.startedMatches.size()+1);
-                }
-                condition.signal();
-                lock.unlock();
-                ok=true;
+        try {
+            client.arrangeForUsername();
+            lock.lock();
+            synchronized (startingMatchGuard) {
+                startingMatch.insert(client);
             }
-            catch (InvalidUsernameException e){
-                ok=false;
-            }
-            catch (ReconnectionException e){
-                ok=true;
-                MatchController game =null;
-                synchronized (disconnectedInGamePlayersGuard) {
-                    game = disconnectedInGamePlayers.remove(client.getUsername());
-                }
-                synchronized (connectedPlayersGuard){
-                    connectedPlayers.put(client.getUsername(), game);
-                    System.out.println(ANSI_BLUE+ client.getUsername() + " reinserted in game #"+startedMatches.indexOf(game) +ANSI_RESET);
-                }
-                game.handleReconnection(client);
-
-
-            }
+            condition.signal();
+            lock.unlock();
+            System.out.println(ANSI_BLUE +client.getUsername()+ " connected successfully." + ANSI_RESET);
         }
-        while (!ok);
-
-        System.out.println(ANSI_BLUE +client.getUsername()+ " connected successfully." + ANSI_RESET);
+        catch (ReconnectionException e){
+            MatchController game;
+            synchronized (disconnectedInGamePlayersGuard) {
+                game = disconnectedInGamePlayers.remove(client.getUsername());
+            }
+            synchronized (connectedPlayersGuard){
+                connectedPlayers.put(client.getUsername(), game);
+                System.out.println(ANSI_BLUE+ client.getUsername() + " reinserted in game #"+startedMatches.indexOf(game) +ANSI_RESET);
+            }
+            game.handleReconnection(client);
+        }
     }
 
     public void requestUsername(String username) throws InvalidOperationException, ReconnectionException, InvalidUsernameException {

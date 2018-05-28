@@ -6,7 +6,9 @@ import java.util.Scanner;
 
 public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterface{
 
-    ServerRMICommunication serverRemoteInterfaceAdapter;
+    private ServerRMICommunication serverRemoteInterfaceAdapter;
+
+    private String username;
 
     protected ClientRMI() throws RemoteException {
     }
@@ -18,15 +20,11 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
 
     @Override
     public void chooseUsername() throws RemoteException {
-        System.out.println("Welcome to Sagrada server. Please choose a username:");
     }
 
     @Override
-    public String requestAUsername(int trial) throws RemoteException {
-        Scanner scanner= new Scanner(System.in);
-        if(trial>1) System.err.println("This username already exist or it's invalid. Please choose another one:");
-        String username = scanner.nextLine();
-        return username;
+    public String requestAUsername() throws RemoteException {
+        return this.username;
     }
 
     @Override
@@ -41,5 +39,9 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
 
     public void setRMICommunication(ServerRMICommunication serverRemoteInterfaceAdapter) {
         this.serverRemoteInterfaceAdapter=serverRemoteInterfaceAdapter;
+    }
+
+    public void setUsername(String username) {
+        this.username=username;
     }
 }

@@ -35,36 +35,48 @@ public class SocketUserAgent extends Thread implements UserInterface {
     @Override
     public void run(){
         System.out.println("Connection request received on Socket system");
+        final String HELLO_MESSAGE="hello";
         try {
             String hello= new String();
-            while(!hello.equals("hello")) hello= inputStream.readUTF();
+            while(!hello.equals(HELLO_MESSAGE)) hello= inputStream.readUTF();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
-        try {
-            MatchHandler.login(this);
-            System.out.println("Connection protocol ended. Connected");
+        boolean connected =false;
+        do {
+            final String notAvailableMessage = new String("notLogged_username_not_available");
             try {
-                outputStream.writeUTF("logged");
-            } catch (IOException e) {
+                MatchHandler.login(this);
+                System.out.println("Connection protocol ended. Connected");
+                try {
+                    outputStream.writeUTF("logged");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                connected=true;
+            } catch (InvalidOperationException e) {
+                System.out.println("Connection protocol ended. Server is full");
                 e.printStackTrace();
+                try {
+                    outputStream.writeUTF("notLogged_server_full");
+                } catch (IOException e2) {
+                    e2.printStackTrace();
+                }
+                return;
+            } catch (DisconnectionException e) {
+                System.out.println("Connection protocol ended. Client disconnected.");
+                e.printStackTrace();
+                return;
+            } catch (InvalidUsernameException e) {
+                try {
+                    outputStream.writeUTF(notAvailableMessage);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
-        } catch (InvalidOperationException e) {
-            System.out.println("Connection protocol ended. Server is full");
-            e.printStackTrace();
-            try {
-                outputStream.writeUTF("notLogged_server_full");
-            } catch (IOException e2) {
-                e2.printStackTrace();
-            }
-            return;
-        } catch (DisconnectionException e) {
-            System.out.println("Connection protocol ended. Client disconnected.");
-            e.printStackTrace();
-            return;
         }
+        while(!connected);
 
         while(!inGame){
             try {
@@ -119,11 +131,8 @@ public class SocketUserAgent extends Thread implements UserInterface {
     }
 
     @Override
-    public void arrangeForUsername(int trial) throws InvalidOperationException, DisconnectionException, ReconnectionException, InvalidUsernameException {
-        final String notAvailableMessage = new String("notLogged_username_not_available");
-
+    public void arrangeForUsername() throws InvalidOperationException, DisconnectionException, ReconnectionException, InvalidUsernameException {
         try {
-            if(trial>1) outputStream.writeUTF(notAvailableMessage);
             username= inputStream.readUTF();
             System.out.println("received: " + username);
         } catch (IOException e) {
@@ -132,15 +141,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
         MatchHandler.getInstance().requestUsername(username);
     }
 
-    @Override
-    public void setGameCode(int i) {
-        this.gameCode=i;
-    }
-
-    @Override
-    public int getGameCode(){
-        return this.gameCode;
-    }
 
     @Override
     public void notifyStarting() throws DisconnectionException {

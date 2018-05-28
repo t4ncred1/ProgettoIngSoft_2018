@@ -1,10 +1,13 @@
 package it.polimi.ingsw.clientPart;
 
-import it.polimi.ingsw.clientPart.custom_exception.ServerIsDownException;
-import it.polimi.ingsw.clientPart.custom_exception.ServerIsFullException;
+import it.polimi.ingsw.clientPart.custom_exception.*;
 
 public interface ServerCommunicatingInterface {
-    void login() throws ServerIsDownException, ServerIsFullException;
-    boolean waitForGame();
-    boolean logout();
+
+    void setUpConnection() throws ServerIsDownException;
+    void login(String username) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException;
+    void waitForGame(boolean starting) throws GameStartingException, GameStartedException, TimerRestartedException, ServerIsDownException;
+    boolean logout() throws ServerIsDownException;
+
+
 }

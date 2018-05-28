@@ -1,7 +1,6 @@
 package it.polimi.ingsw.clientPart;
 
-import it.polimi.ingsw.clientPart.custom_exception.ServerIsDownException;
-import it.polimi.ingsw.clientPart.custom_exception.ServerIsFullException;
+import it.polimi.ingsw.clientPart.custom_exception.*;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -18,82 +17,83 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     private static int serverPort = 11000;
     private static String serverAddress="127.0.0.1";
 
-    @Override
-    public void login() throws ServerIsFullException, ServerIsDownException {
-        Scanner scanner= new Scanner(System.in);
-        String read;
-        String written;
+    public void setUpConnection() throws ServerIsDownException {
+        final String HELLO_MESSAGE = "hello";
         try {
             socket= new Socket(serverAddress, serverPort);
             inputStream = new DataInputStream(socket.getInputStream());
             outputStream= new DataOutputStream(socket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            outputStream.writeUTF("hello");
-            do {
-                read = inputStream.readUTF();
-            }
-            while (!read.equals("login"));
-            System.out.println("Welcome to Sagrada server. Please choose a username:");
-            do{
-                written=scanner.nextLine(); //FIXME
-                outputStream.writeUTF(written);
-                do{
-                    read=inputStream.readUTF();
-                }
-                while (!(read.equals("logged")||read.equals("notLogged_server_full")||read.equals("notLogged_username_not_available")));
-                if(read.equals("notLogged_server_full")){
-                    throw new ServerIsFullException();
-                }
-                if(read.equals("notLogged_username_not_available")){
-                    System.err.println("This username already exist or it's invalid. Please choose another one: ");
-                }
-            }
-            while(!read.equals("logged"));
+            outputStream.writeUTF(HELLO_MESSAGE);
         } catch (IOException e) {
             throw new ServerIsDownException();
         }
-
     }
 
-    public boolean waitForGame(){
-        boolean starting=false;
+    public void login(String username) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException {
+        final String LOGIN_MESSAGE_FROM_SERVER = "login";
+        final String SUCCESSFULLY_LOGGED = "logged";
+        final String SERVER_FULL = "notLogged_server_full";
+        final String USERNAME_NOT_AVAILABLE= "notLogged_username_not_available";
+        String read;
+        try {
+            do {
+                read = inputStream.readUTF();
+            }
+            while (!read.equals(LOGIN_MESSAGE_FROM_SERVER));
+            outputStream.writeUTF(username);
+            do {
+                read = inputStream.readUTF();
+            }
+            while (!(read.equals(SUCCESSFULLY_LOGGED) || read.equals(SERVER_FULL) || read.equals(USERNAME_NOT_AVAILABLE)));
+            switch (read) {
+                case SERVER_FULL:
+                    throw new ServerIsFullException();
+                case USERNAME_NOT_AVAILABLE:
+                    throw new InvalidUsernameException();
+                default:
+                    //do nothing, logged successfully
+            }
+        }
+        catch (IOException e){
+            throw new ServerIsDownException();
+        }
+    }
+
+
+
+
+
+
+
+
+
+    public void waitForGame(boolean starting) throws GameStartingException, GameStartedException, TimerRestartedException, ServerIsDownException {
         String read;
         try {
             if(inputStream.available()>0){
                 read= inputStream.readUTF();
                 if(read.equals("launching_game")) {
-                    System.out.println("A game will start soon...");
-                    starting=true;
+                    throw new GameStartingException();
                 }
                 if(read.equals("game_started")){
-                    System.out.println("Game started");
-                    return true;
+                    throw new GameStartedException();
                 }
             }
             if(starting){
-
-                do {
-                    read = inputStream.readUTF();
+                read = inputStream.readUTF();
                     if (read.equals("game_started")) {
-                        System.out.println("Game started");
+                        throw new GameStartedException();
                     }
                     else if(read.equals("launching_game")){
-                        System.out.println("Someone disconnected. Game timer has been restarted");
+                        throw new TimerRestartedException();
                     }
-                }while (!read.equals("game_started"));
-                return true;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ServerIsDownException();
         }
-        return false;
     }
 
-    public boolean logout(){
+    public boolean logout() throws ServerIsDownException {
         try{
             outputStream.writeUTF("try_logout");
             String response= inputStream.readUTF();
@@ -107,7 +107,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ServerIsDownException();
 
         }
         return false;

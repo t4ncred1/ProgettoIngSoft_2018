@@ -13,12 +13,8 @@ public interface UserInterface {
 
     String getUsername();
 
-    void arrangeForUsername(int trial) throws InvalidOperationException, DisconnectionException, ReconnectionException, InvalidUsernameException;
+    void arrangeForUsername() throws InvalidOperationException, DisconnectionException, ReconnectionException, InvalidUsernameException;
     /*InvalidOperationException--> server full*/
-
-    void setGameCode(int i);
-
-    int getGameCode();
 
     void notifyStarting() throws DisconnectionException;
 

@@ -30,6 +30,8 @@ public class MatchModel{
     private ArrayList<Player> playersInGame;
     private Player[] playersNotInGame;
 
+    private final int GRIDS_FOR_A_PLAYER =4;
+
     MatchModel(Set<String> playersUserNames, MatchController controller) throws NotValidParameterException, NotValidConfigPathException{
         if (playersUserNames==null) throw new NullPointerException();
         if (controller==null) throw new NullPointerException();
@@ -155,14 +157,19 @@ public class MatchModel{
     }
 
     private ArrayList<Grid> selectGridsForPlayer() throws InvalidOperationException {
-        if (grids.size()<4) throw new InvalidOperationException();
-        int cardNumber = ((new Random().nextInt(grids.size()/2)+1)*2);
+        int randomGridEvenIndex;
+        /*
+        * Grids are taken from a file and ordered in pairs (on even indexes we have a fronts and on odd indexes we have backs)
+        * If i take twice a grids from the same index i will pick for sure a front grids and its back cause of arrayList proprieties.
+        */
+        if (grids.size()<GRIDS_FOR_A_PLAYER) throw new InvalidOperationException();
+        randomGridEvenIndex = ((new Random().nextInt(grids.size()/2)+1)*2)-2;
         ArrayList<Grid> currentGrids = new ArrayList<Grid>();
-        currentGrids.add(grids.remove(cardNumber-2));
-        currentGrids.add(grids.remove(cardNumber-2));
-        cardNumber = ((new Random().nextInt(grids.size()/2)+1)*2);
-        currentGrids.add(grids.remove(cardNumber-2));
-        currentGrids.add(grids.remove(cardNumber-2));
+        currentGrids.add(grids.remove(randomGridEvenIndex));
+        currentGrids.add(grids.remove(randomGridEvenIndex));
+        randomGridEvenIndex = ((new Random().nextInt(grids.size()/2)+1)*2)-2;
+        currentGrids.add(grids.remove(randomGridEvenIndex));
+        currentGrids.add(grids.remove(randomGridEvenIndex));
         return currentGrids;
     }
 

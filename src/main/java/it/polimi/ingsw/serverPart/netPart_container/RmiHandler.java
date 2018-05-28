@@ -4,6 +4,7 @@ import it.polimi.ingsw.clientPart.ClientRemoteInterface;
 import it.polimi.ingsw.serverPart.MatchHandler;
 import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.serverPart.custom_exception.InvalidUsernameException;
 
 import java.util.ArrayList;
 
@@ -50,7 +51,7 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
     }
 
     @Override
-    public void login(ClientRemoteInterface client) throws InvalidOperationException {
+    public void login(ClientRemoteInterface client) throws InvalidOperationException, InvalidUsernameException {
         System.out.println("Connection request received on RMI system");
         RMIUserAgent clientInterface= new RMIUserAgent(client);
         try {
