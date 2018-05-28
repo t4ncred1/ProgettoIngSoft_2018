@@ -29,7 +29,9 @@ public class ConfigurationHandler {
         Gson gson = new Gson();
         TypeToken<List<Grid>> listType = new TypeToken<List<Grid>>(){};
         try {
-            return gson.fromJson(new FileReader(config.getGridsPath()), listType.getType());
+            List<Grid> grids=gson.fromJson(new FileReader(config.getGridsPath()), listType.getType());
+            if (grids==null) throw new NotValidConfigPathException("Grids are not read correctly.");
+            return grids;
         } catch (FileNotFoundException e) {
             throw new NotValidConfigPathException("Incorrect grids path in configuration file: "+config.getGridsPath());
         }

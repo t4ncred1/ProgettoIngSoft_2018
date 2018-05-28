@@ -1,7 +1,5 @@
 package it.polimi.ingsw.serverPart;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.serverPart.card_container.PublicObjective;
 import it.polimi.ingsw.serverPart.component_container.DicePool;
 import it.polimi.ingsw.serverPart.component_container.Die;
@@ -10,8 +8,6 @@ import it.polimi.ingsw.serverPart.component_container.Player;
 import it.polimi.ingsw.serverPart.configurations.ConfigurationHandler;
 import it.polimi.ingsw.serverPart.custom_exception.*;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,8 +15,8 @@ import java.util.Set;
 
 public class MatchModel{
 
-    private static int MAXPLAYERSNUMBER=0;
-    private static int MINPLAYERSNUMBER=0;
+    private int MAXPLAYERSNUMBER=0;
+    private int MINPLAYERSNUMBER=0;
 
     private List<Grid> grids;
     private List<PublicObjective> publicObjectives;
@@ -28,12 +24,11 @@ public class MatchModel{
     private ArrayList<Die> roundTrack;
     private MatchController controller;
     private DicePool matchDicePool;
-//    private int currentRound;
     private int currentTurn;
     private boolean leftToRight;
     private boolean justChanged;
     private ArrayList<Player> playersInGame;
-    private ArrayList<Player> playersNotInGame;
+    private Player[] playersNotInGame;
 
     MatchModel(Set<String> playersUserNames, MatchController controller) throws NotValidParameterException, NotValidConfigPathException{
         try {
@@ -66,7 +61,6 @@ public class MatchModel{
             }
             playersInGame.add(playerToAdd);
         }
-//        currentRound=1;
         currentTurn=0;
         leftToRight =true;
         justChanged =true;
@@ -99,7 +93,6 @@ public class MatchModel{
             if(currentTurn==0){
                 leftToRight=true;
                 justChanged=true;
-//                currentRound++;
                 playersInGame.add(playersInGame.remove(0));     //reorders players for new Round.
                 try {
                     this.prepareForNextRound(maxRounds);
@@ -161,13 +154,13 @@ public class MatchModel{
 
     private ArrayList<Grid> selectGridsForPlayer() throws InvalidOperationException {
         if (grids.size()<4) throw new InvalidOperationException();
-        int cardNumber = ((new Random().nextInt(Integer.divideUnsigned(grids.size(),2))+1)*2);
+        int cardNumber = ((new Random().nextInt(grids.size()/2)+1)*2);
         ArrayList<Grid> currentGrids = new ArrayList<Grid>();
-        currentGrids.add(grids.remove(cardNumber-1));
-        currentGrids.add(grids.remove(cardNumber-1));
-        cardNumber = ((new Random().nextInt(Integer.divideUnsigned(grids.size(),2))+1)*2);
-        currentGrids.add(grids.remove(cardNumber-1));
-        currentGrids.add(grids.remove(cardNumber-1));
+        currentGrids.add(grids.remove(cardNumber-2));
+        currentGrids.add(grids.remove(cardNumber-2));
+        cardNumber = ((new Random().nextInt(grids.size()/2)+1)*2);
+        currentGrids.add(grids.remove(cardNumber-2));
+        currentGrids.add(grids.remove(cardNumber-2));
         return currentGrids;
     }
 
@@ -211,22 +204,29 @@ public class MatchModel{
        throw new NotValidParameterException("username: "+username,"Should be a player inside this match.");
     }
 
-    public Grid getSelectedGrid(String username) {
-        //TODO return grid selected from the player
+    public Grid getSelectedGrid(String username) throws InvalidOperationException {
+
 
         //possible implementation
         Player playerPassed= null;
         for(Player player: playersInGame)
             if(player.getUsername().equals(username)) playerPassed=player;
-        Grid toReturn = playerPassed.getSelectedGrid();  //FIXME throw an exception if toReturn=null ?
+        Grid toReturn = playerPassed.getSelectedGrid();
+        if (toReturn==null) throw new InvalidOperationException();  //only called if the player does not yet have his own grid.
         return toReturn;
     }
 
     public void setPlayerToDisconnect(String username) throws NotValidParameterException {
-        Player playerPassed = null;
-        for (int i=0; i<playersInGame.size();i++){
-            if (playersInGame.get(i).getUsername().equals(username)) playerPassed=playersInGame.remove(i);
+        if (playersNotInGame==null) playersNotInGame=new Player[playersInGame.size()];
+        boolean flag = false;
+        int i;
+        for (i=0; i<playersInGame.size();i++){
+            if (playersInGame.get(i).getUsername().equals(username)) {playersNotInGame[i]=playersInGame.remove(i); flag=true;}
         }
-        if (playerPassed==null) throw new NotValidParameterException("username: "+username,"username should belong to a player in this match");
+        if (!flag) throw new NotValidParameterException("username: "+username,"username should belong to a player in this match");
+    }
+
+    public void setPlayerToConnect(String username) throws NotValidParameterException{
+        //todo
     }
 }
