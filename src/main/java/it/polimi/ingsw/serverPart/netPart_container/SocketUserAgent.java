@@ -1,6 +1,8 @@
 package it.polimi.ingsw.serverPart.netPart_container;
 
+import it.polimi.ingsw.serverPart.MatchController;
 import it.polimi.ingsw.serverPart.MatchHandler;
+import it.polimi.ingsw.serverPart.component_container.Grid;
 import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidUsernameException;
@@ -15,10 +17,12 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private Socket socket;
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
-    private int gameCode;
+    private MatchController gameHandiling;
     private boolean inGame;
 
     private String username;
+
+    private static final String REQUEST_GRID = "get_grids";
 
     public SocketUserAgent(Socket client) {
         this.socket=client;
@@ -74,6 +78,9 @@ public class SocketUserAgent extends Thread implements UserInterface {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
+            } catch (ReconnectionException e) {
+                System.out.println("Connection protocol ended. Client joined the game left before");
+                e.printStackTrace();
             }
         }
         while(!connected);
@@ -97,6 +104,36 @@ public class SocketUserAgent extends Thread implements UserInterface {
             }
         }
 
+        handleInitialization();
+
+    }
+
+    private void handleInitialization() {
+        final String OK_REQUEST = "ok";
+        final String NOT_OK_REQUEST = "retry";
+        try {
+            String request;
+            do{
+                request = inputStream.readUTF();
+                System.out.println(request);
+                if(!request.equals(REQUEST_GRID)) outputStream.writeUTF(NOT_OK_REQUEST);
+            }while (!request.equals(REQUEST_GRID));
+            outputStream.writeUTF(OK_REQUEST);
+            ArrayList<Grid> grids;
+            do{
+                grids = (ArrayList<Grid>) gameHandiling.getPlayerGrids(this);
+            }
+            while (grids==null);
+            outputStream.writeInt(grids.size());
+            for(Grid grid: grids){
+                outputStream.writeUTF(grid.getName());
+                outputStream.writeInt(grid.getDifficulty());
+                String toSend = grid.getStructure();
+                outputStream.writeUTF(toSend);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -106,7 +143,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
             return true;
         }
         catch (IOException e){
-            System.err.println(this.username+" disconnected.");
             return false;
         }
     }
@@ -160,6 +196,23 @@ public class SocketUserAgent extends Thread implements UserInterface {
             e.printStackTrace();
             throw new DisconnectionException();
         }
+    }
+
+    @Override
+    public void notifyReconnection() throws DisconnectionException {
+        try {
+            outputStream.writeUTF("logged");
+            outputStream.writeUTF("reconnected");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new DisconnectionException();
+        }
+    }
+
+    @Override
+    public void setController(MatchController matchController) {
+        this.gameHandiling=matchController;
+        this.inGame=true;
     }
 
     //TODO from here.

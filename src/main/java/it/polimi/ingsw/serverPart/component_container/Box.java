@@ -31,6 +31,10 @@ public class Box implements BoxObserver, BoxSubject {
     private int[] colorRestriction;
     private int[] valueRestriction;
     private int constraintIndex;
+    private boolean kindOfConstraint; //FIXME true= value, false color if constraints are different from 0.
+    private final boolean COLOR_CONSTRAINT= false; //FIXME
+    private final boolean VALUE_CONSTRAINT= true; //FIXME
+    private final int NO_CONSTRAINT = -1;
     private int opened;
     private transient ArrayList<BoxObserver> observerList;
     private int coordX;
@@ -46,6 +50,7 @@ public class Box implements BoxObserver, BoxSubject {
         colorRestriction = new int[5];
         valueRestriction = new int[6];
         observerList= new ArrayList<>();
+        constraintIndex = NO_CONSTRAINT; //FIXME
 
         opened=0;
         for (int i = 0; i<colorRestriction.length; i++ ) colorRestriction[i] = 0;
@@ -60,6 +65,7 @@ public class Box implements BoxObserver, BoxSubject {
         if(color.equals("red")||color.equals("green")||color.equals("yellow")||color.equals("blue")||color.equals("purple")){
             DieConstraints dieSample = new DieToConstraintsAdapter(new Die(color, 1));
             constraintIndex = dieSample.getColorRestriction();
+            kindOfConstraint = COLOR_CONSTRAINT; //FIXME
             for(int i=0; i<colorRestriction.length; i++)
                 if(i!= constraintIndex)colorRestriction[i]=1;
         }
@@ -73,6 +79,7 @@ public class Box implements BoxObserver, BoxSubject {
         if(value>=1&&value<=6){
             DieConstraints dieSample = new DieToConstraintsAdapter(new Die("red", value)); //the color isn't important, so it was randomly chosen by the author
             constraintIndex =dieSample.getValueRestriction();
+            kindOfConstraint = VALUE_CONSTRAINT; //FIXME
             for(int i=0; i<valueRestriction.length; i++)
                 if(i!=constraintIndex)valueRestriction[i]=1;
         }
@@ -217,4 +224,26 @@ public class Box implements BoxObserver, BoxSubject {
     }
 
 
+    public String getConstraint() {
+        //TODO refactor
+        final String NO_CONSTRAINT_MESSAGE = "none";
+        if(constraintIndex==NO_CONSTRAINT) return NO_CONSTRAINT_MESSAGE;
+        else if(kindOfConstraint==VALUE_CONSTRAINT){
+            return Integer.toString(constraintIndex+1);
+        }
+        else{
+            switch (constraintIndex){
+                case 0:
+                    return "red";
+                case 1:
+                    return "green";
+                case 2:
+                    return "yellow";
+                case 3:
+                    return "blue";
+                default:
+                    return "purple";
+            }
+        }
+    }
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.serverPart.MatchHandler;
 import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidUsernameException;
+import it.polimi.ingsw.serverPart.custom_exception.ReconnectionException;
 
 import java.util.ArrayList;
 
@@ -71,6 +72,9 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
             System.out.println("Connection protocol ended. Server is full");
             e.printStackTrace();
             throw new InvalidOperationException();
+        } catch (ReconnectionException e) {
+            System.out.println("Connection protocol ended. Client joined the game left before");
+            e.printStackTrace();
         }
     }
 

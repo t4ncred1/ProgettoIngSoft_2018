@@ -1,6 +1,7 @@
 package it.polimi.ingsw.serverPart.netPart_container;
 
 
+import it.polimi.ingsw.serverPart.MatchController;
 import it.polimi.ingsw.serverPart.custom_exception.*;
 
 import java.util.ArrayList;
@@ -33,4 +34,8 @@ public interface UserInterface {
     void notifyTurnOf(String username, String status);
 
     void sendConnectedPlayers(ArrayList<String> connectedPlayers);
+
+    void notifyReconnection() throws DisconnectionException;
+
+    void setController(MatchController matchController);
 }

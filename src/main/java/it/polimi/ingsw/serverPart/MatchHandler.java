@@ -197,7 +197,7 @@ public class MatchHandler extends Thread {
     }
 
 
-    public static void login(UserInterface client) throws InvalidOperationException, DisconnectionException, InvalidUsernameException {
+    public static void login(UserInterface client) throws InvalidOperationException, DisconnectionException, InvalidUsernameException, ReconnectionException {
         client.chooseUsername();
         try {
             client.arrangeForUsername();
@@ -219,6 +219,7 @@ public class MatchHandler extends Thread {
                 System.out.println(ANSI_BLUE+ client.getUsername() + " reinserted in game #"+startedMatches.indexOf(game) +ANSI_RESET);
             }
             game.handleReconnection(client);
+            throw new ReconnectionException();
         }
     }
 
@@ -272,7 +273,12 @@ public class MatchHandler extends Thread {
         }
         synchronized (startingMatchGuard) {
             synchronized (startedMatchesGuard) {
-                if (gameHandlingClient!=null) /*TODO handle this*/ ;
+                if (gameHandlingClient!=null)
+                    synchronized (disconnectedInGamePlayersGuard){
+                        disconnectedInGamePlayers.put(username, gameHandlingClient);
+
+                        //FIXME if necessary.
+                    }
                 else
                     startingMatch.remove(client);
             }

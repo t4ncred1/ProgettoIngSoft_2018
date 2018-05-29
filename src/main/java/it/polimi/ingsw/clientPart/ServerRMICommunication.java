@@ -21,7 +21,7 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     private transient boolean startingGame; //this parameter should be set to false once used.
     private transient boolean gameStarted;
-
+    private transient boolean reconnection;
 
 
     @Override
@@ -52,21 +52,21 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     }
 
     @Override
-    public void waitForGame(boolean starting) throws GameStartingException, GameStartedException, TimerRestartedException {
+    public void waitForGame(boolean starting) throws GameStartingException, GameStartedException, TimerRestartedException, GameInProgressException {
 
+        if (gameStarted) throw new GameStartedException();
+        if (reconnection) throw new GameInProgressException();
         if(!starting) {
             if (startingGame) {
                 startingGame = false;
                 throw new GameStartingException();
             }
-            if (gameStarted) throw new GameStartedException();
         }
         else{
             if(startingGame){
                 startingGame=false;
                 throw new TimerRestartedException();
             }
-            if(gameStarted) throw new GameStartedException();
         }
 
 
@@ -103,6 +103,11 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     }
 
+    @Override
+    public void getGrids() throws ServerIsDownException {
+        //TODO
+    }
+
     public void notifyStarting() {
         this.startingGame=true;
     }
@@ -110,5 +115,9 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     public void notifyStarted() {
         this.gameStarted=true;
         this.startingGame=false;
+    }
+
+    public void notifyReconnection() {
+        this.reconnection=true;
     }
 }
