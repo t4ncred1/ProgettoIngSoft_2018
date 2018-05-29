@@ -47,19 +47,28 @@ public class MatchController extends Thread{
 
         //Initializing game
         new Thread(() -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-            synchronized (playersInMatchGuard) {
-                Set set = playersInMatch.keySet();
-                Iterator iterator = set.iterator();
-                while (iterator.hasNext()) {
-                    String username = (String) iterator.next();
-                    if (!playersInMatch.get(username).isConnected()) {
-                        //in this instruction player is removed only from connectedPlayers
-                        MatchHandler.getInstance().notifyAboutDisconnection(username);
+            //this arrayList is used to avoid continuous print of "playerX disconnected"
+            ArrayList<String> stopCheck= new ArrayList<>();
+            while (true){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                synchronized (playersInMatchGuard) {
+                    Set set = playersInMatch.keySet();
+                    Iterator iterator = set.iterator();
+                    while (iterator.hasNext()) {
+                        String username = (String) iterator.next();
+                        if (!stopCheck.contains(username)&&!playersInMatch.get(username).isConnected()) {
+                            //in this instruction player is removed only from connectedPlayers
+                            System.err.println(username+" disconnected.");
+                            stopCheck.add(username);
+                            MatchHandler.getInstance().notifyAboutDisconnection(username);
+                        }
+                        else if(stopCheck.contains(username)&&playersInMatch.get(username).isConnected()){
+                            stopCheck.remove(username);
+                        }
                     }
                 }
             }
@@ -85,14 +94,10 @@ public class MatchController extends Thread{
     * --------------------------------------------------
     */
     private void initializeGame() {
-        for(Map.Entry<String,UserInterface> entry : playersInMatch.entrySet()) {
-            try {
-                ArrayList<Grid> gridsToSend= (ArrayList<Grid>) model.getGridsForPlayer(entry.getKey());
-            } catch (InvalidOperationException e) {
-                e.printStackTrace();    //only thrown if player is not in match.
-            }
-            entry.getValue().sendGrids(); //FIXME
-        }
+        initializeGrids();
+    }
+
+    private void initializeGrids() {
         GameTimer timer = new GameTimer(this, "initialization");
         boolean timeout, ok;
         do {
@@ -106,7 +111,7 @@ public class MatchController extends Thread{
             timeout=timer.getTimeoutEvent();
             ok= haveAllPlayersChosenAGrid(timeout);
         }
-    while(!(timeout||ok));
+        while(!(timeout||ok));
         timer.stop();
     }
 
@@ -296,7 +301,7 @@ public class MatchController extends Thread{
             while (iterator.hasNext()) {
                 String username = (String) iterator.next();
                 if(!playersInMatch.get(username).isConnected()){
-                    //in this instruction player is removed both from playersInMatch and connectedPlayers
+                    System.err.println(username+" disconnected.");
                     toRemove.add(username);
                     MatchHandler.getInstance().notifyAboutDisconnection(username);
                 }
@@ -378,6 +383,7 @@ public class MatchController extends Thread{
             while (iterator.hasNext()){
                 String username = (String) iterator.next();
                 UserInterface client = playersInMatch.get(username);
+                client.setController(this);
                 MatchHandler.setPlayerInGame(username,this);
                 try {
                     client.notifyStart();
@@ -436,30 +442,37 @@ public class MatchController extends Thread{
             playersInMatch.put(username, player);
         }
         try {
-            if(!model.hasPlayerChosenAGrid(username)){
-                ArrayList<Grid> toSent = (ArrayList<Grid>)model.getGridsForPlayer(username);
-
-                player.sendGrids();//FIXME
-            }
-        } catch (NotValidParameterException e) {
-            e.printStackTrace();    //FIXME caused by "hasPlayerChosenAGrid" when username passed is not in game. Should this exception be thrown?
+            player.notifyReconnection();
+        } catch (DisconnectionException e) {
+            e.printStackTrace();
         }
-        try {
-            Thread.sleep(maxReconnectionTime);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        try {
-            if(!model.hasPlayerChosenAGrid(username)){
-                model.setPlayerToDisconnect(username);
-                player.notifyDisconnection();
-                MatchHandler.getInstance().notifyAboutDisconnection(username);
-                playersInMatch.remove(username);
-            }
-        } catch (NotValidParameterException e) {
-            e.printStackTrace();    //FIXME caused by "hasPlayerChosenAGrid" when username passed is not in game. Should this exception be thrown?
-        }
-        //TODO notify player if is his turn.
+//        try {
+//            if(!model.hasPlayerChosenAGrid(username)){
+//                ArrayList<Grid> toSent = (ArrayList<Grid>)model.getGridsForPlayer(username);
+//
+//                player.sendGrids();//FIXME
+//            }
+//        } catch (NotValidParameterException e) {
+//            e.printStackTrace();    //FIXME caused by "hasPlayerChosenAGrid" when username passed is not in game. Should this exception be thrown?
+//        }
+//        try {
+//            Thread.sleep(maxReconnectionTime);
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//        }
+//        try {
+//            if(!model.hasPlayerChosenAGrid(username)){
+//                model.setPlayerToDisconnect(username);
+//                player.notifyDisconnection();
+//                MatchHandler.getInstance().notifyAboutDisconnection(username);
+//                synchronized (playersInMatchGuard) {
+//                    playersInMatch.remove(username);
+//                }
+//            }
+//        } catch (NotValidParameterException e) {
+//            e.printStackTrace();    //FIXME caused by "hasPlayerChosenAGrid" when username passed is not in game. Should this exception be thrown?
+//        }
+//        //TODO notify player if is his turn.
         lock.unlock();
     }
 
@@ -476,5 +489,21 @@ public class MatchController extends Thread{
     public void sendDicePool(List<Die> dicePool, String username) {
         //todo should send dicepool to player.
         //should I remove this? Will you ask the model to give you the dicepool?
+    }
+
+    public List<Grid> getPlayerGrids(UserInterface userInterface) {
+        String username = userInterface.getUsername();
+        synchronized (playersInMatchGuard){
+            if(!playersInMatch.containsKey(username)) /*TODO throw an exception*/;
+            if(!playersInMatch.get(username).equals(userInterface)) /*TODO throw an exception*/;
+        }
+
+        try {
+            return model.getGridsForPlayer(username);
+        } catch (InvalidOperationException e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 }

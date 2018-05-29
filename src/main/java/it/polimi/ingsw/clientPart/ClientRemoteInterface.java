@@ -13,4 +13,6 @@ public interface ClientRemoteInterface extends Remote {
     void notifyGameStarting() throws RemoteException;
 
     void notifyStartedGame() throws RemoteException;
+
+    void notifyReconnection() throws RemoteException;
 }

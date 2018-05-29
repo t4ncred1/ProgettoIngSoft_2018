@@ -1,6 +1,7 @@
 package it.polimi.ingsw.serverPart.netPart_container;
 
 import it.polimi.ingsw.clientPart.ClientRemoteInterface;
+import it.polimi.ingsw.serverPart.MatchController;
 import it.polimi.ingsw.serverPart.MatchHandler;
 import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
@@ -15,6 +16,7 @@ public class RMIUserAgent implements UserInterface {
     private ClientRemoteInterface clientHandled;
     private String username;
     private int gameCode;
+    private MatchController gameHandling;
 
     public RMIUserAgent(ClientRemoteInterface clientToHandle){
         clientHandled=clientToHandle;
@@ -22,13 +24,13 @@ public class RMIUserAgent implements UserInterface {
 
     @Override
     public boolean isConnected() {
-        boolean ok=false;
+        boolean ok;
         try{
             clientHandled.isConnected();
             ok=true;
         }
         catch (RemoteException e){
-            System.err.println(this.username+ " disconnected.");
+            ok=false;
         }
         return ok;
     }
@@ -79,6 +81,21 @@ public class RMIUserAgent implements UserInterface {
             e.printStackTrace();
             throw new DisconnectionException();
         }
+    }
+
+    @Override
+    public void notifyReconnection() throws DisconnectionException {
+        try {
+            clientHandled.notifyReconnection();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            throw new DisconnectionException();
+        }
+    }
+
+    @Override
+    public void setController(MatchController matchController) {
+        this.gameHandling=matchController;
     }
 
     //TODO from here.

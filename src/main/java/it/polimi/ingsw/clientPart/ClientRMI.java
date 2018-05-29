@@ -37,6 +37,11 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
         serverRemoteInterfaceAdapter.notifyStarted();
     }
 
+    @Override
+    public void notifyReconnection() throws RemoteException {
+        serverRemoteInterfaceAdapter.notifyReconnection();
+    }
+
     public void setRMICommunication(ServerRMICommunication serverRemoteInterfaceAdapter) {
         this.serverRemoteInterfaceAdapter=serverRemoteInterfaceAdapter;
     }
