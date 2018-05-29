@@ -1,5 +1,6 @@
 package it.polimi.ingsw.serverPart.component_container;
 
+import it.polimi.ingsw.serverPart.custom_exception.LimitValueException;
 import it.polimi.ingsw.serverPart.custom_exception.NotValidParameterException;
 import org.junit.jupiter.api.Test;
 
@@ -223,6 +224,44 @@ public class BoxTest {
         //Assert
         assertNotEquals(dieValue, box.checkPrivatePoints(colorToCheck));
         assertEquals(0, box.checkPrivatePoints(colorToCheck));
+    }
+
+    @Test
+    public void checkGetConstraint() throws NotValidParameterException {
+
+        Box box= new Box("green",0,0);
+        assertEquals(box.getConstraint(),"green");
+
+        Box box1= new Box("red",0,1);
+        assertEquals(box1.getConstraint(),"red");
+
+        Box box2= new Box("blue",1,0);
+        assertEquals(box2.getConstraint(),"blue");
+
+        Box box3= new Box("yellow",2,0);
+        assertEquals(box3.getConstraint(),"yellow");
+
+        Box box4= new Box("purple",0,2);
+        assertEquals(box4.getConstraint(),"purple");
+
+    }
+
+    @Test
+    public void checkRemoveDie() throws NotValidParameterException,LimitValueException{
+
+        Die testdie=new Die("green",1);
+        Box testbox=new Box(1,1);
+        testbox.insertDie(testdie);
+        testbox.removeDie();
+
+        assertEquals(null,testbox.getDie());
+    }
+
+    @Test
+    public void checkToString() throws NotValidParameterException {
+
+        Box test=new Box(3,2,1);
+        assertEquals("color Restriction: 0; 0; 0; 0; 0; | value Restriction: 1; 1; 0; 1; 1; 1; | Open = 0 | position = (2,1)",test.toString());
     }
 
 }

@@ -234,13 +234,13 @@ public class Box implements BoxObserver, BoxSubject {
         else{
             switch (constraintIndex){
                 case 0:
-                    return "red";
-                case 1:
                     return "green";
+                case 1:
+                    return "red";
                 case 2:
-                    return "yellow";
-                case 3:
                     return "blue";
+                case 3:
+                    return "yellow";
                 default:
                     return "purple";
             }
