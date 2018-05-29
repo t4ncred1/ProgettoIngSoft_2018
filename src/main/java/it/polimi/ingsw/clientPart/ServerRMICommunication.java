@@ -108,6 +108,11 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
         //TODO
     }
 
+    @Override
+    public void setGrid(int gridIndex) throws ServerIsDownException, InvalidMoveException {
+        //TODO
+    }
+
     public void notifyStarting() {
         this.startingGame=true;
     }

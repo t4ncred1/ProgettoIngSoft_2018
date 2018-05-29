@@ -32,9 +32,9 @@ public class Box implements BoxObserver, BoxSubject {
     private int[] valueRestriction;
     private int constraintIndex;
     private boolean kindOfConstraint; //FIXME true= value, false color if constraints are different from 0.
-    private final boolean COLOR_CONSTRAINT= false; //FIXME
-    private final boolean VALUE_CONSTRAINT= true; //FIXME
-    private final int NO_CONSTRAINT = -1;
+    private transient final boolean COLOR_CONSTRAINT= false; //FIXME
+    private transient final boolean VALUE_CONSTRAINT= true; //FIXME
+    private transient final int NO_CONSTRAINT = -1;
     private int opened;
     private transient ArrayList<BoxObserver> observerList;
     private int coordX;

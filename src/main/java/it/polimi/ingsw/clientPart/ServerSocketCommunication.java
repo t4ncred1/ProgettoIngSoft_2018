@@ -7,7 +7,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ServerSocketCommunication implements ServerCommunicatingInterface {
 
@@ -19,11 +18,31 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     private static String serverAddress="127.0.0.1";
 
 
+
+    private static final String PING_MESSAGE= "";
+    private static final String HELLO_MESSAGE = "hello";
+
+    private static final String LOGIN_MESSAGE_FROM_SERVER = "login";
+    private static final String SUCCESSFULLY_LOGGED = "logged";
+    private static final String SERVER_FULL = "notLogged_server_full";
+    private static final String USERNAME_NOT_AVAILABLE= "notLogged_username_not_available";
+
+
+    private static final String OK_MESSAGE="ok";
+    private static final String NOT_OK_MESSAGE= "retry";
     private static final String REQUEST_GRID = "get_grids";
+    private static final String CHOOSE_GRID="set_grid";
+
+
+    private static final String LAUNCHING_GAME = "launching_game";
+    private static final String GAME_STARTED = "game_started";
+    private static final String GAME_ALREADY_IN_PROGRESS = "reconnected";
+
+    private static final String TRY_LOGOUT= "try_logout";
+    private static final String SUCCESSFULLY_LOGGED_OUT= "logged_out";
 
     @Override
     public void setUpConnection() throws ServerIsDownException {
-        final String HELLO_MESSAGE = "hello";
         try {
             socket= new Socket(serverAddress, serverPort);
             inputStream = new DataInputStream(socket.getInputStream());
@@ -36,10 +55,6 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
 
     @Override
     public void login(String username) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException {
-        final String LOGIN_MESSAGE_FROM_SERVER = "login";
-        final String SUCCESSFULLY_LOGGED = "logged";
-        final String SERVER_FULL = "notLogged_server_full";
-        final String USERNAME_NOT_AVAILABLE= "notLogged_username_not_available";
         String read;
         try {
             do {
@@ -75,18 +90,15 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     @Override
     public void waitForGame(boolean starting) throws GameStartingException, GameStartedException, TimerRestartedException, ServerIsDownException, GameInProgressException {
         String read;
-        final String gameIsStarting = "launching_game";
-        final String gameIsStarted = "game_started";
-        final String gameAlreadyInProgress = "reconnected";
         try {
             if(inputStream.available()>0){
                 read= inputStream.readUTF();
                 switch (read){
-                    case gameIsStarting:
+                    case LAUNCHING_GAME:
                         throw new GameStartingException();
-                    case gameIsStarted:
+                    case GAME_STARTED:
                         throw new GameStartedException();
-                    case gameAlreadyInProgress:
+                    case GAME_ALREADY_IN_PROGRESS:
                         throw new GameInProgressException();
                     default:
                         //do nothing, messages are to test connection
@@ -95,9 +107,9 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
             if(starting){
                 read = inputStream.readUTF();
                 switch (read){
-                    case gameIsStarting:
+                    case LAUNCHING_GAME:
                         throw new GameStartingException();
-                    case gameIsStarted:
+                    case GAME_STARTED:
                         throw new GameStartedException();
                     default:
                         //do nothing, messages are to test connection
@@ -110,13 +122,14 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
 
     @Override
     public boolean logout() throws ServerIsDownException {
+        //FIXME
         try{
-            outputStream.writeUTF("try_logout");
+            outputStream.writeUTF(TRY_LOGOUT);
             String response= inputStream.readUTF();
             switch (response) {
-                case "logged_out":
+                case SUCCESSFULLY_LOGGED_OUT:
                     return true;
-                case "launching_game":
+                case LAUNCHING_GAME:
                     return false;
                 default:
                     System.err.println(response);
@@ -131,15 +144,13 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
 
     @Override
     public void getGrids() throws ServerIsDownException {
-        final String NOT_OK_MESSAGE ="retry";
-
         String result;
         try{
             do {
                 outputStream.writeUTF(REQUEST_GRID);
                 do {
                     result = inputStream.readUTF();
-                }while (result.equals(""));
+                }while (result.equals(PING_MESSAGE));
                 System.out.println(result);
             }while (result.equals(NOT_OK_MESSAGE));
             int number= inputStream.readInt();
@@ -150,14 +161,14 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
                 String name;
                 do {
                     name = inputStream.readUTF();
-                }while (gridsNames.equals(""));
+                }while (name.equals(PING_MESSAGE));
                 gridsNames.add(name);
                 int difficulty = inputStream.readInt();
                 gridsDifficulties.add(difficulty);
                 String structure;
                 do {
                     structure = inputStream.readUTF();
-                }while (structure.equals(""));
+                }while (structure.equals(PING_MESSAGE));
                 gridsStructure.add(structure);
 
                 //TODO delete these:
@@ -170,6 +181,30 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
         } catch (IOException e) {
             throw new ServerIsDownException();
 
+        }
+    }
+
+    @Override
+    public void setGrid(int gridIndex) throws ServerIsDownException, InvalidMoveException {
+        try {
+            outputStream.writeUTF(CHOOSE_GRID);
+            String response;
+            do{
+                response=inputStream.readUTF();
+            }while (response.equals(PING_MESSAGE));
+            if(!response.equals(OK_MESSAGE)) {
+                System.err.println("Something went wrong");
+                return;
+            }
+
+            outputStream.writeInt(gridIndex);
+            do{
+                response=inputStream.readUTF();
+            }while (response.equals(PING_MESSAGE));
+            if(response.equals(NOT_OK_MESSAGE))
+                throw new InvalidMoveException();
+        } catch (IOException e) {
+            throw new ServerIsDownException();
         }
     }
 }

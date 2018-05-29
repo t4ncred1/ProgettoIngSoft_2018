@@ -145,7 +145,7 @@ public class Grid {
     }
 
     public String getStructure() {
-        StringBuilder structure= new StringBuilder("{ ");
+        StringBuilder structure= new StringBuilder("");
         for(Box[] i : gameGrid){
             structure.append("{");
             for(Box j : i){

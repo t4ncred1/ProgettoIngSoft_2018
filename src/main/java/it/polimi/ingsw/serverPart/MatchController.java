@@ -3,6 +3,7 @@ package it.polimi.ingsw.serverPart;
 import it.polimi.ingsw.serverPart.component_container.Die;
 import it.polimi.ingsw.serverPart.component_container.Grid;
 import it.polimi.ingsw.serverPart.custom_exception.*;
+import it.polimi.ingsw.serverPart.netPart_container.SocketUserAgent;
 import it.polimi.ingsw.serverPart.netPart_container.UserInterface;
 
 import java.util.*;
@@ -505,5 +506,21 @@ public class MatchController extends Thread{
         }
         return null;
 
+    }
+
+    public void setGrid(UserInterface userInterface, int gridChosen) throws InvalidOperationException {
+        String username = userInterface.getUsername();
+        synchronized (playersInMatchGuard){
+            if(!playersInMatch.containsKey(username)) /*TODO throw an exception*/;
+            if(!playersInMatch.get(username).equals(userInterface)) /*TODO throw an exception*/;
+        }
+
+        try {
+            model.setPlayerGrid(username, gridChosen);
+            System.out.println(username + " chose the grid number: "+ gridChosen);
+        } catch (NotValidParameterException e) {
+            System.err.println("ERROR!");
+            e.printStackTrace();
+        }
     }
 }

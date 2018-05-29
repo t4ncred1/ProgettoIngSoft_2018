@@ -29,9 +29,10 @@ public class Player {
     public void setGridsSelection(List<Grid> grids) {
             this.gridsSelection=new ArrayList<>(grids);
     }
+
     public void setGrid(int i) throws NotValidParameterException, InvalidOperationException {
-            if (i<0||i>3) throw new NotValidParameterException("index of the chosen grid: "+i,"Should be 1 or 0");
-            if (gridsSelection==null||gridsSelection.size()!=4) throw new InvalidOperationException();
+            if (gridsSelection==null) throw new InvalidOperationException();
+            if (i<0||i>=gridsSelection.size()) throw new NotValidParameterException("index of the chosen grid: "+i,"Should be a value between 0 and " + (gridsSelection.size()-1));
             gridSelected=gridsSelection.get(i);
     }
 

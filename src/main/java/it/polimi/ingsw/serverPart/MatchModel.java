@@ -192,9 +192,13 @@ public class MatchModel{
     }
 
     public void setPlayerGrid(String player, int grid) throws InvalidOperationException, NotValidParameterException {
+        if(grid>=GRIDS_FOR_A_PLAYER) throw new InvalidOperationException();
         for (Player current : playersInGame){
-            if(current.getUsername().equals(player)) current.setGrid(grid); //invalidOpExc is thrown if the possible grids are not initialized, NotValidParameter is thrown if grid is not 0 or 1.
+            if(current.getUsername().equals(player)){
+                current.setGrid(grid); //invalidOpExc is thrown if the possible grids are not initialized, NotValidParameter is thrown if grid is not 0 or 1.
+            }
         }
+
     }
 
     public boolean checkEndInitialization() {

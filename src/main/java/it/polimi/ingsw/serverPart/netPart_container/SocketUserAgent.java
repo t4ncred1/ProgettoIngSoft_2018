@@ -11,6 +11,7 @@ import it.polimi.ingsw.serverPart.custom_exception.ReconnectionException;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.NavigableMap;
 
 public class SocketUserAgent extends Thread implements UserInterface {
 
@@ -22,7 +23,11 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     private String username;
 
+    private static final String HELLO_MESSAGE="hello";
+    private static final String OK_REQUEST = "ok";
+    private static final String NOT_OK_REQUEST = "retry";
     private static final String REQUEST_GRID = "get_grids";
+    private static final String CHOOSE_GRID="set_grid";
 
     public SocketUserAgent(Socket client) {
         this.socket=client;
@@ -39,7 +44,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
     @Override
     public void run(){
         System.out.println("Connection request received on Socket system");
-        final String HELLO_MESSAGE="hello";
         try {
             String hello= new String();
             while(!hello.equals(HELLO_MESSAGE)) hello= inputStream.readUTF();
@@ -48,6 +52,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }
 
         boolean connected =false;
+        //FIXME make messages private static final
         do {
             final String notAvailableMessage = new String("notLogged_username_not_available");
             try {
@@ -104,18 +109,51 @@ public class SocketUserAgent extends Thread implements UserInterface {
             }
         }
 
-        handleInitialization();
+        try {
+            handleInitialization();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private void handleInitialization() {
-        final String OK_REQUEST = "ok";
-        final String NOT_OK_REQUEST = "retry";
+    private void handleInitialization() throws IOException {
+        handleGridsRequest();
+        boolean gridSet;
+        do {
+            gridSet = handleGridSet();
+        }
+        while (!gridSet);
+    }
+
+    private boolean handleGridSet() throws IOException {
+        String request;
+        do {
+            request = inputStream.readUTF();
+            if (request.equals(CHOOSE_GRID)) {
+                outputStream.writeUTF(OK_REQUEST);
+            }
+            else{
+                outputStream.writeUTF(NOT_OK_REQUEST);
+            }
+        }
+        while (!request.equals(CHOOSE_GRID));
+        int gridChosen = inputStream.readInt();
+        try {
+            gameHandiling.setGrid(this, gridChosen);
+            outputStream.writeUTF(OK_REQUEST);
+        } catch (InvalidOperationException e) {
+            outputStream.writeUTF(NOT_OK_REQUEST);
+            return false;
+        }
+        return true;
+    }
+
+    private void handleGridsRequest() {
         try {
             String request;
             do{
                 request = inputStream.readUTF();
-                System.out.println(request);
                 if(!request.equals(REQUEST_GRID)) outputStream.writeUTF(NOT_OK_REQUEST);
             }while (!request.equals(REQUEST_GRID));
             outputStream.writeUTF(OK_REQUEST);

@@ -11,4 +11,5 @@ public interface ServerCommunicatingInterface {
 
 
     void getGrids() throws ServerIsDownException;
+    void setGrid(int gridIndex) throws ServerIsDownException, InvalidMoveException;
 }

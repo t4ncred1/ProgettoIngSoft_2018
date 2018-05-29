@@ -56,7 +56,30 @@ public class ReworkedClientMain {
     }
 
     private void CLIHandleGameInitialization() throws ServerIsDownException {
+        Scanner scanner= new Scanner(System.in);
+        boolean gridCorrectlyChosen= false;
+
         server.getGrids();
+        System.out.println("Insert a value from 0 to 3 to chose a grid"); //FIXME get this from proxy
+        do{
+            String read=scanner.nextLine();
+            try{
+                int gridIndex = Integer.parseInt(read);
+                if(gridIndex<0||gridIndex>3) throw new InvalidMoveException();//FIXME get this from proxy
+                server.setGrid(gridIndex);
+
+                System.out.println("Grid correctly chosen.");
+                gridCorrectlyChosen=true;
+            }
+            catch (InvalidMoveException e){
+                System.err.println("Invalid index. Please insert a valid one.");
+            }
+            catch (NumberFormatException e){
+                System.err.println("Please insert a number");
+            }
+        }
+        while (!gridCorrectlyChosen);
+
     }
 
     private void CLIHandleWaitForGame() throws ServerIsDownException {
