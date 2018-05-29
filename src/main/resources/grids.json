@@ -6,6 +6,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 0
@@ -13,6 +14,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
@@ -20,6 +22,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
@@ -27,6 +30,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 3
@@ -35,27 +39,31 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -64,13 +72,15 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -78,13 +88,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -93,20 +105,23 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -114,6 +129,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 3
@@ -122,6 +138,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 0
@@ -129,6 +146,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
@@ -136,6 +154,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
@@ -143,6 +162,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 3
@@ -156,6 +176,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
@@ -163,20 +184,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -184,7 +208,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -192,6 +217,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -199,13 +225,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -214,6 +242,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
@@ -221,13 +250,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -235,6 +266,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 3
@@ -242,7 +274,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
@@ -250,6 +283,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -257,13 +291,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 3
@@ -272,6 +308,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
@@ -279,20 +316,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -305,14 +345,16 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
@@ -320,6 +362,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 2
@@ -327,6 +370,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 3
@@ -334,7 +378,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -342,6 +387,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -349,6 +395,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -356,6 +403,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 3
@@ -364,6 +412,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 0
@@ -371,6 +420,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -378,6 +428,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -385,6 +436,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -392,7 +444,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
@@ -400,6 +453,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -407,6 +461,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -414,6 +469,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 3
@@ -421,14 +477,16 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
@@ -436,6 +494,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 2
@@ -443,6 +502,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 3
@@ -456,27 +516,31 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -485,6 +549,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 0
@@ -492,6 +557,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -499,6 +565,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -506,6 +573,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 3
@@ -513,7 +581,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
@@ -521,6 +590,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -528,13 +598,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -542,14 +614,16 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -557,6 +631,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -564,6 +639,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 3
@@ -572,20 +648,23 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
@@ -593,6 +672,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -605,7 +685,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
@@ -613,13 +694,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
@@ -627,6 +710,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 3
@@ -634,7 +718,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -642,6 +727,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -649,13 +735,15 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -664,6 +752,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
@@ -671,6 +760,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -678,6 +768,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -685,6 +776,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 3
@@ -692,7 +784,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
@@ -700,6 +793,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -707,13 +801,15 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 3
@@ -721,7 +817,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
@@ -729,13 +826,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
@@ -743,6 +842,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 3
@@ -757,20 +857,23 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
@@ -778,6 +881,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 3
@@ -785,7 +889,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -793,13 +898,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -807,6 +914,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 3
@@ -815,20 +923,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -836,6 +947,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -843,7 +955,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
@@ -851,6 +964,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -858,6 +972,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -865,6 +980,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 3
@@ -873,6 +989,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 0
@@ -880,6 +997,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
@@ -887,13 +1005,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -907,20 +1027,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
@@ -928,6 +1051,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 3
@@ -936,6 +1060,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 0
@@ -943,20 +1068,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -965,6 +1093,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 0
@@ -972,13 +1101,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -986,6 +1117,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -994,13 +1126,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -1008,6 +1142,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -1015,6 +1150,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 3
@@ -1022,7 +1158,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
@@ -1030,6 +1167,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
@@ -1037,6 +1175,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
@@ -1044,6 +1183,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 3
@@ -1057,6 +1197,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
@@ -1064,20 +1205,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -1086,6 +1230,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 0
@@ -1093,6 +1238,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -1100,6 +1246,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -1107,6 +1254,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 3
@@ -1114,7 +1262,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
@@ -1122,6 +1271,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -1129,6 +1279,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -1136,6 +1287,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 3
@@ -1143,14 +1295,16 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -1158,6 +1312,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -1165,6 +1320,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 3
@@ -1173,20 +1329,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
@@ -1194,6 +1353,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 3
@@ -1207,7 +1367,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
@@ -1215,13 +1376,15 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
@@ -1229,6 +1392,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -1237,20 +1401,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -1258,6 +1425,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -1265,7 +1433,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
@@ -1273,6 +1442,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -1280,13 +1450,15 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -1295,13 +1467,15 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -1309,13 +1483,15 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 3
@@ -1324,13 +1500,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
@@ -1338,13 +1516,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -1357,14 +1537,16 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
@@ -1372,6 +1554,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
@@ -1379,6 +1562,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 3
@@ -1387,6 +1571,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -1394,6 +1579,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -1401,6 +1587,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -1408,6 +1595,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -1416,6 +1604,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
@@ -1423,13 +1612,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -1437,6 +1628,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 3
@@ -1444,14 +1636,16 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -1459,6 +1653,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -1466,6 +1661,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 3
@@ -1473,7 +1669,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
@@ -1481,6 +1678,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
@@ -1488,13 +1686,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -1508,13 +1708,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
@@ -1522,6 +1724,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 2
@@ -1529,6 +1732,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -1536,7 +1740,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -1544,6 +1749,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -1551,6 +1757,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -1558,6 +1765,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 3
@@ -1566,6 +1774,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 0
@@ -1573,13 +1782,15 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -1587,6 +1798,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 3
@@ -1595,13 +1807,15 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -1609,13 +1823,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 3
@@ -1623,21 +1839,24 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
@@ -1645,6 +1864,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 3
@@ -1658,6 +1878,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 0
@@ -1665,20 +1886,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -1687,6 +1911,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -1694,20 +1919,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -1716,6 +1944,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 0
@@ -1723,6 +1952,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -1730,13 +1960,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -1744,7 +1976,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
@@ -1752,6 +1985,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -1759,6 +1993,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -1766,6 +2001,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 3
@@ -1774,13 +2010,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
@@ -1788,6 +2026,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 2
@@ -1795,6 +2034,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -1808,6 +2048,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
@@ -1815,6 +2056,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
@@ -1822,6 +2064,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 2
@@ -1829,6 +2072,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 3
@@ -1837,27 +2081,31 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -1865,7 +2113,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
@@ -1873,6 +2122,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -1880,13 +2130,15 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -1894,21 +2146,24 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -1916,6 +2171,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 3
@@ -1924,6 +2180,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 0
@@ -1931,6 +2188,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 1
@@ -1938,6 +2196,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
@@ -1945,6 +2204,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -1957,7 +2217,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
@@ -1965,6 +2226,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 1
@@ -1972,13 +2234,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -1987,6 +2251,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 0
@@ -1994,6 +2259,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -2001,13 +2267,15 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -2016,6 +2284,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
@@ -2023,6 +2292,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -2030,13 +2300,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -2045,6 +2317,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
@@ -2052,6 +2325,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -2059,13 +2333,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 3
@@ -2074,6 +2350,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 0
@@ -2081,6 +2358,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
@@ -2088,13 +2366,15 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -2107,7 +2387,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
@@ -2115,6 +2396,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 1
@@ -2122,13 +2404,15 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -2136,7 +2420,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -2144,6 +2429,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -2151,6 +2437,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -2158,6 +2445,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -2166,6 +2454,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 0
@@ -2173,6 +2462,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -2180,6 +2470,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -2187,6 +2478,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 3
@@ -2194,7 +2486,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
@@ -2202,6 +2495,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -2209,6 +2503,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -2216,6 +2511,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 3
@@ -2223,7 +2519,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
@@ -2231,6 +2528,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 1
@@ -2238,13 +2536,15 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -2257,7 +2557,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
@@ -2265,6 +2566,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
@@ -2272,13 +2574,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -2286,7 +2590,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -2294,13 +2599,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -2308,6 +2615,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -2316,20 +2624,23 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -2337,6 +2648,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 3
@@ -2345,6 +2657,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 0
@@ -2352,6 +2665,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -2359,13 +2673,15 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 3
@@ -2373,7 +2689,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
@@ -2381,20 +2698,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -2407,21 +2727,24 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
@@ -2429,6 +2752,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -2436,14 +2760,16 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -2451,6 +2777,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -2458,6 +2785,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 3
@@ -2465,7 +2793,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
@@ -2473,6 +2802,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -2480,6 +2810,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -2487,6 +2818,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -2495,6 +2827,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
@@ -2502,6 +2835,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -2509,6 +2843,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -2516,6 +2851,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 3
@@ -2524,6 +2860,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 0
@@ -2531,6 +2868,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
@@ -2538,6 +2876,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 2
@@ -2545,6 +2884,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -2558,6 +2898,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 0
@@ -2565,6 +2906,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 1
@@ -2572,6 +2914,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
@@ -2579,6 +2922,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -2587,13 +2931,15 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -2601,6 +2947,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -2608,6 +2955,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -2615,7 +2963,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
@@ -2623,13 +2972,15 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -2637,6 +2988,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 3
@@ -2644,14 +2996,16 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -2659,6 +3013,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -2666,6 +3021,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 3
@@ -2674,20 +3030,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
@@ -2695,6 +3054,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 3
@@ -2707,21 +3067,24 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
@@ -2729,6 +3092,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -2737,6 +3101,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -2744,13 +3109,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -2758,6 +3125,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 3
@@ -2766,13 +3134,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -2780,13 +3150,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -2794,7 +3166,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
@@ -2802,6 +3175,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -2809,13 +3183,15 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 3
@@ -2824,20 +3200,23 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
@@ -2845,6 +3224,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -2858,6 +3238,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 0
@@ -2865,6 +3246,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
@@ -2872,13 +3254,15 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -2887,6 +3271,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -2894,13 +3279,15 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -2908,6 +3295,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 3
@@ -2916,20 +3304,23 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -2937,6 +3328,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 3
@@ -2944,14 +3336,16 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -2959,6 +3353,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -2966,6 +3361,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 3
@@ -2974,6 +3370,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 0
@@ -2981,6 +3378,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 1
@@ -2988,6 +3386,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 2
@@ -2995,6 +3394,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 3
@@ -3008,6 +3408,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 0
@@ -3015,20 +3416,23 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -3036,7 +3440,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -3044,6 +3449,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -3051,6 +3457,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -3058,6 +3465,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 3
@@ -3066,6 +3474,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 0
@@ -3073,6 +3482,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -3080,13 +3490,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -3094,7 +3506,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
@@ -3102,6 +3515,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -3109,6 +3523,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -3116,6 +3531,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 3
@@ -3124,6 +3540,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 0
@@ -3131,20 +3548,23 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -3158,13 +3578,15 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
@@ -3172,13 +3594,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -3186,7 +3610,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -3194,6 +3619,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -3201,13 +3627,15 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -3216,6 +3644,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 0
@@ -3223,6 +3652,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -3230,6 +3660,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -3237,6 +3668,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 3
@@ -3244,14 +3676,16 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -3259,6 +3693,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -3266,6 +3701,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 3
@@ -3273,7 +3709,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
@@ -3281,13 +3718,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
@@ -3295,6 +3734,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -3308,20 +3748,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 2
@@ -3329,6 +3772,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 3
@@ -3336,14 +3780,16 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -3351,6 +3797,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -3358,6 +3805,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 3
@@ -3366,6 +3814,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 0
@@ -3373,6 +3822,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -3380,6 +3830,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -3387,6 +3838,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 3
@@ -3395,6 +3847,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 0
@@ -3402,6 +3855,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -3409,13 +3863,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 3
@@ -3424,6 +3880,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 0
@@ -3431,20 +3888,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
@@ -3458,13 +3918,15 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 1
@@ -3472,6 +3934,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 0, 1, 1],
 				"constraintIndex": 3,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 0,
 				"coordY": 2
@@ -3479,6 +3942,7 @@
 				"colorRestriction": [0, 1, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 0,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 0,
 				"coordY": 3
@@ -3487,6 +3951,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 1,
 				"coordY": 0
@@ -3494,6 +3959,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 0, 1],
 				"constraintIndex": 4,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 1
@@ -3501,6 +3967,7 @@
 				"colorRestriction": [1, 0, 1, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 2
@@ -3508,6 +3975,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 1, 1, 1, 0],
 				"constraintIndex": 5,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 1,
 				"coordY": 3
@@ -3515,7 +3983,8 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 0
@@ -3523,6 +3992,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 1
@@ -3530,6 +4000,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 0, 1, 1, 1, 1],
 				"constraintIndex": 1,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 2,
 				"coordY": 2
@@ -3537,6 +4008,7 @@
 				"colorRestriction": [1, 1, 1, 0, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 3,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 2,
 				"coordY": 3
@@ -3544,14 +4016,16 @@
 			[{
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 3,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 1
@@ -3559,6 +4033,7 @@
 				"colorRestriction": [1, 1, 0, 1, 1],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 2,
+				"kindOfConstraint": false,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 2
@@ -3566,6 +4041,7 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [1, 1, 0, 1, 1, 1],
 				"constraintIndex": 2,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 3,
 				"coordY": 3
@@ -3574,20 +4050,23 @@
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 1, 1, 1, 1, 1],
 				"constraintIndex": 0,
+				"kindOfConstraint": true,
 				"opened": 0,
 				"coordX": 4,
 				"coordY": 0
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 1
 			}, {
 				"colorRestriction": [0, 0, 0, 0, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
-				"constraintIndex": 0,
+				"constraintIndex": -1,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 2
@@ -3595,6 +4074,7 @@
 				"colorRestriction": [1, 1, 1, 1, 0],
 				"valueRestriction": [0, 0, 0, 0, 0, 0],
 				"constraintIndex": 4,
+				"kindOfConstraint": false,
 				"opened": 1,
 				"coordX": 4,
 				"coordY": 3
