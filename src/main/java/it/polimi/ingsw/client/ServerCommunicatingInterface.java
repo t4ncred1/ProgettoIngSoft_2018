@@ -1,0 +1,15 @@
+package it.polimi.ingsw.client;
+
+import it.polimi.ingsw.client.custom_exception.*;
+
+public interface ServerCommunicatingInterface {
+
+    void setUpConnection() throws ServerIsDownException;
+    void login(String username) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException;
+    void waitForGame(boolean starting) throws GameStartingException, GameStartedException, TimerRestartedException, ServerIsDownException, GameInProgressException;
+    boolean logout() throws ServerIsDownException;
+
+
+    void getGrids() throws ServerIsDownException;
+    void setGrid(int gridIndex) throws ServerIsDownException, InvalidMoveException;
+}
