@@ -24,11 +24,11 @@ class PlayerTest {
         int j=4;
         int x=2;
         Player test = new Player("test");
-        assertThrows(NotValidParameterException.class, () -> {
+        assertThrows(InvalidOperationException.class, () -> {
             test.setGrid(i);
         });
 
-        assertThrows(NotValidParameterException.class, ()->{
+        assertThrows(InvalidOperationException.class, ()->{
             test.setGrid(j);
         });
         assertThrows(InvalidOperationException.class, ()->{

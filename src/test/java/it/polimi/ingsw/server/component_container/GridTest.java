@@ -380,7 +380,7 @@ public class GridTest {
         } catch (NotValidParameterException e) {
             fail("test failed");
         }
-        assertEquals("{ {\tnone,\tnone,\tnone,\tnone,}\n" +
+        assertEquals("{\tnone,\tnone,\tnone,\tnone,}\n" +
                 "{\tnone,\tnone,\tnone,\tnone,}\n" +
                 "{\tnone,\tnone,\tnone,\tnone,}\n" +
                 "{\tnone,\tnone,\tnone,\tnone,}\n" +
