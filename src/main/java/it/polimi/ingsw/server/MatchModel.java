@@ -126,7 +126,7 @@ public class MatchModel{
     private void initializeRound() throws NotValidParameterException, NotInPoolException {
         matchDicePool.generateDiceForPull(playersInGame.size()*2+1); //(launching this methods later throws a nullPointerExc)
         roundTrack.add(matchDicePool.getDieFromPool(0));    //if there aren't any dice in DicePool at the end of the turn, throws NotInPoolException.
-        matchDicePool.removeDiefromPool(0);
+        matchDicePool.removeDieFromPool(0);
     }
 
     public String askTurn() {
@@ -135,7 +135,7 @@ public class MatchModel{
 
     public void insertDieOperation(int x, int y, int dpIndex) throws InvalidOperationException, NotInPoolException, NotValidParameterException {
         this.playersInGame.get(currentTurn).getSelectedGrid().insertDieInXY(x,y,true, true, matchDicePool.getDieFromPool(dpIndex));
-        matchDicePool.removeDiefromPool(dpIndex);
+        matchDicePool.removeDieFromPool(dpIndex);
     }
 
     public boolean useToolCardOperation() {
