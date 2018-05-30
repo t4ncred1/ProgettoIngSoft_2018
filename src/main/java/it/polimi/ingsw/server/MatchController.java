@@ -82,6 +82,10 @@ public class MatchController extends Thread{
                 handleTurn();
             } catch (TooManyRoundsException e) {
                 gameFinished=true;
+            } catch (NotValidParameterException e) {
+                e.printStackTrace();
+            } catch (NotInPoolException e) {
+                e.printStackTrace();
             }
         }
         while(!gameFinished);
@@ -159,7 +163,7 @@ public class MatchController extends Thread{
     --------------------------------------------------
      */
 
-    private void handleTurn() throws TooManyRoundsException {
+    private void handleTurn() throws TooManyRoundsException, NotValidParameterException, NotInPoolException {
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -168,7 +172,7 @@ public class MatchController extends Thread{
         lock.lock();
         sendConnectedPlayers();
         model.updateTurn(MAX_ROUND);
-        String username = model.requestTurnPlayer();
+        String username = model.askTurn();
         lock.unlock();
         try {
             executeTurn(username);
@@ -182,7 +186,7 @@ public class MatchController extends Thread{
         }
     }
 
-    private void executeTurn(String username) throws InvalidUsernameException, InvalidOperationException {
+    private void executeTurn(String username) throws InvalidUsernameException, InvalidOperationException, NotValidParameterException, NotInPoolException {
 
         //FIXME
         final String turnStarted = "start";
@@ -250,7 +254,7 @@ public class MatchController extends Thread{
         return operation;
     }
 
-    private boolean handleTurnPlayerOperation(String operation, String username) throws InvalidOperationException {
+    private boolean handleTurnPlayerOperation(String operation, String username) throws InvalidOperationException, NotValidParameterException, NotInPoolException {
         final String insertDie= "put_die";
         final String useToolCard = "tool_card";
         final String finish="finish";
@@ -260,7 +264,7 @@ public class MatchController extends Thread{
         switch (operation){
             case insertDie:
                 if(!dieInserted){
-                    dieInserted= model.insertDieOperation();
+                    model.insertDieOperation(0,0,0); //FIXME
                 }
                 else{
                     turnPlayer.notifyAlreadyDoneOperation();

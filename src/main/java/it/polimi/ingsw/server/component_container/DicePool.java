@@ -46,8 +46,12 @@ public class DicePool {
 
     public Die getDieFromPool(int index) throws NotInPoolException {
         if(index>=0&&index<this.pool.size())
-            return this.pool.remove(index);
+            return this.pool.get(index);
         else
             throw new NotInPoolException();
+    }
+    public void removeDieFromPool(int index) throws NotValidParameterException, NotInPoolException {
+        this.getDieFromPool(index);
+        this.pool.remove(index);
     }
 }
