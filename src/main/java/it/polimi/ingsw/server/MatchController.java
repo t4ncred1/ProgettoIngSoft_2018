@@ -407,7 +407,7 @@ public class MatchController extends Thread{
         this.gameStarted=gameStartedStatus;
         try {
             Set<String> playerUserNames = playersInMatch.keySet();
-            model = new MatchModel(playerUserNames,this);
+            model = new MatchModel(playerUserNames);
         } catch (NotValidParameterException e) {
             e.printStackTrace();
         } catch (NotValidConfigPathException e) {

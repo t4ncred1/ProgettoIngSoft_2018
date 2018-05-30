@@ -23,7 +23,6 @@ public class MatchModel{
     private List<PublicObjective> publicObjectives;
 
     private ArrayList<Die> roundTrack;
-    private MatchController controller;
     private DicePool matchDicePool;
     private int currentTurn;
     private boolean leftToRight;
@@ -34,9 +33,8 @@ public class MatchModel{
     private final int GRIDS_FOR_A_PLAYER =4;
     private final int PRIV_FOR_A_PLAYER=1;
 
-    MatchModel(Set<String> playersUserNames, MatchController controller) throws NotValidParameterException, NotValidConfigPathException{
+    MatchModel(Set<String> playersUserNames) throws NotValidParameterException, NotValidConfigPathException{
         if (playersUserNames==null) throw new NullPointerException();
-        if (controller==null) throw new NullPointerException();
         try {
             MAXPLAYERSNUMBER=ConfigurationHandler.getMaxPlayersNumber();
         } catch (NotValidConfigPathException e) {
@@ -48,7 +46,6 @@ public class MatchModel{
             e.printStackTrace();
         }
 
-        this.controller=controller;
         roundTrack=new ArrayList<>();
         if (playersUserNames.size()<MINPLAYERSNUMBER||playersUserNames.size()> MAXPLAYERSNUMBER) throw new NotValidParameterException("Number of players in game: "+Integer.toString(playersUserNames.size()),"Between 2 and "+Integer.toString(MAXPLAYERSNUMBER));
 
