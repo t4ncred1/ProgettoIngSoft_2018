@@ -1,33 +1,52 @@
 package it.polimi.ingsw.serverPart.netPart_container;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.serverPart.MatchController;
 import it.polimi.ingsw.serverPart.MatchHandler;
+import it.polimi.ingsw.serverPart.component_container.Die;
 import it.polimi.ingsw.serverPart.component_container.Grid;
-import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
-import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
-import it.polimi.ingsw.serverPart.custom_exception.InvalidUsernameException;
-import it.polimi.ingsw.serverPart.custom_exception.ReconnectionException;
+import it.polimi.ingsw.serverPart.custom_exception.*;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.NavigableMap;
+import java.util.List;
 
 public class SocketUserAgent extends Thread implements UserInterface {
 
     private Socket socket;
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
-    private MatchController gameHandiling;
+    private MatchController gameHandling;
     private boolean inGame;
 
     private String username;
 
-    private static final String HELLO_MESSAGE="hello";
+
+    private static final String PING_MESSAGE= "";
+    private static final String HELLO_MESSAGE = "hello";
+
+    private static final String LOGIN_MESSAGE_FROM_SERVER = "login";
+    private static final String SUCCESSFULLY_LOGGED = "logged";
+    private static final String SERVER_FULL = "notLogged_server_full";
+    private static final String USERNAME_NOT_AVAILABLE= "notLogged_username_not_available";
     private static final String OK_REQUEST = "ok";
     private static final String NOT_OK_REQUEST = "retry";
     private static final String REQUEST_GRID = "get_grids";
+    private static final String GRID_ALREADY_SELECTED= "grid_selected";
     private static final String CHOOSE_GRID="set_grid";
+
+    private static final String GET_TURN_PLAYER = "get_turn_player";
+    private static final String GET_DICE_POOL = "get_dice_pool";
+    private static final String GAME_FINISHED= "finished";
+
+    private static final String OPERATION_MESSAGE= "operation";
+    private static final String GRID_DATA= "grid";
+    private static final String TOOL_DATA="tool";
+    private static final String END_DATA= "end_data";
+    private static final String TURN_FINISHED= "finish";
+    private static final String DICE_POOL_DATA= "dice_pool";
+    private static final String DISCONNECTION = "disconnected";
 
     public SocketUserAgent(Socket client) {
         this.socket=client;
@@ -43,53 +62,127 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     @Override
     public void run(){
-        System.out.println("Connection request received on Socket system");
+        handleConnection();
+
+        handleLogin();
+
+        handleLogoutRequestBeforeStart();
+
         try {
-            String hello= new String();
-            while(!hello.equals(HELLO_MESSAGE)) hello= inputStream.readUTF();
+            handleInitialization();
+            boolean gameFinished=false;
+            do{
+                handleTurnLogic();
+            }while (!gameFinished);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        boolean connected =false;
-        //FIXME make messages private static final
+    }
+
+    private void handleTurnLogic() throws IOException {
+        try {
+            handleTurnPlayerRequest();
+            sendDicePool();
+        } catch (TooManyRoundsException e) {
+            outputStream.writeUTF(GAME_FINISHED);
+        }
+    }
+
+    private void sendDicePool() throws IOException {
+        String request;
         do {
-            final String notAvailableMessage = new String("notLogged_username_not_available");
+            request = inputStream.readUTF();
+        }
+        while (!request.equals(GET_DICE_POOL));
+        outputStream.writeUTF(DICE_POOL_DATA);
+        List<Die> dieList= gameHandling.getDicePool();
+        Gson gson= new Gson();
+        outputStream.writeUTF(gson.toJson(dieList));
+    }
+
+    private void handleTurnPlayerRequest() throws IOException, TooManyRoundsException {
+        String request;
+        boolean turnSent=false;
+        do {
+            waitForTurnPlayerRequest();
             try {
-                MatchHandler.login(this);
-                System.out.println("Connection protocol ended. Connected");
-                try {
-                    outputStream.writeUTF("logged");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                connected=true;
+                String player = gameHandling.requestTurnPlayer();
+                outputStream.writeUTF(player);
+                turnSent = true;
             } catch (InvalidOperationException e) {
-                System.out.println("Connection protocol ended. Server is full");
-                e.printStackTrace();
-                try {
-                    outputStream.writeUTF("notLogged_server_full");
-                } catch (IOException e2) {
-                    e2.printStackTrace();
-                }
-                return;
-            } catch (DisconnectionException e) {
-                System.out.println("Connection protocol ended. Client disconnected.");
-                e.printStackTrace();
-                return;
-            } catch (InvalidUsernameException e) {
-                try {
-                    outputStream.writeUTF(notAvailableMessage);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            } catch (ReconnectionException e) {
-                System.out.println("Connection protocol ended. Client joined the game left before");
+                outputStream.writeUTF(NOT_OK_REQUEST);
+            }
+        } while (!turnSent);
+    }
+
+    private void waitForTurnPlayerRequest() throws IOException {
+        String request;
+        do {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            request = inputStream.readUTF();
         }
-        while(!connected);
+        while (!request.equals(GET_TURN_PLAYER));
+    }
 
+    private void handleInitialization() throws IOException {
+        try {
+            handleGridsRequest();
+            boolean gridSet;
+            do {
+                gridSet = handleGridSet();
+            }
+            while (!gridSet);
+        } catch (InvalidOperationException e) {
+            outputStream.writeUTF(GRID_ALREADY_SELECTED);
+        }
+    }
+
+    private boolean handleGridSet() throws IOException {
+        String request;
+        do {
+            request = inputStream.readUTF();
+            if (request.equals(CHOOSE_GRID)) {
+                outputStream.writeUTF(OK_REQUEST);
+            }
+            else{
+                outputStream.writeUTF(NOT_OK_REQUEST);
+            }
+        }
+        while (!request.equals(CHOOSE_GRID));
+        int gridChosen = inputStream.readInt();
+        try {
+            gameHandling.setGrid(this, gridChosen);
+            outputStream.writeUTF(OK_REQUEST);
+        } catch (InvalidOperationException e) {
+            outputStream.writeUTF(NOT_OK_REQUEST);
+            return false;
+        }
+        return true;
+    }
+
+    private void handleGridsRequest() throws IOException, InvalidOperationException {
+        String request;
+        do{
+            request = inputStream.readUTF();
+            if(!request.equals(REQUEST_GRID)) outputStream.writeUTF(NOT_OK_REQUEST);
+        }while (!request.equals(REQUEST_GRID));
+        outputStream.writeUTF(OK_REQUEST);
+        ArrayList<Grid> grids;
+        do{
+            grids = (ArrayList<Grid>) gameHandling.getPlayerGrids(this);
+        }
+        while (grids==null);
+        outputStream.writeUTF(OK_REQUEST);
+        Gson gson= new Gson();
+        outputStream.writeUTF(gson.toJson(grids));
+    }
+
+    private void handleLogoutRequestBeforeStart() {
         while(!inGame){
             try {
                 if(inputStream.available()>0){
@@ -108,67 +201,55 @@ public class SocketUserAgent extends Thread implements UserInterface {
                 e.printStackTrace();
             }
         }
-
-        try {
-            handleInitialization();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
-    private void handleInitialization() throws IOException {
-        handleGridsRequest();
-        boolean gridSet;
+    public void handleLogin(){
+        boolean connected =false;
         do {
-            gridSet = handleGridSet();
+            try {
+                MatchHandler.login(this);
+                System.out.println("Connection protocol ended. Connected");
+                try {
+                    outputStream.writeUTF(SUCCESSFULLY_LOGGED);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                connected=true;
+            } catch (InvalidOperationException e) {
+                System.out.println("Connection protocol ended. Server is full");
+                e.printStackTrace();
+                try {
+                    outputStream.writeUTF(SERVER_FULL);
+                } catch (IOException e2) {
+                    e2.printStackTrace();
+                }
+                return;
+            } catch (DisconnectionException e) {
+                System.out.println("Connection protocol ended. Client disconnected.");
+                e.printStackTrace();
+                return;
+            } catch (InvalidUsernameException e) {
+                try {
+                    outputStream.writeUTF(USERNAME_NOT_AVAILABLE);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            } catch (ReconnectionException e) {
+                System.out.println("Connection protocol ended. Client joined the game left before");
+                connected=true;
+            }
         }
-        while (!gridSet);
+        while(!connected);
     }
 
-    private boolean handleGridSet() throws IOException {
-        String request;
-        do {
-            request = inputStream.readUTF();
-            if (request.equals(CHOOSE_GRID)) {
-                outputStream.writeUTF(OK_REQUEST);
-            }
-            else{
-                outputStream.writeUTF(NOT_OK_REQUEST);
-            }
-        }
-        while (!request.equals(CHOOSE_GRID));
-        int gridChosen = inputStream.readInt();
+    private void handleConnection() {
+        System.out.println("Connection request received on Socket system");
         try {
-            gameHandiling.setGrid(this, gridChosen);
-            outputStream.writeUTF(OK_REQUEST);
-        } catch (InvalidOperationException e) {
-            outputStream.writeUTF(NOT_OK_REQUEST);
-            return false;
-        }
-        return true;
-    }
-
-    private void handleGridsRequest() {
-        try {
-            String request;
+            String hello;
             do{
-                request = inputStream.readUTF();
-                if(!request.equals(REQUEST_GRID)) outputStream.writeUTF(NOT_OK_REQUEST);
-            }while (!request.equals(REQUEST_GRID));
-            outputStream.writeUTF(OK_REQUEST);
-            ArrayList<Grid> grids;
-            do{
-                grids = (ArrayList<Grid>) gameHandiling.getPlayerGrids(this);
+                hello= inputStream.readUTF();
             }
-            while (grids==null);
-            outputStream.writeInt(grids.size());
-            for(Grid grid: grids){
-                outputStream.writeUTF(grid.getName());
-                outputStream.writeInt(grid.getDifficulty());
-                String toSend = grid.getStructure();
-                outputStream.writeUTF(toSend);
-            }
+            while(!hello.equals(HELLO_MESSAGE));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -177,7 +258,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
     @Override
     public boolean isConnected() {
         try{
-            outputStream.writeUTF("");
+            outputStream.writeUTF(PING_MESSAGE);
             return true;
         }
         catch (IOException e){
@@ -196,7 +277,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
     //-----------------------------------------------------------------------------
     @Override
     public void chooseUsername() throws DisconnectionException {
-        final String chooseUsername = new String("login");
+        final String chooseUsername = new String(LOGIN_MESSAGE_FROM_SERVER);
         try {
             outputStream.writeUTF(chooseUsername);
         } catch (IOException e) {
@@ -249,9 +330,20 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     @Override
     public void setController(MatchController matchController) {
-        this.gameHandiling=matchController;
+        this.gameHandling =matchController;
         this.inGame=true;
     }
+
+    @Override
+    public void notifyDieInsertion() {
+
+    }
+
+    @Override
+    public void notifyToolUsed() {
+
+    }
+
 
     //TODO from here.
 
@@ -271,23 +363,14 @@ public class SocketUserAgent extends Thread implements UserInterface {
     }
 
     @Override
-    public void sendGrids() {
-
-    }
-
-    @Override
     public void notifyDisconnection() {
-
+        try {
+            outputStream.writeUTF(OPERATION_MESSAGE);
+            outputStream.writeUTF(DISCONNECTION);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public void notifyTurnOf(String username, String status) {
-
-    }
-
-    @Override
-    public void sendConnectedPlayers(ArrayList<String> connectedPlayers) {
-
-    }
 
 }

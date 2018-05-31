@@ -27,15 +27,13 @@ public interface UserInterface {
 
     void askForOperation();
 
-    void sendGrids(); //Implement this in SocketUserAgent and RMIUserAgent
-
     void notifyDisconnection();
-
-    void notifyTurnOf(String username, String status);
-
-    void sendConnectedPlayers(ArrayList<String> connectedPlayers);
 
     void notifyReconnection() throws DisconnectionException;
 
     void setController(MatchController matchController);
+
+    void notifyDieInsertion();
+
+    void notifyToolUsed();
 }

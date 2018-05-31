@@ -1,6 +1,10 @@
 package it.polimi.ingsw.clientPart;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.clientPart.custom_exception.*;
+import it.polimi.ingsw.serverPart.component_container.Grid;
+import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -31,6 +35,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     private static final String OK_MESSAGE="ok";
     private static final String NOT_OK_MESSAGE= "retry";
     private static final String REQUEST_GRID = "get_grids";
+    private static final String GRID_ALREADY_SELECTED= "grid_selected";
     private static final String CHOOSE_GRID="set_grid";
 
 
@@ -40,6 +45,19 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
 
     private static final String TRY_LOGOUT= "try_logout";
     private static final String SUCCESSFULLY_LOGGED_OUT= "logged_out";
+
+
+    private static final String GET_TURN_PLAYER = "get_turn_player";
+    private static final String GET_DICE_POOL = "get_dice_pool";
+    private static final String GAME_FINISHED= "finished";
+
+    private static final String OPERATION_MESSAGE= "operation";
+    private static final String GRID_DATA= "grid";
+    private static final String TOOL_DATA="tool";
+    private static final String END_DATA= "end_data";
+    private static final String DICE_POOL_DATA= "dice_pool";
+    private static final String TURN_FINISHED= "finish";
+    private static final String DISCONNECTION = "disconnected";
 
     @Override
     public void setUpConnection() throws ServerIsDownException {
@@ -143,38 +161,30 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     }
 
     @Override
-    public void getGrids() throws ServerIsDownException {
+    public void getGrids() throws ServerIsDownException, GameInProgressException {
         String result;
         try{
             do {
                 outputStream.writeUTF(REQUEST_GRID);
-                do {
-                    result = inputStream.readUTF();
-                }while (result.equals(PING_MESSAGE));
-                System.out.println(result);
+                result=readRemoteInput();
             }while (result.equals(NOT_OK_MESSAGE));
-            int number= inputStream.readInt();
-            ArrayList<String> gridsNames= new ArrayList<>();
-            ArrayList<Integer> gridsDifficulties= new ArrayList<>();
-            ArrayList<String> gridsStructure= new ArrayList<>();
-            for(int i=0; i<number; i++) {
-                String name;
-                do {
-                    name = inputStream.readUTF();
-                }while (name.equals(PING_MESSAGE));
-                gridsNames.add(name);
-                int difficulty = inputStream.readInt();
-                gridsDifficulties.add(difficulty);
-                String structure;
-                do {
-                    structure = inputStream.readUTF();
-                }while (structure.equals(PING_MESSAGE));
-                gridsStructure.add(structure);
+            result=readRemoteInput();
+            if(result.equals(OK_MESSAGE)) {
+                ArrayList<Grid> grids;
+                TypeToken<ArrayList<Grid>> typeToken= new TypeToken<ArrayList<Grid>>(){};
+                Gson gson= new Gson();
+                result=readRemoteInput();
+                grids= gson.fromJson(result, typeToken.getType());
 
-                //TODO delete these:
-                System.out.println(name);
-                System.out.println(difficulty);
-                System.out.println(structure);
+                /*FIXME REMOVE THIS*/
+                for(Grid grid: grids){
+                    System.out.println(grid.getName());
+                    System.out.println(grid.getDifficulty());
+                    System.out.println(grid.getStructure());
+                }
+
+            }else if(result.equals(GRID_ALREADY_SELECTED)){
+                throw new GameInProgressException();
             }
 
             //TODO
@@ -188,24 +198,90 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     public void setGrid(int gridIndex) throws ServerIsDownException, InvalidMoveException {
         try {
             outputStream.writeUTF(CHOOSE_GRID);
-            String response;
-            do{
-                response=inputStream.readUTF();
-            }while (response.equals(PING_MESSAGE));
+            String response= readRemoteInput();
             if(!response.equals(OK_MESSAGE)) {
                 System.err.println("Something went wrong");
                 return;
             }
 
             outputStream.writeInt(gridIndex);
-            do{
-                response=inputStream.readUTF();
-            }while (response.equals(PING_MESSAGE));
+            response=readRemoteInput();
             if(response.equals(NOT_OK_MESSAGE))
                 throw new InvalidMoveException();
         } catch (IOException e) {
             throw new ServerIsDownException();
         }
+    }
+
+    @Override
+    public String askTurn() throws ServerIsDownException, ServerNotReadyException, GameFinishedException {
+        try {
+            outputStream.writeUTF(GET_TURN_PLAYER);
+            String response=readRemoteInput();
+            if(response.equals(NOT_OK_MESSAGE)) throw new ServerNotReadyException();
+            else if(response.equals(GAME_FINISHED)) throw new GameFinishedException();
+            else return response;
+        } catch (IOException e) {
+            throw new ServerIsDownException();
+        }
+
+
+    }
+
+    @Override
+    public void listen(String username) throws ServerIsDownException, TurnFinishedException, DisconnectionException {
+        try {
+            String read=inputStream.readUTF();
+            if (read.equals(OPERATION_MESSAGE)) {
+                handleOperation(username);
+            }else if(read.equals(TURN_FINISHED)){
+                throw new TurnFinishedException();
+            }
+        } catch (IOException e) {
+            throw new ServerIsDownException();
+        }
+
+    }
+
+    @Override
+    public void getUpdatedDicePool() throws ServerIsDownException {
+        try {
+            outputStream.writeUTF(GET_DICE_POOL);
+            String response;
+            do {
+                response = readRemoteInput();
+            }
+            while (!response.equals(DICE_POOL_DATA));
+            response=readRemoteInput();
+            System.out.println(response); //FIXME
+        } catch (IOException e) {
+            throw new ServerIsDownException();
+        }
+    }
+
+    private void handleOperation(String username) throws IOException, DisconnectionException {
+        String read;
+        do{
+            read=readRemoteInput();
+            String data;
+            switch (read){
+                case GRID_DATA:
+                    Grid grid;
+                    /*TODO convert string from Json*/
+                    break;
+                case DISCONNECTION:
+                    throw new DisconnectionException();
+                default:
+            }
+        }while (read.equals(END_DATA));
+    }
+
+    private String readRemoteInput() throws IOException {
+        String read;
+        do{
+            read=inputStream.readUTF();
+        }while (read.equals(PING_MESSAGE));
+        return read;
     }
 }
 

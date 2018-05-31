@@ -61,7 +61,7 @@ public class MatchHandler extends Thread {
         return instance;
     }
 
-    public static void setPlayerInGame(String username, MatchController game) {
+    public void setPlayerInGame(String username, MatchController game) {
         synchronized (connectedPlayersGuard){
             connectedPlayers.put(username, game);
         }
@@ -83,14 +83,14 @@ public class MatchHandler extends Thread {
 
     //
 
-    public static void notifyTimeout() {
+    public void notifyTimeout() {
         instance.timeout=true;
         lock.lock();
         condition.signal();
         lock.unlock();
     }
 
-    public static void notifyMatchCanStart() {
+    public void notifyMatchCanStart() {
         lock.lock();
         condition.signal();
         lock.unlock();

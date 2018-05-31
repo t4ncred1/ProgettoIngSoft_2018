@@ -1,6 +1,7 @@
 package it.polimi.ingsw.clientPart;
 
 import it.polimi.ingsw.clientPart.custom_exception.*;
+import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -16,6 +17,8 @@ public class ReworkedClientMain {
     private final String LOG_IN_REQUEST = "login";
     private final String QUIT_REQUEST = "quit";
     private final String LOG_OUT_REQUEST = "logout";
+    private final String INSERT_DIE= "insert_die";
+    private String username;
 
     public static void main(String[] args){
         instance = new ReworkedClientMain();
@@ -42,47 +45,138 @@ public class ReworkedClientMain {
 //        }
 //        while(!(written.equals("GUI")||written.equals("CLI")));
 
-        instance.CLIChooseConnectionSystem();
+        instance.chooseConnectionSystemCLI();
         try {
-            instance.CLIHandleLogin();
+            instance.handleLoginCLI();
 
-            instance.CLIHandleWaitForGame();
+            instance.handleWaitForGameCLI();
 
-            instance.CLIHandleGameInitialization();
+            instance.handleGameInitializationCLI();
+            
+            instance.handleTurnLogicCLI();
         }
         catch (ServerIsDownException e){
             System.err.println("Can't connect to server, something went wrong!");
         }
     }
 
-    private void CLIHandleGameInitialization() throws ServerIsDownException {
-        Scanner scanner= new Scanner(System.in);
-        boolean gridCorrectlyChosen= false;
+    private void handleTurnLogicCLI() throws ServerIsDownException {
+        boolean gameFinished=false;
 
-        server.getGrids();
-        System.out.println("Insert a value from 0 to 3 to chose a grid"); //FIXME get this from proxy
         do{
-            String read=scanner.nextLine();
-            try{
-                int gridIndex = Integer.parseInt(read);
-                if(gridIndex<0||gridIndex>3) throw new InvalidMoveException();//FIXME get this from proxy
-                server.setGrid(gridIndex);
+            try {
+                String turnPlayer;
+                turnPlayer= getPlayerOfThisTurn();
+                server.getUpdatedDicePool();
+                if (turnPlayer.equals(this.username)) {
+                    handleMyTurnLogic();
+                } else {
+                    handleOtherPlayerTurnLogic(username);
+                }
+            } catch (GameFinishedException e) {
+                gameFinished=true;
+            }
+        }while (!gameFinished);
+    }
 
-                System.out.println("Grid correctly chosen.");
-                gridCorrectlyChosen=true;
+    private void handleOtherPlayerTurnLogic(String username) throws ServerIsDownException {
+        boolean turnFinished= false;
+        do {
+            try {
+                server.listen(username);
+            } catch (TurnFinishedException e) {
+                turnFinished = true;
+            } catch (DisconnectionException e) {
+                turnFinished=true;
+                System.out.println(username + " disconnected.");
+                /*TODO notify proxy.*/
             }
-            catch (InvalidMoveException e){
-                System.err.println("Invalid index. Please insert a valid one.");
-            }
-            catch (NumberFormatException e){
-                System.err.println("Please insert a number");
-            }
-        }
-        while (!gridCorrectlyChosen);
+        }while (!turnFinished);
 
     }
 
-    private void CLIHandleWaitForGame() throws ServerIsDownException {
+    private void handleMyTurnLogic() {
+        //TODO logic my turn
+        Scanner scanner = new Scanner(System.in);
+        String operation;
+        boolean turnFinished = false;
+        do {
+            System.out.println("Choose operation:");
+            System.out.println("Possible operations are: " + INSERT_DIE+" - ");
+            operation= scanner.nextLine();
+            turnFinished=doOperation(operation.toLowerCase());
+        } while (!turnFinished);
+    }
+
+    private boolean doOperation(String operation) {
+        switch (operation){
+            case INSERT_DIE:
+                System.out.println("Insert: Die position in dice pool");
+                /*TODO*/
+                break;
+            default:
+                System.err.println("Invalid operation! Retry.");
+        }
+        return false;
+    }
+
+    private String getPlayerOfThisTurn() throws ServerIsDownException, GameFinishedException {
+        boolean print=true;
+        String turnPlayer=null;
+        do {
+            try {
+                turnPlayer = server.askTurn();
+                if (turnPlayer.equals(username))
+                    System.out.println("It's your turn");
+                else
+                    System.out.println("It's " + turnPlayer + " turn");
+            } catch (ServerNotReadyException e) {
+                if (print) {
+                    System.err.println("Waiting for others players");
+                    print = false;
+                }
+            }
+        }
+        while (turnPlayer == null);
+        return turnPlayer;
+    }
+
+    private void handleGameInitializationCLI() throws ServerIsDownException {
+        selectGrid();
+        /*TODO get data from server*/
+    }
+
+    private void selectGrid() throws ServerIsDownException {
+        Scanner scanner= new Scanner(System.in);
+        boolean gridCorrectlyChosen= false;
+        try {
+            server.getGrids();
+            System.out.println("Insert a value from 0 to 3 to chose a grid"); //FIXME get this from proxy
+            do{
+                String read=scanner.nextLine();
+                try{
+                    int gridIndex = Integer.parseInt(read);
+                    if(gridIndex<0||gridIndex>3) throw new InvalidMoveException();//FIXME get this from proxy
+                    server.setGrid(gridIndex);
+
+                    System.out.println("Grid correctly chosen.");
+                    gridCorrectlyChosen=true;
+                }
+                catch (InvalidMoveException e){
+                    System.err.println("Invalid index. Please insert a valid one.");
+                }
+                catch (NumberFormatException e){
+                    System.err.println("Please insert a number");
+                }
+            }
+            while (!gridCorrectlyChosen);
+        } catch (GameInProgressException e) {
+            System.out.println("You already selected a grid.");
+        }
+
+    }
+
+    private void handleWaitForGameCLI() throws ServerIsDownException {
         String read;
         Scanner scanner= new Scanner(System.in);
         DataInputStream dataInputStream = new DataInputStream(System.in);
@@ -147,7 +241,7 @@ public class ReworkedClientMain {
         }
     }
 
-    private void CLIHandleLogin() throws ServerIsDownException {
+    private void handleLoginCLI() throws ServerIsDownException {
         String written;
         Scanner scanner= new Scanner(System.in);
         System.out.println("To log in enter Login, otherwise enter Quit to exit");
@@ -162,9 +256,10 @@ public class ReworkedClientMain {
 
                     do {
                         try {
-                            String username=scanner.nextLine();
-                            instance.server.login(username);
+                            String usernameChosen=scanner.nextLine();
+                            instance.server.login(usernameChosen);
                             ok=true;
+                            this.username=usernameChosen;
                             System.out.println("You successfully logged. You have been inserted in game queue.");
                         } catch (ServerIsFullException e) {
                             System.err.println("Server is now full, retry later.");
@@ -187,7 +282,7 @@ public class ReworkedClientMain {
         while (!(written.equals(LOG_IN_REQUEST) || written.equals(QUIT_REQUEST)));
     }
 
-    private void CLIChooseConnectionSystem() {
+    private void chooseConnectionSystemCLI() {
         Scanner scanner = new Scanner(System.in);
         String written;
         System.out.println("Choose between Socket or RMI to connect to server: ");

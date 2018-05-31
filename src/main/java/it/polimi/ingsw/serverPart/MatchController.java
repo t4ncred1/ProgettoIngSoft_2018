@@ -3,7 +3,6 @@ package it.polimi.ingsw.serverPart;
 import it.polimi.ingsw.serverPart.component_container.Die;
 import it.polimi.ingsw.serverPart.component_container.Grid;
 import it.polimi.ingsw.serverPart.custom_exception.*;
-import it.polimi.ingsw.serverPart.netPart_container.SocketUserAgent;
 import it.polimi.ingsw.serverPart.netPart_container.UserInterface;
 
 import java.util.*;
@@ -20,8 +19,16 @@ public class MatchController extends Thread{
     private final Object modelGuard = new Object();
 
     private static final int MAX_ROUND =10;
+    private UserInterface turnPlayer;
+    private boolean ready;
+    private boolean turnFinished;
+    private boolean gameFinished;
     private boolean dieInserted;
     private boolean toolCardUsed;
+
+    private static final String OPERATION_TIMER = "operation";
+    private static final String GRID_CHOOSE_TIMER="initialization";
+    private static final int SLEEP_TIME = 1000;
 
     private Lock lock;
     private Condition condition;
@@ -39,7 +46,7 @@ public class MatchController extends Thread{
         while(!gameStarted){
             updateQueue();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(SLEEP_TIME);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 e.printStackTrace();
@@ -52,7 +59,7 @@ public class MatchController extends Thread{
             ArrayList<String> stopCheck= new ArrayList<>();
             while (true){
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(SLEEP_TIME);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
@@ -74,10 +81,11 @@ public class MatchController extends Thread{
                 }
             }
         }).start();
+
         initializeGame();
 
         //round-turn logic.
-        boolean gameFinished=false;
+
         do{
             try {
                 handleTurn();
@@ -99,8 +107,9 @@ public class MatchController extends Thread{
     }
 
     private void initializeGrids() {
-        GameTimer timer = new GameTimer(this, "initialization");
-        boolean timeout, ok;
+        GameTimer timer = new GameTimer(this, GRID_CHOOSE_TIMER);
+        boolean timeout;
+        boolean ok;
         do {
             lock.lock();
             try {
@@ -114,6 +123,7 @@ public class MatchController extends Thread{
         }
         while(!(timeout||ok));
         timer.stop();
+        System.out.println("Ready to start rounds logic.");
     }
 
     private boolean haveAllPlayersChosenAGrid(boolean timeout) {
@@ -162,130 +172,92 @@ public class MatchController extends Thread{
 
     private void handleTurn() throws TooManyRoundsException {
         try {
-            Thread.sleep(100);
+            Thread.sleep(SLEEP_TIME);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
         lock.lock();
-        sendConnectedPlayers();
         model.updateTurn(MAX_ROUND);
         String username = model.requestTurnPlayer();
+        initializeTurn(username);
+        ready=true; //now i can handle clients requests.
         lock.unlock();
-        try {
-            executeTurn(username);
-        } catch (InvalidOperationException e) {
-            e.printStackTrace();
-        } catch (InvalidUsernameException e) {
-            //FIXME
-            System.err.println("this exception now is launched cause players in matchModel are still not created.");
-            return;
-            //e.printStackTrace();
-        }
+        executeTurn(username);
     }
 
-    private void executeTurn(String username) throws InvalidUsernameException, InvalidOperationException {
-
-        //FIXME
-        final String turnStarted = "start";
-        final String turnEnded= "end";
-        dieInserted= false;
-        toolCardUsed=false;
-
-        if(username==null) throw new InvalidUsernameException();
-        UserInterface turnPlayer= playersInMatch.get(username);
-        if(turnPlayer==null) throw new InvalidUsernameException();
-
-        //notify other players that turn started
-        for(Map.Entry<String,UserInterface> player: playersInMatch.entrySet()){
-            if(!player.getKey().equals(username)){
-                player.getValue().notifyTurnOf(username, turnStarted);
-            }
-        }
-
-        //Handle the turn of the current player.
-        boolean turnFinished= false;
+    private void executeTurn(String username){
+        boolean updatedDie=false;
+        boolean updatedTool=false;
+        GameTimer timer=null;
         do {
-            String operation= getTurnPlayerOperation(username);
-            turnFinished= handleTurnPlayerOperation(operation, username);
-        }while (!turnFinished);
-
-        //notify other players that turn ended
-        for(Map.Entry<String,UserInterface> player: playersInMatch.entrySet()){
-            if(!player.getKey().equals(username)){
-                player.getValue().notifyTurnOf(username, turnEnded);
-            }
-        }
-    }
-
-    private void sendConnectedPlayers() {
-        for(Map.Entry<String,UserInterface> player: playersInMatch.entrySet()){
-            ArrayList<String> connectedPlayers = new ArrayList<>();
-            for(Map.Entry<String,UserInterface> player2: playersInMatch.entrySet()){
-                if(!player.getKey().equals(player2.getKey())) connectedPlayers.add(player2.getKey());
-            }
-            player.getValue().sendConnectedPlayers(connectedPlayers);
-        }
-    }
-
-    private String getTurnPlayerOperation(String username) {
-        UserInterface turnPlayer= playersInMatch.get(username);
-        turnPlayer.askForOperation();
-        String operation;
-        do{
-            //TODO implements a timeout.
+            if(timer==null|| timer.isStopped())timer = new GameTimer(this,OPERATION_TIMER);
+            lock.lock();
             try {
-                Thread.sleep(1000);
+                condition.await();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-
-            //This if is executed if a the user interface of a certain player has changed.
-            //This can be caused by the fact that tha player disconnected and reconnected immediately after before running in timeout event
-            if(!turnPlayer.equals(playersInMatch.get(username))){
-                turnPlayer=playersInMatch.get(username);
-                turnPlayer.askForOperation();
+            lock.unlock();
+            if (dieInserted&&!updatedDie) {
+                notifyDieInsertionBy(username);
+                updatedDie=true;
+                timer.stop();
             }
-            operation = turnPlayer.getOperation();
-            //FIXME if(timeout) operation=timeoutOccurred;
-        }while (operation==null);
-        return operation;
+
+            if (toolCardUsed&&!updatedTool) {
+                notifyToolCardUsedBy(username);
+                updatedTool=true;
+                timer.stop();
+            }
+
+            handleTimeoutEvent(timer,username);
+            try {
+                Thread.sleep(SLEEP_TIME);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }while (!turnFinished);
+        ready=false;
     }
 
-    private boolean handleTurnPlayerOperation(String operation, String username) throws InvalidOperationException {
-        final String insertDie= "put_die";
-        final String useToolCard = "tool_card";
-        final String finish="finish";
-        final String timeout="timeout";
-
-        UserInterface turnPlayer= playersInMatch.get(username);
-        switch (operation){
-            case insertDie:
-                if(!dieInserted){
-                    dieInserted= model.insertDieOperation();
+    private void handleTimeoutEvent(GameTimer timer,String username) {
+        if (timer.getTimeoutEvent()) {
+            for (Map.Entry<String, UserInterface> players : playersInMatch.entrySet())
+                players.getValue().notifyDisconnection(); //FIXME
+            turnFinished = true;
+            synchronized (modelGuard){
+                try {
+                    model.setPlayerToDisconnect(username);
+                } catch (NotValidParameterException e) {
+                    e.printStackTrace();
                 }
-                else{
-                    turnPlayer.notifyAlreadyDoneOperation();
-                }
-                break;
-            case useToolCard:
-                if(!toolCardUsed){
-                    toolCardUsed=model.useToolCardOperation();
-                }
-                else{
-                    turnPlayer.notifyAlreadyDoneOperation();
-                }
-                break;
-            case finish:
-                return true;
-            case timeout:
-                //TODO disconnect current player.
-                return true;
-            default:
-                throw new InvalidOperationException();
+            }
+            timer.stop();
         }
-        return false;
     }
 
+    private void notifyToolCardUsedBy(String username) {
+        synchronized (playersInMatchGuard) {
+            for (Map.Entry<String, UserInterface> players : playersInMatch.entrySet())
+                if (!players.getKey().equals(username))
+                    players.getValue().notifyToolUsed(); //FIXME
+        }
+    }
+
+    private void notifyDieInsertionBy(String username) {
+        synchronized (playersInMatchGuard) {
+            for (Map.Entry<String, UserInterface> players : playersInMatch.entrySet())
+                if (!players.getKey().equals(username))
+                    players.getValue().notifyDieInsertion();
+        }
+    }
+
+    private void initializeTurn(String username){
+        dieInserted= false;
+        toolCardUsed=false;
+        turnFinished=false;
+        turnPlayer= playersInMatch.get(username);
+    }
 
     public int playerInGame() {
 
@@ -306,7 +278,7 @@ public class MatchController extends Thread{
                     toRemove.add(username);
                     MatchHandler.getInstance().notifyAboutDisconnection(username);
                 }
-                if(playersInMatch.size()>1&&!this.gameStartingSoon) MatchHandler.notifyMatchCanStart();
+                if(playersInMatch.size()>1&&!this.gameStartingSoon) MatchHandler.getInstance().notifyMatchCanStart();
             }
             for(String username: toRemove){
                 playersInMatch.remove(username);
@@ -385,7 +357,7 @@ public class MatchController extends Thread{
                 String username = (String) iterator.next();
                 UserInterface client = playersInMatch.get(username);
                 client.setController(this);
-                MatchHandler.setPlayerInGame(username,this);
+                MatchHandler.getInstance().setPlayerInGame(username,this);
                 try {
                     client.notifyStart();
                 } catch (DisconnectionException e) {
@@ -419,29 +391,20 @@ public class MatchController extends Thread{
         lock.unlock();
     }
 
-    public void selectGrid(UserInterface client, int grid) throws InvalidOperationException {
-        String player = client.getUsername();
-        if(!playersInMatch.get(player).equals(client)) throw new InvalidOperationException();
-        synchronized (modelGuard){
-            try {
-                model.setPlayerGrid(player,grid);
-            } catch (NotValidParameterException e) {
-                e.printStackTrace();    //FIXME caused by "setPlayerGrid" when player is not in game. Should this be thrown?
-            }
-        }
-        lock.lock();
-        condition.signal();
-        lock.unlock();
-    }
-
-
     public void handleReconnection(UserInterface player) throws InvalidOperationException {
-
         lock.lock();
         String username = player.getUsername();
         synchronized (playersInMatchGuard) {
             playersInMatch.put(username, player);
         }
+        synchronized (modelGuard){
+            try {
+                model.setPlayerToConnect(username);
+            } catch (NotValidParameterException e) {
+                e.printStackTrace();
+            }
+        }
+        player.setController(this);
         try {
             player.notifyReconnection();
         } catch (DisconnectionException e) {
@@ -492,7 +455,7 @@ public class MatchController extends Thread{
         //should I remove this? Will you ask the model to give you the dicepool?
     }
 
-    public List<Grid> getPlayerGrids(UserInterface userInterface) {
+    public List<Grid> getPlayerGrids(UserInterface userInterface) throws InvalidOperationException {
         String username = userInterface.getUsername();
         synchronized (playersInMatchGuard){
             if(!playersInMatch.containsKey(username)) /*TODO throw an exception*/;
@@ -501,7 +464,7 @@ public class MatchController extends Thread{
 
         try {
             return model.getGridsForPlayer(username);
-        } catch (InvalidOperationException e) {
+        } catch (InvalidUsernameException e) {
             e.printStackTrace();
         }
         return null;
@@ -516,11 +479,34 @@ public class MatchController extends Thread{
         }
 
         try {
-            model.setPlayerGrid(username, gridChosen);
+            synchronized (modelGuard) {
+                model.setPlayerGrid(username, gridChosen);
+            }
             System.out.println(username + " chose the grid number: "+ gridChosen);
         } catch (NotValidParameterException e) {
             System.err.println("ERROR!");
             e.printStackTrace();
+        }
+        lock.lock();
+        condition.signal();
+        lock.unlock();
+    }
+
+    public String requestTurnPlayer() throws InvalidOperationException, TooManyRoundsException {
+        if(!ready) throw new InvalidOperationException();
+        if(gameFinished) throw new TooManyRoundsException();
+        synchronized (modelGuard) {
+            return model.requestTurnPlayer();
+        }
+    }
+
+    public void insertDieInXY(int diePosition, int x, int y){
+
+    }
+
+    public List<Die> getDicePool() {
+        synchronized (modelGuard) {
+            return model.getDicePool();
         }
     }
 }

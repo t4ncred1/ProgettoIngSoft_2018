@@ -1,6 +1,7 @@
 package it.polimi.ingsw.clientPart;
 
 import it.polimi.ingsw.clientPart.custom_exception.*;
+import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
 import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.serverPart.netPart_container.ServerRemoteInterface;
 
@@ -56,35 +57,17 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
         if (gameStarted) throw new GameStartedException();
         if (reconnection) throw new GameInProgressException();
-        if(!starting) {
+        if (!starting) {
             if (startingGame) {
                 startingGame = false;
                 throw new GameStartingException();
             }
-        }
-        else{
-            if(startingGame){
-                startingGame=false;
+        } else {
+            if (startingGame) {
+                startingGame = false;
                 throw new TimerRestartedException();
             }
         }
-
-
-
-//        if(!startingGame&&!gameStarted){
-//            return false;
-//        }
-//        else{
-//            while (!gameStarted){
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    Thread.currentThread().interrupt();
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        return true;
     }
 
     @Override
@@ -104,7 +87,7 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     }
 
     @Override
-    public void getGrids() throws ServerIsDownException {
+    public void getGrids() throws ServerIsDownException, GameInProgressException {
         //TODO
     }
 
@@ -112,6 +95,23 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     public void setGrid(int gridIndex) throws ServerIsDownException, InvalidMoveException {
         //TODO
     }
+
+    @Override
+    public String askTurn() {
+        //TODO
+        return null;
+    }
+
+    @Override
+    public void listen(String username) throws ServerIsDownException, TurnFinishedException, DisconnectionException {
+        //TODO
+    }
+
+    @Override
+    public void getUpdatedDicePool() throws ServerIsDownException {
+
+    }
+
 
     public void notifyStarting() {
         this.startingGame=true;

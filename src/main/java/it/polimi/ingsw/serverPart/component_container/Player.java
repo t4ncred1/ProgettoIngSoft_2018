@@ -51,6 +51,10 @@ public class Player {
     public void setObjective(PrivateObjective objective) {
         this.objective = objective;
     }
+
+    public boolean hasSelectedAGrid() {
+        return this.gridSelected!= null;
+    }
 }
 
 

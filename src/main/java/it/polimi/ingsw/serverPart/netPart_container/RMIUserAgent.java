@@ -98,6 +98,16 @@ public class RMIUserAgent implements UserInterface {
         this.gameHandling=matchController;
     }
 
+    @Override
+    public void notifyDieInsertion() {
+
+    }
+
+    @Override
+    public void notifyToolUsed() {
+
+    }
+
     //TODO from here.
 
     @Override
@@ -116,24 +126,10 @@ public class RMIUserAgent implements UserInterface {
     }
 
     @Override
-    public void sendGrids() {
-
-    }
-
-    @Override
     public void notifyDisconnection() {
 
     }
 
-    @Override
-    public void notifyTurnOf(String username, String status) {
-
-    }
-
-    @Override
-    public void sendConnectedPlayers(ArrayList<String> connectedPlayers) {
-
-    }
 
     @Override
     public boolean equals(Object o){

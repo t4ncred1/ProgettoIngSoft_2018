@@ -108,6 +108,11 @@ public class MatchModel{
     }
 
     private void prepareForNextRound(int maxRounds) throws NotInPoolException, TooManyRoundsException, NotValidParameterException {
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (roundTrack.size()>= maxRounds) throw new TooManyRoundsException(); // throw exception if roundtrack is more than ten.
         initializeRound();
     }
@@ -118,7 +123,7 @@ public class MatchModel{
     }
 
     public String requestTurnPlayer() {
-        return playersInGame.get(currentTurn).getUsername();
+        return playersInGame.get(currentTurn).getUsername(); //FIXME
     }
 
     public boolean insertDieOperation() throws InvalidOperationException {
@@ -173,7 +178,7 @@ public class MatchModel{
         return currentGrids;
     }
 
-    public List<Grid> getGridsForPlayer(String username) throws InvalidOperationException {
+    public List<Grid> getGridsForPlayer(String username) throws InvalidOperationException, InvalidUsernameException {
         /*
         * The idea is that when matchModel create players, it automatically takes 2 pairs of grids and put it in player
         * in a proper field.
@@ -187,7 +192,8 @@ public class MatchModel{
             if (player.getUsername().equals(username))
                 playerPassed = player;
         }
-        if (playerPassed==null) throw new InvalidOperationException();
+        if (playerPassed==null) throw new InvalidUsernameException();
+        if (playerPassed.hasSelectedAGrid()) throw new InvalidOperationException();
         return playerPassed.getGridsSelection(); //returns null if playerPassed doesn't have any grids.
     }
 
@@ -239,6 +245,7 @@ public class MatchModel{
     }
 
     public void setPlayerToConnect(String username) throws NotValidParameterException{
-        //todo
+        //todo if a player is already connected exception shouldn't be launched.
+        // This happen when player reconnect before the timeout event of his turn
     }
 }

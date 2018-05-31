@@ -8,12 +8,18 @@ public class GameTimer {
     private int secondsPassed = 0;
     private int minutesPassed = 0;
     private long timerSet;
-    private long timerToStart=15;
     private long timeForGridsInitialization=30;
     private MatchController gameHandled;
     private boolean gameTimeout;
+    private boolean stopped;
 
     private final int SECOND_TO_MINUTE_RATIO = 60;
+
+    private static final String GAME_START_TIMER = "game";
+    private long timerToStart=15;
+    private static final String OPERATION_TIMER = "operation";
+    private long timerForOperation=30;
+    private static final String GRID_CHOOSE_TIMER="initialization";
 
     Timer timer = new Timer();
     TimerTask handlerTimerTask = new TimerTask() {
@@ -27,7 +33,7 @@ public class GameTimer {
             System.out.println(minutesPassed+ ":"+secondsPassed);
             if ((secondsPassed + minutesPassed * SECOND_TO_MINUTE_RATIO) >= timerSet) {
                 System.out.println("Timeout");
-                MatchHandler.notifyTimeout();
+                MatchHandler.getInstance().notifyTimeout();
             }
 
         }
@@ -53,7 +59,7 @@ public class GameTimer {
 
     public GameTimer(String message){
         switch (message){
-            case "game":
+            case GAME_START_TIMER:
                 timerSet= timerToStart;
                 break;
         }
@@ -62,10 +68,14 @@ public class GameTimer {
 
     public GameTimer(MatchController matchController, String message){
         this.gameTimeout=false;
+        this.stopped=false;
         this.gameHandled=matchController;
         switch (message){
-            case "initialization":
+            case GRID_CHOOSE_TIMER:
                 timerSet= timeForGridsInitialization;
+                break;
+            case OPERATION_TIMER:
+                timerSet=timerForOperation;
                 break;
         }
         timer.scheduleAtFixedRate(gameTimerTask,1,1000);
@@ -73,9 +83,14 @@ public class GameTimer {
 
     public void stop() {
         timer.cancel();
+        this.stopped=true;
     }
 
     public boolean getTimeoutEvent() {
         return this.gameTimeout;
+    }
+
+    public boolean isStopped() {
+        return this.stopped;
     }
 }
