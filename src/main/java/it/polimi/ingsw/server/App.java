@@ -1,12 +1,10 @@
-package it.polimi.ingsw.serverPart;
+package it.polimi.ingsw.server;
 
 
-import com.google.gson.Gson;
-import it.polimi.ingsw.serverPart.netPart_container.SocketHandler;
-import it.polimi.ingsw.serverPart.netPart_container.RmiHandler;
-import it.polimi.ingsw.serverPart.netPart_container.ServerRemoteInterface;
+import it.polimi.ingsw.server.netPart_container.SocketHandler;
+import it.polimi.ingsw.server.netPart_container.RmiHandler;
+import it.polimi.ingsw.server.netPart_container.ServerRemoteInterface;
 
-import java.io.FileReader;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;

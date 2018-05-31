@@ -1,7 +1,7 @@
-package it.polimi.ingsw.clientPart;
+package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.clientPart.custom_exception.*;
-import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
+import it.polimi.ingsw.client.custom_exception.*;
+import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 
 public interface ServerCommunicatingInterface {
 

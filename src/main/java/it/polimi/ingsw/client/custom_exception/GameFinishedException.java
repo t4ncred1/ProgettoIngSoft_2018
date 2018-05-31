@@ -1,6 +1,4 @@
-package it.polimi.ingsw.clientPart.custom_exception;
-
-import it.polimi.ingsw.serverPart.GameTimer;
+package it.polimi.ingsw.client.custom_exception;
 
 public class GameFinishedException extends Exception {
 }

@@ -1,10 +1,10 @@
-package it.polimi.ingsw.clientPart;
+package it.polimi.ingsw.client;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.clientPart.custom_exception.*;
-import it.polimi.ingsw.serverPart.component_container.Grid;
-import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
+import it.polimi.ingsw.client.custom_exception.*;
+import it.polimi.ingsw.server.component_container.Grid;
+import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

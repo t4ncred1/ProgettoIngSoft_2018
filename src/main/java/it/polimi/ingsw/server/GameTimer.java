@@ -1,4 +1,4 @@
-package it.polimi.ingsw.serverPart;
+package it.polimi.ingsw.server;
 
 import java.util.Timer;
 import java.util.TimerTask;

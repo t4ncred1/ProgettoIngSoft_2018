@@ -1,8 +1,8 @@
-package it.polimi.ingsw.serverPart.component_container;
+package it.polimi.ingsw.server.component_container;
 
-import it.polimi.ingsw.serverPart.card_container.PrivateObjective;
-import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
-import it.polimi.ingsw.serverPart.custom_exception.NotValidParameterException;
+import it.polimi.ingsw.server.card_container.PrivateObjective;
+import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
 import java.util.ArrayList;
 import java.util.List;

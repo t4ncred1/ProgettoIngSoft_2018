@@ -1,5 +1,5 @@
-package it.polimi.ingsw.serverPart.component_container;
-import it.polimi.ingsw.serverPart.custom_exception.NotValidParameterException;
+package it.polimi.ingsw.server.component_container;
+import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
 public class Die {
 

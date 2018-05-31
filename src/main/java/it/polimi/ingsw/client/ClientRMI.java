@@ -1,8 +1,7 @@
-package it.polimi.ingsw.clientPart;
+package it.polimi.ingsw.client;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Scanner;
 
 public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterface{
 

@@ -1,10 +1,8 @@
-package it.polimi.ingsw.serverPart.netPart_container;
+package it.polimi.ingsw.server.netPart_container;
 
 
-import it.polimi.ingsw.serverPart.MatchController;
-import it.polimi.ingsw.serverPart.custom_exception.*;
-
-import java.util.ArrayList;
+import it.polimi.ingsw.server.MatchController;
+import it.polimi.ingsw.server.custom_exception.*;
 
 
 public interface UserInterface {

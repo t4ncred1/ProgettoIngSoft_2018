@@ -1,11 +1,10 @@
-package it.polimi.ingsw.clientPart;
+package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.clientPart.custom_exception.*;
-import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
-import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
-import it.polimi.ingsw.serverPart.netPart_container.ServerRemoteInterface;
+import it.polimi.ingsw.client.custom_exception.*;
+import it.polimi.ingsw.server.custom_exception.DisconnectionException;
+import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.server.netPart_container.ServerRemoteInterface;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -46,7 +45,7 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
             throw new ServerIsDownException();
         } catch (InvalidOperationException e) {
             throw new ServerIsFullException();
-        } catch (it.polimi.ingsw.serverPart.custom_exception.InvalidUsernameException e) {
+        } catch (it.polimi.ingsw.server.custom_exception.InvalidUsernameException e) {
             throw new InvalidUsernameException();
         }
 

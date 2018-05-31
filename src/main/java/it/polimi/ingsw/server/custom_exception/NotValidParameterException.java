@@ -1,4 +1,4 @@
-package it.polimi.ingsw.serverPart.custom_exception;
+package it.polimi.ingsw.server.custom_exception;
 
 public class NotValidParameterException extends Exception{
 

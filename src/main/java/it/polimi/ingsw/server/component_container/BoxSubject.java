@@ -1,4 +1,4 @@
-package it.polimi.ingsw.serverPart.component_container;
+package it.polimi.ingsw.server.component_container;
 
 public interface BoxSubject {
     void register (BoxObserver o);

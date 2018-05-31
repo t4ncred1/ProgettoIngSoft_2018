@@ -1,12 +1,12 @@
-package it.polimi.ingsw.serverPart;
+package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.serverPart.card_container.PublicObjective;
-import it.polimi.ingsw.serverPart.component_container.DicePool;
-import it.polimi.ingsw.serverPart.component_container.Die;
-import it.polimi.ingsw.serverPart.component_container.Grid;
-import it.polimi.ingsw.serverPart.component_container.Player;
-import it.polimi.ingsw.serverPart.configurations.ConfigurationHandler;
-import it.polimi.ingsw.serverPart.custom_exception.*;
+import it.polimi.ingsw.server.card_container.PublicObjective;
+import it.polimi.ingsw.server.component_container.DicePool;
+import it.polimi.ingsw.server.component_container.Die;
+import it.polimi.ingsw.server.component_container.Grid;
+import it.polimi.ingsw.server.component_container.Player;
+import it.polimi.ingsw.server.configurations.ConfigurationHandler;
+import it.polimi.ingsw.server.custom_exception.*;
 
 import java.util.ArrayList;
 import java.util.List;

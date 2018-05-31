@@ -1,4 +1,4 @@
-package it.polimi.ingsw.serverPart.netPart_container;
+package it.polimi.ingsw.server.netPart_container;
 
 import java.io.IOException;
 import java.net.*;

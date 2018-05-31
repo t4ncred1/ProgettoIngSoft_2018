@@ -1,15 +1,14 @@
-package it.polimi.ingsw.serverPart.netPart_container;
+package it.polimi.ingsw.server.netPart_container;
 
-import it.polimi.ingsw.clientPart.ClientRemoteInterface;
-import it.polimi.ingsw.serverPart.MatchController;
-import it.polimi.ingsw.serverPart.MatchHandler;
-import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
-import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
-import it.polimi.ingsw.serverPart.custom_exception.InvalidUsernameException;
-import it.polimi.ingsw.serverPart.custom_exception.ReconnectionException;
+import it.polimi.ingsw.client.ClientRemoteInterface;
+import it.polimi.ingsw.server.MatchController;
+import it.polimi.ingsw.server.MatchHandler;
+import it.polimi.ingsw.server.custom_exception.DisconnectionException;
+import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.server.custom_exception.InvalidUsernameException;
+import it.polimi.ingsw.server.custom_exception.ReconnectionException;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 public class RMIUserAgent implements UserInterface {
 

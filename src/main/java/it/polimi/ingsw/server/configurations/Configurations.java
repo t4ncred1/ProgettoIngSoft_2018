@@ -1,4 +1,4 @@
-package it.polimi.ingsw.serverPart.configurations;
+package it.polimi.ingsw.server.configurations;
 
 import java.io.Serializable;
 

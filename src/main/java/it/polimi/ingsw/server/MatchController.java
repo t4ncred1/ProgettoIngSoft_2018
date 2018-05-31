@@ -1,9 +1,9 @@
-package it.polimi.ingsw.serverPart;
+package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.serverPart.component_container.Die;
-import it.polimi.ingsw.serverPart.component_container.Grid;
-import it.polimi.ingsw.serverPart.custom_exception.*;
-import it.polimi.ingsw.serverPart.netPart_container.UserInterface;
+import it.polimi.ingsw.server.component_container.Die;
+import it.polimi.ingsw.server.component_container.Grid;
+import it.polimi.ingsw.server.custom_exception.*;
+import it.polimi.ingsw.server.netPart_container.UserInterface;
 
 import java.util.*;
 import java.util.concurrent.locks.Condition;

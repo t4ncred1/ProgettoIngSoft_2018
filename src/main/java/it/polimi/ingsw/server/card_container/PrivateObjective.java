@@ -1,9 +1,9 @@
-package it.polimi.ingsw.serverPart.card_container;
-import it.polimi.ingsw.serverPart.component_container.Box;
-import it.polimi.ingsw.serverPart.component_container.Die;
-import it.polimi.ingsw.serverPart.component_container.DieConstraints;
-import it.polimi.ingsw.serverPart.component_container.Grid;
-import it.polimi.ingsw.serverPart.custom_exception.NotValidParameterException;
+package it.polimi.ingsw.server.card_container;
+import it.polimi.ingsw.server.component_container.Box;
+import it.polimi.ingsw.server.component_container.Die;
+import it.polimi.ingsw.server.component_container.DieConstraints;
+import it.polimi.ingsw.server.component_container.Grid;
+import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
 public class PrivateObjective extends Objective {
     private String color;

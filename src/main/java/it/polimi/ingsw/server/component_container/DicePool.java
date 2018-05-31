@@ -1,9 +1,9 @@
-package it.polimi.ingsw.serverPart.component_container;
+package it.polimi.ingsw.server.component_container;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polimi.ingsw.serverPart.custom_exception.*;
+import it.polimi.ingsw.server.custom_exception.*;
 
 public class DicePool {
     private ArrayList<Die> pool;

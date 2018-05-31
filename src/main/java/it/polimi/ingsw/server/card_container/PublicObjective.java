@@ -1,5 +1,5 @@
-package it.polimi.ingsw.serverPart.card_container;
-import it.polimi.ingsw.serverPart.component_container.*;
+package it.polimi.ingsw.server.card_container;
+import it.polimi.ingsw.server.component_container.*;
 
 import java.util.Arrays;
 

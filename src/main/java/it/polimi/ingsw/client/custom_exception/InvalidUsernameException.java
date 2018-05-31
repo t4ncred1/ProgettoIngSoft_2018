@@ -1,4 +1,4 @@
-package it.polimi.ingsw.clientPart.custom_exception;
+package it.polimi.ingsw.client.custom_exception;
 
 public class InvalidUsernameException extends Exception {
 }

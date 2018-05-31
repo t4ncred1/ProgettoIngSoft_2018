@@ -1,11 +1,11 @@
-package it.polimi.ingsw.serverPart;
+package it.polimi.ingsw.server;
 
 
-import it.polimi.ingsw.serverPart.custom_exception.DisconnectionException;
-import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
-import it.polimi.ingsw.serverPart.custom_exception.InvalidUsernameException;
-import it.polimi.ingsw.serverPart.custom_exception.ReconnectionException;
-import it.polimi.ingsw.serverPart.netPart_container.UserInterface;
+import it.polimi.ingsw.server.custom_exception.DisconnectionException;
+import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.server.custom_exception.InvalidUsernameException;
+import it.polimi.ingsw.server.custom_exception.ReconnectionException;
+import it.polimi.ingsw.server.netPart_container.UserInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
