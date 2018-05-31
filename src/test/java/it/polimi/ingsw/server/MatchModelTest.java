@@ -1,8 +1,7 @@
-package it.polimi.ingsw.serverPart;
+package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.serverPart.component_container.Die;
-import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
-import org.junit.jupiter.api.BeforeAll;
+import it.polimi.ingsw.server.component_container.Die;
+import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

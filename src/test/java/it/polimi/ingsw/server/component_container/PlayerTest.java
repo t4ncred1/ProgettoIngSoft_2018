@@ -1,7 +1,7 @@
-package it.polimi.ingsw.serverPart.component_container;
+package it.polimi.ingsw.server.component_container;
 
-import it.polimi.ingsw.serverPart.custom_exception.InvalidOperationException;
-import it.polimi.ingsw.serverPart.custom_exception.NotValidParameterException;
+import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
