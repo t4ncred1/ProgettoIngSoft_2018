@@ -6,6 +6,11 @@ import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.component_container.Die;
 import it.polimi.ingsw.server.component_container.Grid;
 import it.polimi.ingsw.server.custom_exception.*;
+import it.polimi.ingsw.server.custom_exception.DisconnectionException;
+import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.server.custom_exception.InvalidUsernameException;
+import it.polimi.ingsw.server.custom_exception.ReconnectionException;
+
 
 import java.io.*;
 import java.net.Socket;

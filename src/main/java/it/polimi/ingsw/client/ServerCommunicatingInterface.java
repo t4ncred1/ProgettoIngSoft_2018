@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 
+
 public interface ServerCommunicatingInterface {
 
     void setUpConnection() throws ServerIsDownException;

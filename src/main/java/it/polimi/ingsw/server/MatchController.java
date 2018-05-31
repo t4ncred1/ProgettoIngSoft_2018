@@ -91,6 +91,10 @@ public class MatchController extends Thread{
                 handleTurn();
             } catch (TooManyRoundsException e) {
                 gameFinished=true;
+            } catch (NotValidParameterException e) {
+                e.printStackTrace();
+            } catch (NotInPoolException e) {
+                e.printStackTrace();
             }
         }
         while(!gameFinished);
@@ -170,7 +174,7 @@ public class MatchController extends Thread{
     --------------------------------------------------
      */
 
-    private void handleTurn() throws TooManyRoundsException {
+    private void handleTurn() throws TooManyRoundsException, NotValidParameterException, NotInPoolException {
         try {
             Thread.sleep(SLEEP_TIME);
         } catch (InterruptedException e) {
@@ -178,7 +182,7 @@ public class MatchController extends Thread{
         }
         lock.lock();
         model.updateTurn(MAX_ROUND);
-        String username = model.requestTurnPlayer();
+        String username = model.askTurn();
         initializeTurn(username);
         ready=true; //now i can handle clients requests.
         lock.unlock();
@@ -235,6 +239,7 @@ public class MatchController extends Thread{
             timer.stop();
         }
     }
+
 
     private void notifyToolCardUsedBy(String username) {
         synchronized (playersInMatchGuard) {
@@ -376,7 +381,7 @@ public class MatchController extends Thread{
         this.gameStarted=gameStartedStatus;
         try {
             Set<String> playerUserNames = playersInMatch.keySet();
-            model = new MatchModel(playerUserNames,this);
+            model = new MatchModel(playerUserNames);
         } catch (NotValidParameterException e) {
             e.printStackTrace();
         } catch (NotValidConfigPathException e) {
@@ -496,7 +501,7 @@ public class MatchController extends Thread{
         if(!ready) throw new InvalidOperationException();
         if(gameFinished) throw new TooManyRoundsException();
         synchronized (modelGuard) {
-            return model.requestTurnPlayer();
+            return model.askTurn();
         }
     }
 

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server;
 
+
+import it.polimi.ingsw.server.card_container.PrivateObjective;
 import it.polimi.ingsw.server.card_container.PublicObjective;
 import it.polimi.ingsw.server.component_container.DicePool;
 import it.polimi.ingsw.server.component_container.Die;
@@ -8,21 +10,20 @@ import it.polimi.ingsw.server.component_container.Player;
 import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.custom_exception.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class MatchModel{
 
     private int MAXPLAYERSNUMBER=0;
     private int MINPLAYERSNUMBER=0;
 
+    private ArrayList<PrivateObjective> privateobjectives;
     private List<Grid> grids;
     private List<PublicObjective> publicObjectives;
 
     private ArrayList<Die> roundTrack;
-    private MatchController controller;
     private DicePool matchDicePool;
     private int currentTurn;
     private boolean leftToRight;
@@ -31,10 +32,16 @@ public class MatchModel{
     private Player[] playersNotInGame;
 
     private final int GRIDS_FOR_A_PLAYER =4;
+    private final int PRIV_FOR_A_PLAYER=1;
 
-    MatchModel(Set<String> playersUserNames, MatchController controller) throws NotValidParameterException, NotValidConfigPathException{
+    private static final String GREEN_OBJ= "green";
+    private static final String RED_OBJ= "red";
+    private static final String YELLOW_OBJ= "yellow";
+    private static final String BLUE_OBJ= "blue";
+    private static final String PURPLE_OBJ= "purple";
+
+    MatchModel(Set<String> playersUserNames) throws NotValidParameterException, NotValidConfigPathException{
         if (playersUserNames==null) throw new NullPointerException();
-        if (controller==null) throw new NullPointerException();
         try {
             MAXPLAYERSNUMBER=ConfigurationHandler.getMaxPlayersNumber();
         } catch (NotValidConfigPathException e) {
@@ -46,7 +53,6 @@ public class MatchModel{
             e.printStackTrace();
         }
 
-        this.controller=controller;
         roundTrack=new ArrayList<>();
         if (playersUserNames.size()<MINPLAYERSNUMBER||playersUserNames.size()> MAXPLAYERSNUMBER) throw new NotValidParameterException("Number of players in game: "+Integer.toString(playersUserNames.size()),"Between 2 and "+Integer.toString(MAXPLAYERSNUMBER));
 
@@ -54,11 +60,21 @@ public class MatchModel{
 
         publicObjectives=ConfigurationHandler.getPublicObjectives();
 
+        privateobjectives= new ArrayList<>();
+        privateobjectives.add(new PrivateObjective(GREEN_OBJ));
+        privateobjectives.add(new PrivateObjective(RED_OBJ));
+        privateobjectives.add(new PrivateObjective(PURPLE_OBJ));
+        privateobjectives.add(new PrivateObjective(YELLOW_OBJ));
+        privateobjectives.add(new PrivateObjective(BLUE_OBJ));
+
+
+
         //player initialization:
         playersInGame= new ArrayList<>();
         for (String username: playersUserNames){
             Player playerToAdd = new Player(username);
             try {
+                playerToAdd.setObjective(selectPrivateObjective());
                 playerToAdd.setGridsSelection(selectGridsForPlayer());
             } catch (InvalidOperationException e) {
                 e.printStackTrace();    //this error shall be thrown if there aren't enough grids for the player (should not happen because of the boundaries above)
@@ -120,36 +136,17 @@ public class MatchModel{
     private void initializeRound() throws NotValidParameterException, NotInPoolException {
         matchDicePool.generateDiceForPull(playersInGame.size()*2+1); //(launching this methods later throws a nullPointerExc)
         roundTrack.add(matchDicePool.getDieFromPool(0));    //if there aren't any dice in DicePool at the end of the turn, throws NotInPoolException.
+        matchDicePool.removeDieFromPool(0);
     }
 
-    public String requestTurnPlayer() {
-        return playersInGame.get(currentTurn).getUsername(); //FIXME
+
+    public String askTurn() {
+        return playersInGame.get(currentTurn).getUsername();
     }
 
-    public boolean insertDieOperation() throws InvalidOperationException {
-        //call the controller to get parameters (index of the die in dicepool, position of the box in grid )
-
-        int[]coordinates;
-        int index;
-        if(playersInGame.get(currentTurn).getSelectedGrid()==null) throw new InvalidOperationException(); //player was not initialized.
-        controller.sendDicePool(this.getDicePool(),playersInGame.get(currentTurn).getUsername());
-        try{
-            coordinates=controller.askForDieCoordinates(playersInGame.get(currentTurn).getUsername());
-        } catch (InvalidOperationException e){
-            return false;
-        }
-        try{
-            index=controller.askForDieIndex(playersInGame.get(currentTurn).getUsername());
-        } catch (InvalidOperationException e){
-            return false;
-        }
-        try {
-            playersInGame.get(currentTurn).getSelectedGrid().insertDieInXY(coordinates[0],coordinates[1],true,true,this.getDicePool().get(index));
-        } catch (NotValidParameterException e) {
-            return false;
-        }
-
-        return true;
+    public void insertDieOperation(int x, int y, int dpIndex) throws InvalidOperationException, NotInPoolException, NotValidParameterException {
+        this.playersInGame.get(currentTurn).getSelectedGrid().insertDieInXY(x,y,true, true, matchDicePool.getDieFromPool(dpIndex));
+        matchDicePool.removeDieFromPool(dpIndex);
     }
 
     public boolean useToolCardOperation() {
@@ -247,5 +244,16 @@ public class MatchModel{
     public void setPlayerToConnect(String username) throws NotValidParameterException{
         //todo if a player is already connected exception shouldn't be launched.
         // This happen when player reconnect before the timeout event of his turn
+    }
+
+    private PrivateObjective selectPrivateObjective() throws InvalidOperationException {
+
+        if(privateobjectives.size()<PRIV_FOR_A_PLAYER) throw new InvalidOperationException();
+        return (privateobjectives.remove(new Random().nextInt(privateobjectives.size())));
+    }
+
+    public PrivateObjective getPrivateObjective(String username) {
+
+        return playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective).collect(Collectors.toList()).get(0);
     }
 }

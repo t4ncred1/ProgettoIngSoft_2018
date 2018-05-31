@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.custom_exception.*;
 
 
+
 public interface UserInterface {
     boolean isConnected();
 

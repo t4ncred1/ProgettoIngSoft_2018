@@ -380,10 +380,74 @@ public class GridTest {
         } catch (NotValidParameterException e) {
             fail("test failed");
         }
-        assertEquals("{ {\tnone,\tnone,\tnone,\tnone,}\n" +
+        assertEquals("{\tnone,\tnone,\tnone,\tnone,}\n" +
                 "{\tnone,\tnone,\tnone,\tnone,}\n" +
                 "{\tnone,\tnone,\tnone,\tnone,}\n" +
                 "{\tnone,\tnone,\tnone,\tnone,}\n" +
                 "{\tnone,\tnone,\tnone,\tnone,}\n", toTest.getStructure());
+    }
+
+    @Test
+    public void checkString() throws NotValidParameterException {
+        Grid toTest=null;
+        int i,j;
+        try {
+            toTest=new Grid(4,"test");
+            for(i=0;i<toTest.getColumnNumber();i++){
+                for(j=0;j<toTest.getRowNumber();j++){
+                    toTest.createBoxInXY(i,j,"none");
+                }
+            }
+        } catch(NotValidParameterException e){
+            fail("test failed");
+        }
+
+        assertEquals("nome: test\tDifficoltà: 4\n" +
+                "Boxes di test:\n" +
+                " colonna 1:\n" +
+                "\t riga 1: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (0,0)\n" +
+                "\t riga 2: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (0,1)\n" +
+                "\t riga 3: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (0,2)\n" +
+                "\t riga 4: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (0,3)\n" +
+                " colonna 2:\n" +
+                "\t riga 1: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (1,0)\n" +
+                "\t riga 2: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (1,1)\n" +
+                "\t riga 3: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (1,2)\n" +
+                "\t riga 4: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (1,3)\n" +
+                " colonna 3:\n" +
+                "\t riga 1: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (2,0)\n" +
+                "\t riga 2: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (2,1)\n" +
+                "\t riga 3: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (2,2)\n" +
+                "\t riga 4: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (2,3)\n" +
+                " colonna 4:\n" +
+                "\t riga 1: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (3,0)\n" +
+                "\t riga 2: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (3,1)\n" +
+                "\t riga 3: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (3,2)\n" +
+                "\t riga 4: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (3,3)\n" +
+                " colonna 5:\n" +
+                "\t riga 1: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (4,0)\n" +
+                "\t riga 2: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (4,1)\n" +
+                "\t riga 3: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (4,2)\n" +
+                "\t riga 4: \n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (4,3)\n",toTest.toString());
     }
 }
