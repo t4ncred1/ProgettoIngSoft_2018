@@ -1,6 +1,6 @@
-package it.polimi.ingsw.server.card_container;
+package it.polimi.ingsw.server.cards;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
-import it.polimi.ingsw.server.component_container.Grid;
+import it.polimi.ingsw.server.components.Grid;
 public abstract class Objective {
     String title;
     String description;

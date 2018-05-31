@@ -1,6 +1,6 @@
-package it.polimi.ingsw.server.netPart_container;
+package it.polimi.ingsw.server.net;
 
-import it.polimi.ingsw.client.ClientRemoteInterface;
+import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;

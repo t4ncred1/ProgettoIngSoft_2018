@@ -1,9 +1,9 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.net;
 
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
-import it.polimi.ingsw.server.netPart_container.ServerRemoteInterface;
+import it.polimi.ingsw.server.net.ServerRemoteInterface;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -93,6 +93,11 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     @Override
     public void setGrid(int gridIndex) throws ServerIsDownException, InvalidMoveException {
         //TODO
+    }
+
+    @Override
+    public void getPrivateObjective() throws ServerIsDownException {
+
     }
 
     @Override

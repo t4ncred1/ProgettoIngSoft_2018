@@ -1,25 +1,24 @@
 package it.polimi.ingsw.server;
 
 
-import it.polimi.ingsw.server.card_container.PrivateObjective;
-import it.polimi.ingsw.server.card_container.PublicObjective;
-import it.polimi.ingsw.server.component_container.DicePool;
-import it.polimi.ingsw.server.component_container.Die;
-import it.polimi.ingsw.server.component_container.Grid;
-import it.polimi.ingsw.server.component_container.Player;
+import it.polimi.ingsw.server.cards.PrivateObjective;
+import it.polimi.ingsw.server.cards.PublicObjective;
+import it.polimi.ingsw.server.components.DicePool;
+import it.polimi.ingsw.server.components.Die;
+import it.polimi.ingsw.server.components.Grid;
+import it.polimi.ingsw.server.components.Player;
 import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.custom_exception.*;
 
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class MatchModel{
 
-    private int MAXPLAYERSNUMBER=0;
-    private int MINPLAYERSNUMBER=0;
+    private int MAX_PLAYERS_NUMBER =0;
+    private int MIN_PLAYERS_NUMBER =0;
 
-    private ArrayList<PrivateObjective> privateobjectives;
+    private ArrayList<PrivateObjective> privateObjectives;
     private List<Grid> grids;
     private List<PublicObjective> publicObjectives;
 
@@ -43,29 +42,29 @@ public class MatchModel{
     MatchModel(Set<String> playersUserNames) throws NotValidParameterException, NotValidConfigPathException{
         if (playersUserNames==null) throw new NullPointerException();
         try {
-            MAXPLAYERSNUMBER=ConfigurationHandler.getMaxPlayersNumber();
+            MAX_PLAYERS_NUMBER =ConfigurationHandler.getMaxPlayersNumber();
         } catch (NotValidConfigPathException e) {
             e.printStackTrace();
         }
         try {
-            MINPLAYERSNUMBER=ConfigurationHandler.getMinPlayersNumber();
+            MIN_PLAYERS_NUMBER =ConfigurationHandler.getMinPlayersNumber();
         } catch (NotValidConfigPathException e) {
             e.printStackTrace();
         }
 
         roundTrack=new ArrayList<>();
-        if (playersUserNames.size()<MINPLAYERSNUMBER||playersUserNames.size()> MAXPLAYERSNUMBER) throw new NotValidParameterException("Number of players in game: "+Integer.toString(playersUserNames.size()),"Between 2 and "+Integer.toString(MAXPLAYERSNUMBER));
+        if (playersUserNames.size()< MIN_PLAYERS_NUMBER ||playersUserNames.size()> MAX_PLAYERS_NUMBER) throw new NotValidParameterException("Number of players in game: "+Integer.toString(playersUserNames.size()),"Between 2 and "+Integer.toString(MAX_PLAYERS_NUMBER));
 
         grids=ConfigurationHandler.getGrids();
 
         publicObjectives=ConfigurationHandler.getPublicObjectives();
 
-        privateobjectives= new ArrayList<>();
-        privateobjectives.add(new PrivateObjective(GREEN_OBJ));
-        privateobjectives.add(new PrivateObjective(RED_OBJ));
-        privateobjectives.add(new PrivateObjective(PURPLE_OBJ));
-        privateobjectives.add(new PrivateObjective(YELLOW_OBJ));
-        privateobjectives.add(new PrivateObjective(BLUE_OBJ));
+        privateObjectives = new ArrayList<>();
+        privateObjectives.add(new PrivateObjective(GREEN_OBJ));
+        privateObjectives.add(new PrivateObjective(RED_OBJ));
+        privateObjectives.add(new PrivateObjective(PURPLE_OBJ));
+        privateObjectives.add(new PrivateObjective(YELLOW_OBJ));
+        privateObjectives.add(new PrivateObjective(BLUE_OBJ));
 
 
 
@@ -248,8 +247,8 @@ public class MatchModel{
 
     private PrivateObjective selectPrivateObjective() throws InvalidOperationException {
 
-        if(privateobjectives.size()<PRIV_FOR_A_PLAYER) throw new InvalidOperationException();
-        return (privateobjectives.remove(new Random().nextInt(privateobjectives.size())));
+        if(privateObjectives.size()<PRIV_FOR_A_PLAYER) throw new InvalidOperationException();
+        return (privateObjectives.remove(new Random().nextInt(privateObjectives.size())));
     }
 
     public PrivateObjective getPrivateObjective(String username) {

@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server;
 
 
-import it.polimi.ingsw.server.netPart_container.SocketHandler;
-import it.polimi.ingsw.server.netPart_container.RmiHandler;
-import it.polimi.ingsw.server.netPart_container.ServerRemoteInterface;
+import it.polimi.ingsw.server.net.SocketHandler;
+import it.polimi.ingsw.server.net.RmiHandler;
+import it.polimi.ingsw.server.net.ServerRemoteInterface;
 
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;

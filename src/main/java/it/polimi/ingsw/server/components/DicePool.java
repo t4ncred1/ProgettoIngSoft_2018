@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.component_container;
+package it.polimi.ingsw.server.components;
 
 import java.util.ArrayList;
 import java.util.List;

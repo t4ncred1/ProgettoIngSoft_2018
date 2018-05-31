@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.component_container;
+package it.polimi.ingsw.server.components;
 import it.polimi.ingsw.server.custom_exception.LimitValueException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 

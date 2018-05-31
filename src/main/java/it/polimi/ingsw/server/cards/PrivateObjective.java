@@ -1,8 +1,8 @@
-package it.polimi.ingsw.server.card_container;
-import it.polimi.ingsw.server.component_container.Box;
-import it.polimi.ingsw.server.component_container.Die;
-import it.polimi.ingsw.server.component_container.DieConstraints;
-import it.polimi.ingsw.server.component_container.Grid;
+package it.polimi.ingsw.server.cards;
+import it.polimi.ingsw.server.components.Box;
+import it.polimi.ingsw.server.components.Die;
+import it.polimi.ingsw.server.components.DieConstraints;
+import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
 public class PrivateObjective extends Objective {

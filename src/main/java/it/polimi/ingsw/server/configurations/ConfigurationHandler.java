@@ -2,8 +2,8 @@ package it.polimi.ingsw.server.configurations;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.server.card_container.PublicObjective;
-import it.polimi.ingsw.server.component_container.Grid;
+import it.polimi.ingsw.server.cards.PublicObjective;
+import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.NotValidConfigPathException;
 
 import java.io.FileNotFoundException;

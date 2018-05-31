@@ -1,10 +1,10 @@
-package it.polimi.ingsw.server.netPart_container;
+package it.polimi.ingsw.server.net;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
-import it.polimi.ingsw.server.component_container.Die;
-import it.polimi.ingsw.server.component_container.Grid;
+import it.polimi.ingsw.server.components.Die;
+import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.*;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;

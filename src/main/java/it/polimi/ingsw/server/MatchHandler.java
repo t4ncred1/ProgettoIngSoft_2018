@@ -5,7 +5,7 @@ import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.server.custom_exception.ReconnectionException;
-import it.polimi.ingsw.server.netPart_container.UserInterface;
+import it.polimi.ingsw.server.net.UserInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;

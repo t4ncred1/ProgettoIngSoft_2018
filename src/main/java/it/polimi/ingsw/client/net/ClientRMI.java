@@ -1,9 +1,9 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.net;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterface{
+public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterface {
 
     private ServerRMICommunication serverRemoteInterfaceAdapter;
 

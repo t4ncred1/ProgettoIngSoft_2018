@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.net;
 
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
@@ -14,6 +14,7 @@ public interface ServerCommunicatingInterface {
 
     void getGrids() throws ServerIsDownException, GameInProgressException;
     void setGrid(int gridIndex) throws ServerIsDownException, InvalidMoveException;
+    void getPrivateObjective() throws ServerIsDownException;
 
     String askTurn() throws ServerIsDownException, ServerNotReadyException, GameFinishedException;
 

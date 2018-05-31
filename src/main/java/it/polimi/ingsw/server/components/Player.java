@@ -1,6 +1,6 @@
-package it.polimi.ingsw.server.component_container;
+package it.polimi.ingsw.server.components;
 
-import it.polimi.ingsw.server.card_container.PrivateObjective;
+import it.polimi.ingsw.server.cards.PrivateObjective;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 

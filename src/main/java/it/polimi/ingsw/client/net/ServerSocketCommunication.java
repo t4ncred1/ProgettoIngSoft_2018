@@ -1,9 +1,10 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.net;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.client.custom_exception.*;
-import it.polimi.ingsw.server.component_container.Grid;
+import it.polimi.ingsw.server.cards.PrivateObjective;
+import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 
 
@@ -50,6 +51,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
 
     private static final String GET_TURN_PLAYER = "get_turn_player";
     private static final String GET_DICE_POOL = "get_dice_pool";
+    private static final String GET_PRIVATE_OBJECTIVE= "get_private_obj";
     private static final String GAME_FINISHED= "finished";
 
     private static final String OPERATION_MESSAGE= "operation";
@@ -209,6 +211,20 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
             response=readRemoteInput();
             if(response.equals(NOT_OK_MESSAGE))
                 throw new InvalidMoveException();
+        } catch (IOException e) {
+            throw new ServerIsDownException();
+        }
+    }
+
+    @Override
+    public void getPrivateObjective() throws ServerIsDownException{
+        try {
+            outputStream.writeUTF(GET_PRIVATE_OBJECTIVE);
+            String response;
+            Gson gson = new Gson();
+            response= readRemoteInput();
+            PrivateObjective privateObjective= gson.fromJson(response, PrivateObjective.class);
+
         } catch (IOException e) {
             throw new ServerIsDownException();
         }
