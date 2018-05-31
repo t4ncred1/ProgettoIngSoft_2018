@@ -90,10 +90,12 @@ public class MatchModel{
         } catch (NotInPoolException e) {
             e.printStackTrace();
         }
-
     }
 
-    public void updateTurn(int maxRounds) throws TooManyRoundsException {
+    public void updateTurn(int maxRounds) throws TooManyRoundsException, NotEnoughPlayersException {
+        if(playersInGame.size()<MIN_PLAYERS_NUMBER){
+            throw new NotEnoughPlayersException();
+        }
         if(leftToRight){
             if(justChanged)  //Se il verso di percorrenza è appena stato modificato currentTurn non deve cambiare.
                 justChanged=false;
@@ -114,6 +116,8 @@ public class MatchModel{
                 justChanged=true;
                 playersInGame.add(playersInGame.remove(0));     //reorders players for new Round.
                 try {
+                    roundTrack.add(matchDicePool.getDieFromPool(0));    //if there aren't any dice in DicePool at the end of the turn, throws NotInPoolException.
+                    matchDicePool.removeDieFromPool(0);
                     this.prepareForNextRound(maxRounds);
                 } catch (NotInPoolException | NotValidParameterException e) {
                     e.printStackTrace();
@@ -132,10 +136,8 @@ public class MatchModel{
         initializeRound();
     }
 
-    private void initializeRound() throws NotValidParameterException, NotInPoolException {
+    private void initializeRound() throws NotValidParameterException, NotInPoolException{
         matchDicePool.generateDiceForPull(playersInGame.size()*2+1); //(launching this methods later throws a nullPointerExc)
-        roundTrack.add(matchDicePool.getDieFromPool(0));    //if there aren't any dice in DicePool at the end of the turn, throws NotInPoolException.
-        matchDicePool.removeDieFromPool(0);
     }
 
 
