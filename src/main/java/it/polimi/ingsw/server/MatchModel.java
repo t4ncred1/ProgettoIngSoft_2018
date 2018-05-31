@@ -228,11 +228,8 @@ public class MatchModel{
         for(Player player: playersInGame)
             if(player.getUsername().equals(username)) playerPassed=player;
         Grid toReturn = null;
-        try {
-            toReturn = playerPassed.getSelectedGrid();
-        } catch (NullPointerException e){
-            e.printStackTrace();    //should not happen if plaers are correctly initialized
-        }
+        if (playerPassed!=null) toReturn = playerPassed.getSelectedGrid();
+        else throw new InvalidOperationException();
         if (toReturn==null) throw new InvalidOperationException();  //only called if the player does not yet have his own grid.
         return toReturn;
     }
