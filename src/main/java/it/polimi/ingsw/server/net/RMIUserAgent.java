@@ -15,7 +15,7 @@ public class RMIUserAgent implements UserInterface {
     private ClientRemoteInterface clientHandled;
     private String username;
     private int gameCode;
-    private MatchController gameHandling;
+
 
     public RMIUserAgent(ClientRemoteInterface clientToHandle){
         clientHandled=clientToHandle;
@@ -94,7 +94,7 @@ public class RMIUserAgent implements UserInterface {
 
     @Override
     public void setController(MatchController matchController) {
-        this.gameHandling=matchController;
+        clientHandled.setController(matchController);
     }
 
     @Override
@@ -130,8 +130,8 @@ public class RMIUserAgent implements UserInterface {
     }
 
 
-    @Override
-    public boolean equals(Object o){
+
+    public boolean equals(RMIUserAgent o){
         RMIUserAgent UA;
         if(o==null) return false;
         if(this.getClass()==o.getClass())

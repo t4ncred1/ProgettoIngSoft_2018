@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.net;
 
 import it.polimi.ingsw.client.custom_exception.*;
+import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.net.ServerRemoteInterface;
@@ -22,6 +23,7 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     private transient boolean startingGame; //this parameter should be set to false once used.
     private transient boolean gameStarted;
     private transient boolean reconnection;
+    private transient MatchController controller;
 
 
     @Override
@@ -87,7 +89,14 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     @Override
     public void getGrids() throws ServerIsDownException, GameInProgressException {
-        //TODO
+        try {
+            stub.setControllerForClient(thisClient, controller);    //controller is set here because it's the first request to controller.
+            stub.getGrids(thisClient);
+        } catch (InvalidOperationException e) {
+            throw new GameInProgressException();
+        } catch (RemoteException e) {
+            throw new ServerIsDownException();
+        }
     }
 
     @Override
@@ -97,7 +106,7 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     @Override
     public void getPrivateObjective() throws ServerIsDownException {
-
+        //TODO
     }
 
     @Override
@@ -113,7 +122,7 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     @Override
     public void getUpdatedDicePool() throws ServerIsDownException {
-
+        //TODO
     }
 
 
@@ -128,5 +137,9 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     public void notifyReconnection() {
         this.reconnection=true;
+    }
+
+    public void setController(MatchController matchController) {
+        this.controller=matchController;
     }
 }
