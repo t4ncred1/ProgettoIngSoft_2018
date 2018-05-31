@@ -74,10 +74,11 @@ public class ReworkedClientMain {
                 if (turnPlayer.equals(this.username)) {
                     handleMyTurnLogic();
                 } else {
-                    handleOtherPlayerTurnLogic(username);
+                    handleOtherPlayerTurnLogic(turnPlayer);
                 }
             } catch (GameFinishedException e) {
                 gameFinished=true;
+                System.out.println("Game finished");
             }
         }while (!gameFinished);
     }

@@ -57,7 +57,7 @@ public class MatchController extends Thread{
         new Thread(() -> {
             //this arrayList is used to avoid continuous print of "playerX disconnected"
             ArrayList<String> stopCheck= new ArrayList<>();
-            while (true){
+            while (!gameFinished){
                 try {
                     Thread.sleep(SLEEP_TIME);
                 } catch (InterruptedException e) {
@@ -202,7 +202,6 @@ public class MatchController extends Thread{
             lock.lock();
             try {
                 condition.await();
-                System.out.println("Resumed.");
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
