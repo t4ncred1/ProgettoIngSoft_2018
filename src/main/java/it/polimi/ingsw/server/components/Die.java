@@ -31,8 +31,5 @@ public class Die {
         return value;
     }
 
-//    public void modifyDie(){
-//        //TODO should be able to modify the die
-//    }
 }
 

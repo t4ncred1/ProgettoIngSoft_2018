@@ -50,8 +50,25 @@ public class DicePool {
         else
             throw new NotInPoolException();
     }
-    public void removeDieFromPool(int index) throws NotValidParameterException, NotInPoolException {
+    public void removeDieFromPool(int index) throws NotInPoolException {
         this.getDieFromPool(index);
         this.pool.remove(index);
+    }
+
+    public void insertDie (Die die, int dpIndex) throws NotValidParameterException {
+        if (die==null) throw new NotValidParameterException("die: null","a valid die");
+        if (dpIndex>pool.size()) throw new NotValidParameterException("IndexOutOfBounds: "+dpIndex,"A value betweeen");
+        pool.add(dpIndex,die);
+
+        /*Die die_to_change,die_changed;
+        String color;
+        int value_to_change;
+        die_to_change=this.getDieFromPool(dpIndex);
+        this.removeDieFromPool(dpIndex);
+        value_to_change=die_to_change.getValue();
+        value_to_change++;
+        color=die_to_change.getColor();
+        die_changed=new Die(color,value_to_change);
+        pool.add(dpIndex,die_changed);*/    /*USEFUL FOR MATCHMODEL*/
     }
 }
