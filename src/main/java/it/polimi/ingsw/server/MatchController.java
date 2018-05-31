@@ -90,11 +90,10 @@ public class MatchController extends Thread{
             try {
                 handleTurn();
             } catch (TooManyRoundsException e) {
+                gameFinished = true;
+            } catch (NotEnoughPlayersException e) {
+                System.out.println("Game finished.");
                 gameFinished=true;
-            } catch (NotValidParameterException e) {
-                e.printStackTrace();
-            } catch (NotInPoolException e) {
-                e.printStackTrace();
             }
         }
         while(!gameFinished);
@@ -174,17 +173,22 @@ public class MatchController extends Thread{
     --------------------------------------------------
      */
 
-    private void handleTurn() throws TooManyRoundsException, NotValidParameterException, NotInPoolException {
+    private void handleTurn() throws TooManyRoundsException, NotEnoughPlayersException {
+
+        //Let player reconnect
         try {
             Thread.sleep(SLEEP_TIME);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
         lock.lock();
-        model.updateTurn(MAX_ROUND);
-        String username = model.askTurn();
-        initializeTurn(username);
-        ready=true; //now i can handle clients requests.
+        String username;
+        synchronized (modelGuard) {
+            ready=true; //now i can handle clients requests.
+            model.updateTurn(MAX_ROUND);
+            username = model.askTurn();
+            initializeTurn(username);
+        }
         lock.unlock();
         executeTurn(username);
     }
@@ -198,6 +202,7 @@ public class MatchController extends Thread{
             lock.lock();
             try {
                 condition.await();
+                System.out.println("Resumed.");
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -221,14 +226,11 @@ public class MatchController extends Thread{
                 Thread.currentThread().interrupt();
             }
         }while (!turnFinished);
-        ready=false;
     }
 
     private void handleTimeoutEvent(GameTimer timer,String username) {
         if (timer.getTimeoutEvent()) {
-            for (Map.Entry<String, UserInterface> players : playersInMatch.entrySet())
-                players.getValue().notifyDisconnection(); //FIXME
-            turnFinished = true;
+            ready=false;
             synchronized (modelGuard){
                 try {
                     model.setPlayerToDisconnect(username);
@@ -236,6 +238,9 @@ public class MatchController extends Thread{
                     e.printStackTrace();
                 }
             }
+            for (Map.Entry<String, UserInterface> players : playersInMatch.entrySet())
+                players.getValue().notifyDisconnection(); //FIXME
+            turnFinished = true;
             timer.stop();
         }
     }
@@ -415,49 +420,7 @@ public class MatchController extends Thread{
         } catch (DisconnectionException e) {
             e.printStackTrace();
         }
-//        try {
-//            if(!model.hasPlayerChosenAGrid(username)){
-//                ArrayList<Grid> toSent = (ArrayList<Grid>)model.getGridsForPlayer(username);
-//
-//                player.sendGrids();//FIXME
-//            }
-//        } catch (NotValidParameterException e) {
-//            e.printStackTrace();    //FIXME caused by "hasPlayerChosenAGrid" when username passed is not in game. Should this exception be thrown?
-//        }
-//        try {
-//            Thread.sleep(maxReconnectionTime);
-//        } catch (InterruptedException e) {
-//            Thread.currentThread().interrupt();
-//        }
-//        try {
-//            if(!model.hasPlayerChosenAGrid(username)){
-//                model.setPlayerToDisconnect(username);
-//                player.notifyDisconnection();
-//                MatchHandler.getInstance().notifyAboutDisconnection(username);
-//                synchronized (playersInMatchGuard) {
-//                    playersInMatch.remove(username);
-//                }
-//            }
-//        } catch (NotValidParameterException e) {
-//            e.printStackTrace();    //FIXME caused by "hasPlayerChosenAGrid" when username passed is not in game. Should this exception be thrown?
-//        }
-//        //TODO notify player if is his turn.
         lock.unlock();
-    }
-
-    public int askForDieIndex(String username) throws InvalidOperationException{
-        return 0;   //todo should ask to player about the index in the dicepool of the die he wants to put.
-        //todo should throw InvalidOperationException if user decides to abort the move.
-    }
-
-    public int[] askForDieCoordinates(String username) throws InvalidOperationException{
-        return new int[0];//todo should return a value array containing two coordinates for the die to be put in player's grid.
-        //todo should throw InvalidOperationException if user decides to abort the move.
-    }
-
-    public void sendDicePool(List<Die> dicePool, String username) {
-        //todo should send dicepool to player.
-        //should I remove this? Will you ask the model to give you the dicepool?
     }
 
     public List<Grid> getPlayerGrids(UserInterface userInterface) throws InvalidOperationException {
@@ -498,15 +461,11 @@ public class MatchController extends Thread{
     }
 
     public String requestTurnPlayer() throws InvalidOperationException, TooManyRoundsException {
-        if(!ready) throw new InvalidOperationException();
-        if(gameFinished) throw new TooManyRoundsException();
         synchronized (modelGuard) {
+            if (!ready) throw new InvalidOperationException();
+            if (gameFinished) throw new TooManyRoundsException();
             return model.askTurn();
         }
-    }
-
-    public void insertDieInXY(int diePosition, int x, int y){
-
     }
 
     public List<Die> getDicePool() {
