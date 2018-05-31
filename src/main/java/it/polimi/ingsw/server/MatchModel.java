@@ -227,7 +227,12 @@ public class MatchModel{
         Player playerPassed= null;
         for(Player player: playersInGame)
             if(player.getUsername().equals(username)) playerPassed=player;
-        Grid toReturn = playerPassed.getSelectedGrid();
+        Grid toReturn = null;
+        try {
+            toReturn = playerPassed.getSelectedGrid();
+        } catch (NullPointerException e){
+            e.printStackTrace();    //should not happen if plaers are correctly initialized
+        }
         if (toReturn==null) throw new InvalidOperationException();  //only called if the player does not yet have his own grid.
         return toReturn;
     }
@@ -257,4 +262,17 @@ public class MatchModel{
 
         return playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective).collect(Collectors.toList()).get(0);
     }
+
+    public Die getDieFromRoundtrack(int index) throws NotInPoolException {
+        if(index>=0&&index<=roundTrack.size())
+            return this.roundTrack.get(index);
+        else
+            throw new NotInPoolException();
+    }
+
+    public void removeDieFromRoundTrack(int index) throws NotInPoolException {
+        this.getDieFromRoundtrack(index);
+        this.roundTrack.remove(index);
+    }
+
 }
