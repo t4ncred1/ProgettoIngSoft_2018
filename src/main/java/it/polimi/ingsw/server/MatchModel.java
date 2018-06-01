@@ -256,7 +256,7 @@ public class MatchModel{
         return (privateObjectives.remove(new Random().nextInt(privateObjectives.size())));
     }
 
-    public PrivateObjective getPrivateObjective(String username) throws InvalidOperationException, InvalidUsernameException {
+    public PrivateObjective getPrivateObjective(String username) throws InvalidUsernameException {
         Stream<PrivateObjective> stream=  playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective);
         if (stream.count()==0) throw new InvalidUsernameException();
         return stream.collect(Collectors.toList()).get(0);
