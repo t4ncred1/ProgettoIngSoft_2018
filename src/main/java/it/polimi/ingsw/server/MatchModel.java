@@ -12,6 +12,7 @@ import it.polimi.ingsw.server.custom_exception.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MatchModel{
 
@@ -255,9 +256,13 @@ public class MatchModel{
         return (privateObjectives.remove(new Random().nextInt(privateObjectives.size())));
     }
 
-    public PrivateObjective getPrivateObjective(String username) {
+    public PrivateObjective getPrivateObjective(String username) throws InvalidOperationException, InvalidUsernameException {
+        Stream<PrivateObjective> stream=  playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective);
+        if (stream.count()==0) throw new InvalidUsernameException();
+        return stream.collect(Collectors.toList()).get(0);
+        //we needed to throw an exception, but we didn't know how to do it in lambda function
 
-        return playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective).collect(Collectors.toList()).get(0);
+
     }
 
     public Die getDieFromRoundtrack(int index) throws NotInPoolException {
