@@ -2,13 +2,16 @@ package it.polimi.ingsw.client.net;
 
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.server.MatchController;
+import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.net.ServerRemoteInterface;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.List;
 
 public class ServerRMICommunication implements ServerCommunicatingInterface {
 
@@ -72,26 +75,26 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     }
 
     @Override
-    public boolean logout() {
+    public boolean logout() throws ServerIsDownException{
         Boolean ok=false;
         try{
             stub.logout(thisClient);
             ok=true;
         } catch (InvalidOperationException e) {
-            e.printStackTrace();
-        } catch (RemoteException e) {
-            //TODO
-            e.printStackTrace();
+            e.printStackTrace();    //should print "You can't logout" in caller method.
         }
-        return ok;
+        catch (RemoteException e) {
+            throw new ServerIsDownException();  //Only thrown if server is not reachable. (Remote Exception in RMI)
+        }
+        return ok;  //returns false if server is down?
 
     }
 
     @Override
-    public void getGrids() throws ServerIsDownException, GameInProgressException {
+    public List<Grid> getGrids() throws ServerIsDownException, GameInProgressException {
         try {
             stub.setControllerForClient(thisClient, controller);    //controller is set here because it's the first request to controller.
-            stub.getGrids(thisClient);
+            return stub.getGrids(thisClient);
         } catch (InvalidOperationException e) {
             throw new GameInProgressException();
         } catch (RemoteException e) {
@@ -101,12 +104,22 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     @Override
     public void setGrid(int gridIndex) throws ServerIsDownException, InvalidMoveException {
-        //TODO
+        try {
+            stub.setGrid(thisClient,gridIndex);
+        } catch (InvalidOperationException e) {
+            throw new InvalidMoveException();
+        } catch (RemoteException e){
+            throw new ServerIsDownException();
+        }
     }
 
     @Override
     public void getPrivateObjective() throws ServerIsDownException {
-        //TODO
+        try{
+            stub.getPrivateObjective(thisClient);
+        } catch (RemoteException e){
+            throw new ServerIsDownException();
+        }
     }
 
     @Override

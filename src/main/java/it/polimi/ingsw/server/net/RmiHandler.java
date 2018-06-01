@@ -4,12 +4,14 @@ import it.polimi.ingsw.client.net.ClientRMI;
 import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
+import it.polimi.ingsw.server.cards.PrivateObjective;
 import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.server.custom_exception.ReconnectionException;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +97,7 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
 
     @Override
     public void setControllerForClient(ClientRemoteInterface client, MatchController controller){
-        //fixme
+        //fixme controls.
         clientsMatch.put(client,controller);
     }
 
@@ -105,7 +107,30 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
         synchronized (clientsHandledGuard) {
             clientCalling = clientsHandled.get(thisClient);
         }
+        if (clientCalling==null) ; //fixme what exception should I throw?
         return clientsMatch.get(thisClient).getPlayerGrids(clientCalling);
     }
+
+    @Override
+    public void setGrid(ClientRemoteInterface thisClient, int index) throws InvalidOperationException {
+
+        RMIUserAgent clientCalling;
+        synchronized (clientsHandledGuard) {
+            clientCalling = clientsHandled.get(thisClient);
+        }
+        //if (clientCalling==null) ;
+        clientsMatch.get(thisClient).setGrid(clientCalling,index);
+    }
+
+    @Override
+    public PrivateObjective getPrivateObjective(ClientRMI thisClient) throws RemoteException {
+        RMIUserAgent clientCalling;
+        synchronized (clientsHandledGuard) {
+            clientCalling = clientsHandled.get(thisClient);
+        }
+        //if (clientCalling == null) ;
+        return clientsMatch.get(thisClient).getPrivateObject(clientCalling);
+    }
+
 
 }

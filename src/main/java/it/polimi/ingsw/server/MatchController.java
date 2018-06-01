@@ -1,8 +1,10 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.server.cards.PrivateObjective;
 import it.polimi.ingsw.server.components.Die;
 import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.*;
+import it.polimi.ingsw.server.net.RMIUserAgent;
 import it.polimi.ingsw.server.net.UserInterface;
 
 import java.util.*;
@@ -472,4 +474,20 @@ public class MatchController extends Thread{
             return model.getDicePool();
         }
     }
+
+    public PrivateObjective getPrivateObject(UserInterface clientCalling) {
+        String username = clientCalling.getUsername();
+        synchronized (playersInMatchGuard){
+            if(!playersInMatch.containsKey(username)) /*TODO throw an exception*/;
+            if(!playersInMatch.get(username).equals(clientCalling)) /*TODO throw an exception*/;
+        }
+
+        try {
+            return model.getPrivateObjective(username);
+        } catch (InvalidUsernameException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
+
