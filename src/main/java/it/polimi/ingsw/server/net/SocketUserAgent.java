@@ -166,6 +166,8 @@ public class SocketUserAgent extends Thread implements UserInterface {
         } catch (InvalidOperationException e) {
             outputStream.writeUTF(NOT_OK_REQUEST);
             return false;
+        } catch (NotValidParameterException e) {
+            e.printStackTrace(); //thrown by controller if client is not registered. Should not happen.
         }
         return true;
     }

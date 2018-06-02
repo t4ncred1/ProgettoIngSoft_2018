@@ -15,7 +15,7 @@ public interface ServerCommunicatingInterface {
     boolean logout() throws ServerIsDownException;
 
 
-    List<Grid> getGrids() throws ServerIsDownException, GameInProgressException;
+    void getGrids() throws ServerIsDownException, GameInProgressException;
     void setGrid(int gridIndex) throws ServerIsDownException, InvalidMoveException;
     void getPrivateObjective() throws ServerIsDownException;
 

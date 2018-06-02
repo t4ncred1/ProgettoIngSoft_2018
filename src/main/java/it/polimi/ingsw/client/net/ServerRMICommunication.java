@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.net.ServerRemoteInterface;
 
 import java.rmi.Remote;
@@ -91,14 +92,17 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     }
 
     @Override
-    public List<Grid> getGrids() throws ServerIsDownException, GameInProgressException {
+    public void getGrids() throws ServerIsDownException, GameInProgressException {
         try {
             stub.setControllerForClient(thisClient, controller);    //controller is set here because it's the first request to controller.
-            return stub.getGrids(thisClient);
+            List<Grid> grids = stub.getGrids(thisClient);
+            //todo implement proxy.
         } catch (InvalidOperationException e) {
             throw new GameInProgressException();
         } catch (RemoteException e) {
             throw new ServerIsDownException();
+        } catch (NotValidParameterException e) {
+            e.printStackTrace();    //should not happen if this client is correctly registered.
         }
     }
 
@@ -110,6 +114,8 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
             throw new InvalidMoveException();
         } catch (RemoteException e){
             throw new ServerIsDownException();
+        } catch (NotValidParameterException e) {
+            e.printStackTrace(); //
         }
     }
 
@@ -119,12 +125,14 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
             stub.getPrivateObjective(thisClient);
         } catch (RemoteException e){
             throw new ServerIsDownException();
+        } catch (NotValidParameterException e) {
+            e.printStackTrace();//Shall happen if this client is not registered to the match. Should not be the case.
         }
     }
 
     @Override
     public String askTurn() {
-        //TODO
+        //stub.askTurn() todo
         return null;
     }
 

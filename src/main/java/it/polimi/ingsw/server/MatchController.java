@@ -440,11 +440,11 @@ public class MatchController extends Thread{
 
     }
 
-    public void setGrid(UserInterface userInterface, int gridChosen) throws InvalidOperationException {
+    public void setGrid(UserInterface userInterface, int gridChosen) throws InvalidOperationException, NotValidParameterException {
         String username = userInterface.getUsername();
         synchronized (playersInMatchGuard){
-            if(!playersInMatch.containsKey(username)) /*TODO throw an exception*/;
-            if(!playersInMatch.get(username).equals(userInterface)) /*TODO throw an exception*/;
+            if(!playersInMatch.containsKey(username)) throw new NotValidParameterException("UserInterface passed does not bleong to this match","UserInterface passed should belong to this match");
+            if(!playersInMatch.get(username).equals(userInterface)) throw new NotValidParameterException("parameter UserInterface name does not match the name registered in this match.","UserInterface should match the name in this match.");
         }
 
         try {
@@ -475,10 +475,10 @@ public class MatchController extends Thread{
         }
     }
 
-    public PrivateObjective getPrivateObject(UserInterface clientCalling) {
+    public PrivateObjective getPrivateObject(UserInterface clientCalling) throws NotValidParameterException {
         String username = clientCalling.getUsername();
         synchronized (playersInMatchGuard){
-            if(!playersInMatch.containsKey(username)) /*TODO throw an exception*/;
+            if(!playersInMatch.containsKey(username)) throw new NotValidParameterException("clientCalling username: "+clientCalling.getUsername()+"is not in this match queue","A valid username");
             if(!playersInMatch.get(username).equals(clientCalling)) /*TODO throw an exception*/;
         }
 

@@ -165,7 +165,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     }
 
     @Override
-    public List<Grid> getGrids() throws ServerIsDownException, GameInProgressException {
+    public void getGrids() throws ServerIsDownException, GameInProgressException {
         String result;
         try{
             do {

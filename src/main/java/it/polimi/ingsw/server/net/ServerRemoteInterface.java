@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.cards.PrivateObjective;
 import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.InvalidUsernameException;
+import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
 import java.rmi.*;
 import java.util.List;
@@ -18,9 +19,9 @@ public interface ServerRemoteInterface extends Remote {
 
     void setControllerForClient(ClientRemoteInterface client, MatchController controller) throws RemoteException;
 
-    List<Grid> getGrids(ClientRemoteInterface thisClient) throws RemoteException,InvalidOperationException;
+    List<Grid> getGrids(ClientRemoteInterface thisClient) throws RemoteException, InvalidOperationException, NotValidParameterException;
 
-    void setGrid(ClientRemoteInterface thisClient, int gridIndex) throws RemoteException,InvalidOperationException;
+    void setGrid(ClientRemoteInterface thisClient, int gridIndex) throws RemoteException, InvalidOperationException, NotValidParameterException;
 
-    PrivateObjective getPrivateObjective(ClientRMI thisClient) throws RemoteException;
+    PrivateObjective getPrivateObjective(ClientRMI thisClient) throws RemoteException, NotValidParameterException;
 }

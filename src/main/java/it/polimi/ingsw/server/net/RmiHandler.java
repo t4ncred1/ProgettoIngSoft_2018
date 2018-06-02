@@ -6,10 +6,7 @@ import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.cards.PrivateObjective;
 import it.polimi.ingsw.server.components.Grid;
-import it.polimi.ingsw.server.custom_exception.DisconnectionException;
-import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
-import it.polimi.ingsw.server.custom_exception.InvalidUsernameException;
-import it.polimi.ingsw.server.custom_exception.ReconnectionException;
+import it.polimi.ingsw.server.custom_exception.*;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -102,35 +99,42 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
     }
 
     @Override
-    public List<Grid> getGrids(ClientRemoteInterface thisClient) throws InvalidOperationException {
+    public List<Grid> getGrids(ClientRemoteInterface thisClient) throws InvalidOperationException, NotValidParameterException {
         RMIUserAgent clientCalling;
         synchronized (clientsHandledGuard) {
+            if (!clientsHandled.containsKey(thisClient)) throw new NotValidParameterException("this CLient is not registered to RMI","Client calling should be registered to RMI");
             clientCalling = clientsHandled.get(thisClient);
         }
-        if (clientCalling==null) ; //fixme what exception should I throw?
         return clientsMatch.get(thisClient).getPlayerGrids(clientCalling);
     }
 
     @Override
-    public void setGrid(ClientRemoteInterface thisClient, int index) throws InvalidOperationException {
-
+    public void setGrid(ClientRemoteInterface thisClient, int index) throws InvalidOperationException, NotValidParameterException {
+        //if it throws a InvalidOperationException, Index Parameter is wrong.
         RMIUserAgent clientCalling;
         synchronized (clientsHandledGuard) {
+            if (!clientsHandled.containsKey(thisClient)) throw new NotValidParameterException("client thisClient, passed as parameter, is not handled by RMI","should be a cliend handled by RMI");
             clientCalling = clientsHandled.get(thisClient);
         }
-        //if (clientCalling==null) ;
         clientsMatch.get(thisClient).setGrid(clientCalling,index);
     }
 
     @Override
-    public PrivateObjective getPrivateObjective(ClientRMI thisClient) throws RemoteException {
+    public PrivateObjective getPrivateObjective(ClientRMI thisClient) throws RemoteException, NotValidParameterException {
         RMIUserAgent clientCalling;
         synchronized (clientsHandledGuard) {
+            if (!(clientsHandled.containsKey(thisClient))) throw new NotValidParameterException("Client thisClient is not in any Match.","Should be in a match to ask for a private objective.");
             clientCalling = clientsHandled.get(thisClient);
         }
-        //if (clientCalling == null) ;
-        return clientsMatch.get(thisClient).getPrivateObject(clientCalling);
+        try {
+            return clientsMatch.get(thisClient).getPrivateObject(clientCalling);
+        } catch (NotValidParameterException e) {
+            e.printStackTrace(); //should not be thrown if RMIhandler is correct
+        }
+        return null;
     }
+
+
 
 
 }
