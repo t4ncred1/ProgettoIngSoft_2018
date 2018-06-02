@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.net;
 
+import it.polimi.ingsw.server.MatchController;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -39,6 +41,11 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
     @Override
     public void notifyReconnection() throws RemoteException {
         serverRemoteInterfaceAdapter.notifyReconnection();
+    }
+
+    @Override
+    public void setController(MatchController matchController) {
+        serverRemoteInterfaceAdapter.setController(matchController);
     }
 
     public void setRMICommunication(ServerRMICommunication serverRemoteInterfaceAdapter) {

@@ -14,6 +14,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ServerSocketCommunication implements ServerCommunicatingInterface {
 
@@ -165,7 +166,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     }
 
     @Override
-    public void getGrids() throws ServerIsDownException, GameInProgressException {
+    public List<Grid> getGrids() throws ServerIsDownException, GameInProgressException {
         String result;
         try{
             do {

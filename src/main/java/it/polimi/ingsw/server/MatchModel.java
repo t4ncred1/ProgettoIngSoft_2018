@@ -12,6 +12,7 @@ import it.polimi.ingsw.server.custom_exception.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MatchModel{
 
@@ -222,7 +223,9 @@ public class MatchModel{
         Player playerPassed= null;
         for(Player player: playersInGame)
             if(player.getUsername().equals(username)) playerPassed=player;
-        Grid toReturn = playerPassed.getSelectedGrid();
+        Grid toReturn = null;
+        if (playerPassed!=null) toReturn = playerPassed.getSelectedGrid();
+        else throw new InvalidOperationException();
         if (toReturn==null) throw new InvalidOperationException();  //only called if the player does not yet have his own grid.
         return toReturn;
     }
@@ -248,8 +251,25 @@ public class MatchModel{
         return (privateObjectives.remove(new Random().nextInt(privateObjectives.size())));
     }
 
-    public PrivateObjective getPrivateObjective(String username) {
+    public PrivateObjective getPrivateObjective(String username) throws InvalidUsernameException {
+        Stream<PrivateObjective> stream=  playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective);
+        if (stream.count()==0) throw new InvalidUsernameException();
+        return stream.collect(Collectors.toList()).get(0);
+        //we needed to throw an exception, but we didn't know how to do it in lambda function
 
-        return playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective).collect(Collectors.toList()).get(0);
+
     }
+
+    public Die getDieFromRoundtrack(int index) throws NotInPoolException {
+        if(index>=0&&index<=roundTrack.size())
+            return this.roundTrack.get(index);
+        else
+            throw new NotInPoolException();
+    }
+
+    public void removeDieFromRoundTrack(int index) throws NotInPoolException {
+        this.getDieFromRoundtrack(index);
+        this.roundTrack.remove(index);
+    }
+
 }

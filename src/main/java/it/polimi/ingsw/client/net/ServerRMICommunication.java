@@ -1,13 +1,17 @@
 package it.polimi.ingsw.client.net;
 
 import it.polimi.ingsw.client.custom_exception.*;
+import it.polimi.ingsw.server.MatchController;
+import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.net.ServerRemoteInterface;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.List;
 
 public class ServerRMICommunication implements ServerCommunicatingInterface {
 
@@ -22,6 +26,7 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     private transient boolean startingGame; //this parameter should be set to false once used.
     private transient boolean gameStarted;
     private transient boolean reconnection;
+    private transient MatchController controller;
 
 
     @Override
@@ -70,34 +75,51 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     }
 
     @Override
-    public boolean logout() {
+    public boolean logout() throws ServerIsDownException{
         Boolean ok=false;
         try{
             stub.logout(thisClient);
             ok=true;
         } catch (InvalidOperationException e) {
-            e.printStackTrace();
-        } catch (RemoteException e) {
-            //TODO
-            e.printStackTrace();
+            e.printStackTrace();    //should print "You can't logout" in caller method.
         }
-        return ok;
+        catch (RemoteException e) {
+            throw new ServerIsDownException();  //Only thrown if server is not reachable. (Remote Exception in RMI)
+        }
+        return ok;  //returns false if server is down?
 
     }
 
     @Override
-    public void getGrids() throws ServerIsDownException, GameInProgressException {
-        //TODO
+    public List<Grid> getGrids() throws ServerIsDownException, GameInProgressException {
+        try {
+            stub.setControllerForClient(thisClient, controller);    //controller is set here because it's the first request to controller.
+            return stub.getGrids(thisClient);
+        } catch (InvalidOperationException e) {
+            throw new GameInProgressException();
+        } catch (RemoteException e) {
+            throw new ServerIsDownException();
+        }
     }
 
     @Override
     public void setGrid(int gridIndex) throws ServerIsDownException, InvalidMoveException {
-        //TODO
+        try {
+            stub.setGrid(thisClient,gridIndex);
+        } catch (InvalidOperationException e) {
+            throw new InvalidMoveException();
+        } catch (RemoteException e){
+            throw new ServerIsDownException();
+        }
     }
 
     @Override
     public void getPrivateObjective() throws ServerIsDownException {
-
+        try{
+            stub.getPrivateObjective(thisClient);
+        } catch (RemoteException e){
+            throw new ServerIsDownException();
+        }
     }
 
     @Override
@@ -113,7 +135,7 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     @Override
     public void getUpdatedDicePool() throws ServerIsDownException {
-
+        //TODO
     }
 
 
@@ -128,5 +150,9 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     public void notifyReconnection() {
         this.reconnection=true;
+    }
+
+    public void setController(MatchController matchController) {
+        this.controller=matchController;
     }
 }
