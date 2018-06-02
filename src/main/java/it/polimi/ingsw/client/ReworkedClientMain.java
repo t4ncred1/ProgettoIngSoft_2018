@@ -4,10 +4,12 @@ import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.net.ServerCommunicatingInterface;
 import it.polimi.ingsw.client.net.ServerRMICommunication;
 import it.polimi.ingsw.client.net.ServerSocketCommunication;
+import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ReworkedClientMain {
@@ -153,15 +155,20 @@ public class ReworkedClientMain {
     private void selectGrid() throws ServerIsDownException {
         Scanner scanner= new Scanner(System.in);
         boolean gridCorrectlyChosen= false;
+        final int INDEX_SHIFT=1;
         try {
             server.getGrids();
-            System.out.println("Insert a value from 0 to 3 to chose a grid"); //FIXME get this from proxy
+            ArrayList<Grid> toPrint = (ArrayList<Grid>) Proxy.getInstance().getGridsSelection();
+            for(Grid grid: toPrint){
+                System.out.println(grid.getStructure());
+            }
+            System.out.println("Insert a value from 1 to "+Proxy.getInstance().getGridsSelectionDimension() +" to chose a grid");
             do{
                 String read=scanner.nextLine();
                 try{
                     int gridIndex = Integer.parseInt(read);
-                    if(gridIndex<0||gridIndex>3) throw new InvalidMoveException();//FIXME get this from proxy
-                    server.setGrid(gridIndex);
+                    if(gridIndex<INDEX_SHIFT||gridIndex>Proxy.getInstance().getGridsSelectionDimension()) throw new InvalidMoveException();
+                    server.setGrid(gridIndex-INDEX_SHIFT);
 
                     System.out.println("Grid correctly chosen.");
                     gridCorrectlyChosen=true;

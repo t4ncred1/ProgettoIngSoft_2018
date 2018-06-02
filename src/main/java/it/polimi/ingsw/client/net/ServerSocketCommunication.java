@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.net;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import it.polimi.ingsw.client.Proxy;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.server.cards.PrivateObjective;
 import it.polimi.ingsw.server.components.Grid;
@@ -180,12 +181,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
                 result=readRemoteInput();
                 grids= gson.fromJson(result, typeToken.getType());
 
-                /*FIXME REMOVE THIS*/
-                for(Grid grid: grids){
-                    System.out.println(grid.getName());
-                    System.out.println(grid.getDifficulty());
-                    System.out.println(grid.getStructure());
-                }
+                Proxy.getInstance().setGridsSelection(grids);
 
             }else if(result.equals(GRID_ALREADY_SELECTED)){
                 throw new GameInProgressException();

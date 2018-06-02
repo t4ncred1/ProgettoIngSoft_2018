@@ -9,12 +9,30 @@ import java.util.Map;
 
 public class Proxy {
 
-    ArrayList<Grid> gridsSelection;
-    Map<String,Grid> playerGrids;
+    private static Proxy instance;
 
-    public Proxy(List<Grid> gridsSelection){
-        this.gridsSelection= (ArrayList<Grid>) gridsSelection;
+    private ArrayList<Grid> gridsSelection;
+    private Map<String,Grid> playerGrids;
+
+    private Proxy(){
+        gridsSelection= new ArrayList<>();
         playerGrids= new HashMap<>();
     }
 
+    public static Proxy getInstance(){
+        if(instance==null) instance= new Proxy();
+        return instance;
+    }
+
+    public void setGridsSelection(List<Grid> gridsSelection){
+        this.gridsSelection=(ArrayList<Grid>)gridsSelection;
+    }
+
+    public List<Grid> getGridsSelection() {
+        return gridsSelection;
+    }
+
+    public int getGridsSelectionDimension() {
+        return gridsSelection.size();
+    }
 }

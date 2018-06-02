@@ -220,7 +220,9 @@ public class MatchController extends Thread{
                 timer.stop();
             }
 
-            handleTimeoutEvent(timer,username);
+            lock.lock();
+            handleEventualTimeout(timer,username);
+            lock.unlock();
             try {
                 Thread.sleep(SLEEP_TIME);
             } catch (InterruptedException e) {
@@ -229,7 +231,7 @@ public class MatchController extends Thread{
         }while (!turnFinished);
     }
 
-    private void handleTimeoutEvent(GameTimer timer,String username) {
+    private void handleEventualTimeout(GameTimer timer, String username) {
         if (timer.getTimeoutEvent()) {
             ready=false;
             synchronized (modelGuard){
