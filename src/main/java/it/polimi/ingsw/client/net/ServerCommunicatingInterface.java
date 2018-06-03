@@ -1,10 +1,7 @@
 package it.polimi.ingsw.client.net;
 
 import it.polimi.ingsw.client.custom_exception.*;
-import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
-
-import java.util.List;
 
 
 public interface ServerCommunicatingInterface {
@@ -15,7 +12,7 @@ public interface ServerCommunicatingInterface {
     boolean logout() throws ServerIsDownException;
 
 
-    List<Grid> getGrids() throws ServerIsDownException, GameInProgressException;
+    void getGrids() throws ServerIsDownException, GameInProgressException;
     void setGrid(int gridIndex) throws ServerIsDownException, InvalidMoveException;
     void getPrivateObjective() throws ServerIsDownException;
 
