@@ -1,11 +1,13 @@
 package it.polimi.ingsw.client.net;
 
+import it.polimi.ingsw.client.Proxy;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
+import it.polimi.ingsw.server.custom_exception.TooManyRoundsException;
 import it.polimi.ingsw.server.net.ServerRemoteInterface;
 
 import java.rmi.Remote;
@@ -93,16 +95,22 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     @Override
     public void getGrids() throws ServerIsDownException, GameInProgressException {
+        List<Grid> grids=null;
         try {
             stub.setControllerForClient(thisClient, controller);    //controller is set here because it's the first request to controller.
-            List<Grid> grids = stub.getGrids(thisClient);
-            //todo implement proxy.
+            grids = stub.getGrids(thisClient);
+
         } catch (InvalidOperationException e) {
             throw new GameInProgressException();
         } catch (RemoteException e) {
             throw new ServerIsDownException();
         } catch (NotValidParameterException e) {
             e.printStackTrace();    //should not happen if this client is correctly registered.
+        }
+        try {
+            Proxy.getInstance().setGridsSelection(grids);
+        } catch (InvalidOperationException e) {
+            e.printStackTrace();    //thrown if passed grids are null. Can only happen if the above NotValidParameterException occurs.
         }
     }
 
@@ -115,7 +123,7 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
         } catch (RemoteException e){
             throw new ServerIsDownException();
         } catch (NotValidParameterException e) {
-            e.printStackTrace(); //
+            e.printStackTrace(); //only thrown if parameter thisClient is invalid, should not happen.
         }
     }
 
@@ -131,9 +139,20 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     }
 
     @Override
-    public String askTurn() {
-        //stub.askTurn() todo
-        return null;
+    public String askTurn() throws GameFinishedException, ServerIsDownException, ServerNotReadyException {
+        String username=null;
+        try {
+             username=stub.askTurn(thisClient);
+        } catch (NotValidParameterException e) {
+            e.printStackTrace();    //shall be thrown only if this client is not in the associated match.
+        } catch (InvalidOperationException e) {
+            throw new ServerNotReadyException();
+        } catch (TooManyRoundsException e) {
+            throw new GameFinishedException();
+        } catch (RemoteException e){
+            throw new ServerIsDownException();
+        }
+        return username;    //it shall return null only if NotValidParameterException is thrown.
     }
 
     @Override

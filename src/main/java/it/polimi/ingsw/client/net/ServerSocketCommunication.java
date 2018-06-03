@@ -7,6 +7,7 @@ import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.server.cards.PrivateObjective;
 import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
+import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 
 
 import java.io.DataInputStream;
@@ -191,6 +192,8 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
         } catch (IOException e) {
             throw new ServerIsDownException();
 
+        } catch (InvalidOperationException e) {
+            e.printStackTrace();    //thrown by proxy if passed grid list is null (also, should it be thrown if the grids were already chosen?)
         }
     }
 
@@ -221,7 +224,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
             Gson gson = new Gson();
             response= readRemoteInput();
             PrivateObjective privateObjective= gson.fromJson(response, PrivateObjective.class);
-
+            //fixme what to do with this private objective? shall this be passed to Proxy?
         } catch (IOException e) {
             throw new ServerIsDownException();
         }

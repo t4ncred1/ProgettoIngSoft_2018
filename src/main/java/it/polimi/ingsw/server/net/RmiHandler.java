@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.net;
 
-import it.polimi.ingsw.client.net.ClientRMI;
 import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
@@ -9,7 +8,6 @@ import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.*;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,7 +118,7 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
     }
 
     @Override
-    public PrivateObjective getPrivateObjective(ClientRMI thisClient) throws RemoteException, NotValidParameterException {
+    public PrivateObjective getPrivateObjective(ClientRemoteInterface thisClient) throws RemoteException, NotValidParameterException {
         RMIUserAgent clientCalling;
         synchronized (clientsHandledGuard) {
             if (!(clientsHandled.containsKey(thisClient))) throw new NotValidParameterException("Client thisClient is not in any Match.","Should be in a match to ask for a private objective.");
@@ -134,7 +132,13 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
         return null;
     }
 
-
-
-
+    public String askTurn(ClientRemoteInterface thisClient) throws NotValidParameterException, InvalidOperationException, TooManyRoundsException {
+        RMIUserAgent clientCalling;
+        synchronized (clientsHandledGuard) {
+            if (!(clientsHandled.containsKey(thisClient)))
+                throw new NotValidParameterException("Client thisClient is not in any Match.", "Should be in a match to ask for a private objective.");
+            clientCalling = clientsHandled.get(thisClient);
+        }
+        return clientsMatch.get(thisClient).requestTurnPlayer();
+    }
 }

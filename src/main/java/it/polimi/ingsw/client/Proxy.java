@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.server.components.Grid;
+import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +25,8 @@ public class Proxy {
         return instance;
     }
 
-    public void setGridsSelection(List<Grid> gridsSelection){
+    public void setGridsSelection(List<Grid> gridsSelection) throws InvalidOperationException {
+        if (this.gridsSelection!=null) throw new InvalidOperationException();   //thrown in case grids have already been chosen
         this.gridsSelection=(ArrayList<Grid>)gridsSelection;
     }
 
