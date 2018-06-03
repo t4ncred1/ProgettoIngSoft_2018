@@ -10,7 +10,6 @@ import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.custom_exception.TooManyRoundsException;
 import it.polimi.ingsw.server.net.ServerRemoteInterface;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -98,8 +97,8 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
         List<Grid> grids=null;
         try {
             stub.setControllerForClient(thisClient, controller);    //controller is set here because it's the first request to controller.
-            grids = stub.getGrids(thisClient);
-
+            grids = stub.getGrids(thisClient); //controller is set here because it's the first request to controller.
+            Proxy.getInstance().setGridsSelection(stub.getGrids(thisClient));   //// FIXME
         } catch (InvalidOperationException e) {
             throw new GameInProgressException();
         } catch (RemoteException e) {
