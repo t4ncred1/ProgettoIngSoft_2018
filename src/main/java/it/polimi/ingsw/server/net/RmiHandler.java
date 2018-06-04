@@ -65,7 +65,7 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
     @Override
     public void login(ClientRemoteInterface client) throws InvalidOperationException, InvalidUsernameException {
         System.out.println("Connection request received on RMI system");
-        RMIUserAgent clientInterface= new RMIUserAgent(client);
+        RMIUserAgent clientInterface= new RMIUserAgent(client,this);
         try {
            MatchHandler.login(clientInterface);
            synchronized (clientsHandledGuard) {
@@ -97,8 +97,8 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
 
     @Override
     public void setControllerForClient(ClientRemoteInterface client, MatchController controller) throws InvalidOperationException, NotValidParameterException {
-        if (clientsMatch.containsKey(client))throw new InvalidOperationException();
         if (client ==null || controller == null) throw new NotValidParameterException("Client passed or controller are null","should be a valid link to client to associate to the match.");
+        if (clientsMatch.containsKey(client))throw new InvalidOperationException();
         clientsMatch.put(client,controller);
     }
 

@@ -3,7 +3,9 @@ package it.polimi.ingsw.server.components;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
-public class Grid {
+import java.io.Serializable;
+
+public class Grid implements Serializable {
     private final static int COLUMN_NUMBER =5;
     private final static int ROW_NUMBER =4;
     private String name;

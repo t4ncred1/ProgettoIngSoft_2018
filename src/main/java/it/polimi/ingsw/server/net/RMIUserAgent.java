@@ -3,10 +3,7 @@ package it.polimi.ingsw.server.net;
 import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
-import it.polimi.ingsw.server.custom_exception.DisconnectionException;
-import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
-import it.polimi.ingsw.server.custom_exception.InvalidUsernameException;
-import it.polimi.ingsw.server.custom_exception.ReconnectionException;
+import it.polimi.ingsw.server.custom_exception.*;
 
 import java.rmi.RemoteException;
 
@@ -14,10 +11,12 @@ public class RMIUserAgent implements UserInterface {
 
     private ClientRemoteInterface clientHandled;
     private String username;
+    private RmiHandler myHandler;
     private int gameCode;
 
 
-    public RMIUserAgent(ClientRemoteInterface clientToHandle){
+    public RMIUserAgent(ClientRemoteInterface clientToHandle, RmiHandler handler){
+        this.myHandler=handler;
         clientHandled=clientToHandle;
     }
 
@@ -95,9 +94,11 @@ public class RMIUserAgent implements UserInterface {
     @Override
     public void setController(MatchController matchController) {
         try {
-            clientHandled.setController(matchController);
-        } catch (RemoteException e) {
-            e.printStackTrace(); // FIXME: 04/06/2018 
+            myHandler.setControllerForClient(clientHandled,matchController);
+        } catch (NotValidParameterException e) {
+            e.printStackTrace();    //should not happen if handler is initialized correctly
+        } catch (InvalidOperationException e) {
+            e.printStackTrace();    //should not happen if handler is initialized correctly
         }
     }
 

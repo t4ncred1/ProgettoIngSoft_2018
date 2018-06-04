@@ -1,6 +1,8 @@
 package it.polimi.ingsw.server.components;
 
-public class DieToConstraintsAdapter implements DieConstraints {
+import java.io.Serializable;
+
+public class DieToConstraintsAdapter implements DieConstraints, Serializable {
 
     private Die die;
     private int colorRestriction;

@@ -43,10 +43,6 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
         serverRemoteInterfaceAdapter.notifyReconnection();
     }
 
-    @Override
-    public void setController(MatchController matchController) {
-        serverRemoteInterfaceAdapter.setController(matchController);
-    }
 
     public void setRMICommunication(ServerRMICommunication serverRemoteInterfaceAdapter) {
         this.serverRemoteInterfaceAdapter=serverRemoteInterfaceAdapter;

@@ -97,22 +97,22 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     @Override
     public void getGrids() throws ServerIsDownException, GameInProgressException {
         List<Grid> grids=null;
+//        try {
+//            stub.setControllerForClient(thisClient, controller);    //controller is set here because it's the first request to controller.
+//        } catch (RemoteException e) {
+//            throw new ServerIsDownException();
+//        } catch (InvalidOperationException e) {
+//            e.printStackTrace(); //should only happen if get grids was already called.
+//        } catch (NotValidParameterException e) {
+//            e.printStackTrace(); //should not be thrown ad parameters passed are not null.
+//
+//        }
         try {
-            stub.setControllerForClient(thisClient, controller);    //controller is set here because it's the first request to controller.
-        } catch (RemoteException e) {
-            throw new ServerIsDownException();
-        } catch (InvalidOperationException e) {
-            e.printStackTrace(); //should only happen if get grids was already called.
-        } catch (NotValidParameterException e) {
-            e.printStackTrace(); //should not be thrown ad parameters passed are not null.
-
-        }
-        try {
-            grids = stub.getGrids(thisClient); //controller is set here because it's the first request to controller.
-            Proxy.getInstance().setGridsSelection(stub.getGrids(thisClient));   //// FIXME
+            grids = stub.getGrids(thisClient);
         } catch (InvalidOperationException e) {
             throw new GameInProgressException();
         } catch (RemoteException e) {
+            e.printStackTrace();
             throw new ServerIsDownException();
         } catch (NotValidParameterException e) {
             e.printStackTrace();    //should not happen if this client is correctly registered.
@@ -193,9 +193,5 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     public void notifyReconnection() {
         this.reconnection=true;
-    }
-
-    public void setController(MatchController matchController) {
-        this.controller=matchController;
     }
 }

@@ -1,7 +1,9 @@
 package it.polimi.ingsw.server.components;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
-public class Die {
+import java.io.Serializable;
+
+public class Die implements Serializable {
 
     private int value;
     private String color;
