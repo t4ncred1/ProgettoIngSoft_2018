@@ -9,9 +9,7 @@ import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.*;
 
 import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RmiHandler extends Thread implements ServerRemoteInterface{
 
@@ -51,9 +49,13 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
                 e.printStackTrace();
             }
             synchronized (clientsHandledGuard) {
-                for (int i=0; i<clientsHandled.size(); i++){
-                    if(!clientsHandled.get(i).isConnected()) clientsHandled.remove(i);
+                Iterator<Map.Entry<ClientRemoteInterface,RMIUserAgent>> iterator =clientsHandled.entrySet().iterator();
+                while (iterator.hasNext()){
+                    RMIUserAgent player = iterator.next().getValue();
+                    if(!player.isConnected()) iterator.remove();
+                    System.err.println(player.getUsername() + " removed from interfaces handled in RMI Handler"); // FIXME: 04/06/2018 
                 }
+                
             }
         }
     }
