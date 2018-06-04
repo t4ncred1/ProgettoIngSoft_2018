@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.net;
 
-import com.sun.security.ntlm.Server;
 import it.polimi.ingsw.client.Proxy;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.server.MatchController;
