@@ -26,7 +26,7 @@ public class Proxy {
     }
 
     public void setGridsSelection(List<Grid> gridsSelection) throws InvalidOperationException {
-        if (this.gridsSelection!=null) throw new InvalidOperationException();   //thrown in case grids have already been chosen
+        if (!this.gridsSelection.isEmpty()) throw new InvalidOperationException();   //thrown in case grids have already been chosen
         this.gridsSelection=(ArrayList<Grid>)gridsSelection;
     }
 

@@ -11,7 +11,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
 
     private String username;
 
-    protected ClientRMI() throws RemoteException {
+    protected ClientRMI()  throws RemoteException{
     }
 
     @Override

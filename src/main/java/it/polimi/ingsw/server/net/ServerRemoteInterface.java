@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.net.ClientRMI;
 import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.cards.PrivateObjective;
+import it.polimi.ingsw.server.components.Die;
 import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.InvalidUsernameException;
@@ -18,7 +19,7 @@ public interface ServerRemoteInterface extends Remote {
 
     void logout(ClientRemoteInterface client) throws RemoteException, InvalidOperationException;
 
-    void setControllerForClient(ClientRemoteInterface client, MatchController controller) throws RemoteException;
+    void setControllerForClient(ClientRemoteInterface client, MatchController controller) throws RemoteException, InvalidOperationException, NotValidParameterException;
 
     List<Grid> getGrids(ClientRemoteInterface thisClient) throws RemoteException, InvalidOperationException, NotValidParameterException;
 
@@ -27,4 +28,6 @@ public interface ServerRemoteInterface extends Remote {
     PrivateObjective getPrivateObjective(ClientRemoteInterface thisClient) throws RemoteException, NotValidParameterException;
 
     String askTurn(ClientRemoteInterface thisClient) throws RemoteException, NotValidParameterException, InvalidOperationException, TooManyRoundsException;
+
+    List<Die> getUpdatedDicepool(ClientRemoteInterface thisClient) throws NotValidParameterException, RemoteException;
 }
