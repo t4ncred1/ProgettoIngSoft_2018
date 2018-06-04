@@ -55,7 +55,7 @@ public class DicePool {
         this.pool.remove(index);
     }
 
-    public void insertDie (Die die, int dpIndex) throws NotValidParameterException {
+    public void insertDieInPool(Die die, int dpIndex) throws NotValidParameterException {
         if (die==null) throw new NotValidParameterException("die: null","a valid die");
         if (dpIndex>pool.size()) throw new NotValidParameterException("IndexOutOfBounds: "+dpIndex,"A value betweeen");
         pool.add(dpIndex,die);

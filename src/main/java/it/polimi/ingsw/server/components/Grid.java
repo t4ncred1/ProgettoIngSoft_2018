@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.components;
 
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.server.custom_exception.LimitValueException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
 import java.io.Serializable;
@@ -158,5 +159,21 @@ public class Grid implements Serializable {
             structure.append("}\n");
         }
         return structure.toString();
+    }
+
+    public Die removeDieFromXY(int x, int y) throws NotValidParameterException, InvalidOperationException {
+        final String indexOutOfBound = "coordinates should be: 0<=x<=3 and 0<=y<=4";
+        Die temp;
+
+        if(x<0||x> COLUMN_NUMBER -1||y<0||y> ROW_NUMBER -1) throw new NotValidParameterException("("+x+","+y+")", indexOutOfBound);
+
+        if(gameGrid[x][y]==null) throw new NotValidParameterException("("+x+","+y+")","the box in this position should be initialized. ");
+
+        try {
+            temp=gameGrid[x][y].removeDie();
+        } catch (LimitValueException e) {
+            throw new InvalidOperationException();
+        }
+        return temp;
     }
 }
