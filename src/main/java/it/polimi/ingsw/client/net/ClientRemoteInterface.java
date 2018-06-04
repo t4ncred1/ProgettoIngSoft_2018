@@ -18,5 +18,5 @@ public interface ClientRemoteInterface extends Remote {
 
     void notifyReconnection() throws RemoteException;
 
-    void setController(MatchController matchController);
+    void setController(MatchController matchController) throws RemoteException;
 }

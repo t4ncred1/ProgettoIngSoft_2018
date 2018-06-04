@@ -62,6 +62,7 @@ public class ReworkedClientMain {
         }
         catch (ServerIsDownException e){
             System.err.println("Can't connect to server, something went wrong!");
+            e.printStackTrace();    //fixme to be removed. only here to show problems.
         }
     }
 

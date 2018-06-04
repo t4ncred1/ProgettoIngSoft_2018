@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.net;
 
+import com.sun.security.ntlm.Server;
 import it.polimi.ingsw.client.Proxy;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.server.MatchController;
@@ -30,13 +31,18 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     private transient boolean reconnection;
     private transient MatchController controller;
 
-
+    public ServerRMICommunication(){
+        try {
+            thisClient=new ClientRMI();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void setUpConnection() throws ServerIsDownException{
         try {
             Registry registry = LocateRegistry.getRegistry(serverAddress,serverPort);
             stub = (ServerRemoteInterface) registry.lookup(registerName);
-            thisClient=new ClientRMI();
             thisClient.setRMICommunication(this);
         } catch (Exception e) {
             throw new ServerIsDownException();
@@ -97,6 +103,15 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
         List<Grid> grids=null;
         try {
             stub.setControllerForClient(thisClient, controller);    //controller is set here because it's the first request to controller.
+        } catch (RemoteException e) {
+            throw new ServerIsDownException();
+        } catch (InvalidOperationException e) {
+            e.printStackTrace(); //should only happen if get grids was already called.
+        } catch (NotValidParameterException e) {
+            e.printStackTrace(); //should not be thrown ad parameters passed are not null.
+
+        }
+        try {
             grids = stub.getGrids(thisClient); //controller is set here because it's the first request to controller.
             Proxy.getInstance().setGridsSelection(stub.getGrids(thisClient));   //// FIXME
         } catch (InvalidOperationException e) {
@@ -161,7 +176,13 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     @Override
     public void getUpdatedDicePool() throws ServerIsDownException {
-        //TODO
+        try {
+            stub.getUpdatedDicepool(thisClient);    //fixme see method in ServerSocketCommunication.
+        } catch (NotValidParameterException e) {
+            e.printStackTrace();    //should only happen if current client isn't registered to the game.
+        } catch (RemoteException e) {
+            throw new ServerIsDownException();
+        }
     }
 
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.cards.PrivateObjective;
+import it.polimi.ingsw.server.components.Die;
 import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.*;
 
@@ -91,8 +92,9 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
     }
 
     @Override
-    public void setControllerForClient(ClientRemoteInterface client, MatchController controller){
-        //fixme controls.
+    public void setControllerForClient(ClientRemoteInterface client, MatchController controller) throws InvalidOperationException, NotValidParameterException {
+        if (clientsMatch.containsKey(client))throw new InvalidOperationException();
+        if (client ==null || controller == null) throw new NotValidParameterException("Client passed or controller are null","should be a valid link to client to associate to the match.");
         clientsMatch.put(client,controller);
     }
 
@@ -132,13 +134,22 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
         return null;
     }
 
+    @Override
     public String askTurn(ClientRemoteInterface thisClient) throws NotValidParameterException, InvalidOperationException, TooManyRoundsException {
-        RMIUserAgent clientCalling;
+        
         synchronized (clientsHandledGuard) {
             if (!(clientsHandled.containsKey(thisClient)))
                 throw new NotValidParameterException("Client thisClient is not in any Match.", "Should be in a match to ask for a private objective.");
-            clientCalling = clientsHandled.get(thisClient);
         }
         return clientsMatch.get(thisClient).requestTurnPlayer();
+    }
+
+    @Override
+    public List<Die> getUpdatedDicepool(ClientRemoteInterface thisClient) throws NotValidParameterException {
+        synchronized (clientsHandledGuard){
+            if(!(clientsHandled.containsKey(thisClient)))
+                throw new NotValidParameterException("Client thisClient is not in any Match.", "Should be in a match to ask for dicepool to be shown.");
+        }
+        return clientsMatch.get(thisClient).getDicePool();
     }
 }

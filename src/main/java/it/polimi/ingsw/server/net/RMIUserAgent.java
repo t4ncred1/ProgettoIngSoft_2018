@@ -94,7 +94,11 @@ public class RMIUserAgent implements UserInterface {
 
     @Override
     public void setController(MatchController matchController) {
-        clientHandled.setController(matchController);
+        try {
+            clientHandled.setController(matchController);
+        } catch (RemoteException e) {
+            e.printStackTrace(); // FIXME: 04/06/2018 
+        }
     }
 
     @Override
