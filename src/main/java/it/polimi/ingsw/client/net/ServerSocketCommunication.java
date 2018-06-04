@@ -144,16 +144,16 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     }
 
     @Override
-    public boolean logout() throws ServerIsDownException {
+    public void logout() throws ServerIsDownException, GameStartingException {
         //FIXME
         try{
             outputStream.writeUTF(TRY_LOGOUT);
             String response= inputStream.readUTF();
             switch (response) {
                 case SUCCESSFULLY_LOGGED_OUT:
-                    return true;
+                    break;
                 case LAUNCHING_GAME:
-                    return false;
+                    throw new GameStartingException();
                 default:
                     System.err.println(response);
             }
@@ -162,7 +162,6 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
             throw new ServerIsDownException();
 
         }
-        return false;
     }
 
     @Override
@@ -269,7 +268,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
             }
             while (!response.equals(DICE_POOL_DATA));
             response=readRemoteInput();
-            System.out.println(response); //FIXME
+            //TODO handle response.
         } catch (IOException e) {
             throw new ServerIsDownException();
         }

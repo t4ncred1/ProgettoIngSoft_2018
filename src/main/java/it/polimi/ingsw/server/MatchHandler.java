@@ -273,12 +273,13 @@ public class MatchHandler extends Thread {
         }
         synchronized (startingMatchGuard) {
             synchronized (startedMatchesGuard) {
-                if (gameHandlingClient!=null)
-                    synchronized (disconnectedInGamePlayersGuard){
+                if (gameHandlingClient!=null) {
+                    synchronized (disconnectedInGamePlayersGuard) {
                         disconnectedInGamePlayers.put(username, gameHandlingClient);
 
                         //FIXME if necessary.
                     }
+                }
                 else
                     startingMatch.remove(client);
             }

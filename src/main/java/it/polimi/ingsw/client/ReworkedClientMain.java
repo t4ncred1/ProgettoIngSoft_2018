@@ -189,68 +189,35 @@ public class ReworkedClientMain {
     }
 
     private void handleWaitForGameCLI() throws ServerIsDownException {
-        String read;
-        Scanner scanner= new Scanner(System.in);
-        DataInputStream dataInputStream = new DataInputStream(System.in);
+
         System.out.println("Enter Logout to logout or wait for a game to start.");
-        try {
-            boolean starting = false;
-            boolean gameStarted = false;
+        boolean starting = false;
+        boolean gameStarted = false;
 
-            while (!gameStarted) {
-                if (dataInputStream.available() > 0) {
-                    read = scanner.nextLine();
-                    read= read.toLowerCase();
-                    switch (read){
-                        case LOG_OUT_REQUEST:
-                            gameStarted=instance.server.logout();
-                            if(gameStarted==true) {
-                                System.out.println("Logged out correctly");
-                                System.exit(0);
-                            }
-                            else
-                                System.err.println("You can't log out, a game is starting");
-                            break;
-                        default:
-                            System.err.println("Invalid input. Enter logout or wait for a game.");
-                            break;
-                    }
+
+        while (!gameStarted) {
+            handleEventualLogoutRequest(starting);
+            do{
+                handleEventualLogoutRequest(starting);
+                try {
+                    instance.server.waitForGame(starting);
+                } catch (GameStartingException e) {
+                    System.out.println("A Game will start soon...");
+                    starting=true;
+                } catch (GameStartedException e) {
+                    System.out.println("Game is started.");
+                    starting=false;
+                    gameStarted=true;
+                } catch (TimerRestartedException e) {
+                    System.err.println("Someone disconnected. Timer has been restarted.");
+                } catch (GameInProgressException e) {
+                    System.out.println("Reconnected successfully.");
+                    starting=false;
+                    gameStarted=true;
                 }
-                do{
-                    if (dataInputStream.available() > 0) {
-                        read = scanner.nextLine();
-                        read= read.toLowerCase();
-                        switch (read){
-                            case LOG_OUT_REQUEST:
-                                System.err.println("Can't log out while game is starting");
-                                break;
-                            default:
-                                System.err.println("Invalid input");
-                        }
-
-
-                    }
-                    try {
-                        instance.server.waitForGame(starting);
-                    } catch (GameStartingException e) {
-                        System.out.println("A Game is starting soon...");
-                        starting=true;
-                    } catch (GameStartedException e) {
-                        System.out.println("Game is started.");
-                        starting=false;
-                        gameStarted=true;
-                    } catch (TimerRestartedException e) {
-                        System.err.println("Someone disconnected. Timer has been restarted.");
-                    } catch (GameInProgressException e) {
-                        System.out.println("Reconnected successfully.");
-                        starting=false;
-                        gameStarted=true;
-                    }
-                }while (starting);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            }while (starting);
         }
+
     }
 
     private void handleLoginCLI() throws ServerIsDownException {
@@ -313,6 +280,38 @@ public class ReworkedClientMain {
             }
         }
         while (!(written.equals(USE_SOCKET) || written.equals(USE_RMI)));
+    }
+
+    private void handleEventualLogoutRequest(boolean starting) throws ServerIsDownException {
+        String read;
+        Scanner scanner= new Scanner(System.in);
+        DataInputStream dataInputStream = new DataInputStream(System.in);
+        try {
+            if (dataInputStream.available() > 0) {
+                read = scanner.nextLine();
+                read= read.toLowerCase();
+                handleEventualInput(read, starting);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleEventualInput(String read, boolean starting) throws ServerIsDownException {
+        try {
+            if (LOG_OUT_REQUEST.equals(read) && !starting) {
+                instance.server.logout();
+                System.out.println("Logged out correctly");
+                System.exit(0);
+            } else if (LOG_OUT_REQUEST.equals(read)) {
+                throw new GameStartingException();
+            } else {
+                System.err.println("Invalid input.");
+
+            }
+        } catch (GameStartingException e){
+            System.err.println("You can't logout while the game is starting");
+        }
     }
 
 

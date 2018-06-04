@@ -9,7 +9,7 @@ public interface ServerCommunicatingInterface {
     void setUpConnection() throws ServerIsDownException;
     void login(String username) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException;
     void waitForGame(boolean starting) throws GameStartingException, GameStartedException, TimerRestartedException, ServerIsDownException, GameInProgressException;
-    boolean logout() throws ServerIsDownException;
+    void logout() throws ServerIsDownException, GameStartingException;
 
 
     void getGrids() throws ServerIsDownException, GameInProgressException;

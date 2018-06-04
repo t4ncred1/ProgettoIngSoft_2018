@@ -50,12 +50,14 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
             }
             synchronized (clientsHandledGuard) {
                 Iterator<Map.Entry<ClientRemoteInterface,RMIUserAgent>> iterator =clientsHandled.entrySet().iterator();
-                while (iterator.hasNext()){
+                while (iterator.hasNext()) {
                     RMIUserAgent player = iterator.next().getValue();
-                    if(!player.isConnected()) iterator.remove();
-                    System.err.println(player.getUsername() + " removed from interfaces handled in RMI Handler"); // FIXME: 04/06/2018 
+                    if (!player.isConnected()) {
+                        iterator.remove();
+                        System.err.println(player.getUsername() + " removed from interfaces handled in RMI Handler"); // FIXME: 04/06/2018
+                    }
+
                 }
-                
             }
         }
     }
@@ -104,7 +106,7 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
     public List<Grid> getGrids(ClientRemoteInterface thisClient) throws InvalidOperationException, NotValidParameterException {
         RMIUserAgent clientCalling;
         synchronized (clientsHandledGuard) {
-            if (!clientsHandled.containsKey(thisClient)) throw new NotValidParameterException("this CLient is not registered to RMI","Client calling should be registered to RMI");
+            if (!clientsHandled.containsKey(thisClient)) throw new NotValidParameterException("this Client is not registered to RMI","Client calling should be registered to RMI");
             clientCalling = clientsHandled.get(thisClient);
         }
         return clientsMatch.get(thisClient).getPlayerGrids(clientCalling);

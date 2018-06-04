@@ -82,18 +82,15 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     }
 
     @Override
-    public boolean logout() throws ServerIsDownException{
-        Boolean ok=false;
+    public void logout() throws ServerIsDownException, GameStartingException {
         try{
             stub.logout(thisClient);
-            ok=true;
         } catch (InvalidOperationException e) {
-            e.printStackTrace();    //should print "You can't logout" in caller method.
+            throw new GameStartingException();    //should print "You can't logout" in caller method.
         }
         catch (RemoteException e) {
             throw new ServerIsDownException();  //Only thrown if server is not reachable. (Remote Exception in RMI)
         }
-        return ok;  //returns false if server is down?
 
     }
 

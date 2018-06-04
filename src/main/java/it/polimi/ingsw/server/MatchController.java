@@ -337,7 +337,9 @@ public class MatchController extends Thread{
     }
 
     public void remove(UserInterface client) throws InvalidOperationException {
-        if(gameStartingSoon) throw new InvalidOperationException();
+        if(gameStartingSoon) {
+            throw new InvalidOperationException();
+        }
         else {
             synchronized (playersInMatchGuard) {
                 playersInMatch.remove(client.getUsername());
