@@ -11,7 +11,7 @@ import java.io.FileReader;
 import java.util.List;
 
 public class ConfigurationHandler {
-    private static final String CONFIG_PATH="configurations/config.json";
+    private static final String CONFIG_PATH="src/main/resources/config.json";
     private static ConfigurationHandler instance;
     private static Configurations config;
 
@@ -30,6 +30,9 @@ public class ConfigurationHandler {
         TypeToken<List<Grid>> listType = new TypeToken<List<Grid>>(){};
         try {
             List<Grid> grids=gson.fromJson(new FileReader(config.getGridsPath()), listType.getType());
+            for(Grid grid: grids){
+                grid.initializeAllObservers();
+            }
             if (grids==null) throw new NotValidConfigPathException("Grids are not read correctly.");
             return grids;
         } catch (FileNotFoundException e) {

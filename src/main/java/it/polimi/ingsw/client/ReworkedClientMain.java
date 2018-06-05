@@ -23,6 +23,7 @@ public class ReworkedClientMain {
     private final String QUIT_REQUEST = "quit";
     private final String LOG_OUT_REQUEST = "logout";
     private final String INSERT_DIE= "insert_die";
+    private final String END_TURN="end_turn";
     private String username;
 
     public static void main(String[] args){
@@ -102,29 +103,48 @@ public class ReworkedClientMain {
 
     }
 
-    private void handleMyTurnLogic() {
+    private void handleMyTurnLogic() throws ServerIsDownException {
         //TODO logic my turn
         Scanner scanner = new Scanner(System.in);
         String operation;
         boolean turnFinished = false;
         do {
             System.out.println("Choose operation:");
-            System.out.println("Possible operations are: " + INSERT_DIE+" - ");
+            System.out.println("Possible operations are: " + INSERT_DIE+" - "+ END_TURN);
             operation= scanner.nextLine();
             turnFinished=doOperation(operation.toLowerCase());
         } while (!turnFinished);
     }
 
-    private boolean doOperation(String operation) {
+    private boolean doOperation(String operation) throws ServerIsDownException {
         switch (operation){
             case INSERT_DIE:
-                System.out.println("Insert: Die position in dice pool");
-                /*TODO*/
+                try {
+                    insertDieOperation();
+                }catch (InvalidMoveException e){
+                    System.err.println("Invalid parameters!");
+                }
                 break;
+            case END_TURN:
+                server.endTurn();
+                return true;
             default:
                 System.err.println("Invalid operation! Retry.");
         }
         return false;
+    }
+
+    private void insertDieOperation() throws InvalidMoveException, ServerIsDownException {
+        System.out.println("Insert: Die position in dice pool");
+        Scanner scanner= new Scanner(System.in);
+        int position = scanner.nextInt();
+        System.out.println("Insert: Coordinate X");
+        int x = scanner.nextInt();
+        System.out.println("Insert: Coordinate Y");
+        int y = scanner.nextInt();
+
+        //Proxy.getInstance().tryToInsertDieInXY(position,x,y);
+        server.insertDie(position,x,y);
     }
 
     private String getPlayerOfThisTurn() throws ServerIsDownException, GameFinishedException {

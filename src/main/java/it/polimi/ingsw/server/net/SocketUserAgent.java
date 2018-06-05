@@ -110,7 +110,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         else{
             boolean turnFinished=false;
             do{
-                System.err.println("Request: "+request);
+                System.out.println("Request: "+request + " from " +username);
                 switch (request){
                     case INSERT_DIE:
                         handleDieInsertion();
