@@ -191,6 +191,11 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     }
 
+    @Override
+    public void getSelectedGrid() throws ServerIsDownException {
+        // TODO: 05/06/2018  
+    }
+
 
     public void notifyStarting() {
         this.startingGame=true;

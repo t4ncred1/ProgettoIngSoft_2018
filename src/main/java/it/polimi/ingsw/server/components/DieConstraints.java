@@ -1,12 +1,12 @@
 package it.polimi.ingsw.server.components;
 
 public interface DieConstraints {
-    public int getColorRestriction();
+    int getColorRestriction();
 
-    public int getValueRestriction();
+    int getValueRestriction();
 
-    public Die getDie();
+    Die getDie();
 
-    public void modifyDie(); //chiama adapter
+    void modifyDie(); //chiama adapter
 
 }

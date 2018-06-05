@@ -97,6 +97,7 @@ public class MatchController extends Thread{
             } catch (NotEnoughPlayersException e) {
                 System.out.println("Game finished.");
                 gameFinished=true;
+                ready=true;
             }
         }
         while(!gameFinished);
