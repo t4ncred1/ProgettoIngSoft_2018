@@ -2,9 +2,10 @@ package it.polimi.ingsw.server.components;
 import it.polimi.ingsw.server.custom_exception.LimitValueException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Box implements BoxObserver, BoxSubject {
+public class Box implements BoxObserver, BoxSubject, Serializable {
 
 
     /*

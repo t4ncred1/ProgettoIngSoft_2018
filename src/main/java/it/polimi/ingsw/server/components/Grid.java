@@ -1,9 +1,12 @@
 package it.polimi.ingsw.server.components;
 
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.server.custom_exception.LimitValueException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
-public class Grid {
+import java.io.Serializable;
+
+public class Grid implements Serializable {
     private final static int COLUMN_NUMBER =5;
     private final static int ROW_NUMBER =4;
     private String name;
@@ -145,7 +148,7 @@ public class Grid {
     }
 
     public String getStructure() {
-        StringBuilder structure= new StringBuilder("");
+        StringBuilder structure= new StringBuilder();
         for(Box[] i : gameGrid){
             structure.append("|");
             for(Box j : i){
@@ -166,24 +169,41 @@ public class Grid {
     }
 
     public void initializeAllObservers() {
-        for(int column=0;column<gameGrid.length;column++){
-            for(int row=0;row<gameGrid[column].length;row++){
+        for (int column = 0; column < gameGrid.length; column++) {
+            for (int row = 0; row < gameGrid[column].length; row++) {
                 gameGrid[column][row].initializeObserverList();
-                if(column>0) {
-                    if(row>0) gameGrid[column][row].register(gameGrid[column-1][row-1]);
-                    gameGrid[column][row].register(gameGrid[column-1][row]);
-                    if(row<gameGrid[column].length-1) gameGrid[column][row].register(gameGrid[column-1][row+1]);
-                }
-                else if(column<gameGrid.length-1){
-                    if(row>0) gameGrid[column][row].register(gameGrid[column+1][row-1]);
-                    gameGrid[column][row].register(gameGrid[column+1][row]);
-                    if(row<gameGrid[column].length-1) gameGrid[column][row].register(gameGrid[column+1][row+1]);
-                }
-                else{
-                    if(row>0) gameGrid[column][row].register(gameGrid[column][row-1]);
-                    if(row<gameGrid[column].length-1) gameGrid[column][row].register(gameGrid[column][row+1]);
+                if (column > 0) {
+                    if (row > 0) gameGrid[column][row].register(gameGrid[column - 1][row - 1]);
+                    gameGrid[column][row].register(gameGrid[column - 1][row]);
+                    if (row < gameGrid[column].length - 1)
+                        gameGrid[column][row].register(gameGrid[column - 1][row + 1]);
+                } else if (column < gameGrid.length - 1) {
+                    if (row > 0) gameGrid[column][row].register(gameGrid[column + 1][row - 1]);
+                    gameGrid[column][row].register(gameGrid[column + 1][row]);
+                    if (row < gameGrid[column].length - 1)
+                        gameGrid[column][row].register(gameGrid[column + 1][row + 1]);
+                } else {
+                    if (row > 0) gameGrid[column][row].register(gameGrid[column][row - 1]);
+                    if (row < gameGrid[column].length - 1) gameGrid[column][row].register(gameGrid[column][row + 1]);
                 }
             }
         }
+
+    }
+
+    public Die removeDieFromXY(int x, int y) throws NotValidParameterException, InvalidOperationException {
+        final String indexOutOfBound = "coordinates should be: 0<=x<=3 and 0<=y<=4";
+        Die temp;
+
+        if(x<0||x> COLUMN_NUMBER -1||y<0||y> ROW_NUMBER -1) throw new NotValidParameterException("("+x+","+y+")", indexOutOfBound);
+
+        if(gameGrid[x][y]==null) throw new NotValidParameterException("("+x+","+y+")","the box in this position should be initialized. ");
+
+        try {
+            temp=gameGrid[x][y].removeDie();
+        } catch (LimitValueException e) {
+            throw new InvalidOperationException();
+        }
+        return temp;
     }
 }

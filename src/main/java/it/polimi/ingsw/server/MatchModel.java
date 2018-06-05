@@ -270,11 +270,28 @@ public class MatchModel{
         this.roundTrack.remove(index);
     }
 
+
     public Grid getPlayerCurrentGrid(String username) {
         //FIXME
         for(Player player: playersInGame){
             if(player.getUsername().equals(username)) return player.getSelectedGrid();
         }
         return null; //FIXME throw an exception?
+    }
+
+    public void insertdieinRT(Die die, int RTindex) throws NotValidParameterException {
+        if (die==null) throw new NotValidParameterException("die:null","a valid die");
+        if(RTindex>roundTrack.size()) throw new NotValidParameterException("IndexOutOfBounds:"+RTindex,"A value betweeen");
+        roundTrack.add(RTindex,die);
+    }
+
+    public void insertDieInPool(Die die, int index) throws NotValidParameterException {
+        DicePool temp = null;
+        temp.insertDieInPool(die,index);
+    }
+
+    public void removeDiePool(int index) throws  NotInPoolException {
+        DicePool temp = null;
+        temp.removeDieFromPool(index);
     }
 }
