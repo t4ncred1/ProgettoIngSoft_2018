@@ -294,4 +294,9 @@ public class MatchModel{
         DicePool temp = null;
         temp.removeDieFromPool(index);
     }
+
+    public void getPublicObjectives(){
+        
+    }
+
 }
