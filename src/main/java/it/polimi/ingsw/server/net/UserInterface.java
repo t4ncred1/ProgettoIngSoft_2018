@@ -35,4 +35,6 @@ public interface UserInterface {
     void notifyDieInsertion();
 
     void notifyToolUsed();
+
+    void notifyEndTurn();
 }

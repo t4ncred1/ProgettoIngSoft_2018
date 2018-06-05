@@ -21,4 +21,8 @@ public interface ServerCommunicatingInterface {
     void listen(String username) throws ServerIsDownException, TurnFinishedException, DisconnectionException;
 
     void getUpdatedDicePool() throws ServerIsDownException;
+
+    void insertDie(int position, int x, int y) throws ServerIsDownException, InvalidMoveException;
+
+    void endTurn() throws ServerIsDownException;
 }

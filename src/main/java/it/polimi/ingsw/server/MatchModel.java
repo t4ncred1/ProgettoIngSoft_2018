@@ -9,6 +9,7 @@ import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.components.Player;
 import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.custom_exception.*;
+import it.polimi.ingsw.server.net.UserInterface;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,6 +29,7 @@ public class MatchModel{
     private int currentTurn;
     private boolean leftToRight;
     private boolean justChanged;
+    private boolean turnEnded;
     private ArrayList<Player> playersInGame;
     private Player[] playersNotInGame;
 
@@ -84,6 +86,7 @@ public class MatchModel{
         currentTurn=0;
         leftToRight =true;
         justChanged =true;
+        turnEnded= false;
         matchDicePool = new DicePool();
 
         try {
@@ -98,8 +101,19 @@ public class MatchModel{
             throw new NotEnoughPlayersException();
         }
         if(leftToRight){
-            if(justChanged)  //Se il verso di percorrenza è appena stato modificato currentTurn non deve cambiare.
-                justChanged=false;
+            if(justChanged) {  //Se il verso di percorrenza è appena stato modificato currentTurn non deve cambiare.
+                justChanged = false;
+                if(turnEnded) {
+                    playersInGame.add(playersInGame.remove(0));     //reorders players for new Round.
+                    try {
+                        roundTrack.add(matchDicePool.getDieFromPool(0));    //if there aren't any dice in DicePool at the end of the turn, throws NotInPoolException.
+                        matchDicePool.removeDieFromPool(0);
+                        this.prepareForNextRound(maxRounds);
+                    } catch (NotInPoolException | NotValidParameterException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
             else
                 currentTurn++;
             if(currentTurn==playersInGame.size()-1){
@@ -115,14 +129,7 @@ public class MatchModel{
             if(currentTurn==0){
                 leftToRight=true;
                 justChanged=true;
-                playersInGame.add(playersInGame.remove(0));     //reorders players for new Round.
-                try {
-                    roundTrack.add(matchDicePool.getDieFromPool(0));    //if there aren't any dice in DicePool at the end of the turn, throws NotInPoolException.
-                    matchDicePool.removeDieFromPool(0);
-                    this.prepareForNextRound(maxRounds);
-                } catch (NotInPoolException | NotValidParameterException e) {
-                    e.printStackTrace();
-                }
+                turnEnded=true;
             }
         }
     }
@@ -132,8 +139,8 @@ public class MatchModel{
         initializeRound();
     }
 
-    private void initializeRound() throws NotValidParameterException, NotInPoolException{
-        matchDicePool.generateDiceForPull(playersInGame.size()*2+1); //(launching this methods later throws a nullPointerExc)
+    private void initializeRound() throws NotValidParameterException, NotInPoolException {
+        matchDicePool.generateDiceForPull(playersInGame.size() * 2 + 1); //(launching this methods later throws a nullPointerExc)
     }
 
 
@@ -142,7 +149,11 @@ public class MatchModel{
     }
 
     public void insertDieOperation(int x, int y, int dpIndex) throws InvalidOperationException, NotInPoolException, NotValidParameterException {
-        this.playersInGame.get(currentTurn).getSelectedGrid().insertDieInXY(x,y,true, true, matchDicePool.getDieFromPool(dpIndex));
+        final boolean CHECK_COLOR_CONSTRAINT =true;
+        final boolean CHECK_VALUE_CONSTRAINT =true;
+        Die dieToInsert= matchDicePool.getDieFromPool(dpIndex);
+        Player playerOfTheTurn = this.playersInGame.get(currentTurn);
+        playerOfTheTurn.getSelectedGrid().insertDieInXY(x,y,CHECK_COLOR_CONSTRAINT, CHECK_VALUE_CONSTRAINT, dieToInsert);
         matchDicePool.removeDieFromPool(dpIndex);
     }
 
@@ -217,19 +228,6 @@ public class MatchModel{
        throw new NotValidParameterException("username: "+username,"Should be a player inside this match.");
     }
 
-    public Grid getSelectedGrid(String username) throws InvalidOperationException {
-
-        //possible implementation
-        Player playerPassed= null;
-        for(Player player: playersInGame)
-            if(player.getUsername().equals(username)) playerPassed=player;
-        Grid toReturn = null;
-        if (playerPassed!=null) toReturn = playerPassed.getSelectedGrid();
-        else throw new InvalidOperationException();
-        if (toReturn==null) throw new InvalidOperationException();  //only called if the player does not yet have his own grid.
-        return toReturn;
-    }
-
     public void setPlayerToDisconnect(String username) throws NotValidParameterException {
         if (playersNotInGame==null) playersNotInGame=new Player[playersInGame.size()];
         boolean flag = false;
@@ -272,6 +270,15 @@ public class MatchModel{
         this.roundTrack.remove(index);
     }
 
+
+    public Grid getPlayerCurrentGrid(String username) {
+        //FIXME
+        for(Player player: playersInGame){
+            if(player.getUsername().equals(username)) return player.getSelectedGrid();
+        }
+        return null; //FIXME throw an exception?
+    }
+
     public void insertdieinRT(Die die, int RTindex) throws NotValidParameterException {
         if (die==null) throw new NotValidParameterException("die:null","a valid die");
         if(RTindex>roundTrack.size()) throw new NotValidParameterException("IndexOutOfBounds:"+RTindex,"A value betweeen");
@@ -291,4 +298,5 @@ public class MatchModel{
     public void getPublicObjectives(){
         
     }
+
 }

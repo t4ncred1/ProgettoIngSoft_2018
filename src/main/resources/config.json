@@ -1,8 +1,8 @@
 {
-"gridsPath": "configurations/grids.json",
-"publicObjectivesPath": "configurations/public_objectives.json"
-"maxPlayersNumber": "4",
-"minPlayersNumber": "2",
-"timerbeforematch": "30",
-"timertochoosegrid": "15"
+  "gridsPath": "src/main/resources/grids.json",
+  "publicObjectivesPath": "src/main/resources/public_objectives.json",
+  "maxPlayersNumber": "4",
+  "minPlayersNumber": "2",
+  "timerBeforeMatch": "30",
+  "timerToChooseGrid": "15"
 }
