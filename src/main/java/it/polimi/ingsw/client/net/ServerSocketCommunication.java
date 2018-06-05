@@ -57,6 +57,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     private static final String GET_TURN_PLAYER = "get_turn_player";
     private static final String GET_DICE_POOL = "get_dice_pool";
     private static final String GET_PRIVATE_OBJECTIVE= "get_private_obj";
+    private static final String GET_SELECTED_GRID = "get_my_grid";
     private static final String GAME_FINISHED= "finished";
 
     private static final String LISTEN_STATE = "listen";
@@ -325,7 +326,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
         String response;
         Gson gson= new Gson();
         response=readRemoteInput();
-        System.out.println(response);
+        System.out.println("My grid: \n "+ response); //FIXME
         Grid grid= gson.fromJson(response, Grid.class);
         Proxy.getInstance().updateGridSelected(grid);
     }
@@ -336,6 +337,18 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
             outputStream.writeUTF(END_TURN);
             String response = readRemoteInput();
             if(!response.equals(TURN_FINISHED))/*TODO throw an exception*/;
+        } catch (IOException e) {
+            throw new ServerIsDownException();
+        }
+    }
+
+    @Override
+    public void getSelectedGrid() throws ServerIsDownException {
+        try {
+            outputStream.writeUTF(GET_SELECTED_GRID);
+            String response = readRemoteInput();
+            if(!response.equals(OK_MESSAGE)) /*TODO*/;
+            updateSelectedGrid();
         } catch (IOException e) {
             throw new ServerIsDownException();
         }

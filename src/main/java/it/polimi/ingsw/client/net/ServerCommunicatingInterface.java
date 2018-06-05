@@ -25,4 +25,6 @@ public interface ServerCommunicatingInterface {
     void insertDie(int position, int x, int y) throws ServerIsDownException, InvalidMoveException;
 
     void endTurn() throws ServerIsDownException;
+
+    void getSelectedGrid()throws ServerIsDownException;
 }

@@ -74,6 +74,9 @@ public class ReworkedClientMain {
             try {
                 String turnPlayer;
                 turnPlayer= getPlayerOfThisTurn();
+                // TODO: 05/06/2018  
+//                server.getToolCards();
+//                server.getRoundTrack();
                 server.getUpdatedDicePool();
                 if (turnPlayer.equals(this.username)) {
                     handleMyTurnLogic();
@@ -170,6 +173,11 @@ public class ReworkedClientMain {
 
     private void handleGameInitializationCLI() throws ServerIsDownException {
         selectGrid();
+        server.getSelectedGrid();
+        System.err.println("here.");
+//        server.getPrivateObjective();
+//        server.getPublicObjectives();
+//        server.getOtherPlayersGrids();
         /*TODO get data from server*/
     }
 

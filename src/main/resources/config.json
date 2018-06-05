@@ -3,6 +3,6 @@
   "publicObjectivesPath": "src/main/resources/public_objectives.json",
   "maxPlayersNumber": "4",
   "minPlayersNumber": "2",
-  "timerBeforeMatch": "30",
+  "timerBeforeMatch": "5",
   "timerToChooseGrid": "15"
 }

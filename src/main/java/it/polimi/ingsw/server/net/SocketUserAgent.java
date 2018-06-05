@@ -43,6 +43,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     private static final String GET_TURN_PLAYER = "get_turn_player";
     private static final String GET_DICE_POOL = "get_dice_pool";
+    private static final String GET_SELECTED_GRID = "get_my_grid";
     private static final String GAME_FINISHED= "finished";
 
     private static final String LISTEN_STATE = "listen";
@@ -121,7 +122,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
                         break;
                     default:
                 }
-
+                request=inputStream.readUTF();
             }while (!turnFinished);
         }
     }
@@ -202,9 +203,31 @@ public class SocketUserAgent extends Thread implements UserInterface {
                 gridSet = handleGridSet();
             }
             while (!gridSet);
+            handleSelectedGridRequest();
         } catch (InvalidOperationException e) {
             outputStream.writeUTF(GRID_ALREADY_SELECTED);
         }
+    }
+
+    private void handleSelectedGridRequest() throws IOException {
+        String request = inputStream.readUTF();
+        if(request.equals(GET_SELECTED_GRID));
+        else /*TODO*/;
+        Grid grid;
+        try {
+            grid= gameHandling.getPlayerGrid(this);
+        } catch (NotValidParameterException e) {
+            outputStream.writeUTF(NOT_OK_REQUEST);
+            return;
+        }
+        outputStream.writeUTF(OK_REQUEST);
+        sendGridSelected(grid);
+    }
+
+    private void sendGridSelected(Grid grid) throws IOException {
+        Gson gson= new Gson();
+        String toSend= gson.toJson(grid);
+        outputStream.writeUTF(toSend);
     }
 
     private boolean handleGridSet() throws IOException {
@@ -335,7 +358,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     //Observer
     public String getUsername(){
-        return new String(this.username);
+        return this.username;
     }
 
 
