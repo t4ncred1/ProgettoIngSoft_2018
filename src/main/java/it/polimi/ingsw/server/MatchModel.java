@@ -288,4 +288,7 @@ public class MatchModel{
         temp.removeDieFromPool(index);
     }
 
+    public void getPublicObjectives(){
+        
+    }
 }
