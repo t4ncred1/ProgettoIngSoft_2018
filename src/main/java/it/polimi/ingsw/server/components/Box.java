@@ -100,6 +100,7 @@ public class Box implements BoxObserver, BoxSubject {
             build.append(Integer.toString(j));
             build.append("; ");
         }
+        build.append(" | Kind of constraint (T:value, F:color) " + Boolean.toString(kindOfConstraint));
         build.append("| Open = "+Integer.toString(opened));
         build.append(" | position = ("+Integer.toString(coordX)+","+Integer.toString(coordY)+")");
         return build.toString();
@@ -199,7 +200,6 @@ public class Box implements BoxObserver, BoxSubject {
     @Override
     public void register(BoxObserver observer){
         this.observerList.add(observer);
-
     }
 
     @Override
@@ -223,10 +223,15 @@ public class Box implements BoxObserver, BoxSubject {
             return 0;
     }
 
+    public void initializeObserverList(){
+        if(this.observerList==null) this.observerList= new ArrayList<>();
+        //TODO else throw something.
+    }
+
 
     public String getConstraint() {
         //TODO refactor
-        final String NO_CONSTRAINT_MESSAGE = "none";
+        final String NO_CONSTRAINT_MESSAGE = " ";
         if(constraintIndex==NO_CONSTRAINT) return NO_CONSTRAINT_MESSAGE;
         else if(kindOfConstraint==VALUE_CONSTRAINT){
             return Integer.toString(constraintIndex+1);
@@ -234,15 +239,15 @@ public class Box implements BoxObserver, BoxSubject {
         else{
             switch (constraintIndex){
                 case 0:
-                    return "green";
+                    return "G";
                 case 1:
-                    return "red";
+                    return "R";
                 case 2:
-                    return "blue";
+                    return "B";
                 case 3:
-                    return "yellow";
+                    return "Y";
                 default:
-                    return "purple";
+                    return "P";
             }
         }
     }
