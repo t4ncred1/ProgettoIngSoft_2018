@@ -8,12 +8,16 @@ class Configurations implements Serializable {
     private String publicObjectivesPath;
     private int maxPlayersNumber;
     private int minPlayersNumber;
+    private int timerbeforematch;
+    private int timertochoosegrid;
 
-    Configurations(String gridsPath,String publicObjectivesPath, int MaxPlayersNumber, int MinPlayersNumber){
+    Configurations(String gridsPath,String publicObjectivesPath, int maxPlayersNumber, int minPlayersNumber, int timerToChooseGrids, int timerBeforeMatch){
         this.gridsPath=gridsPath;
         this.publicObjectivesPath=publicObjectivesPath;
-        this.minPlayersNumber=MinPlayersNumber;
-        this.maxPlayersNumber=MaxPlayersNumber;
+        this.minPlayersNumber=minPlayersNumber;
+        this.maxPlayersNumber=maxPlayersNumber;
+        this.timerbeforematch=timerBeforeMatch;
+        this.timertochoosegrid=timerToChooseGrids;
     }
 
     String getGridsPath(){
@@ -30,5 +34,13 @@ class Configurations implements Serializable {
 
     int getMinPlayersNumber() {
         return minPlayersNumber;
+    }
+
+    int getTimerbeforematch() {
+        return timerbeforematch;
+    }
+
+    int getTimertochoosegrid() {
+        return timertochoosegrid;
     }
 }

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.client.net;
 
-import it.polimi.ingsw.server.MatchController;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -15,16 +13,17 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
     }
 
     @Override
-    public void isConnected() throws RemoteException {
-        return;
+    public void isConnected() {
+        //Is not doing anything here, it's here only for socket.
     }
 
     @Override
-    public void chooseUsername() throws RemoteException {
+    public void chooseUsername() {
+        //Is not doing anything here, it's here only for socket.
     }
 
     @Override
-    public String requestAUsername() throws RemoteException {
+    public String requestAUsername() {
         return this.username;
     }
 

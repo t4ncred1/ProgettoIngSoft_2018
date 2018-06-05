@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.server.configurations.ConfigurationHandler;
+import it.polimi.ingsw.server.custom_exception.NotValidConfigPathException;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -58,6 +61,12 @@ public class GameTimer {
     };
 
     public GameTimer(String message){
+        try {
+            timerToStart=ConfigurationHandler.getTimerBeforeMatch();
+        } catch (NotValidConfigPathException e) {
+            System.err.println("Configuration file wasn't read correctly.");
+        }
+        //if there's an error on read from config file, standard time (as declared between globals) will kick in
         switch (message){
             case GAME_START_TIMER:
                 timerSet= timerToStart;
@@ -70,6 +79,12 @@ public class GameTimer {
         this.gameTimeout=false;
         this.stopped=false;
         this.gameHandled=matchController;
+        try {
+            this.timeForGridsInitialization=ConfigurationHandler.getTimerToChooseGrids();
+        } catch (NotValidConfigPathException e) {
+            System.err.println("Configuration file wasn't read correctly.");
+        }
+        //if there's an error on read from config file, standard time (as declared between globals) will kick in
         switch (message){
             case GRID_CHOOSE_TIMER:
                 timerSet= timeForGridsInitialization;

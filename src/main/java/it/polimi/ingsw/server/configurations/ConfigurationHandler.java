@@ -61,4 +61,19 @@ public class ConfigurationHandler {
             return config.getMaxPlayersNumber();
         else throw new NotValidConfigPathException("Incorrect config.json file: MaxPlayersNumber needs to be instanced");
     }
+
+    public static int getTimerBeforeMatch() throws NotValidConfigPathException{
+        if (instance==null) instance=new ConfigurationHandler();
+        if (config.getTimerbeforematch()!=0)
+            return config.getTimerbeforematch();
+        else throw new NotValidConfigPathException("Incorrect config.json file: TimerBeforeMatch needs to be instanced");
+    }
+
+    public static int getTimerToChooseGrids() throws NotValidConfigPathException{
+        if (instance==null) instance=new ConfigurationHandler();
+        if (config.getTimertochoosegrid()!=0)
+            return config.getTimertochoosegrid();
+        else throw new NotValidConfigPathException("Incorrect config.json file: TimerToChooseGrids needs to be instanced");
+    }
+
 }
