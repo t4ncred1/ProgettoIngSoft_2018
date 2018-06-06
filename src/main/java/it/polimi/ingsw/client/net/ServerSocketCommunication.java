@@ -5,7 +5,9 @@ import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.client.Proxy;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.server.cards.PrivateObjective;
+import it.polimi.ingsw.server.components.Die;
 import it.polimi.ingsw.server.components.Grid;
+import it.polimi.ingsw.server.components.DieToConstraintsAdapter;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 
@@ -15,6 +17,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ServerSocketCommunication implements ServerCommunicatingInterface {
 
@@ -54,9 +57,17 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     private static final String GET_TURN_PLAYER = "get_turn_player";
     private static final String GET_DICE_POOL = "get_dice_pool";
     private static final String GET_PRIVATE_OBJECTIVE= "get_private_obj";
+    private static final String GET_SELECTED_GRID = "get_my_grid";
     private static final String GAME_FINISHED= "finished";
 
+    private static final String LISTEN_STATE = "listen";
+    private static final String END_LISTEN="listen_end";
     private static final String OPERATION_MESSAGE= "operation";
+    private static final String INSERT_DIE = "insert_die";
+    private static final String INVALID_POSITION = "invalid_index";
+    private static final String END_TURN ="end_turn";
+
+
     private static final String GRID_DATA= "grid";
     private static final String TOOL_DATA="tool";
     private static final String END_DATA= "end_data";
@@ -246,10 +257,12 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     @Override
     public void listen(String username) throws ServerIsDownException, TurnFinishedException, DisconnectionException {
         try {
+            outputStream.writeUTF(LISTEN_STATE);
             String read=inputStream.readUTF();
             if (read.equals(OPERATION_MESSAGE)) {
                 handleOperation(username);
             }else if(read.equals(TURN_FINISHED)){
+                outputStream.writeUTF(END_LISTEN);
                 throw new TurnFinishedException();
             }
         } catch (IOException e) {
@@ -267,8 +280,75 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
                 response = readRemoteInput();
             }
             while (!response.equals(DICE_POOL_DATA));
-            response=readRemoteInput();
-            //TODO handle response.
+            updateDicePool();
+        } catch (IOException e) {
+            throw new ServerIsDownException();
+        }
+    }
+
+    private void updateDicePool() throws IOException {
+        String response=readRemoteInput();
+        //TODO handle response.
+        Gson gson= new Gson();
+        System.out.println(response); //FIXME
+        TypeToken<List<Die>> typeToken= new TypeToken<List<Die>>(){};
+        List<Die> dicePool = gson.fromJson(response, typeToken.getType());
+        Proxy.getInstance().setDicePool(dicePool);
+    }
+
+    @Override
+    public void insertDie(int position, int x, int y) throws ServerIsDownException, InvalidMoveException {
+        try {
+            outputStream.writeUTF(INSERT_DIE);
+            outputStream.writeInt(position);
+            outputStream.writeInt(x);
+            outputStream.writeInt(y);
+            String response= readRemoteInput();
+            switch (response){
+                case OK_MESSAGE:
+                    System.err.println("ok");
+                    updateSelectedGrid();
+                    break;
+                //FIXME probably for these two cases should be thrown different exceptions.
+                case NOT_OK_MESSAGE:
+                    throw new InvalidMoveException();
+                case INVALID_POSITION:
+                    throw new InvalidMoveException();
+                default:
+                    System.err.println("Unexpected message: " + response);
+            }
+        } catch (IOException e) {
+            throw new ServerIsDownException();
+        }
+    }
+
+    private void updateSelectedGrid() throws IOException {
+        String response;
+        Gson gson= new Gson();
+        response=readRemoteInput();
+        System.out.println("My grid: \n "+ response); //FIXME
+        Grid grid= gson.fromJson(response, Grid.class);
+        Proxy.getInstance().updateGridSelected(grid);
+    }
+
+    @Override
+    public void endTurn() throws ServerIsDownException {
+        try {
+            outputStream.writeUTF(END_TURN);
+            String response = readRemoteInput();
+            if(!response.equals(TURN_FINISHED))/*TODO throw an exception*/;
+        } catch (IOException e) {
+            throw new ServerIsDownException();
+        }
+    }
+
+    @Override
+    public void getSelectedGrid() throws ServerIsDownException {
+        try {
+            outputStream.writeUTF(GET_SELECTED_GRID);
+            String response = readRemoteInput();
+            if(!response.equals(OK_MESSAGE)) /*TODO*/;
+            updateSelectedGrid();
         } catch (IOException e) {
             throw new ServerIsDownException();
         }

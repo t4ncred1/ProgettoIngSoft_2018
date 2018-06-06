@@ -148,17 +148,47 @@ public class Grid implements Serializable {
     }
 
     public String getStructure() {
-        StringBuilder structure= new StringBuilder("");
+        StringBuilder structure= new StringBuilder();
         for(Box[] i : gameGrid){
-            structure.append("{");
+            structure.append("|");
             for(Box j : i){
                 structure.append("\t");
                 structure.append(j.getConstraint());
-                structure.append(",");
+                structure.append("\t|");
             }
-            structure.append("}\n");
+            structure.append("\n");
+            structure.append("|");
+            for(Box j : i){
+                structure.append("\t");
+                structure.append("-");
+                structure.append("\t|");
+            }
+            structure.append("\n");
         }
         return structure.toString();
+    }
+
+    public void initializeAllObservers() {
+        for (int column = 0; column < gameGrid.length; column++) {
+            for (int row = 0; row < gameGrid[column].length; row++) {
+                gameGrid[column][row].initializeObserverList();
+                if (column > 0) {
+                    if (row > 0) gameGrid[column][row].register(gameGrid[column - 1][row - 1]);
+                    gameGrid[column][row].register(gameGrid[column - 1][row]);
+                    if (row < gameGrid[column].length - 1)
+                        gameGrid[column][row].register(gameGrid[column - 1][row + 1]);
+                } else if (column < gameGrid.length - 1) {
+                    if (row > 0) gameGrid[column][row].register(gameGrid[column + 1][row - 1]);
+                    gameGrid[column][row].register(gameGrid[column + 1][row]);
+                    if (row < gameGrid[column].length - 1)
+                        gameGrid[column][row].register(gameGrid[column + 1][row + 1]);
+                } else {
+                    if (row > 0) gameGrid[column][row].register(gameGrid[column][row - 1]);
+                    if (row < gameGrid[column].length - 1) gameGrid[column][row].register(gameGrid[column][row + 1]);
+                }
+            }
+        }
+
     }
 
     public Die removeDieFromXY(int x, int y) throws NotValidParameterException, InvalidOperationException {

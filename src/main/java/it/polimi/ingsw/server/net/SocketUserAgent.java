@@ -43,9 +43,15 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     private static final String GET_TURN_PLAYER = "get_turn_player";
     private static final String GET_DICE_POOL = "get_dice_pool";
+    private static final String GET_SELECTED_GRID = "get_my_grid";
     private static final String GAME_FINISHED= "finished";
 
+    private static final String LISTEN_STATE = "listen";
+    private static final String END_LISTEN="listen_end";
     private static final String OPERATION_MESSAGE= "operation";
+    private static final String INSERT_DIE = "insert_die";
+    private static final String INVALID_POSITION = "invalid_index";
+    private static final String END_TURN ="end_turn";
     private static final String GRID_DATA= "grid";
     private static final String TOOL_DATA="tool";
     private static final String END_DATA= "end_data";
@@ -89,8 +95,62 @@ public class SocketUserAgent extends Thread implements UserInterface {
         try {
             handleTurnPlayerRequest();
             sendDicePool();
+            handleTurn();
         } catch (TooManyRoundsException e) {
             outputStream.writeUTF(GAME_FINISHED);
+        }
+    }
+
+    private void handleTurn() throws IOException {
+        String request;
+        request=inputStream.readUTF();
+        if(request.equals(LISTEN_STATE)){
+            request=inputStream.readUTF();
+            if(!request.equals(END_LISTEN)) /* FIXME: 04/06/2018 */;
+        }
+        else{
+            boolean turnFinished=false;
+            do{
+                System.out.println("Request: "+request + " from " +username);
+                switch (request){
+                    case INSERT_DIE:
+                        handleDieInsertion();
+                        break;
+                    case END_TURN:
+                        turnFinished=true;
+                        gameHandling.notifyEnd();
+                        break;
+                    default:
+                }
+                request=inputStream.readUTF();
+            }while (!turnFinished);
+        }
+    }
+
+    private void handleDieInsertion() throws IOException {
+        int position=inputStream.readInt();
+        int x = inputStream.readInt();
+        int y= inputStream.readInt();
+        try {
+            gameHandling.insertDie(position,x,y);
+            outputStream.writeUTF(OK_REQUEST);
+            sendUpdatedGrid();
+        } catch (InvalidOperationException e) {
+            outputStream.writeUTF(NOT_OK_REQUEST);
+        } catch (NotInPoolException e) {
+            outputStream.writeUTF(INVALID_POSITION);
+        }
+
+    }
+
+    private void sendUpdatedGrid() throws IOException {
+        try {
+            Grid toSend =gameHandling.getPlayerGrid(this);
+            Gson gson = new Gson();
+            outputStream.writeUTF(gson.toJson(toSend));
+        } catch (NotValidParameterException e) {
+            //FIXME this error should "go" upper.
+            System.err.println("Security error: invalid access!");
         }
     }
 
@@ -107,12 +167,13 @@ public class SocketUserAgent extends Thread implements UserInterface {
     }
 
     private void handleTurnPlayerRequest() throws IOException, TooManyRoundsException {
-        String request;
+        String player;
         boolean turnSent=false;
         do {
             waitForTurnPlayerRequest();
             try {
-                String player = gameHandling.requestTurnPlayer();
+
+                player = gameHandling.requestTurnPlayer();
                 outputStream.writeUTF(player);
                 turnSent = true;
             } catch (InvalidOperationException e) {
@@ -142,9 +203,31 @@ public class SocketUserAgent extends Thread implements UserInterface {
                 gridSet = handleGridSet();
             }
             while (!gridSet);
+            handleSelectedGridRequest();
         } catch (InvalidOperationException e) {
             outputStream.writeUTF(GRID_ALREADY_SELECTED);
         }
+    }
+
+    private void handleSelectedGridRequest() throws IOException {
+        String request = inputStream.readUTF();
+        if(request.equals(GET_SELECTED_GRID));
+        else /*TODO*/;
+        Grid grid;
+        try {
+            grid= gameHandling.getPlayerGrid(this);
+        } catch (NotValidParameterException e) {
+            outputStream.writeUTF(NOT_OK_REQUEST);
+            return;
+        }
+        outputStream.writeUTF(OK_REQUEST);
+        sendGridSelected(grid);
+    }
+
+    private void sendGridSelected(Grid grid) throws IOException {
+        Gson gson= new Gson();
+        String toSend= gson.toJson(grid);
+        outputStream.writeUTF(toSend);
     }
 
     private boolean handleGridSet() throws IOException {
@@ -275,7 +358,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     //Observer
     public String getUsername(){
-        return new String(this.username);
+        return this.username;
     }
 
 
@@ -348,6 +431,16 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     @Override
     public void notifyToolUsed() {
+
+    }
+
+    @Override
+    public void notifyEndTurn() {
+        try {
+            outputStream.writeUTF(TURN_FINISHED);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

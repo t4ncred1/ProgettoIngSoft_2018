@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.components.Die;
 import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.custom_exception.*;
 import it.polimi.ingsw.server.net.RMIUserAgent;
+import it.polimi.ingsw.server.net.SocketUserAgent;
 import it.polimi.ingsw.server.net.UserInterface;
 
 import java.util.*;
@@ -96,6 +97,7 @@ public class MatchController extends Thread{
             } catch (NotEnoughPlayersException e) {
                 System.out.println("Game finished.");
                 gameFinished=true;
+                ready=true;
             }
         }
         while(!gameFinished);
@@ -186,10 +188,10 @@ public class MatchController extends Thread{
         lock.lock();
         String username;
         synchronized (modelGuard) {
-            ready=true; //now i can handle clients requests.
             model.updateTurn(MAX_ROUND);
             username = model.askTurn();
             initializeTurn(username);
+            ready=true; //now i can handle clients requests.
         }
         lock.unlock();
         executeTurn(username);
@@ -229,6 +231,7 @@ public class MatchController extends Thread{
                 Thread.currentThread().interrupt();
             }
         }while (!turnFinished);
+        timer.stop();
     }
 
     private void handleEventualTimeout(GameTimer timer, String username) {
@@ -273,10 +276,8 @@ public class MatchController extends Thread{
     }
 
     public int playerInGame() {
-
             System.out.println("player in queue: "+playersInMatch.size());
             return playersInMatch.size();
-
     }
 
     public void updateQueue(){
@@ -447,6 +448,7 @@ public class MatchController extends Thread{
     public void setGrid(UserInterface userInterface, int gridChosen) throws InvalidOperationException, NotValidParameterException {
         String username = userInterface.getUsername();
         synchronized (playersInMatchGuard){
+            //FIXME?? invalid access can be simplified like this?
             if(!playersInMatch.containsKey(username)) throw new NotValidParameterException("UserInterface passed does not bleong to this match","UserInterface passed should belong to this match");
             if(!playersInMatch.get(username).equals(userInterface)) throw new NotValidParameterException("parameter UserInterface name does not match the name registered in this match.","UserInterface should match the name in this match.");
         }
@@ -492,6 +494,34 @@ public class MatchController extends Thread{
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void insertDie(int position, int x, int y) throws InvalidOperationException, NotInPoolException {
+        try {
+            model.insertDieOperation(x,y ,position );
+        } catch (NotValidParameterException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Grid getPlayerGrid(UserInterface player) throws NotValidParameterException {
+        String username= player.getUsername();
+        //FIXME?? invalid access can be simplified like this?
+        if(!playersInMatch.containsKey(username)) throw new NotValidParameterException("","");
+        if(!playersInMatch.get(username).equals(player)) throw new NotValidParameterException("","");
+
+        return model.getPlayerCurrentGrid(username);
+    }
+
+    public void notifyEnd() {
+        lock.lock();
+        turnFinished=true;
+        ready=false;
+        condition.signal();
+        lock.unlock();
+        for(String player: playersInMatch.keySet()){
+            playersInMatch.get(player).notifyEndTurn();
+        }
     }
 }
 

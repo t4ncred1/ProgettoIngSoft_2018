@@ -112,6 +112,11 @@ public class RMIUserAgent implements UserInterface {
 
     }
 
+    @Override
+    public void notifyEndTurn() {
+        // TODO: 05/06/2018  
+    }
+
     //TODO from here.
 
     @Override

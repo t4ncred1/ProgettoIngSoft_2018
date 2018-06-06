@@ -181,6 +181,21 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
         }
     }
 
+    @Override
+    public void insertDie(int position, int x, int y) throws ServerIsDownException, InvalidMoveException {
+
+    }
+
+    @Override
+    public void endTurn() throws ServerIsDownException {
+
+    }
+
+    @Override
+    public void getSelectedGrid() throws ServerIsDownException {
+        // TODO: 05/06/2018  
+    }
+
 
     public void notifyStarting() {
         this.startingGame=true;
