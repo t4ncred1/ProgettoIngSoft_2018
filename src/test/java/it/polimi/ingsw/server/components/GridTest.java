@@ -455,4 +455,50 @@ public class GridTest {
                 "\t riga 4: \n" +
                 "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (4,3)\n",toTest.toString());
     }
+
+    @Test
+    public void checkRemoveDieFromXY() throws NotValidParameterException,InvalidOperationException {
+        Die temp=new Die("green",1);
+        int i,j;
+        int x1=-1,x2=7;
+        int y1=-1,y2=7;
+        Grid toTest=null;
+        try {
+            toTest=new Grid(4,"test");
+            for(i=0;i<toTest.getColumnNumber();i++){
+                for(j=0;j<toTest.getRowNumber();j++){
+                    toTest.createBoxInXY(i,j,"none");
+                }
+            }
+        } catch(NotValidParameterException e){
+            fail("test failed");
+        }
+        Grid finalToTest = toTest;
+        assertThrows(NotValidParameterException.class,()-> finalToTest.removeDieFromXY(x1,0));
+        assertThrows(NotValidParameterException.class,()->finalToTest.removeDieFromXY(x2,0));
+        assertThrows(NotValidParameterException.class,()->finalToTest.removeDieFromXY(0,y1));
+        assertThrows(NotValidParameterException.class,()->finalToTest.removeDieFromXY(0,y2));
+        finalToTest.insertDieInXY(0,0,true,true,temp);
+        assertThrows(InvalidOperationException.class,()->finalToTest.removeDieFromXY(1,1));
+        finalToTest.removeDieFromXY(0,0);
+
+    }
+
+    @Test
+    public void checkInitializeAllObservers(){
+        Grid toTest=null;
+        int i,j;
+        try {
+            toTest=new Grid(4,"test");
+            for(i=0;i<toTest.getColumnNumber();i++){
+                for(j=0;j<toTest.getRowNumber();j++){
+                    toTest.createBoxInXY(i,j,"none");
+                }
+            }
+        } catch(NotValidParameterException e){
+            fail("test failed");
+        }
+
+        toTest.initializeAllObservers();
+    }
 }
