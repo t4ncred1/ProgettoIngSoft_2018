@@ -252,12 +252,9 @@ public class MatchModel{
     }
 
     public PrivateObjective getPrivateObjective(String username) throws InvalidUsernameException {
-        Stream<PrivateObjective> stream=  playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective);
-        if (stream.count()==0) throw new InvalidUsernameException();
-        return stream.collect(Collectors.toList()).get(0);
-        //we needed to throw an exception, but we didn't know how to do it in lambda function
-
-
+        List<PrivateObjective> stream=  playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective).collect(Collectors.toList());
+        if (stream.stream().count()==0) throw new InvalidUsernameException();
+        return stream.get(0);
     }
 
     public Die getDieFromRoundtrack(int index) throws NotInPoolException {
@@ -279,13 +276,11 @@ public class MatchModel{
     }
 
     public void insertDieInPool(Die die, int index) throws NotValidParameterException {
-        DicePool temp = null;
-        temp.insertDieInPool(die,index);
+        matchDicePool.insertDieInPool(die,index);
     }
 
     public void removeDiePool(int index) throws  NotInPoolException {
-        DicePool temp = null;
-        temp.removeDieFromPool(index);
+        matchDicePool.removeDieFromPool(index);
     }
 
 }
