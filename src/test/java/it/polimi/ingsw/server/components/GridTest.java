@@ -380,11 +380,16 @@ public class GridTest {
         } catch (NotValidParameterException e) {
             fail("test failed");
         }
-        assertEquals("{\tnone,\tnone,\tnone,\tnone,}\n" +
-                "{\tnone,\tnone,\tnone,\tnone,}\n" +
-                "{\tnone,\tnone,\tnone,\tnone,}\n" +
-                "{\tnone,\tnone,\tnone,\tnone,}\n" +
-                "{\tnone,\tnone,\tnone,\tnone,}\n", toTest.getStructure());
+        assertEquals("|\t \t|\t \t|\t \t|\t \t|\n" +
+                "|\t-\t|\t-\t|\t-\t|\t-\t|\n" +
+                "|\t \t|\t \t|\t \t|\t \t|\n" +
+                "|\t-\t|\t-\t|\t-\t|\t-\t|\n" +
+                "|\t \t|\t \t|\t \t|\t \t|\n" +
+                "|\t-\t|\t-\t|\t-\t|\t-\t|\n" +
+                "|\t \t|\t \t|\t \t|\t \t|\n" +
+                "|\t-\t|\t-\t|\t-\t|\t-\t|\n" +
+                "|\t \t|\t \t|\t \t|\t \t|\n" +
+                "|\t-\t|\t-\t|\t-\t|\t-\t|\n", toTest.getStructure());
     }
 
     @Test
@@ -406,48 +411,48 @@ public class GridTest {
                 "Boxes di test:\n" +
                 " colonna 1:\n" +
                 "\t riga 1: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (0,0)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (0,0)\n" +
                 "\t riga 2: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (0,1)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (0,1)\n" +
                 "\t riga 3: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (0,2)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (0,2)\n" +
                 "\t riga 4: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (0,3)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (0,3)\n" +
                 " colonna 2:\n" +
                 "\t riga 1: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (1,0)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (1,0)\n" +
                 "\t riga 2: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (1,1)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 0 | position = (1,1)\n" +
                 "\t riga 3: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (1,2)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 0 | position = (1,2)\n" +
                 "\t riga 4: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (1,3)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (1,3)\n" +
                 " colonna 3:\n" +
                 "\t riga 1: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (2,0)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (2,0)\n" +
                 "\t riga 2: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (2,1)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 0 | position = (2,1)\n" +
                 "\t riga 3: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (2,2)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 0 | position = (2,2)\n" +
                 "\t riga 4: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (2,3)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (2,3)\n" +
                 " colonna 4:\n" +
                 "\t riga 1: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (3,0)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (3,0)\n" +
                 "\t riga 2: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (3,1)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 0 | position = (3,1)\n" +
                 "\t riga 3: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (3,2)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 0 | position = (3,2)\n" +
                 "\t riga 4: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (3,3)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (3,3)\n" +
                 " colonna 5:\n" +
                 "\t riga 1: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (4,0)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (4,0)\n" +
                 "\t riga 2: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (4,1)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (4,1)\n" +
                 "\t riga 3: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (4,2)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (4,2)\n" +
                 "\t riga 4: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (4,3)\n",toTest.toString());
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (4,3)\n",toTest.toString());
     }
 }
