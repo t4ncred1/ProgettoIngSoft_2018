@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model.cards;
 
 import it.polimi.ingsw.server.model.MatchModel;
-import it.polimi.ingsw.server.model.cards.Effects.Effect;
+import it.polimi.ingsw.server.model.cards.effects.Effect;
 import it.polimi.ingsw.server.model.components.Die;
 
 import java.io.Serializable;

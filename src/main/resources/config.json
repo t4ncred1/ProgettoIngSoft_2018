@@ -1,6 +1,7 @@
 {
   "gridsPath": "src/main/resources/grids.json",
   "publicObjectivesPath": "src/main/resources/public_objectives.json",
+  "toolCardsPath": "src/main/resources/tool_cards.json",
   "maxPlayersNumber": "4",
   "minPlayersNumber": "2",
   "timerBeforeMatch": "5",

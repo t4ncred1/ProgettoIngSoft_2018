@@ -65,7 +65,7 @@ public class DicePool {
         String color;
         int value_to_change;
         die_to_change=this.getDieFromPool(dpIndex);
-        this.removeDieFromPoolEffect(dpIndex);
+        this.RemoveDieFromPoolEffect(dpIndex);
         value_to_change=die_to_change.getValue();
         value_to_change++;
         color=die_to_change.getColor();
