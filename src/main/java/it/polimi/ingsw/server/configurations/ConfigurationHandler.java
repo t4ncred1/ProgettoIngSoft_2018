@@ -1,8 +1,13 @@
 package it.polimi.ingsw.server.configurations;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import it.polimi.ingsw.server.model.cards.effects.Effect;
+import it.polimi.ingsw.server.model.cards.effects.InsertDieInDicePoolEffect;
+import it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect;
 import it.polimi.ingsw.server.model.cards.PublicObjective;
+import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.NotValidConfigPathException;
 
@@ -11,9 +16,15 @@ import java.io.FileReader;
 import java.util.List;
 
 public class ConfigurationHandler {
-    private static final String CONFIG_PATH="src/main/resources/config.json";
+
     private static ConfigurationHandler instance;
-    private static Configurations config;
+    private Configurations config;
+
+    private static final String CONFIG_PATH="src/main/resources/config.json";
+    private static final Object toolCardsGuard= new Object();
+    private static final Object gridsGuard=new Object();
+    private static final Object publicObjectivesGuard=new Object();
+    //TODO do this for timers too.
 
     private ConfigurationHandler() throws NotValidConfigPathException {
         Gson gson = new Gson();
@@ -24,12 +35,19 @@ public class ConfigurationHandler {
         }
     }
 
-    public static List<Grid> getGrids() throws NotValidConfigPathException {
+    public static synchronized ConfigurationHandler getInstance() throws NotValidConfigPathException {
         if (instance==null) instance=new ConfigurationHandler();
+        return instance;
+    }
+
+    public List<Grid> getGrids() throws NotValidConfigPathException {
         Gson gson = new Gson();
         TypeToken<List<Grid>> listType = new TypeToken<List<Grid>>(){};
         try {
-            List<Grid> grids=gson.fromJson(new FileReader(config.getGridsPath()), listType.getType());
+            List<Grid> grids;
+            synchronized (gridsGuard) {
+                grids = gson.fromJson(new FileReader(config.getGridsPath()), listType.getType());
+            }
             for(Grid grid: grids){
                 grid.initializeAllObservers();
             }
@@ -40,59 +58,82 @@ public class ConfigurationHandler {
         }
     }
 
-    public static List<PublicObjective> getPublicObjectives() throws NotValidConfigPathException {
-        if (instance==null) instance=new ConfigurationHandler();
+    public List<PublicObjective> getPublicObjectives() throws NotValidConfigPathException {
         Gson gson = new Gson();
         TypeToken<List<PublicObjective>> listType = new TypeToken<List<PublicObjective>>(){};
-        try {
-            return gson.fromJson(new FileReader(config.getPublicObjectivesPath()), listType.getType());
-        } catch (FileNotFoundException e) {
-            throw new NotValidConfigPathException("Incorrect public objectives path in configuration file: "+config.getPublicObjectivesPath());
+        synchronized (publicObjectivesGuard) {
+            try {
+                return gson.fromJson(new FileReader(config.getPublicObjectivesPath()), listType.getType());
+            } catch (FileNotFoundException e) {
+                throw new NotValidConfigPathException("Incorrect public objectives path in configuration file: " + config.getPublicObjectivesPath());
+            }
         }
     }
 
-    public static int getMinPlayersNumber() throws NotValidConfigPathException{
-        if (instance==null) instance=new ConfigurationHandler();
+    public int getMinPlayersNumber() throws NotValidConfigPathException{
         if (config.getMinPlayersNumber()!=0)
             return config.getMinPlayersNumber();
         else throw new NotValidConfigPathException("Incorrect config.json file: MinPlayersNumber needs to be instanced");
     }
 
-    public static int getMaxPlayersNumber() throws NotValidConfigPathException{
-        if (instance==null) instance=new ConfigurationHandler();
+    public int getMaxPlayersNumber() throws NotValidConfigPathException{
         if (config.getMaxPlayersNumber()!=0)
             return config.getMaxPlayersNumber();
         else throw new NotValidConfigPathException("Incorrect config.json file: MaxPlayersNumber needs to be instanced");
     }
 
-    public static int getTimerBeforeMatch() throws NotValidConfigPathException{
-        if (instance==null) instance=new ConfigurationHandler();
+    public int getTimerBeforeMatch() throws NotValidConfigPathException{
         if (config.getTimerBeforeMatch()!=0)
             return config.getTimerBeforeMatch();
         else throw new NotValidConfigPathException("Incorrect config.json file: TimerBeforeMatch needs to be instanced");
     }
 
-    public static int getTimerToChooseGrids() throws NotValidConfigPathException{
-        if (instance==null) instance=new ConfigurationHandler();
+    public int getTimerToChooseGrids() throws NotValidConfigPathException{
         if (config.getTimerToChooseGrid()!=0)
             return config.getTimerToChooseGrid();
         else throw new NotValidConfigPathException("Incorrect config.json file: TimerToChooseGrids needs to be instanced");
     }
 
-    public static int getRmiPort() throws NotValidConfigPathException{
-        if (instance==null) instance=new ConfigurationHandler();
+
+    public int getRmiPort() throws NotValidConfigPathException{
         if (config.getRmiPort()!=0){
             return config.getRmiPort();
         }
         else throw new NotValidConfigPathException("Incorrect config.json file: rmiPort needs to be instanced");
     }
 
-    public static int getSocketPort() throws NotValidConfigPathException{
-        if (instance==null) instance=new ConfigurationHandler();
-        if (config.getSocketPort()!=0){
+    public int getSocketPort() throws NotValidConfigPathException {
+        if (config.getSocketPort() != 0) {
             return config.getSocketPort();
+        } else throw new NotValidConfigPathException("Incorrect config.json file: socketPort needs to be instanced");
+    }
+
+    // FIXME: 07/06/2018
+    private List<ToolCard> getToolCards() throws NotValidConfigPathException {
+        Gson gson = getGsonForToolCards();
+        TypeToken<List<ToolCard>> listTypeToken = new TypeToken<List<ToolCard>>(){};
+
+        synchronized (toolCardsGuard){
+            try {
+                return gson.fromJson(new FileReader(config.getToolCardsPath()), listTypeToken.getType());
+            } catch (FileNotFoundException e) {
+                throw new NotValidConfigPathException("Incorrect public objectives path in configuration file: "+config.getToolCardsPath());
+            }
         }
-        else throw new NotValidConfigPathException("Incorrect config.json file: socketPort needs to be instanced");
+    }
+
+    private Gson getGsonForToolCards() {
+        GsonBuilder builder= new GsonBuilder();
+        //Create a RuntimeTypeAdapterFactory for Effect interface
+        RuntimeTypeAdapterFactory<Effect> adapterFactory= RuntimeTypeAdapterFactory.of(Effect.class);
+
+        //Register all classes implementing Effect interface, fixme add all effect subtype
+        adapterFactory.registerSubtype(InsertDieInDicePoolEffect.class, InsertDieInDicePoolEffect.class.getName());
+        adapterFactory.registerSubtype(RemoveDieFromPoolEffect.class, RemoveDieFromPoolEffect.class.getName());
+
+        //associate the factory and the builder
+        builder.registerTypeAdapterFactory(adapterFactory);
+        return builder.create();
     }
 
 }

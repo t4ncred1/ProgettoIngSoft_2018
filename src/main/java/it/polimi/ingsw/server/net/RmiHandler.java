@@ -24,7 +24,7 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
 
     private RmiHandler(){
         try {
-            port=ConfigurationHandler.getRmiPort();
+            port=ConfigurationHandler.getInstance().getRmiPort();
         } catch (NotValidConfigPathException e) {
             System.err.println("Configuration file is corrupted. Using defaults.");
         }

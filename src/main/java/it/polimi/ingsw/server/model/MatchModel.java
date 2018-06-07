@@ -46,12 +46,12 @@ public class MatchModel{
     public MatchModel(Set<String> playersUserNames) throws NotValidParameterException, NotValidConfigPathException{
         if (playersUserNames==null) throw new NullPointerException();
         try {
-            MAX_PLAYERS_NUMBER =ConfigurationHandler.getMaxPlayersNumber();
+            MAX_PLAYERS_NUMBER =ConfigurationHandler.getInstance().getMaxPlayersNumber();
         } catch (NotValidConfigPathException e) {
             e.printStackTrace();
         }
         try {
-            MIN_PLAYERS_NUMBER =ConfigurationHandler.getMinPlayersNumber();
+            MIN_PLAYERS_NUMBER =ConfigurationHandler.getInstance().getMinPlayersNumber();
         } catch (NotValidConfigPathException e) {
             e.printStackTrace();
         }
@@ -59,9 +59,9 @@ public class MatchModel{
         roundTrack=new ArrayList<>();
         if (playersUserNames.size()< MIN_PLAYERS_NUMBER ||playersUserNames.size()> MAX_PLAYERS_NUMBER) throw new NotValidParameterException("Number of players in game: "+Integer.toString(playersUserNames.size()),"Between 2 and "+Integer.toString(MAX_PLAYERS_NUMBER));
 
-        grids=ConfigurationHandler.getGrids();
+        grids=ConfigurationHandler.getInstance().getGrids();
 
-        publicObjectives=ConfigurationHandler.getPublicObjectives();
+        publicObjectives=ConfigurationHandler.getInstance().getPublicObjectives();
 
         privateObjectives = new ArrayList<>();
         privateObjectives.add(new PrivateObjective(GREEN_OBJ));

@@ -28,7 +28,7 @@ public class GameTimer {
 
     public GameTimer(String message){
         try {
-            timerToStart=ConfigurationHandler.getTimerBeforeMatch();
+            timerToStart=ConfigurationHandler.getInstance().getTimerBeforeMatch();
         } catch (NotValidConfigPathException e) {
             System.err.println("Configuration file wasn't read correctly.");
         }
@@ -62,7 +62,7 @@ public class GameTimer {
         this.stopped=false;
         this.gameHandled=matchController;
         try {
-            this.timeForGridsInitialization=ConfigurationHandler.getTimerToChooseGrids();
+            this.timeForGridsInitialization=ConfigurationHandler.getInstance().getTimerToChooseGrids();
         } catch (NotValidConfigPathException e) {
             System.err.println("Configuration file wasn't read correctly.");
         }

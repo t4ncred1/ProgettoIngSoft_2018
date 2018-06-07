@@ -139,6 +139,10 @@ public class Grid implements Serializable {
 
     public void initializeAllObservers() {
         initializeObserverListForEachBox();
+        registerObserversForEachBox();
+    }
+
+    private void registerObserversForEachBox() {
         for (int column = 0; column < gameGrid.length; column++) {
             for (int row = 0; row < gameGrid[column].length; row++) {
                 if (gameGrid[column][row] == null) throw new NullPointerException();
@@ -155,7 +159,6 @@ public class Grid implements Serializable {
                 }
             }
         }
-
     }
 
     private void initializeObserverListForEachBox() {

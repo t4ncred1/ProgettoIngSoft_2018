@@ -19,7 +19,7 @@ public class SocketHandler extends Thread{
 
     private SocketHandler(){
         try {
-            port=ConfigurationHandler.getSocketPort();
+            port=ConfigurationHandler.getInstance().getSocketPort();
         } catch (NotValidConfigPathException e) {
             System.err.println("Configuration file is corrupted. Using defaults.");
         }

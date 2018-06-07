@@ -6,6 +6,7 @@ class Configurations implements Serializable {
 
     private String gridsPath;
     private String publicObjectivesPath;
+    private String toolCardsPath;
     private int maxPlayersNumber;
     private int minPlayersNumber;
     private int timerBeforeMatch;
@@ -13,9 +14,11 @@ class Configurations implements Serializable {
     private int rmiPort;
     private int socketPort;
 
-    Configurations(String gridsPath,String publicObjectivesPath, int maxPlayersNumber, int minPlayersNumber, int timerToChooseGrids, int timerBeforeMatch, int rmiPort, int socketPort){
+
+    Configurations(String gridsPath,String publicObjectivesPath, String toolCardsPath, int maxPlayersNumber, int minPlayersNumber, int timerToChooseGrids, int timerBeforeMatch, int rmiPort, int socketPort){
         this.gridsPath=gridsPath;
         this.publicObjectivesPath=publicObjectivesPath;
+        this.toolCardsPath = toolCardsPath;
         this.minPlayersNumber=minPlayersNumber;
         this.maxPlayersNumber=maxPlayersNumber;
         this.timerBeforeMatch =timerBeforeMatch;
@@ -25,27 +28,29 @@ class Configurations implements Serializable {
     }
 
     String getGridsPath(){
-        return gridsPath;
+        return this.gridsPath;
     }
 
     String getPublicObjectivesPath() {
-        return publicObjectivesPath;
+        return this.publicObjectivesPath;
     }
 
+    String getToolCardsPath(){return this.toolCardsPath;}
+
     int getMaxPlayersNumber() {
-        return maxPlayersNumber;
+        return this.maxPlayersNumber;
     }
 
     int getMinPlayersNumber() {
-        return minPlayersNumber;
+        return this.minPlayersNumber;
     }
 
     int getTimerBeforeMatch() {
-        return timerBeforeMatch;
+        return this.timerBeforeMatch;
     }
 
     int getTimerToChooseGrid() {
-        return timerToChooseGrid;
+        return this.timerToChooseGrid;
     }
 
     int getRmiPort() { return rmiPort; }
