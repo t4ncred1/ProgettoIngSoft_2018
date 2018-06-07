@@ -1,10 +1,9 @@
-package it.polimi.ingsw.server.model.cards.Effects;
+package it.polimi.ingsw.server.model.cards.effects;
 
 import it.polimi.ingsw.server.model.MatchModel;
-import it.polimi.ingsw.server.model.cards.Effects.Effect;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 
-public class insertDieInDicePoolEffect implements Effect {
+public class InsertDieInDicePoolEffect implements Effect {
     private MatchModel model;
     private ToolCard toolCard;
 
@@ -15,7 +14,6 @@ public class insertDieInDicePoolEffect implements Effect {
 
     @Override
     public void execute(){
-    //TODO
-
+        // TODO: 07/06/2018  
     }
 }

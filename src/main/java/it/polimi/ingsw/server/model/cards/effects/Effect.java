@@ -1,9 +1,11 @@
-package it.polimi.ingsw.server.model.cards.Effects;
+package it.polimi.ingsw.server.model.cards.effects;
 
 import it.polimi.ingsw.server.model.MatchModel;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 
-public interface Effect {
+import java.io.Serializable;
+
+public interface Effect extends Serializable {
     void setParameters(MatchModel matchModel, ToolCard toolCard);
     void execute();
 }
