@@ -1,13 +1,13 @@
 package it.polimi.ingsw.client.net;
 
 import it.polimi.ingsw.client.Proxy;
+import it.polimi.ingsw.client.configurations.ConfigHandler;
 import it.polimi.ingsw.client.custom_exception.*;
+import it.polimi.ingsw.client.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.server.MatchController;
+import it.polimi.ingsw.server.configurations.ConfigurationHandler;
+import it.polimi.ingsw.server.custom_exception.*;
 import it.polimi.ingsw.server.model.components.Grid;
-import it.polimi.ingsw.server.custom_exception.DisconnectionException;
-import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
-import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
-import it.polimi.ingsw.server.custom_exception.TooManyRoundsException;
 import it.polimi.ingsw.server.net.ServerRemoteInterface;
 
 import java.rmi.RemoteException;
@@ -21,9 +21,9 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     private transient ClientRMI thisClient;
 
 
-    private static String registerName = "MatchHandler";
-    private static int serverPort = 11001;
-    private static String serverAddress="127.0.0.1";
+    private String registerName = "MatchHandler";
+    private int serverPort = 11001;
+    private String serverAddress="127.0.0.1";
 
     private transient boolean startingGame; //this parameter should be set to false once used.
     private transient boolean gameStarted;
@@ -40,6 +40,13 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     @Override
     public void setUpConnection() throws ServerIsDownException{
         try {
+            try {
+                serverPort = ConfigHandler.getInstance().getRmiPort();
+                serverAddress = ConfigHandler.getInstance().getServerIp();
+                registerName = ConfigHandler.getInstance().getRegisterName();
+            } catch (NotValidConfigPathException e) {
+                System.out.println("Wrong configuration file, using defaults.");
+            }
             Registry registry = LocateRegistry.getRegistry(serverAddress,serverPort);
             stub = (ServerRemoteInterface) registry.lookup(registerName);
             thisClient.setRMICommunication(this);
