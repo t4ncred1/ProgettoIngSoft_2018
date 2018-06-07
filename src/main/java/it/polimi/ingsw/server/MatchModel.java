@@ -9,11 +9,9 @@ import it.polimi.ingsw.server.components.Grid;
 import it.polimi.ingsw.server.components.Player;
 import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.custom_exception.*;
-import it.polimi.ingsw.server.net.UserInterface;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MatchModel{
 
@@ -23,7 +21,6 @@ public class MatchModel{
     private ArrayList<PrivateObjective> privateObjectives;
     private List<Grid> grids;
     private List<PublicObjective> publicObjectives;
-
     private ArrayList<Die> roundTrack;
     private DicePool matchDicePool;
     private int currentTurn;
@@ -292,6 +289,10 @@ public class MatchModel{
 
     public void getPublicObjectives(){
         
+    }
+
+    public ArrayList<Die> getRoundTrack() {
+        return roundTrack;
     }
 
 }
