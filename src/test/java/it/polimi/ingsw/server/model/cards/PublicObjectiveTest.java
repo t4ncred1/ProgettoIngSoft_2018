@@ -1,7 +1,7 @@
-package it.polimi.ingsw.server.cards;
+package it.polimi.ingsw.server.model.cards;
 
-import it.polimi.ingsw.server.components.Die;
-import it.polimi.ingsw.server.components.Grid;
+import it.polimi.ingsw.server.model.components.Die;
+import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import org.junit.jupiter.api.Test;

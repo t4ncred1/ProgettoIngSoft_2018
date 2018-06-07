@@ -1,19 +1,18 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.model;
 
 
-import it.polimi.ingsw.server.cards.PrivateObjective;
-import it.polimi.ingsw.server.cards.PublicObjective;
-import it.polimi.ingsw.server.components.DicePool;
-import it.polimi.ingsw.server.components.Die;
-import it.polimi.ingsw.server.components.Grid;
-import it.polimi.ingsw.server.components.Player;
+import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.cards.PublicObjective;
+import it.polimi.ingsw.server.model.cards.ToolCard;
+import it.polimi.ingsw.server.model.components.DicePool;
+import it.polimi.ingsw.server.model.components.Die;
+import it.polimi.ingsw.server.model.components.Grid;
+import it.polimi.ingsw.server.model.components.Player;
 import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.custom_exception.*;
-import it.polimi.ingsw.server.net.UserInterface;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MatchModel{
 
@@ -22,7 +21,9 @@ public class MatchModel{
 
     private ArrayList<PrivateObjective> privateObjectives;
     private List<Grid> grids;
+    private ArrayList<ToolCard> toolCards;
     private List<PublicObjective> publicObjectives;
+
 
     private ArrayList<Die> roundTrack;
     private DicePool matchDicePool;

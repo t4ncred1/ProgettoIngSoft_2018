@@ -1,6 +1,6 @@
-package it.polimi.ingsw.server.components;
+package it.polimi.ingsw.server.model.components;
 
-import it.polimi.ingsw.server.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.cards.PrivateObjective;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import org.junit.jupiter.api.Test;

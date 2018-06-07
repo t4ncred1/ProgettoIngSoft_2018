@@ -1,11 +1,10 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.server.cards.PrivateObjective;
-import it.polimi.ingsw.server.components.Die;
-import it.polimi.ingsw.server.components.Grid;
+import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.components.Die;
+import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.*;
-import it.polimi.ingsw.server.net.RMIUserAgent;
-import it.polimi.ingsw.server.net.SocketUserAgent;
+import it.polimi.ingsw.server.model.MatchModel;
 import it.polimi.ingsw.server.net.UserInterface;
 
 import java.util.*;

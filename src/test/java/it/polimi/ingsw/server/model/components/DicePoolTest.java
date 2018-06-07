@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.components;
+package it.polimi.ingsw.server.model.components;
 
 import it.polimi.ingsw.server.custom_exception.NotInPoolException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;

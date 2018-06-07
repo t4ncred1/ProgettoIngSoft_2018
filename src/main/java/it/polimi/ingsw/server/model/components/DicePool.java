@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.components;
+package it.polimi.ingsw.server.model.components;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +65,7 @@ public class DicePool {
         String color;
         int value_to_change;
         die_to_change=this.getDieFromPool(dpIndex);
-        this.removeDieFromPool(dpIndex);
+        this.removeDieFromPoolEffect(dpIndex);
         value_to_change=die_to_change.getValue();
         value_to_change++;
         color=die_to_change.getColor();
