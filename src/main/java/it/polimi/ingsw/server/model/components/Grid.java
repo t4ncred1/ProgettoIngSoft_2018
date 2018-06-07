@@ -107,9 +107,8 @@ public class Grid implements Serializable {
         return gameGrid.clone();
     }
 
-    public int getColumnNumber(){
-        return COLUMN_NUMBER;
-    }
+    public int getColumnNumber(){ return COLUMN_NUMBER;}
+
 
     public int getRowNumber(){
         return ROW_NUMBER;
@@ -143,20 +142,24 @@ public class Grid implements Serializable {
     }
 
     private void registerObserversForEachBox() {
-        for (int column = 0; column < gameGrid.length; column++) {
-            for (int row = 0; row < gameGrid[column].length; row++) {
+        for (int column = 0; column < COLUMN_NUMBER; column++) {
+            for (int row = 0; row < ROW_NUMBER; row++) {
                 if (gameGrid[column][row] == null) throw new NullPointerException();
                 if (column > 0) {
                     int underColumn=column-1;
                     gameGrid[column][row].register(gameGrid[underColumn][row]);
-                    initializeLeftAndOrRight(underColumn, row);
-                } else if (column < gameGrid.length - 1) {
+                    if (row > 0) gameGrid[column][row].register(gameGrid[underColumn][row - 1]);
+                    if (row < ROW_NUMBER-1) gameGrid[column][row].register(gameGrid[underColumn][row + 1]);
+                }
+                if (column < COLUMN_NUMBER-1) {
                     int overColumn=column+1;
                     gameGrid[column][row].register(gameGrid[overColumn][row]);
-                    initializeLeftAndOrRight(overColumn,row);
-                } else {
-                    initializeLeftAndOrRight(column,row);
+                    if (row > 0) gameGrid[column][row].register(gameGrid[overColumn][row - 1]);
+                    if (row < ROW_NUMBER-1) gameGrid[column][row].register(gameGrid[overColumn][row + 1]);
                 }
+                if (row > 0) gameGrid[column][row].register(gameGrid[column][row - 1]);
+                if (row < ROW_NUMBER-1) gameGrid[column][row].register(gameGrid[column][row + 1]);
+
             }
         }
     }
@@ -170,10 +173,6 @@ public class Grid implements Serializable {
         }
     }
 
-    private void initializeLeftAndOrRight(int column, int row) {
-        if (row > 0) gameGrid[column][row].register(gameGrid[column][row - 1]);
-        if (row < gameGrid[column].length - 1) gameGrid[column][row].register(gameGrid[column][row + 1]);
-    }
 
     public Die removeDieFromXY(int x, int y) throws NotValidParameterException, InvalidOperationException {
         final String indexOutOfBound = "coordinates should be: 0<=x<"+COLUMN_NUMBER +" and 0<=y<"+ROW_NUMBER;
