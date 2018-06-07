@@ -1,5 +1,10 @@
 package it.polimi.ingsw.server.net;
 
+import it.polimi.ingsw.client.configurations.ConfigHandler;
+import it.polimi.ingsw.server.configurations.ConfigurationHandler;
+import it.polimi.ingsw.server.custom_exception.NotValidConfigPathException;
+
+import javax.security.auth.login.Configuration;
 import java.io.IOException;
 import java.net.*;
 
@@ -10,9 +15,14 @@ public class SocketHandler extends Thread{
 
     private static boolean shutdown;
     private ServerSocket serverSock;
-    private static final int port =11000;
+    private int port =11000;
 
     private SocketHandler(){
+        try {
+            port=ConfigurationHandler.getSocketPort();
+        } catch (NotValidConfigPathException e) {
+            System.err.println("Configuration file is corrupted. Using defaults.");
+        }
         try {
             serverSock=new ServerSocket(port);
         } catch (IOException e) {
