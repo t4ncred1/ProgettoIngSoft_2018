@@ -1,6 +1,6 @@
-package it.polimi.ingsw.server.cards;
-import it.polimi.ingsw.server.components.Die;
-import it.polimi.ingsw.server.components.Grid;
+package it.polimi.ingsw.server.model.cards;
+import it.polimi.ingsw.server.model.components.Die;
+import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
@@ -43,7 +43,7 @@ public class PrivateObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(1,0,true,true, new Die("green",2));
             toTest.insertDieInXY(2,3,true,true, new Die("green",5));
 

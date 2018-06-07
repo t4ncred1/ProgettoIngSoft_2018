@@ -1,13 +1,16 @@
 package it.polimi.ingsw.client.net;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.client.Proxy;
 import it.polimi.ingsw.client.custom_exception.*;
-import it.polimi.ingsw.server.cards.PrivateObjective;
-import it.polimi.ingsw.server.components.Die;
-import it.polimi.ingsw.server.components.Grid;
-import it.polimi.ingsw.server.components.DieToConstraintsAdapter;
+import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.components.Die;
+import it.polimi.ingsw.server.model.components.DieConstraints;
+import it.polimi.ingsw.server.model.components.Grid;
+import it.polimi.ingsw.server.model.components.DieToConstraintsAdapter;
+import it.polimi.ingsw.server.configurations.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 
@@ -39,19 +42,18 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     private static final String USERNAME_NOT_AVAILABLE= "notLogged_username_not_available";
 
 
-    private static final String OK_MESSAGE="ok";
-    private static final String NOT_OK_MESSAGE= "retry";
-    private static final String REQUEST_GRID = "get_grids";
-    private static final String GRID_ALREADY_SELECTED= "grid_selected";
-    private static final String CHOOSE_GRID="set_grid";
-
-
     private static final String LAUNCHING_GAME = "launching_game";
     private static final String GAME_STARTED = "game_started";
     private static final String GAME_ALREADY_IN_PROGRESS = "reconnected";
 
     private static final String TRY_LOGOUT= "try_logout";
     private static final String SUCCESSFULLY_LOGGED_OUT= "logged_out";
+
+    private static final String OK_MESSAGE="ok";
+    private static final String NOT_OK_MESSAGE= "retry";
+    private static final String REQUEST_GRID = "get_grids";
+    private static final String GRID_ALREADY_SELECTED= "grid_selected";
+    private static final String CHOOSE_GRID="set_grid";
 
 
     private static final String GET_TURN_PLAYER = "get_turn_player";
@@ -117,16 +119,12 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
 
 
 
-
-
-
-
     @Override
     public void waitForGame(boolean starting) throws GameStartingException, GameStartedException, TimerRestartedException, ServerIsDownException, GameInProgressException {
         String read;
         try {
             if(inputStream.available()>0){
-                read= inputStream.readUTF();
+                read= inputStream.readUTF(); //do not use
                 switch (read){
                     case LAUNCHING_GAME:
                         throw new GameStartingException();
@@ -159,7 +157,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
         //FIXME
         try{
             outputStream.writeUTF(TRY_LOGOUT);
-            String response= inputStream.readUTF();
+            String response= readRemoteInput();
             switch (response) {
                 case SUCCESSFULLY_LOGGED_OUT:
                     break;
@@ -189,6 +187,7 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
                 TypeToken<ArrayList<Grid>> typeToken= new TypeToken<ArrayList<Grid>>(){};
                 Gson gson= new Gson();
                 result=readRemoteInput();
+                System.err.println("Response \n"+result);
                 grids= gson.fromJson(result, typeToken.getType());
 
                 Proxy.getInstance().setGridsSelection(grids);
@@ -258,10 +257,11 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     public void listen(String username) throws ServerIsDownException, TurnFinishedException, DisconnectionException {
         try {
             outputStream.writeUTF(LISTEN_STATE);
-            String read=inputStream.readUTF();
+            String read=readRemoteInput();
             if (read.equals(OPERATION_MESSAGE)) {
                 handleOperation(username);
             }else if(read.equals(TURN_FINISHED)){
+                System.out.println("Response: " + read); // FIXME: 06/06/2018
                 outputStream.writeUTF(END_LISTEN);
                 throw new TurnFinishedException();
             }
@@ -306,12 +306,13 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
             String response= readRemoteInput();
             switch (response){
                 case OK_MESSAGE:
-                    System.err.println("ok");
                     updateSelectedGrid();
                     break;
                 //FIXME probably for these two cases should be thrown different exceptions.
                 case NOT_OK_MESSAGE:
                     throw new InvalidMoveException();
+//                case DISCONNECTION:
+//                    throw new
                 case INVALID_POSITION:
                     throw new InvalidMoveException();
                 default:
@@ -324,9 +325,11 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
 
     private void updateSelectedGrid() throws IOException {
         String response;
-        Gson gson= new Gson();
+        GsonBuilder builder= new GsonBuilder();
+        RuntimeTypeAdapterFactory<DieConstraints> adapterFactory= RuntimeTypeAdapterFactory.of(DieConstraints.class).registerSubtype(DieToConstraintsAdapter.class,DieToConstraintsAdapter.class.getName());
+        builder.registerTypeAdapterFactory(adapterFactory);
+        Gson gson= builder.create();
         response=readRemoteInput();
-        System.out.println("My grid: \n "+ response); //FIXME
         Grid grid= gson.fromJson(response, Grid.class);
         Proxy.getInstance().updateGridSelected(grid);
     }
@@ -365,6 +368,8 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
                     /*TODO convert string from Json*/
                     break;
                 case DISCONNECTION:
+                    outputStream.writeUTF(END_LISTEN);
+                    /*TODO update proxy*/
                     throw new DisconnectionException();
                 default:
             }

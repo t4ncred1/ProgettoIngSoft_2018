@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.server.cards.PrivateObjective;
-import it.polimi.ingsw.server.components.Die;
-import it.polimi.ingsw.server.components.Grid;
+import it.polimi.ingsw.server.model.MatchModel;
+import it.polimi.ingsw.server.model.cards.*;
+import it.polimi.ingsw.server.model.components.*;
 import it.polimi.ingsw.server.custom_exception.*;
 import org.junit.jupiter.api.Test;
 

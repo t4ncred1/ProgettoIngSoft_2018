@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.components;
+package it.polimi.ingsw.server.model.components;
 
 import java.io.Serializable;
 

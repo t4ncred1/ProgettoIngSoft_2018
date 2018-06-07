@@ -21,48 +21,14 @@ public class GameTimer {
     private static final String GAME_START_TIMER = "game";
     private long timerToStart=15;
     private static final String OPERATION_TIMER = "operation";
-    private long timerForOperation=30;
+    private long timerForOperation=60;
     private static final String GRID_CHOOSE_TIMER="initialization";
 
-    Timer timer = new Timer();
-    TimerTask handlerTimerTask = new TimerTask() {
-        @Override
-        public void run() {
-            secondsPassed++;
-            if (secondsPassed >= 60) {
-                secondsPassed = secondsPassed % SECOND_TO_MINUTE_RATIO;
-                minutesPassed++;
-            }
-            System.out.println(minutesPassed+ ":"+secondsPassed);
-            if ((secondsPassed + minutesPassed * SECOND_TO_MINUTE_RATIO) >= timerSet) {
-                System.out.println("Timeout");
-                MatchHandler.getInstance().notifyTimeout();
-            }
-
-        }
-    };
-
-    TimerTask gameTimerTask = new TimerTask() {
-        @Override
-        public void run() {
-            secondsPassed++;
-            if (secondsPassed >= 60) {
-                secondsPassed = secondsPassed % SECOND_TO_MINUTE_RATIO;
-                minutesPassed++;
-            }
-            System.out.println(minutesPassed+ ":"+secondsPassed);
-            if ((secondsPassed + minutesPassed * SECOND_TO_MINUTE_RATIO) >= timerSet) {
-                System.out.println("Timeout");
-                gameTimeout=true;
-                gameHandled.wakeUpController();
-            }
-
-        }
-    };
+    private Timer timer = new Timer();
 
     public GameTimer(String message){
         try {
-            timerToStart=ConfigurationHandler.getTimerBeforeMatch();
+            timerToStart=ConfigurationHandler.getInstance().getTimerBeforeMatch();
         } catch (NotValidConfigPathException e) {
             System.err.println("Configuration file wasn't read correctly.");
         }
@@ -72,6 +38,22 @@ public class GameTimer {
                 timerSet= timerToStart;
                 break;
         }
+        TimerTask handlerTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                secondsPassed++;
+                if (secondsPassed >= 60) {
+                    secondsPassed = secondsPassed % SECOND_TO_MINUTE_RATIO;
+                    minutesPassed++;
+                }
+                System.out.println(minutesPassed + ":" + secondsPassed);
+                if ((secondsPassed + minutesPassed * SECOND_TO_MINUTE_RATIO) >= timerSet) {
+                    System.out.println("Timeout");
+                    MatchHandler.getInstance().notifyTimeout();
+                }
+
+            }
+        };
         timer.scheduleAtFixedRate(handlerTimerTask,1,1000);
     }
 
@@ -80,7 +62,7 @@ public class GameTimer {
         this.stopped=false;
         this.gameHandled=matchController;
         try {
-            this.timeForGridsInitialization=ConfigurationHandler.getTimerToChooseGrids();
+            this.timeForGridsInitialization=ConfigurationHandler.getInstance().getTimerToChooseGrids();
         } catch (NotValidConfigPathException e) {
             System.err.println("Configuration file wasn't read correctly.");
         }
@@ -93,6 +75,23 @@ public class GameTimer {
                 timerSet=timerForOperation;
                 break;
         }
+        TimerTask gameTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                secondsPassed++;
+                if (secondsPassed >= 60) {
+                    secondsPassed = secondsPassed % SECOND_TO_MINUTE_RATIO;
+                    minutesPassed++;
+                }
+                System.out.println(minutesPassed + ":" + secondsPassed);
+                if ((secondsPassed + minutesPassed * SECOND_TO_MINUTE_RATIO) >= timerSet) {
+                    System.out.println("Timeout");
+                    gameTimeout = true;
+                    gameHandled.wakeUpController();
+                }
+
+            }
+        };
         timer.scheduleAtFixedRate(gameTimerTask,1,1000);
     }
 

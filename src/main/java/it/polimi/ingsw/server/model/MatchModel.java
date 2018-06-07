@@ -1,12 +1,13 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.model;
 
 
-import it.polimi.ingsw.server.cards.PrivateObjective;
-import it.polimi.ingsw.server.cards.PublicObjective;
-import it.polimi.ingsw.server.components.DicePool;
-import it.polimi.ingsw.server.components.Die;
-import it.polimi.ingsw.server.components.Grid;
-import it.polimi.ingsw.server.components.Player;
+import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.cards.PublicObjective;
+import it.polimi.ingsw.server.model.cards.ToolCard;
+import it.polimi.ingsw.server.model.components.DicePool;
+import it.polimi.ingsw.server.model.components.Die;
+import it.polimi.ingsw.server.model.components.Grid;
+import it.polimi.ingsw.server.model.components.Player;
 import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.custom_exception.*;
 
@@ -20,7 +21,10 @@ public class MatchModel{
 
     private ArrayList<PrivateObjective> privateObjectives;
     private List<Grid> grids;
+    private ArrayList<ToolCard> toolCards;
     private List<PublicObjective> publicObjectives;
+
+
     private ArrayList<Die> roundTrack;
     private DicePool matchDicePool;
     private int currentTurn;
@@ -39,15 +43,15 @@ public class MatchModel{
     private static final String BLUE_OBJ= "blue";
     private static final String PURPLE_OBJ= "purple";
 
-    MatchModel(Set<String> playersUserNames) throws NotValidParameterException, NotValidConfigPathException{
+    public MatchModel(Set<String> playersUserNames) throws NotValidParameterException, NotValidConfigPathException{
         if (playersUserNames==null) throw new NullPointerException();
         try {
-            MAX_PLAYERS_NUMBER =ConfigurationHandler.getMaxPlayersNumber();
+            MAX_PLAYERS_NUMBER =ConfigurationHandler.getInstance().getMaxPlayersNumber();
         } catch (NotValidConfigPathException e) {
             e.printStackTrace();
         }
         try {
-            MIN_PLAYERS_NUMBER =ConfigurationHandler.getMinPlayersNumber();
+            MIN_PLAYERS_NUMBER =ConfigurationHandler.getInstance().getMinPlayersNumber();
         } catch (NotValidConfigPathException e) {
             e.printStackTrace();
         }
@@ -55,9 +59,9 @@ public class MatchModel{
         roundTrack=new ArrayList<>();
         if (playersUserNames.size()< MIN_PLAYERS_NUMBER ||playersUserNames.size()> MAX_PLAYERS_NUMBER) throw new NotValidParameterException("Number of players in game: "+Integer.toString(playersUserNames.size()),"Between 2 and "+Integer.toString(MAX_PLAYERS_NUMBER));
 
-        grids=ConfigurationHandler.getGrids();
+        grids=ConfigurationHandler.getInstance().getGrids();
 
-        publicObjectives=ConfigurationHandler.getPublicObjectives();
+        publicObjectives=ConfigurationHandler.getInstance().getPublicObjectives();
 
         privateObjectives = new ArrayList<>();
         privateObjectives.add(new PrivateObjective(GREEN_OBJ));
