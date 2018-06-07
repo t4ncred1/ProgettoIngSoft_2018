@@ -1,6 +1,9 @@
 package it.polimi.ingsw.server.components;
 
-public interface DieConstraints {
+import java.io.Serializable;
+
+public interface DieConstraints extends Serializable {
+
     int getColorRestriction();
 
     int getValueRestriction();

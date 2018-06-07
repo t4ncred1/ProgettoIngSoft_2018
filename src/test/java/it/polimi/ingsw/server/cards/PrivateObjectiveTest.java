@@ -43,7 +43,7 @@ public class PrivateObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(1,0,true,true, new Die("green",2));
             toTest.insertDieInXY(2,3,true,true, new Die("green",5));
 

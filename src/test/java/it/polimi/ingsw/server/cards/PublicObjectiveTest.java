@@ -21,7 +21,7 @@ class PublicObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(0,0,true,true, new Die("green",1));
             toTest.insertDieInXY(0,1,true,true, new Die("blue",2));
             toTest.insertDieInXY(0,2,true,true, new Die("yellow",3));
@@ -48,7 +48,7 @@ class PublicObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(0,0,true,true, new Die("green",1));
             toTest.insertDieInXY(1,0,true,true, new Die("blue",2));
             toTest.insertDieInXY(2,0,true,true, new Die("yellow",3));
@@ -72,7 +72,7 @@ class PublicObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(0,0,true,true, new Die("green",1));
             toTest.insertDieInXY(1,0,true,true, new Die("blue",2));
             toTest.insertDieInXY(2,0,true,true, new Die("yellow",3));
@@ -97,7 +97,7 @@ class PublicObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(1,0,true,true, new Die("green",1));
             toTest.insertDieInXY(1,1,true,true, new Die("blue",2));
             toTest.insertDieInXY(1,2,true,true, new Die("yellow",3));
@@ -124,7 +124,7 @@ class PublicObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(1,0,true,true, new Die("green",1));
             toTest.insertDieInXY(1,1,true,true, new Die("blue",2));
             toTest.insertDieInXY(1,2,true,true, new Die("yellow",1));
@@ -149,7 +149,7 @@ class PublicObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(1,0,true,true, new Die("green",5));
             toTest.insertDieInXY(1,1,true,true, new Die("blue",6));
             toTest.insertDieInXY(1,2,true,true, new Die("yellow",3));
@@ -175,7 +175,7 @@ class PublicObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(1,0,true,true, new Die("green",5));
             toTest.insertDieInXY(1,1,true,true, new Die("blue",6));
             toTest.insertDieInXY(1,2,true,true, new Die("yellow",3));
@@ -201,7 +201,7 @@ class PublicObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(1,0,true,true, new Die("green",1));
             toTest.insertDieInXY(1,1,true,true, new Die("blue",2));
             toTest.insertDieInXY(1,2,true,true, new Die("yellow",3));
@@ -227,7 +227,7 @@ class PublicObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(4,0,true,true, new Die("green",1));
             toTest.insertDieInXY(3,1,true,true, new Die("green",2));
             toTest.insertDieInXY(2,2,true,true, new Die("green",3));
@@ -250,7 +250,7 @@ class PublicObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(4,0,true,true, new Die("green",1));
             toTest.insertDieInXY(3,1,true,true, new Die("green",2));
             toTest.insertDieInXY(2,2,true,true, new Die("green",3));
@@ -274,7 +274,7 @@ class PublicObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(4,0,true,true, new Die("green",1));
             toTest.insertDieInXY(3,1,true,true, new Die("green",3));
             toTest.insertDieInXY(1,3,true,true, new Die("green",4));
@@ -296,7 +296,7 @@ class PublicObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(1,0,true,true, new Die("green",1));
             toTest.insertDieInXY(1,1,true,true, new Die("blue",2));
             toTest.insertDieInXY(1,2,true,true, new Die("yellow",1));
@@ -321,7 +321,7 @@ class PublicObjectiveTest {
                     toTest.createBoxInXY(i,j,"none");
                 }
             }
-            toTest.associateBoxes();
+            toTest.initializeAllObservers();
             toTest.insertDieInXY(1,0,true,true, new Die("green",1));
             toTest.insertDieInXY(2,3,true,true, new Die("green",1));
             toTest.insertDieInXY(1,1,true,true, new Die("blue",2));

@@ -289,7 +289,7 @@ public class GridTest {
                 toTest.createBoxInXY(i, j, "none");
             }
         }
-        toTest.associateBoxes();
+        toTest.initializeAllObservers();
 
         //Assert
         assertThrows(InvalidOperationException.class, () -> toTest.insertDieInXY(passedCoordinateX, passedCoordinateY, colorCheck, valueCheck, passedDie));
@@ -312,7 +312,7 @@ public class GridTest {
                 toTest.createBoxInXY(i, j, "none");
             }
         }
-        toTest.associateBoxes();
+        toTest.initializeAllObservers();
 
 
         //When
@@ -333,7 +333,7 @@ public class GridTest {
         } catch (NotValidParameterException e) {
             fail("test failed");
         }
-        assertThrows(NullPointerException.class, toTest::associateBoxes);
+        assertThrows(NullPointerException.class, toTest::initializeAllObservers);
     }
 
     @Test
@@ -348,7 +348,7 @@ public class GridTest {
         } catch (NotValidParameterException e) {
             fail("test failed");
         }
-        toTest.associateBoxes();
+        toTest.initializeAllObservers();
     }
 
     @Test
@@ -363,7 +363,7 @@ public class GridTest {
         } catch (NotValidParameterException e) {
             fail("test failed");
         }
-        assertThrows(NullPointerException.class, toTest::associateBoxes);
+        assertThrows(NullPointerException.class, toTest::initializeAllObservers);
     }
 
     @Test

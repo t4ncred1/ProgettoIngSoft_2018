@@ -7,8 +7,8 @@ import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import java.io.Serializable;
 
 public class Grid implements Serializable {
-    private final static int COLUMN_NUMBER =5;
-    private final static int ROW_NUMBER =4;
+    private static final int COLUMN_NUMBER =5;
+    private static final int ROW_NUMBER =4;
     private String name;
     private int difficulty;
     private Box[][] gameGrid;
@@ -115,37 +115,6 @@ public class Grid implements Serializable {
         return ROW_NUMBER;
     }
 
-    public void associateBoxes() {
-        for(int i=0; i<this.getColumnNumber(); i++){
-            for(int j=0; j<this.getRowNumber(); j++){
-                if (gameGrid[i][j] == null) throw new NullPointerException();
-                if(i>0) {
-                    gameGrid[i][j].register(gameGrid[i-1][j]);
-                }
-                if(j>0){
-                    gameGrid[i][j].register(gameGrid[i][j-1]);
-                }
-                if(i<COLUMN_NUMBER-1){
-                    gameGrid[i][j].register(gameGrid[i+1][j]);
-                }
-                if(j<ROW_NUMBER-1){
-                    gameGrid[i][j].register(gameGrid[i][j+1]);
-                }
-                if(j<ROW_NUMBER-1 && i<COLUMN_NUMBER-1){
-                    gameGrid[i][j].register(gameGrid[i+1][j+1]);
-                }
-                if(j>0 && i!=0){
-                    gameGrid[i][j].register(gameGrid[i-1][j-1]);
-                }
-                if(j>0 && i<COLUMN_NUMBER-1){
-                    gameGrid[i][j].register(gameGrid[i+1][j-1]);
-                }
-                if(i>0 && j<ROW_NUMBER-1){
-                    gameGrid[i][j].register(gameGrid[i-1][j+1]);
-                }
-            }
-        }
-    }
 
     public String getStructure() {
         StringBuilder structure= new StringBuilder();
@@ -171,28 +140,30 @@ public class Grid implements Serializable {
     public void initializeAllObservers() {
         for (int column = 0; column < gameGrid.length; column++) {
             for (int row = 0; row < gameGrid[column].length; row++) {
+                if (gameGrid[column][row] == null) throw new NullPointerException();
                 gameGrid[column][row].initializeObserverList();
                 if (column > 0) {
-                    if (row > 0) gameGrid[column][row].register(gameGrid[column - 1][row - 1]);
-                    gameGrid[column][row].register(gameGrid[column - 1][row]);
-                    if (row < gameGrid[column].length - 1)
-                        gameGrid[column][row].register(gameGrid[column - 1][row + 1]);
+                    int underColumn=column-1;
+                    gameGrid[column][row].register(gameGrid[underColumn][row]);
+                    initializeLeftAndOrRight(underColumn, row);
                 } else if (column < gameGrid.length - 1) {
-                    if (row > 0) gameGrid[column][row].register(gameGrid[column + 1][row - 1]);
-                    gameGrid[column][row].register(gameGrid[column + 1][row]);
-                    if (row < gameGrid[column].length - 1)
-                        gameGrid[column][row].register(gameGrid[column + 1][row + 1]);
+                    int overColumn=column+1;
+                    gameGrid[column][row].register(gameGrid[overColumn][row]);
+                    initializeLeftAndOrRight(overColumn,row);
                 } else {
-                    if (row > 0) gameGrid[column][row].register(gameGrid[column][row - 1]);
-                    if (row < gameGrid[column].length - 1) gameGrid[column][row].register(gameGrid[column][row + 1]);
+                    initializeLeftAndOrRight(column,row);
                 }
             }
         }
 
     }
+    private void initializeLeftAndOrRight(int column, int row) {
+        if (row > 0) gameGrid[column][row].register(gameGrid[column][row - 1]);
+        if (row < gameGrid[column].length - 1) gameGrid[column][row].register(gameGrid[column][row + 1]);
+    }
 
     public Die removeDieFromXY(int x, int y) throws NotValidParameterException, InvalidOperationException {
-        final String indexOutOfBound = "coordinates should be: 0<=x<=3 and 0<=y<=4";
+        final String indexOutOfBound = "coordinates should be: 0<=x<"+COLUMN_NUMBER +" and 0<=y<"+ROW_NUMBER;
         Die temp;
 
         if(x<0||x> COLUMN_NUMBER -1||y<0||y> ROW_NUMBER -1) throw new NotValidParameterException("("+x+","+y+")", indexOutOfBound);
