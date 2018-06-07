@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.components;
+package it.polimi.ingsw.server.model.components;
 
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
@@ -289,7 +289,7 @@ public class GridTest {
                 toTest.createBoxInXY(i, j, "none");
             }
         }
-        toTest.associateBoxes();
+        toTest.initializeAllObservers();
 
         //Assert
         assertThrows(InvalidOperationException.class, () -> toTest.insertDieInXY(passedCoordinateX, passedCoordinateY, colorCheck, valueCheck, passedDie));
@@ -312,7 +312,7 @@ public class GridTest {
                 toTest.createBoxInXY(i, j, "none");
             }
         }
-        toTest.associateBoxes();
+        toTest.initializeAllObservers();
 
 
         //When
@@ -333,7 +333,7 @@ public class GridTest {
         } catch (NotValidParameterException e) {
             fail("test failed");
         }
-        assertThrows(NullPointerException.class, toTest::associateBoxes);
+        assertThrows(NullPointerException.class, toTest::initializeAllObservers);
     }
 
     @Test
@@ -348,7 +348,7 @@ public class GridTest {
         } catch (NotValidParameterException e) {
             fail("test failed");
         }
-        toTest.associateBoxes();
+        toTest.initializeAllObservers();
     }
 
     @Test
@@ -363,7 +363,7 @@ public class GridTest {
         } catch (NotValidParameterException e) {
             fail("test failed");
         }
-        assertThrows(NullPointerException.class, toTest::associateBoxes);
+        assertThrows(NullPointerException.class, toTest::initializeAllObservers);
     }
 
     @Test
@@ -380,11 +380,16 @@ public class GridTest {
         } catch (NotValidParameterException e) {
             fail("test failed");
         }
-        assertEquals("{\tnone,\tnone,\tnone,\tnone,}\n" +
-                "{\tnone,\tnone,\tnone,\tnone,}\n" +
-                "{\tnone,\tnone,\tnone,\tnone,}\n" +
-                "{\tnone,\tnone,\tnone,\tnone,}\n" +
-                "{\tnone,\tnone,\tnone,\tnone,}\n", toTest.getStructure());
+        assertEquals("|\t \t|\t \t|\t \t|\t \t|\n" +
+                "|\t-\t|\t-\t|\t-\t|\t-\t|\n" +
+                "|\t \t|\t \t|\t \t|\t \t|\n" +
+                "|\t-\t|\t-\t|\t-\t|\t-\t|\n" +
+                "|\t \t|\t \t|\t \t|\t \t|\n" +
+                "|\t-\t|\t-\t|\t-\t|\t-\t|\n" +
+                "|\t \t|\t \t|\t \t|\t \t|\n" +
+                "|\t-\t|\t-\t|\t-\t|\t-\t|\n" +
+                "|\t \t|\t \t|\t \t|\t \t|\n" +
+                "|\t-\t|\t-\t|\t-\t|\t-\t|\n", toTest.getStructure());
     }
 
     @Test
@@ -406,48 +411,94 @@ public class GridTest {
                 "Boxes di test:\n" +
                 " colonna 1:\n" +
                 "\t riga 1: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (0,0)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (0,0)\n" +
                 "\t riga 2: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (0,1)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (0,1)\n" +
                 "\t riga 3: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (0,2)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (0,2)\n" +
                 "\t riga 4: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (0,3)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (0,3)\n" +
                 " colonna 2:\n" +
                 "\t riga 1: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (1,0)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (1,0)\n" +
                 "\t riga 2: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (1,1)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 0 | position = (1,1)\n" +
                 "\t riga 3: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (1,2)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 0 | position = (1,2)\n" +
                 "\t riga 4: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (1,3)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (1,3)\n" +
                 " colonna 3:\n" +
                 "\t riga 1: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (2,0)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (2,0)\n" +
                 "\t riga 2: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (2,1)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 0 | position = (2,1)\n" +
                 "\t riga 3: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (2,2)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 0 | position = (2,2)\n" +
                 "\t riga 4: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (2,3)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (2,3)\n" +
                 " colonna 4:\n" +
                 "\t riga 1: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (3,0)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (3,0)\n" +
                 "\t riga 2: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (3,1)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 0 | position = (3,1)\n" +
                 "\t riga 3: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 0 | position = (3,2)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 0 | position = (3,2)\n" +
                 "\t riga 4: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (3,3)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (3,3)\n" +
                 " colonna 5:\n" +
                 "\t riga 1: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (4,0)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (4,0)\n" +
                 "\t riga 2: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (4,1)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (4,1)\n" +
                 "\t riga 3: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (4,2)\n" +
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (4,2)\n" +
                 "\t riga 4: \n" +
-                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0; | Open = 1 | position = (4,3)\n",toTest.toString());
+                "\t\tcolor Restriction: 0; 0; 0; 0; 0; | value Restriction: 0; 0; 0; 0; 0; 0;  | Kind of constraint (T:value, F:color) false| Open = 1 | position = (4,3)\n",toTest.toString());
+    }
+
+    @Test
+    public void checkRemoveDieFromXY() throws NotValidParameterException,InvalidOperationException {
+        Die temp=new Die("green",1);
+        int i,j;
+        int x1=-1,x2=7;
+        int y1=-1,y2=7;
+        Grid toTest=null;
+        try {
+            toTest=new Grid(4,"test");
+            for(i=0;i<toTest.getColumnNumber();i++){
+                for(j=0;j<toTest.getRowNumber();j++){
+                    toTest.createBoxInXY(i,j,"none");
+                }
+            }
+        } catch(NotValidParameterException e){
+            fail("test failed");
+        }
+        Grid finalToTest = toTest;
+        assertThrows(NotValidParameterException.class,()-> finalToTest.removeDieFromXY(x1,0));
+        assertThrows(NotValidParameterException.class,()->finalToTest.removeDieFromXY(x2,0));
+        assertThrows(NotValidParameterException.class,()->finalToTest.removeDieFromXY(0,y1));
+        assertThrows(NotValidParameterException.class,()->finalToTest.removeDieFromXY(0,y2));
+        finalToTest.insertDieInXY(0,0,true,true,temp);
+        assertThrows(InvalidOperationException.class,()->finalToTest.removeDieFromXY(1,1));
+        finalToTest.removeDieFromXY(0,0);
+
+    }
+
+    @Test
+    public void checkInitializeAllObservers(){
+        Grid toTest=null;
+        int i,j;
+        try {
+            toTest=new Grid(4,"test");
+            for(i=0;i<toTest.getColumnNumber();i++){
+                for(j=0;j<toTest.getRowNumber();j++){
+                    toTest.createBoxInXY(i,j,"none");
+                }
+            }
+        } catch(NotValidParameterException e){
+            fail("test failed");
+        }
+
+        toTest.initializeAllObservers();
     }
 }

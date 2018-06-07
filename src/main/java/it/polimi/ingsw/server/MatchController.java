@@ -1,11 +1,10 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.server.cards.PrivateObjective;
-import it.polimi.ingsw.server.components.Die;
-import it.polimi.ingsw.server.components.Grid;
+import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.components.Die;
+import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.*;
-import it.polimi.ingsw.server.net.RMIUserAgent;
-import it.polimi.ingsw.server.net.SocketUserAgent;
+import it.polimi.ingsw.server.model.MatchModel;
 import it.polimi.ingsw.server.net.UserInterface;
 
 import java.util.*;
@@ -190,6 +189,7 @@ public class MatchController extends Thread{
         synchronized (modelGuard) {
             model.updateTurn(MAX_ROUND);
             username = model.askTurn();
+            System.out.println("It's "+username+" turn.");
             initializeTurn(username);
             ready=true; //now i can handle clients requests.
         }
@@ -276,11 +276,16 @@ public class MatchController extends Thread{
     }
 
     public int playerInGame() {
-            System.out.println("player in queue: "+playersInMatch.size());
-            return playersInMatch.size();
+        int playerInQueue;
+        synchronized (playersInMatchGuard) {
+            playerInQueue = playersInMatch.size();
+        }
+        System.out.println("player in queue: "+playerInQueue);
+        return playerInQueue;
     }
 
     public void updateQueue(){
+        boolean notify=false;
         synchronized (playersInMatchGuard){
             Set set= playersInMatch.keySet();
             Iterator iterator=set.iterator();
@@ -292,12 +297,13 @@ public class MatchController extends Thread{
                     toRemove.add(username);
                     MatchHandler.getInstance().notifyAboutDisconnection(username);
                 }
-                if(playersInMatch.size()>1&&!this.gameStartingSoon) MatchHandler.getInstance().notifyMatchCanStart();
+                if(playersInMatch.size()>1&&!this.gameStartingSoon) notify=true;
             }
             for(String username: toRemove){
                 playersInMatch.remove(username);
             }
         }
+        if(notify)MatchHandler.getInstance().notifyMatchCanStart();
     }
 
     public void insert(UserInterface client) {
@@ -324,7 +330,7 @@ public class MatchController extends Thread{
                     Set list = playersInMatch.keySet();
                     Iterator iterator = list.iterator();
                     UserInterface lastConnection= null;
-                    while (iterator.hasNext())lastConnection =playersInMatch.get(iterator.next().toString());
+                    while (iterator.hasNext()) lastConnection =playersInMatch.get(iterator.next().toString());
                     try {
                         if(lastConnection!=null) lastConnection.notifyStarting();
                     } catch (DisconnectionException e) {
@@ -391,8 +397,10 @@ public class MatchController extends Thread{
         this.gameStartingSoon=gameIsNotStartingAnymore;
         this.gameStarted=gameStartedStatus;
         try {
-            Set<String> playerUserNames = playersInMatch.keySet();
-            model = new MatchModel(playerUserNames);
+            synchronized (playersInMatchGuard) {
+                Set<String> playerUserNames = playersInMatch.keySet();
+                model = new MatchModel(playerUserNames);
+            }
         } catch (NotValidParameterException e) {
             e.printStackTrace();
         } catch (NotValidConfigPathException e) {
@@ -431,6 +439,7 @@ public class MatchController extends Thread{
 
     public List<Grid> getPlayerGrids(UserInterface userInterface) throws InvalidOperationException {
         String username = userInterface.getUsername();
+        //FIXME user securityControl()
         synchronized (playersInMatchGuard){
             if(!playersInMatch.containsKey(username)) /*TODO throw an exception*/;
             if(!playersInMatch.get(username).equals(userInterface)) /*TODO throw an exception*/;
@@ -468,11 +477,13 @@ public class MatchController extends Thread{
     }
 
     public String requestTurnPlayer() throws InvalidOperationException, TooManyRoundsException {
+        String username;
         synchronized (modelGuard) {
             if (!ready) throw new InvalidOperationException();
             if (gameFinished) throw new TooManyRoundsException();
-            return model.askTurn();
+            username= model.askTurn();
         }
+        return username;
     }
 
     public List<Die> getDicePool() {
@@ -482,35 +493,44 @@ public class MatchController extends Thread{
     }
 
     public PrivateObjective getPrivateObject(UserInterface clientCalling) throws NotValidParameterException {
-        String username = clientCalling.getUsername();
-        synchronized (playersInMatchGuard){
-            if(!playersInMatch.containsKey(username)) throw new NotValidParameterException("clientCalling username: "+clientCalling.getUsername()+"is not in this match queue","A valid username");
-            if(!playersInMatch.get(username).equals(clientCalling)) /*TODO throw an exception*/;
-        }
+        securityControl(clientCalling);
 
         try {
-            return model.getPrivateObjective(username);
+            return model.getPrivateObjective(clientCalling.getUsername());
         } catch (InvalidUsernameException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public void insertDie(int position, int x, int y) throws InvalidOperationException, NotInPoolException {
+    public void insertDie(UserInterface player, int position, int x, int y) throws InvalidOperationException, NotInPoolException, NotValidParameterException {
+        securityControl(player);
+        if(dieInserted) /*TODO throw an exception*/;
         try {
-            model.insertDieOperation(x,y ,position );
-        } catch (NotValidParameterException e) {
+            model.insertDieOperation(x, y, position);
+            this.dieInserted = true;
+        }
+        catch (NotValidParameterException e){
+            //FIXME this exception should go upper
             e.printStackTrace();
         }
+
+
     }
 
-    public Grid getPlayerGrid(UserInterface player) throws NotValidParameterException {
-        String username= player.getUsername();
-        //FIXME?? invalid access can be simplified like this?
-        if(!playersInMatch.containsKey(username)) throw new NotValidParameterException("","");
-        if(!playersInMatch.get(username).equals(player)) throw new NotValidParameterException("","");
 
-        return model.getPlayerCurrentGrid(username);
+    public Grid getPlayerGrid(UserInterface player) throws NotValidParameterException {
+        securityControl(player);
+        return model.getPlayerCurrentGrid(player.getUsername());
+    }
+
+    private void securityControl(UserInterface player) throws NotValidParameterException {
+        String username= player.getUsername();
+        //fixme create different exceptions to handle security
+        synchronized (playersInMatchGuard) {
+            if (!playersInMatch.containsKey(username)) throw new NotValidParameterException("", "");
+            if (!playersInMatch.get(username).equals(player)) throw new NotValidParameterException("", "");
+        }
     }
 
     public void notifyEnd() {
@@ -519,8 +539,8 @@ public class MatchController extends Thread{
         ready=false;
         condition.signal();
         lock.unlock();
-        for(String player: playersInMatch.keySet()){
-            playersInMatch.get(player).notifyEndTurn();
+        synchronized (playersInMatchGuard) {
+            playersInMatch.keySet().forEach(player -> playersInMatch.get(player).notifyEndTurn());
         }
     }
 }

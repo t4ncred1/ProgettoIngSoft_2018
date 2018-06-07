@@ -1,7 +1,8 @@
-package it.polimi.ingsw.server.components;
+package it.polimi.ingsw.server.model.components;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import it.polimi.ingsw.server.custom_exception.*;
 
@@ -29,8 +30,8 @@ public class DicePool {
         final String strValue;
         if(number>=3&&number<=9){
             for(int i=0; i<number;i++) {
-                randomAvailableColor = availableColors.remove((int) (Math.random() * availableColors.size()));
-                randomDieValue = (int) (Math.random() * 6 + 1);
+                randomAvailableColor = availableColors.remove((new Random().nextInt(availableColors.size())));
+                randomDieValue = (new Random().nextInt(6)+1);
                 pool.add(new Die(randomAvailableColor, randomDieValue));
             }
         } else {
@@ -64,7 +65,7 @@ public class DicePool {
         String color;
         int value_to_change;
         die_to_change=this.getDieFromPool(dpIndex);
-        this.removeDieFromPool(dpIndex);
+        this.removeDieFromPoolEffect(dpIndex);
         value_to_change=die_to_change.getValue();
         value_to_change++;
         color=die_to_change.getColor();

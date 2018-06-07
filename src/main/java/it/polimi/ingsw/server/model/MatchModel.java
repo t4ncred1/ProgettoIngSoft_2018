@@ -1,19 +1,18 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.server.model;
 
 
-import it.polimi.ingsw.server.cards.PrivateObjective;
-import it.polimi.ingsw.server.cards.PublicObjective;
-import it.polimi.ingsw.server.components.DicePool;
-import it.polimi.ingsw.server.components.Die;
-import it.polimi.ingsw.server.components.Grid;
-import it.polimi.ingsw.server.components.Player;
+import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.cards.PublicObjective;
+import it.polimi.ingsw.server.model.cards.ToolCard;
+import it.polimi.ingsw.server.model.components.DicePool;
+import it.polimi.ingsw.server.model.components.Die;
+import it.polimi.ingsw.server.model.components.Grid;
+import it.polimi.ingsw.server.model.components.Player;
 import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.custom_exception.*;
-import it.polimi.ingsw.server.net.UserInterface;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MatchModel{
 
@@ -22,7 +21,9 @@ public class MatchModel{
 
     private ArrayList<PrivateObjective> privateObjectives;
     private List<Grid> grids;
+    private ArrayList<ToolCard> toolCards;
     private List<PublicObjective> publicObjectives;
+
 
     private ArrayList<Die> roundTrack;
     private DicePool matchDicePool;
@@ -250,12 +251,9 @@ public class MatchModel{
     }
 
     public PrivateObjective getPrivateObjective(String username) throws InvalidUsernameException {
-        Stream<PrivateObjective> stream=  playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective);
-        if (stream.count()==0) throw new InvalidUsernameException();
-        return stream.collect(Collectors.toList()).get(0);
-        //we needed to throw an exception, but we didn't know how to do it in lambda function
-
-
+        List<PrivateObjective> stream=  playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective).collect(Collectors.toList());
+        if (stream.stream().count()==0) throw new InvalidUsernameException();
+        return stream.get(0);
     }
 
     public Die getDieFromRoundtrack(int index) throws NotInPoolException {
@@ -286,13 +284,11 @@ public class MatchModel{
     }
 
     public void insertDieInPool(Die die, int index) throws NotValidParameterException {
-        DicePool temp = null;
-        temp.insertDieInPool(die,index);
+        matchDicePool.insertDieInPool(die,index);
     }
 
     public void removeDiePool(int index) throws  NotInPoolException {
-        DicePool temp = null;
-        temp.removeDieFromPool(index);
+        matchDicePool.removeDieFromPool(index);
     }
 
     public void getPublicObjectives(){

@@ -1,11 +1,10 @@
 package it.polimi.ingsw.server.net;
 
-import it.polimi.ingsw.client.net.ClientRMI;
 import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
-import it.polimi.ingsw.server.cards.PrivateObjective;
-import it.polimi.ingsw.server.components.Die;
-import it.polimi.ingsw.server.components.Grid;
+import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.components.Die;
+import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;

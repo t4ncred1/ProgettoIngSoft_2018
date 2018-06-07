@@ -1,12 +1,10 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.custom_exception.InvalidMoveException;
-import it.polimi.ingsw.server.components.Die;
-import it.polimi.ingsw.server.components.Grid;
+import it.polimi.ingsw.server.model.components.Die;
+import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
-import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
-import java.io.DataInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

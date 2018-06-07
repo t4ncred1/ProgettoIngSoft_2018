@@ -120,37 +120,7 @@ public class RMIUserAgent implements UserInterface {
     //TODO from here.
 
     @Override
-    public String getOperation() {
-        return null;
-    }
-
-    @Override
-    public void notifyAlreadyDoneOperation() {
-
-    }
-
-    @Override
-    public void askForOperation() {
-
-    }
-
-    @Override
     public void notifyDisconnection() {
 
-    }
-
-
-
-    public boolean equals(RMIUserAgent o){
-        RMIUserAgent UA;
-        if(o==null) return false;
-        if(this.getClass()==o.getClass())
-            UA= (RMIUserAgent) o;
-        else
-            return false;
-        if(UA.clientHandled.equals(this.clientHandled))
-            return true;
-        else
-            return false;
     }
 }

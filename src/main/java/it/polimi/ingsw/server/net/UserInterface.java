@@ -20,12 +20,6 @@ public interface UserInterface {
 
     void notifyStart() throws DisconnectionException;
 
-    String getOperation();
-
-    void notifyAlreadyDoneOperation();
-
-    void askForOperation();
-
     void notifyDisconnection();
 
     void notifyReconnection() throws DisconnectionException;

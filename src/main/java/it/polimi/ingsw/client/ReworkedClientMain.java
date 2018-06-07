@@ -4,7 +4,7 @@ import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.net.ServerCommunicatingInterface;
 import it.polimi.ingsw.client.net.ServerRMICommunication;
 import it.polimi.ingsw.client.net.ServerSocketCommunication;
-import it.polimi.ingsw.server.components.Grid;
+import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 
 import java.io.DataInputStream;
@@ -17,21 +17,17 @@ public class ReworkedClientMain {
     private ServerCommunicatingInterface server;
     private static ReworkedClientMain instance;
 
-    private final String USE_SOCKET = "socket";
-    private final String USE_RMI= "rmi";
-    private final String LOG_IN_REQUEST = "login";
-    private final String QUIT_REQUEST = "quit";
-    private final String LOG_OUT_REQUEST = "logout";
-    private final String INSERT_DIE= "insert_die";
-    private final String END_TURN="end_turn";
+    private static final String USE_SOCKET = "socket";
+    private static final String USE_RMI= "rmi";
+    private static final String LOG_IN_REQUEST = "login";
+    private static final String QUIT_REQUEST = "quit";
+    private static final String LOG_OUT_REQUEST = "logout";
+    private static final String INSERT_DIE= "insert_die";
+    private static final String END_TURN="end_turn";
     private String username;
 
     public static void main(String[] args){
         instance = new ReworkedClientMain();
-        Scanner scanner = new Scanner(System.in);
-        String written;
-        String read;
-
         //don't use caps. All inputs are reduced to lowercase with .toLowerCase
 
 
@@ -45,11 +41,11 @@ public class ReworkedClientMain {
 //            if(trial>1) System.err.println("Invalid input, please enter GUI or CLI");
 //            written=scanner.nextLine();
 //            written=written.toUpperCase();
-//            if(written.equals("GUI")) {
+//            if(written.equalAgent("GUI")) {
 //                launch(args);
 //            }
 //        }
-//        while(!(written.equals("GUI")||written.equals("CLI")));
+//        while(!(written.equalAgent("GUI")||written.equalAgent("CLI")));
 
         instance.chooseConnectionSystemCLI();
         try {
@@ -100,7 +96,6 @@ public class ReworkedClientMain {
             } catch (DisconnectionException e) {
                 turnFinished=true;
                 System.out.println(username + " disconnected.");
-                /*TODO notify proxy.*/
             }
         }while (!turnFinished);
 
@@ -225,25 +220,22 @@ public class ReworkedClientMain {
 
         while (!gameStarted) {
             handleEventualLogoutRequest(starting);
-            do{
-                handleEventualLogoutRequest(starting);
-                try {
-                    instance.server.waitForGame(starting);
-                } catch (GameStartingException e) {
-                    System.out.println("A Game will start soon...");
-                    starting=true;
-                } catch (GameStartedException e) {
-                    System.out.println("Game is started.");
-                    starting=false;
-                    gameStarted=true;
-                } catch (TimerRestartedException e) {
-                    System.err.println("Someone disconnected. Timer has been restarted.");
-                } catch (GameInProgressException e) {
-                    System.out.println("Reconnected successfully.");
-                    starting=false;
-                    gameStarted=true;
-                }
-            }while (starting);
+            try {
+                instance.server.waitForGame(starting);
+            } catch (GameStartingException e) {
+                System.out.println("A Game will start soon...");
+                starting=true;
+            } catch (GameStartedException e) {
+                System.out.println("Game is started.");
+                starting=false;
+                gameStarted=true;
+            } catch (TimerRestartedException e) {
+                System.err.println("Someone disconnected. Timer has been restarted.");
+            } catch (GameInProgressException e) {
+                System.out.println("Reconnected successfully.");
+                starting=false;
+                gameStarted=true;
+            }
         }
 
     }

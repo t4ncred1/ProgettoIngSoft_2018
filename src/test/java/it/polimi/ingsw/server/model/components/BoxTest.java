@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.components;
+package it.polimi.ingsw.server.model.components;
 
 import it.polimi.ingsw.server.custom_exception.LimitValueException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
@@ -230,19 +230,19 @@ public class BoxTest {
     public void checkGetConstraint() throws NotValidParameterException {
 
         Box box= new Box("green",0,0);
-        assertEquals(box.getConstraint(),"green");
+        assertEquals(box.getConstraint(),"G");
 
         Box box1= new Box("red",0,1);
-        assertEquals(box1.getConstraint(),"red");
+        assertEquals(box1.getConstraint(),"R");
 
         Box box2= new Box("blue",1,0);
-        assertEquals(box2.getConstraint(),"blue");
+        assertEquals(box2.getConstraint(),"B");
 
         Box box3= new Box("yellow",2,0);
-        assertEquals(box3.getConstraint(),"yellow");
+        assertEquals(box3.getConstraint(),"Y");
 
         Box box4= new Box("purple",0,2);
-        assertEquals(box4.getConstraint(),"purple");
+        assertEquals(box4.getConstraint(),"P");
 
     }
 
@@ -261,7 +261,7 @@ public class BoxTest {
     public void checkToString() throws NotValidParameterException {
 
         Box test=new Box(3,2,1);
-        assertEquals("color Restriction: 0; 0; 0; 0; 0; | value Restriction: 1; 1; 0; 1; 1; 1; | Open = 0 | position = (2,1)",test.toString());
+        assertEquals("color Restriction: 0; 0; 0; 0; 0; | value Restriction: 1; 1; 0; 1; 1; 1;  | Kind of constraint (T:value, F:color) true| Open = 0 | position = (2,1)",test.toString());
     }
 
 }
