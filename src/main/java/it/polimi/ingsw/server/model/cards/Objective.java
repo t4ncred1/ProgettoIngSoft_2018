@@ -4,10 +4,7 @@ import it.polimi.ingsw.server.model.components.Grid;
 public abstract class Objective {
     String title;
     String description;
-    public int calculatePoints(Grid grid) throws NotValidParameterException {
-        return 0;
-    }
-
+    public abstract int calculatePoints(Grid grid) throws NotValidParameterException;
     public String getTitle(){
         return title;
     }
