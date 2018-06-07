@@ -43,7 +43,7 @@ public class MatchModel{
     private static final String BLUE_OBJ= "blue";
     private static final String PURPLE_OBJ= "purple";
 
-    MatchModel(Set<String> playersUserNames) throws NotValidParameterException, NotValidConfigPathException{
+    public MatchModel(Set<String> playersUserNames) throws NotValidParameterException, NotValidConfigPathException{
         if (playersUserNames==null) throw new NullPointerException();
         try {
             MAX_PLAYERS_NUMBER =ConfigurationHandler.getMaxPlayersNumber();
