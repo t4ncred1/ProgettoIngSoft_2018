@@ -1,10 +1,14 @@
 package it.polimi.ingsw.server.net;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.components.Die;
+import it.polimi.ingsw.server.components.DieConstraints;
+import it.polimi.ingsw.server.components.DieToConstraintsAdapter;
 import it.polimi.ingsw.server.components.Grid;
+import it.polimi.ingsw.server.configurations.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.server.custom_exception.*;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
@@ -16,16 +20,23 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.*;
 
 public class SocketUserAgent extends Thread implements UserInterface {
 
-    private Socket socket;
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
     private MatchController gameHandling;
     private boolean inGame;
+    private boolean connected;
 
     private String username;
+
+
+    private static long connectionNumber= 0L;
+    private long actualConnectionNumber;
+    private Handler handler;
+    private Logger logger;
 
 
     private static final String PING_MESSAGE= "";
@@ -35,6 +46,15 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private static final String SUCCESSFULLY_LOGGED = "logged";
     private static final String SERVER_FULL = "notLogged_server_full";
     private static final String USERNAME_NOT_AVAILABLE= "notLogged_username_not_available";
+
+
+    private static final String LAUNCHING_GAME = "launching_game";
+    private static final String GAME_STARTED = "game_started";
+    private static final String GAME_ALREADY_IN_PROGRESS = "reconnected";
+
+    private static final String TRY_LOGOUT= "try_logout";
+    private static final String SUCCESSFULLY_LOGGED_OUT= "logged_out";
+
     private static final String OK_REQUEST = "ok";
     private static final String NOT_OK_REQUEST = "retry";
     private static final String REQUEST_GRID = "get_grids";
@@ -59,59 +79,83 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private static final String DICE_POOL_DATA= "dice_pool";
     private static final String DISCONNECTION = "disconnected";
 
-    public SocketUserAgent(Socket client) {
-        this.socket=client;
+    SocketUserAgent(Socket client) {
+        connected=true;
+        actualConnectionNumber =connectionNumber++;
+        try {
+            logger = Logger.getLogger(SocketUserAgent.class.getName()+actualConnectionNumber);
+            handler = new FileHandler("src/main/resources/log_files/clientLog_"+ actualConnectionNumber+".log");
+            SimpleFormatter formatter = new SimpleFormatter();
+            handler.setFormatter(formatter);
+            logger.setLevel(Level.FINER);
+            logger.addHandler(handler);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "FileHandler not found",e);
+        }
         try{
-            this.inputStream= new DataInputStream(socket.getInputStream());
-            this.outputStream= new DataOutputStream(socket.getOutputStream());
+            this.inputStream= new DataInputStream(client.getInputStream());
+            this.outputStream= new DataOutputStream(client.getOutputStream());
         }
         catch(IOException e){
-            e.printStackTrace();
+            logger.log(Level.SEVERE,"Can't get streams from socket!",e);
         }
     }
 
 
     @Override
     public void run(){
-        handleConnection();
 
-        handleLogin();
-
-        handleLogoutRequestBeforeStart();
-
+        logger.fine("Connection request received on Socket system");
         try {
-            handleInitialization();
-            boolean gameFinished=false;
-            do{
-                handleTurnLogic();
-            }while (!gameFinished);
+            handleConnection();
+            handleLogin();
+            handleLogoutRequestBeforeStart();
+
+            handleGameInitialization();
+            handleGameLogic();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Client disconnected",e );
+        } catch (DisconnectionException e) {
+            logger.log(Level.FINE, "Client logged out",e );
+        } finally {
+            logger.log(Level.FINE, "Logger file closed. SocketUserAgent {0} shut down",actualConnectionNumber);
+            handler.close();
         }
 
     }
 
-    private void handleTurnLogic() throws IOException {
-        try {
+    private void handleGameLogic() throws IOException {
+        boolean gameFinished=false;
+        do{
+            try {
+                handleTurnLogic();
+            }  catch (TooManyRoundsException e) {
+                outputStream.writeUTF(GAME_FINISHED);
+                logger.log(Level.FINE, "{0} andre notified about the end of the game.",username );
+                gameFinished=true;
+            }
+        }while (!gameFinished);
+    }
+
+    private void handleTurnLogic() throws IOException, TooManyRoundsException {
             handleTurnPlayerRequest();
             sendDicePool();
             handleTurn();
-        } catch (TooManyRoundsException e) {
-            outputStream.writeUTF(GAME_FINISHED);
-        }
     }
 
     private void handleTurn() throws IOException {
         String request;
         request=inputStream.readUTF();
+        logger.log(Level.FINE, "Request: {0} from {1} ", new Object[]{request,username});
         if(request.equals(LISTEN_STATE)){
             request=inputStream.readUTF();
-            if(!request.equals(END_LISTEN)) /* FIXME: 04/06/2018 */;
+            if(!request.equals(END_LISTEN)){
+                logger.log(Level.SEVERE, "Unexpected message from {0}: received {1} instead of {2}", new Object[]{username,request,END_LISTEN});
+            }
         }
         else{
             boolean turnFinished=false;
             do{
-                System.out.println("Request: "+request + " from " +username);
                 switch (request){
                     case INSERT_DIE:
                         handleDieInsertion();
@@ -121,9 +165,10 @@ public class SocketUserAgent extends Thread implements UserInterface {
                         gameHandling.notifyEnd();
                         break;
                     default:
+                        logger.log(Level.SEVERE, "Unexpected message from {0}: received {1} instead of an operation", new Object[]{username,request});
                 }
-                request=inputStream.readUTF();
-            }while (!turnFinished);
+                if(!turnFinished) request=inputStream.readUTF();
+            }while (!turnFinished&&connected);
         }
     }
 
@@ -132,26 +177,38 @@ public class SocketUserAgent extends Thread implements UserInterface {
         int x = inputStream.readInt();
         int y= inputStream.readInt();
         try {
-            gameHandling.insertDie(position,x,y);
+            gameHandling.insertDie(this,position,x,y);
             outputStream.writeUTF(OK_REQUEST);
             sendUpdatedGrid();
         } catch (InvalidOperationException e) {
             outputStream.writeUTF(NOT_OK_REQUEST);
         } catch (NotInPoolException e) {
             outputStream.writeUTF(INVALID_POSITION);
+        } catch (NotValidParameterException e) {
+            e.printStackTrace(); //FIXME this error should "go" upper.
         }
 
     }
 
     private void sendUpdatedGrid() throws IOException {
         try {
-            Grid toSend =gameHandling.getPlayerGrid(this);
-            Gson gson = new Gson();
-            outputStream.writeUTF(gson.toJson(toSend));
+            Grid grid =gameHandling.getPlayerGrid(this);
+            Gson gson = getGsonForGrid();
+            String toSend= gson.toJson(grid);
+            outputStream.writeUTF(toSend);
         } catch (NotValidParameterException e) {
             //FIXME this error should "go" upper.
-            System.err.println("Security error: invalid access!");
+            logger.log(Level.SEVERE,"Security error: invalid access!",e);
         }
+    }
+
+    private Gson getGsonForGrid() {
+        GsonBuilder builder= new GsonBuilder();
+        RuntimeTypeAdapterFactory<DieConstraints> adapterFactory= RuntimeTypeAdapterFactory.of(DieConstraints.class)
+                .registerSubtype(DieToConstraintsAdapter.class, DieToConstraintsAdapter.class.getName());
+
+        builder.registerTypeAdapterFactory(adapterFactory);
+        return builder.create();
     }
 
     private void sendDicePool() throws IOException {
@@ -171,10 +228,11 @@ public class SocketUserAgent extends Thread implements UserInterface {
         boolean turnSent=false;
         do {
             waitForTurnPlayerRequest();
+            logger.log(Level.FINE,"{0} started turn player request.",username);
             try {
-
                 player = gameHandling.requestTurnPlayer();
                 outputStream.writeUTF(player);
+                logger.log(Level.FINE,"Sent: turnPlayer ({0}) to {1}",new Object[]{player,username});
                 turnSent = true;
             } catch (InvalidOperationException e) {
                 outputStream.writeUTF(NOT_OK_REQUEST);
@@ -185,17 +243,19 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private void waitForTurnPlayerRequest() throws IOException {
         String request;
         do {
+            request = inputStream.readUTF();
+            //This sleep is used to avoid continuous request from clients
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
+                logger.log(Level.SEVERE, "Interrupted!");
             }
-            request = inputStream.readUTF();
         }
         while (!request.equals(GET_TURN_PLAYER));
     }
 
-    private void handleInitialization() throws IOException {
+    private void handleGameInitialization() throws IOException {
         try {
             handleGridsRequest();
             boolean gridSet;
@@ -206,17 +266,19 @@ public class SocketUserAgent extends Thread implements UserInterface {
             handleSelectedGridRequest();
         } catch (InvalidOperationException e) {
             outputStream.writeUTF(GRID_ALREADY_SELECTED);
+            logger.log(Level.CONFIG, "Player already selected a grid", e);
         }
     }
 
     private void handleSelectedGridRequest() throws IOException {
         String request = inputStream.readUTF();
-        if(request.equals(GET_SELECTED_GRID));
-        else /*TODO*/;
+        if(request.equals(GET_SELECTED_GRID)) logger.log(Level.FINE, "Grid requested by {0}", username);
+        else  logger.log(Level.SEVERE, "Unexpected message from {0}: received {1} instead of {2}", new Object[]{username,request,GET_SELECTED_GRID});
         Grid grid;
         try {
             grid= gameHandling.getPlayerGrid(this);
         } catch (NotValidParameterException e) {
+            //FIXME this exception should go upper?
             outputStream.writeUTF(NOT_OK_REQUEST);
             return;
         }
@@ -225,9 +287,9 @@ public class SocketUserAgent extends Thread implements UserInterface {
     }
 
     private void sendGridSelected(Grid grid) throws IOException {
-        Gson gson= new Gson();
-        String toSend= gson.toJson(grid);
+        String toSend= getGsonForGrid().toJson(grid);
         outputStream.writeUTF(toSend);
+        logger.log(Level.FINE, "Sent grid to {0}", username);
     }
 
     private boolean handleGridSet() throws IOException {
@@ -239,6 +301,8 @@ public class SocketUserAgent extends Thread implements UserInterface {
             }
             else{
                 outputStream.writeUTF(NOT_OK_REQUEST);
+                logger.log(Level.SEVERE, "Unexpected message from {0}: received {1} instead of {2}", new Object[]{username,request,CHOOSE_GRID});
+
             }
         }
         while (!request.equals(CHOOSE_GRID));
@@ -250,6 +314,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             outputStream.writeUTF(NOT_OK_REQUEST);
             return false;
         } catch (NotValidParameterException e) {
+            //FIXME this exception should go upper
             e.printStackTrace(); //thrown by controller if client is not registered. Should not happen.
         }
         return true;
@@ -259,7 +324,11 @@ public class SocketUserAgent extends Thread implements UserInterface {
         String request;
         do{
             request = inputStream.readUTF();
-            if(!request.equals(REQUEST_GRID)) outputStream.writeUTF(NOT_OK_REQUEST);
+            if(!request.equals(REQUEST_GRID)) {
+                outputStream.writeUTF(NOT_OK_REQUEST);
+                logger.log(Level.SEVERE, "Unexpected message from {0}: received {1} instead of {2}", new Object[]{username,request,REQUEST_GRID});
+
+            }
         }while (!request.equals(REQUEST_GRID));
         outputStream.writeUTF(OK_REQUEST);
         ArrayList<Grid> grids;
@@ -272,77 +341,59 @@ public class SocketUserAgent extends Thread implements UserInterface {
         outputStream.writeUTF(gson.toJson(grids));
     }
 
-    private void handleLogoutRequestBeforeStart() {
-        while(!inGame){
-            try {
-                if(inputStream.available()>0){
-                    String read= inputStream.readUTF();
-                    if(read.equals("try_logout"))
-                        try {
-                            MatchHandler.getInstance().logOut(this);
-                            outputStream.writeUTF("logged_out");
-                        }
-                        catch (InvalidOperationException e){
-                            outputStream.writeUTF("launching_game");
-                        }
+    private void handleLogoutRequestBeforeStart() throws IOException, DisconnectionException {
+        while(!inGame&&connected){
+            if(inputStream.available()>0) {
+                String read = inputStream.readUTF();
+                if (read.equals(TRY_LOGOUT)) {
+                    logger.log(Level.FINE,"Logout request received from {0}",username);
+                    try {
+                        MatchHandler.getInstance().logOut(this);
+                        outputStream.writeUTF(SUCCESSFULLY_LOGGED_OUT);
+                        logger.log(Level.FINE,"{0} logged out",username);
+                        connected=false;
+                        throw new DisconnectionException();
+                    } catch (InvalidOperationException e) {
+                        outputStream.writeUTF(LAUNCHING_GAME);
+                        logger.log(Level.WARNING,"{0} could not log out cause the game is starting",username);
+                    }
                 }
-
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }
 
-    public void handleLogin(){
-        boolean connected =false;
+    public void handleLogin() throws IOException {
+        boolean logged =false;
         do {
             try {
                 MatchHandler.login(this);
-                System.out.println("Connection protocol ended. Connected");
-                try {
-                    outputStream.writeUTF(SUCCESSFULLY_LOGGED);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                connected=true;
+                logger.log(Level.FINE,"Connection protocol ended. Connected");
+                outputStream.writeUTF(SUCCESSFULLY_LOGGED);
+                logged=true;
             } catch (InvalidOperationException e) {
-                System.out.println("Connection protocol ended. Server is full");
-                e.printStackTrace();
-                try {
-                    outputStream.writeUTF(SERVER_FULL);
-                } catch (IOException e2) {
-                    e2.printStackTrace();
-                }
+                logger.log(Level.INFO,"Connection protocol ended. Server is full",e);
+                outputStream.writeUTF(SERVER_FULL);
                 return;
             } catch (DisconnectionException e) {
                 System.out.println("Connection protocol ended. Client disconnected.");
-                e.printStackTrace();
-                return;
+                throw new IOException();
             } catch (InvalidUsernameException e) {
-                try {
-                    outputStream.writeUTF(USERNAME_NOT_AVAILABLE);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+                outputStream.writeUTF(USERNAME_NOT_AVAILABLE);
+                logger.log(Level.INFO, "Username not available", e);
             } catch (ReconnectionException e) {
-                System.out.println("Connection protocol ended. Client joined the game left before");
-                connected=true;
+                logger.log(Level.CONFIG,"Connection protocol ended. Client joined the game left before",e);
+                logged=true;
             }
         }
-        while(!connected);
+        while(!logged);
     }
 
-    private void handleConnection() {
-        System.out.println("Connection request received on Socket system");
-        try {
-            String hello;
-            do{
-                hello= inputStream.readUTF();
-            }
-            while(!hello.equals(HELLO_MESSAGE));
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void handleConnection() throws IOException {
+        String hello;
+        do{
+            hello= inputStream.readUTF();
         }
+        while(!hello.equals(HELLO_MESSAGE));
     }
 
     @Override
@@ -352,6 +403,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             return true;
         }
         catch (IOException e){
+            connected=false;
             return false;
         }
     }
@@ -363,14 +415,14 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
 
     //-----------------------------------------------------------------------------
-    //                             funzioni per login
+    //                             methods for login
     //-----------------------------------------------------------------------------
     @Override
     public void chooseUsername() throws DisconnectionException {
-        final String chooseUsername = new String(LOGIN_MESSAGE_FROM_SERVER);
         try {
-            outputStream.writeUTF(chooseUsername);
+            outputStream.writeUTF(LOGIN_MESSAGE_FROM_SERVER);
         } catch (IOException e) {
+            connected=false;
             throw new DisconnectionException();
         }
     }
@@ -379,7 +431,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
     public void arrangeForUsername() throws InvalidOperationException, DisconnectionException, ReconnectionException, InvalidUsernameException {
         try {
             username= inputStream.readUTF();
-            System.out.println("received: " + username);
+            logger.log(Level.FINE,"Received {0} as username. Trying to reserve it.", username);
         } catch (IOException e) {
             throw new DisconnectionException();
         }
@@ -390,9 +442,10 @@ public class SocketUserAgent extends Thread implements UserInterface {
     @Override
     public void notifyStarting() throws DisconnectionException {
         try {
-            outputStream.writeUTF("launching_game");
+            outputStream.writeUTF(LAUNCHING_GAME);
+            logger.log(Level.FINE,"{0} notified about game starting", username);
         } catch (IOException e) {
-            e.printStackTrace();
+            connected=false;
             throw new DisconnectionException();
         }
     }
@@ -400,9 +453,10 @@ public class SocketUserAgent extends Thread implements UserInterface {
     @Override
     public void notifyStart() throws DisconnectionException {
         try {
-            outputStream.writeUTF("game_started");
+            outputStream.writeUTF(GAME_STARTED);
+            logger.log(Level.FINE,"{0} notified about game start", username);
         } catch (IOException e) {
-            e.printStackTrace();
+            connected=false;
             throw new DisconnectionException();
         }
     }
@@ -410,10 +464,11 @@ public class SocketUserAgent extends Thread implements UserInterface {
     @Override
     public void notifyReconnection() throws DisconnectionException {
         try {
-            outputStream.writeUTF("logged");
-            outputStream.writeUTF("reconnected");
+            outputStream.writeUTF(SUCCESSFULLY_LOGGED);
+            outputStream.writeUTF(GAME_ALREADY_IN_PROGRESS);
+            logger.log(Level.FINE,"{0} notified about game is in progress", username);
         } catch (IOException e) {
-            e.printStackTrace();
+            connected=false;
             throw new DisconnectionException();
         }
     }
@@ -438,8 +493,9 @@ public class SocketUserAgent extends Thread implements UserInterface {
     public void notifyEndTurn() {
         try {
             outputStream.writeUTF(TURN_FINISHED);
+            logger.log(Level.FINE,"{0} notified of the end of the turn. ",username);
         } catch (IOException e) {
-            e.printStackTrace();
+            connected=false;
         }
 
     }
@@ -447,28 +503,16 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     //TODO from here.
 
-    @Override
-    public String getOperation() {
-        return null;
-    }
 
-    @Override
-    public void notifyAlreadyDoneOperation() {
-
-    }
-
-    @Override
-    public void askForOperation() {
-
-    }
 
     @Override
     public void notifyDisconnection() {
         try {
             outputStream.writeUTF(OPERATION_MESSAGE);
             outputStream.writeUTF(DISCONNECTION);
+            logger.log(Level.FINE,"{0} notified about disconnection due to timeout", username);
         } catch (IOException e) {
-            e.printStackTrace();
+            connected=false;
         }
     }
 
