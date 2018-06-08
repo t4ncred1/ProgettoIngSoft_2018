@@ -252,4 +252,8 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
             }
         }
     }
+
+    public void setToClosed() {
+        this.opened=0;
+    }
 }

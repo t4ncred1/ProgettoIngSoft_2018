@@ -206,14 +206,17 @@ public class GridTest {
         String passedConstraint = "none";
         int passedCoordinateX1 = 0;
         int passedCoordinateY1 = 0;
-        int passedCoordinateX2 = 1;
-        int passedCoordinateY2 = 1;
+        int passedCoordinateX2 = 0;
+        int passedCoordinateY2 = 3;
         Grid toTest1 = new Grid(3, "name");
 
 
         //When
-        toTest1.createBoxInXY(passedCoordinateX1, passedCoordinateY1, passedConstraint);
-        toTest1.createBoxInXY(passedCoordinateX2, passedCoordinateY2, passedConstraint);
+        for (int i=0; i<toTest1.getColumnNumber(); i++){
+            for (int j=0; j<toTest1.getRowNumber(); j++){
+                toTest1.createBoxInXY(i,j,passedConstraint);
+            }
+        }
 
         //Assert
         //this box is opened, methods ends without throwing exceptions
@@ -253,6 +256,43 @@ public class GridTest {
         //Assert
         Throwable exception = assertThrows(NotValidParameterException.class, () -> toTest.insertDieInXY(passedCoordinateX, passedCoordinateY, colorCheck, valueCheck, passedDie));
         assertEquals("Parameter: (10,10). Expected: coordinates should be: 0<=x<=3 and 0<=y<=4", exception.getMessage());
+    }
+
+    @Test
+    public void insertDieAfterFirst() throws NotValidParameterException{
+        int passedCoordinateX1 = 0;
+        int passedCoordinateY1 = 0;
+        int passedCoordinateX2 = 0;
+        int passedCoordinateY2 = 2;
+
+        boolean colorCheck= true, valueCheck=true;
+        Die passedDie = new Die("red", 1);
+
+        Grid toTest;
+        toTest = new Grid(3,"name");
+
+        for (int i=0; i<toTest.getColumnNumber(); i++){
+            for ( int j =0; j< toTest.getRowNumber(); j++){
+                try {
+                    toTest.createBoxInXY(i,j,"none");
+                } catch (NotValidParameterException e) {
+                    fail("Test failed during initialization.");
+                }
+            }
+        }
+
+        toTest.initializeAllObservers();
+
+        try {
+            toTest.insertDieInXY(passedCoordinateX1,passedCoordinateY1,colorCheck,valueCheck,passedDie);
+        } catch (InvalidOperationException e) {
+            fail("test failed in initialization.");
+        }
+
+        assertThrows(InvalidOperationException.class, ()->{
+            toTest.insertDieInXY(passedCoordinateX2,passedCoordinateY2,colorCheck,valueCheck,passedDie);
+        });
+
     }
 
     @Test

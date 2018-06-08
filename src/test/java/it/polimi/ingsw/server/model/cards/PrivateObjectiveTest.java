@@ -45,7 +45,7 @@ public class PrivateObjectiveTest {
             }
             toTest.initializeAllObservers();
             toTest.insertDieInXY(1,0,true,true, new Die("green",2));
-            toTest.insertDieInXY(2,3,true,true, new Die("green",5));
+            toTest.insertDieInXY(2,1,true,true, new Die("green",5));
 
         }catch (NotValidParameterException | InvalidOperationException e){
             fail("test failed");

@@ -53,7 +53,7 @@ public class Player {
     }
 
     public boolean hasSelectedAGrid() {
-        return this.gridSelected    != null;
+        return this.gridSelected!= null;
     }
 }
 

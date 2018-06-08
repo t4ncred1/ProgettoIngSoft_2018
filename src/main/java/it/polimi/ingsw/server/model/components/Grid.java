@@ -12,6 +12,7 @@ public class Grid implements Serializable {
     private String name;
     private int difficulty;
     private Box[][] gameGrid;
+    private transient boolean firstInsertion=true;
 
     public Grid(int difficulty, String name) throws NotValidParameterException {
         final String expectedData= "Difficulty should have a value between 3 and 6 (both included)";
@@ -102,7 +103,25 @@ public class Grid implements Serializable {
             throw new InvalidOperationException();
         else
             gameGrid[x][y].insertDie(die);
+
+        if (firstInsertion) {
+            setBoxesClosed(x,y);
+            firstInsertion=false;
+        }
     }
+
+    private void setBoxesClosed(int x, int y) {
+        for(Box[] column : gameGrid){
+            for (Box box : column){
+                if (!(box.getCoordY()==y&&box.getCoordX()==x)) box.setToClosed();
+                if (box.getCoordX()==x && (box.getCoordY()==y-1 || box.getCoordY()==y+1)) box.setToOpened();
+                if ((box.getCoordX()==x+1||box.getCoordX()==x-1) && box.getCoordY()==y) box.setToOpened();
+                if ((box.getCoordX()==x+1||box.getCoordX()==x-1) && (box.getCoordY()==y+1||box.getCoordY()==y-1)) box.setToOpened();
+            }
+        }
+
+    }
+
     public Box[][] getGrid(){
         return gameGrid.clone();
     }
