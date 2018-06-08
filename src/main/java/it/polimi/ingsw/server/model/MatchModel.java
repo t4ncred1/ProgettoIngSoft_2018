@@ -229,14 +229,14 @@ public class MatchModel{
        throw new NotValidParameterException("username: "+username,"Should be a player inside this match.");
     }
 
-    public void setPlayerToDisconnect(String username) throws NotValidParameterException {
+    public void setPlayerToDisconnect(String username) throws InvalidUsernameException{
         if (playersNotInGame==null) playersNotInGame=new Player[playersInGame.size()];
         boolean flag = false;
         int i;
         for (i=0; i<playersInGame.size();i++){
             if (playersInGame.get(i).getUsername().equals(username)) {playersNotInGame[i]=playersInGame.remove(i); flag=true;}
         }
-        if (!flag) throw new NotValidParameterException("username: "+username,"username should belong to a player in this match");
+        if (!flag) throw new InvalidUsernameException();
     }
 
     public void setPlayerToConnect(String username) throws NotValidParameterException{

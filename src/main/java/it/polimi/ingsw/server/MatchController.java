@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
 import it.polimi.ingsw.server.model.cards.PrivateObjective;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
@@ -11,6 +12,8 @@ import java.util.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MatchController extends Thread{
     private Map<String,UserInterface> playersInMatch;
@@ -28,6 +31,8 @@ public class MatchController extends Thread{
     private boolean dieInserted;
     private boolean toolCardUsed;
 
+    private static final String MESSAGE_FOR_PLAYER_NOT_IN_MODEL="Something went wrong during initialization: player is not in model";
+
     private static final String OPERATION_TIMER = "operation";
     private static final String GRID_CHOOSE_TIMER="initialization";
     private static final int SLEEP_TIME = 1000;
@@ -35,66 +40,40 @@ public class MatchController extends Thread{
     private Lock lock;
     private Condition condition;
 
-    private static int maxReconnectionTime=15000;
+    private Logger logger;
+    private static long matchNumber = 0L;
+    private long thisMatchNumber;
+
 
     public MatchController(){
         this.lock = new ReentrantLock();
         this.condition= lock.newCondition();
         this.playersInMatch= new LinkedHashMap<>();
+        logger= Logger.getLogger(this.getClass().getName()+"_"+matchNumber);
+        thisMatchNumber=matchNumber++;
     }
 
     @Override
     public void run(){
-        while(!gameStarted){
-            updateQueue();
-            try {
-                Thread.sleep(SLEEP_TIME);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                e.printStackTrace();
-            }
-        }
-
+        checkForDisconnectionUntilStart();
         //Initializing game
-        new Thread(() -> {
-            //this arrayList is used to avoid continuous print of "playerX disconnected"
-            ArrayList<String> stopCheck= new ArrayList<>();
-            while (!gameFinished){
-                try {
-                    Thread.sleep(SLEEP_TIME);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-                synchronized (playersInMatchGuard) {
-                    Set set = playersInMatch.keySet();
-                    Iterator iterator = set.iterator();
-                    while (iterator.hasNext()) {
-                        String username = (String) iterator.next();
-                        if (!stopCheck.contains(username)&&!playersInMatch.get(username).isConnected()) {
-                            //in this instruction player is removed only from connectedPlayers
-                            System.err.println(username+" disconnected.");
-                            stopCheck.add(username);
-                            MatchHandler.getInstance().notifyAboutDisconnection(username);
-                        }
-                        else if(stopCheck.contains(username)&&playersInMatch.get(username).isConnected()){
-                            stopCheck.remove(username);
-                        }
-                    }
-                }
-            }
-        }).start();
+        new Thread(this::checkForDisconnections).start();
 
+        logger.log(Level.FINE, "Match {0} started.", thisMatchNumber);
         initializeGame();
+        handleGame();
+    }
 
+
+    private void handleGame() {
         //round-turn logic.
-
         do{
             try {
                 handleTurn();
             } catch (TooManyRoundsException e) {
                 gameFinished = true;
             } catch (NotEnoughPlayersException e) {
-                System.out.println("Game finished.");
+                logger.log(Level.INFO, "Game finished");
                 gameFinished=true;
                 ready=true;
             }
@@ -129,41 +108,34 @@ public class MatchController extends Thread{
         }
         while(!(timeout||ok));
         timer.stop();
-        System.out.println("Ready to start rounds logic.");
+        logger.log(Level.INFO, "Ready to handle game logic");
     }
 
     private boolean haveAllPlayersChosenAGrid(boolean timeout) {
         //At the end of this part, if all players chose a grid then game could start (ok remains true).
         boolean ok = true;
         synchronized (modelGuard){
-            ArrayList<String> disconnectedPlayers = new ArrayList<>();
-            for(Map.Entry<String,UserInterface> entry : playersInMatch.entrySet()) {
-                String username= entry.getKey();
-                Boolean hasPlayerChosenAGrid= null;
+            for (Iterator<Map.Entry<String, UserInterface>> iterator = playersInMatch.entrySet().iterator(); iterator.hasNext(); ) {
+                Map.Entry<String, UserInterface> entry = iterator.next();
+                String username = entry.getKey();
+                boolean hasPlayerChosenAGrid = true;
                 try {
                     hasPlayerChosenAGrid = model.hasPlayerChosenAGrid(username);
                 } catch (NotValidParameterException e) {
-                    e.printStackTrace(); //FIXME caused by "hasPlayerChosenAGrid" when username passed is not in game. Should this exception be thrown?
+                    logger.log(Level.SEVERE, MESSAGE_FOR_PLAYER_NOT_IN_MODEL, e);
                 }
-                ok= ok && hasPlayerChosenAGrid;
+                ok = ok && hasPlayerChosenAGrid;
 
                 //if timeout event occurred and player still has not chosen a grid he can be considered as disconnected.
-                if(timeout&&!hasPlayerChosenAGrid){
+                if (timeout && !hasPlayerChosenAGrid) {
                     try {
                         model.setPlayerToDisconnect(username);
-                    } catch (NotValidParameterException e) {
-                        e.printStackTrace();    //fixme only thrown if username passe is not in current match.
+                    } catch (InvalidUsernameException e) {
+                        logger.log(Level.SEVERE, MESSAGE_FOR_PLAYER_NOT_IN_MODEL, e);
                     }
                     entry.getValue().notifyDisconnection();
                     MatchHandler.getInstance().notifyAboutDisconnection(entry.getKey());
-                    disconnectedPlayers.add(username);
-                }
-            }
-
-            //Remove UserInterfaces of disconnected players
-            synchronized (playersInMatchGuard) {
-                for (String player : disconnectedPlayers) {
-                    playersInMatch.remove(player);
+                    iterator.remove();
                 }
             }
         }
@@ -189,7 +161,7 @@ public class MatchController extends Thread{
         synchronized (modelGuard) {
             model.updateTurn(MAX_ROUND);
             username = model.askTurn();
-            System.out.println("It's "+username+" turn.");
+            logger.log(Level.INFO,"It is {0} turn.", username);
             initializeTurn(username);
             ready=true; //now i can handle clients requests.
         }
@@ -240,8 +212,8 @@ public class MatchController extends Thread{
             synchronized (modelGuard){
                 try {
                     model.setPlayerToDisconnect(username);
-                } catch (NotValidParameterException e) {
-                    e.printStackTrace();
+                } catch (InvalidUsernameException e) {
+                    logger.log(Level.SEVERE, MESSAGE_FOR_PLAYER_NOT_IN_MODEL, e);
                 }
             }
             for (Map.Entry<String, UserInterface> players : playersInMatch.entrySet())
@@ -275,50 +247,38 @@ public class MatchController extends Thread{
         turnPlayer= playersInMatch.get(username);
     }
 
-    public int playerInGame() {
+    int playerInGame() {
         int playerInQueue;
         synchronized (playersInMatchGuard) {
             playerInQueue = playersInMatch.size();
         }
-        System.out.println("player in queue: "+playerInQueue);
+        logger.log(Level.INFO,"player in queue: {0}",playerInQueue);
         return playerInQueue;
     }
 
-    public void updateQueue(){
+    void updateQueue(){
         boolean notify=false;
         synchronized (playersInMatchGuard){
-            Set set= playersInMatch.keySet();
-            Iterator iterator=set.iterator();
-            ArrayList<String> toRemove = new ArrayList<>();
-            while (iterator.hasNext()) {
-                String username = (String) iterator.next();
-                if(!playersInMatch.get(username).isConnected()){
-                    System.err.println(username+" disconnected.");
-                    toRemove.add(username);
+            playersInMatch.forEach((username,player)->{
+                if(!player.isConnected()){
+                    logger.log(Level.WARNING, "{0} disconnected",username);
                     MatchHandler.getInstance().notifyAboutDisconnection(username);
                 }
-                if(playersInMatch.size()>1&&!this.gameStartingSoon) notify=true;
-            }
-            for(String username: toRemove){
-                playersInMatch.remove(username);
-            }
+            });
+            playersInMatch.entrySet().removeIf(player-> !player.getValue().isConnected());
+            if(playersInMatch.size()>1&&!this.gameStartingSoon) notify=true;
         }
         if(notify)MatchHandler.getInstance().notifyMatchCanStart();
     }
 
-    public void insert(UserInterface client) {
+    void insert(UserInterface client) {
         synchronized (playersInMatchGuard) {
             playersInMatch.put(client.getUsername(),client);
         }
     }
 
-    //state Observer
-    public boolean isGameStartingSoon() {
-        return gameStarted;
-    }
-
     //state modifier
-    public void setGameStartingSoon(boolean timeout) {
+    void setGameStartingSoon(boolean timeout) {
         final boolean startingSoonState =true;
         if(!gameStartingSoon||timeout) {
             this.gameStartingSoon = startingSoonState;
@@ -330,7 +290,7 @@ public class MatchController extends Thread{
                     Set list = playersInMatch.keySet();
                     Iterator iterator = list.iterator();
                     UserInterface lastConnection= null;
-                    while (iterator.hasNext()) lastConnection =playersInMatch.get(iterator.next().toString());
+                    while (iterator.hasNext()) lastConnection =playersInMatch.get(iterator.next().toString()); //Fixme is this the cause why "a game will start soon is sent twice?
                     try {
                         if(lastConnection!=null) lastConnection.notifyStarting();
                     } catch (DisconnectionException e) {
@@ -357,15 +317,14 @@ public class MatchController extends Thread{
 
     private void notifyStartingSoonToPlayers() {
         synchronized (playersInMatchGuard){
-            Set set= playersInMatch.keySet();
-            Iterator iterator=set.iterator();
+            Iterator<Map.Entry<String, UserInterface>> iterator=playersInMatch.entrySet().iterator();
             while (iterator.hasNext()){
-                String username = (String) iterator.next();
+                Map.Entry<String,UserInterface> player= iterator.next();
                 try {
-                    playersInMatch.get(username).notifyStarting();
+                    player.getValue().notifyStarting();
                 } catch (DisconnectionException e) {
-                    playersInMatch.remove(username);
-                    MatchHandler.getInstance().notifyAboutDisconnection(username);
+                    iterator.remove();
+                    MatchHandler.getInstance().notifyAboutDisconnection(player.getKey());
                 }
             }
         }
@@ -373,24 +332,21 @@ public class MatchController extends Thread{
 
     private void notifyStartToPlayers() {
         synchronized (playersInMatchGuard){
-            Set set= playersInMatch.keySet();
-            Iterator iterator=set.iterator();
-            while (iterator.hasNext()){
-                String username = (String) iterator.next();
-                UserInterface client = playersInMatch.get(username);
-                client.setController(this);
-                MatchHandler.getInstance().setPlayerInGame(username,this);
-                try {
-                    client.notifyStart();
-                } catch (DisconnectionException e) {
-                    //FIXME if necessary
-                    MatchHandler.getInstance().notifyAboutDisconnection(client.getUsername());
-                }
-            }
+            playersInMatch.forEach(this::notifyStartToPlayerX);
         }
     }
 
-    public void setGameToStarted() {
+    private void notifyStartToPlayerX(String username, UserInterface player){
+        player.setController(this);
+        MatchHandler.getInstance().setPlayerInGame(username,this);
+        try {
+            player.notifyStart();
+        } catch (DisconnectionException e) {
+            MatchHandler.getInstance().notifyAboutDisconnection(username);
+        }
+    }
+
+    void setGameToStarted() {
         final boolean gameStartedStatus =true;
         final boolean gameIsNotStartingAnymore = false;
 
@@ -409,13 +365,13 @@ public class MatchController extends Thread{
         this.notifyStartToPlayers();
     }
 
-    public void wakeUpController(){
+    void wakeUpController(){
         lock.lock();
         condition.signal();
         lock.unlock();
     }
 
-    public void handleReconnection(UserInterface player) throws InvalidOperationException {
+    void handleReconnection(UserInterface player) {
         lock.lock();
         String username = player.getUsername();
         synchronized (playersInMatchGuard) {
@@ -425,51 +381,42 @@ public class MatchController extends Thread{
             try {
                 model.setPlayerToConnect(username);
             } catch (NotValidParameterException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE,"Invalid operation",e);
             }
         }
         player.setController(this);
         try {
             player.notifyReconnection();
         } catch (DisconnectionException e) {
-            e.printStackTrace();
+            logger.log(Level.INFO, "{0} disconnected during reconnection", player.getUsername());
         }
         lock.unlock();
     }
 
-    public List<Grid> getPlayerGrids(UserInterface userInterface) throws InvalidOperationException {
+    public List<Grid> getPlayerGrids(UserInterface userInterface) throws InvalidOperationException, IllegalRequestException {
         String username = userInterface.getUsername();
-        //FIXME user securityControl()
-        synchronized (playersInMatchGuard){
-            if(!playersInMatch.containsKey(username)) /*TODO throw an exception*/;
-            if(!playersInMatch.get(username).equals(userInterface)) /*TODO throw an exception*/;
-        }
+        securityControl(userInterface);
 
         try {
             return model.getGridsForPlayer(username);
         } catch (InvalidUsernameException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, MESSAGE_FOR_PLAYER_NOT_IN_MODEL, e);
         }
-        return null;
+        return new ArrayList<>();
 
     }
 
-    public void setGrid(UserInterface userInterface, int gridChosen) throws InvalidOperationException, NotValidParameterException {
+    public void setGrid(UserInterface userInterface, int gridChosen) throws InvalidOperationException, IllegalRequestException {
         String username = userInterface.getUsername();
-        synchronized (playersInMatchGuard){
-            //FIXME?? invalid access can be simplified like this?
-            if(!playersInMatch.containsKey(username)) throw new NotValidParameterException("UserInterface passed does not bleong to this match","UserInterface passed should belong to this match");
-            if(!playersInMatch.get(username).equals(userInterface)) throw new NotValidParameterException("parameter UserInterface name does not match the name registered in this match.","UserInterface should match the name in this match.");
-        }
-
+        securityControl(userInterface);
         try {
             synchronized (modelGuard) {
                 model.setPlayerGrid(username, gridChosen);
             }
             System.out.println(username + " chose the grid number: "+ gridChosen);
         } catch (NotValidParameterException e) {
-            System.err.println("ERROR!");
-            e.printStackTrace();
+            // FIXME: 08/06/2018
+            logger.log(Level.SEVERE, "Error!", e);
         }
         lock.lock();
         condition.signal();
@@ -492,18 +439,18 @@ public class MatchController extends Thread{
         }
     }
 
-    public PrivateObjective getPrivateObject(UserInterface clientCalling) throws NotValidParameterException {
+    public PrivateObjective getPrivateObject(UserInterface clientCalling) throws IllegalRequestException {
         securityControl(clientCalling);
 
         try {
             return model.getPrivateObjective(clientCalling.getUsername());
         } catch (InvalidUsernameException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, MESSAGE_FOR_PLAYER_NOT_IN_MODEL, e);
         }
         return null;
     }
 
-    public void insertDie(UserInterface player, int position, int x, int y) throws InvalidOperationException, NotInPoolException, NotValidParameterException {
+    public void insertDie(UserInterface player, int position, int x, int y) throws InvalidOperationException, NotInPoolException, IllegalRequestException {
         securityControl(player);
         if(dieInserted) /*TODO throw an exception*/;
         try {
@@ -519,17 +466,17 @@ public class MatchController extends Thread{
     }
 
 
-    public Grid getPlayerGrid(UserInterface player) throws NotValidParameterException {
+    public Grid getPlayerGrid(UserInterface player) throws IllegalRequestException {
         securityControl(player);
         return model.getPlayerCurrentGrid(player.getUsername());
     }
 
-    private void securityControl(UserInterface player) throws NotValidParameterException {
+    private void securityControl(UserInterface player) throws  IllegalRequestException {
         String username= player.getUsername();
-        //fixme create different exceptions to handle security
+        //fixme create 2 different exceptions?
         synchronized (playersInMatchGuard) {
-            if (!playersInMatch.containsKey(username)) throw new NotValidParameterException("", "");
-            if (!playersInMatch.get(username).equals(player)) throw new NotValidParameterException("", "");
+            if (!playersInMatch.containsKey(username)) throw new IllegalRequestException();
+            if (!playersInMatch.get(username).equals(player)) throw new IllegalRequestException();
         }
     }
 
@@ -541,6 +488,44 @@ public class MatchController extends Thread{
         lock.unlock();
         synchronized (playersInMatchGuard) {
             playersInMatch.keySet().forEach(player -> playersInMatch.get(player).notifyEndTurn());
+        }
+    }
+
+    private void checkForDisconnectionUntilStart() {
+        while(!gameStarted){
+            updateQueue();
+            try {
+                Thread.sleep(SLEEP_TIME);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                logger.log(Level.SEVERE, "Match interrupted on wait", e);
+            }
+        }
+    }
+
+    private void checkForDisconnections() {
+        ArrayList<String> stopCheck = new ArrayList<>();
+        //this arrayList is used to avoid continuous print of "playerX disconnected"
+
+        while (!gameFinished) {
+            try {
+                Thread.sleep(SLEEP_TIME);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            synchronized (playersInMatchGuard) {
+                Set<String> set = playersInMatch.keySet();
+                for (String username : set) {
+                    if (!stopCheck.contains(username) && !playersInMatch.get(username).isConnected()) {
+                        //in this instruction player is removed only from connectedPlayers
+                        logger.log(Level.WARNING, "{0} disconnected",username);
+                        stopCheck.add(username);
+                        MatchHandler.getInstance().notifyAboutDisconnection(username);
+                    } else if (stopCheck.contains(username) && playersInMatch.get(username).isConnected()) {
+                        stopCheck.remove(username);
+                    }
+                }
+            }
         }
     }
 }

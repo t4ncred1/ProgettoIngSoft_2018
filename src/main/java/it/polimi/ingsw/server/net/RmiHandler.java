@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.configurations.ConfigHandler;
 import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
+import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
 import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.model.cards.PrivateObjective;
 import it.polimi.ingsw.server.model.components.Die;
@@ -106,7 +107,7 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
     }
 
     @Override
-    public List<Grid> getGrids(ClientRemoteInterface thisClient) throws InvalidOperationException, NotValidParameterException {
+    public List<Grid> getGrids(ClientRemoteInterface thisClient) throws InvalidOperationException, NotValidParameterException, IllegalRequestException {
         RMIUserAgent clientCalling;
         synchronized (clientsHandledGuard) {
             if (!clientsHandled.containsKey(thisClient)) throw new NotValidParameterException("this Client is not registered to RMI","Client calling should be registered to RMI");
@@ -116,7 +117,7 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
     }
 
     @Override
-    public void setGrid(ClientRemoteInterface thisClient, int index) throws InvalidOperationException, NotValidParameterException {
+    public void setGrid(ClientRemoteInterface thisClient, int index) throws InvalidOperationException, NotValidParameterException, IllegalRequestException {
         //if it throws a InvalidOperationException, Index Parameter is wrong.
         RMIUserAgent clientCalling;
         synchronized (clientsHandledGuard) {
@@ -127,18 +128,13 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
     }
 
     @Override
-    public PrivateObjective getPrivateObjective(ClientRemoteInterface thisClient) throws RemoteException, NotValidParameterException {
+    public PrivateObjective getPrivateObjective(ClientRemoteInterface thisClient) throws RemoteException, NotValidParameterException, IllegalRequestException {
         RMIUserAgent clientCalling;
         synchronized (clientsHandledGuard) {
             if (!(clientsHandled.containsKey(thisClient))) throw new NotValidParameterException("Client thisClient is not in any Match.","Should be in a match to ask for a private objective.");
             clientCalling = clientsHandled.get(thisClient);
         }
-        try {
-            return clientsMatch.get(thisClient).getPrivateObject(clientCalling);
-        } catch (NotValidParameterException e) {
-            e.printStackTrace(); //should not be thrown if RMIhandler is correct
-        }
-        return null;
+        return clientsMatch.get(thisClient).getPrivateObject(clientCalling);
     }
 
     @Override

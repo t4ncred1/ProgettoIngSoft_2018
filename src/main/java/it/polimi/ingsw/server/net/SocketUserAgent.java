@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
+import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.DieConstraints;
 import it.polimi.ingsw.server.model.components.DieToConstraintsAdapter;
@@ -32,7 +33,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     private String username;
 
-
+    private static final String UNEXPECTED_MESSAGE_RECEIVED = "Unexpected message from {0}: received {1} instead of {2}";
     private static long connectionNumber= 0L;
     private long actualConnectionNumber;
     private Handler handler;
@@ -57,6 +58,9 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     private static final String OK_REQUEST = "ok";
     private static final String NOT_OK_REQUEST = "retry";
+    private static final String SECURITY_VIOLATION = "illegal_access";
+
+
     private static final String REQUEST_GRID = "get_grids";
     private static final String GRID_ALREADY_SELECTED= "grid_selected";
     private static final String CHOOSE_GRID="set_grid";
@@ -117,6 +121,13 @@ public class SocketUserAgent extends Thread implements UserInterface {
             logger.log(Level.WARNING, "Client disconnected",e );
         } catch (DisconnectionException e) {
             logger.log(Level.FINE, "Client logged out",e );
+        } catch (IllegalRequestException e) {
+            logger.log(Level.SEVERE,"Security error: invalid access!",e);
+            try {
+                outputStream.writeUTF(SECURITY_VIOLATION);
+            } catch (IOException e1) {
+                logger.log(Level.WARNING, "Client disconnected on security notification");
+            }
         } finally {
             logger.log(Level.FINE, "Logger file closed. SocketUserAgent {0} shut down",actualConnectionNumber);
             handler.close();
@@ -124,7 +135,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     }
 
-    private void handleGameLogic() throws IOException {
+    private void handleGameLogic() throws IOException, IllegalRequestException {
         boolean gameFinished=false;
         do{
             try {
@@ -137,20 +148,20 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }while (!gameFinished);
     }
 
-    private void handleTurnLogic() throws IOException, TooManyRoundsException {
+    private void handleTurnLogic() throws IOException, TooManyRoundsException, IllegalRequestException {
             handleTurnPlayerRequest();
             sendDicePool();
             handleTurn();
     }
 
-    private void handleTurn() throws IOException {
+    private void handleTurn() throws IOException, IllegalRequestException {
         String request;
         request=inputStream.readUTF();
         logger.log(Level.FINE, "Request: {0} from {1} ", new Object[]{request,username});
         if(request.equals(LISTEN_STATE)){
             request=inputStream.readUTF();
             if(!request.equals(END_LISTEN)){
-                logger.log(Level.SEVERE, "Unexpected message from {0}: received {1} instead of {2}", new Object[]{username,request,END_LISTEN});
+                logger.log(Level.SEVERE, UNEXPECTED_MESSAGE_RECEIVED, new Object[]{username,request,END_LISTEN});
             }
         }
         else{
@@ -172,7 +183,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }
     }
 
-    private void handleDieInsertion() throws IOException {
+    private void handleDieInsertion() throws IOException, IllegalRequestException {
         int position=inputStream.readInt();
         int x = inputStream.readInt();
         int y= inputStream.readInt();
@@ -184,22 +195,15 @@ public class SocketUserAgent extends Thread implements UserInterface {
             outputStream.writeUTF(NOT_OK_REQUEST);
         } catch (NotInPoolException e) {
             outputStream.writeUTF(INVALID_POSITION);
-        } catch (NotValidParameterException e) {
-            e.printStackTrace(); //FIXME this error should "go" upper.
         }
 
     }
 
-    private void sendUpdatedGrid() throws IOException {
-        try {
-            Grid grid =gameHandling.getPlayerGrid(this);
-            Gson gson = getGsonForGrid();
-            String toSend= gson.toJson(grid);
-            outputStream.writeUTF(toSend);
-        } catch (NotValidParameterException e) {
-            //FIXME this error should "go" upper.
-            logger.log(Level.SEVERE,"Security error: invalid access!",e);
-        }
+    private void sendUpdatedGrid() throws IOException, IllegalRequestException {
+        Grid grid =gameHandling.getPlayerGrid(this);
+        Gson gson = getGsonForGrid();
+        String toSend= gson.toJson(grid);
+        outputStream.writeUTF(toSend);
     }
 
     private Gson getGsonForGrid() {
@@ -255,7 +259,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         while (!request.equals(GET_TURN_PLAYER));
     }
 
-    private void handleGameInitialization() throws IOException {
+    private void handleGameInitialization() throws IOException, IllegalRequestException {
         try {
             handleGridsRequest();
             boolean gridSet;
@@ -270,18 +274,13 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }
     }
 
-    private void handleSelectedGridRequest() throws IOException {
+    private void handleSelectedGridRequest() throws IOException, IllegalRequestException {
         String request = inputStream.readUTF();
         if(request.equals(GET_SELECTED_GRID)) logger.log(Level.FINE, "Grid requested by {0}", username);
-        else  logger.log(Level.SEVERE, "Unexpected message from {0}: received {1} instead of {2}", new Object[]{username,request,GET_SELECTED_GRID});
+        else  logger.log(Level.SEVERE, UNEXPECTED_MESSAGE_RECEIVED, new Object[]{username,request,GET_SELECTED_GRID});
         Grid grid;
-        try {
-            grid= gameHandling.getPlayerGrid(this);
-        } catch (NotValidParameterException e) {
-            //FIXME this exception should go upper?
-            outputStream.writeUTF(NOT_OK_REQUEST);
-            return;
-        }
+        grid= gameHandling.getPlayerGrid(this);
+
         outputStream.writeUTF(OK_REQUEST);
         sendGridSelected(grid);
     }
@@ -292,7 +291,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         logger.log(Level.FINE, "Sent grid to {0}", username);
     }
 
-    private boolean handleGridSet() throws IOException {
+    private boolean handleGridSet() throws IOException, IllegalRequestException {
         String request;
         do {
             request = inputStream.readUTF();
@@ -301,7 +300,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             }
             else{
                 outputStream.writeUTF(NOT_OK_REQUEST);
-                logger.log(Level.SEVERE, "Unexpected message from {0}: received {1} instead of {2}", new Object[]{username,request,CHOOSE_GRID});
+                logger.log(Level.SEVERE, UNEXPECTED_MESSAGE_RECEIVED, new Object[]{username,request,CHOOSE_GRID});
 
             }
         }
@@ -313,29 +312,26 @@ public class SocketUserAgent extends Thread implements UserInterface {
         } catch (InvalidOperationException e) {
             outputStream.writeUTF(NOT_OK_REQUEST);
             return false;
-        } catch (NotValidParameterException e) {
-            //FIXME this exception should go upper
-            e.printStackTrace(); //thrown by controller if client is not registered. Should not happen.
         }
         return true;
     }
 
-    private void handleGridsRequest() throws IOException, InvalidOperationException {
+    private void handleGridsRequest() throws IOException, InvalidOperationException, IllegalRequestException {
         String request;
         do{
             request = inputStream.readUTF();
             if(!request.equals(REQUEST_GRID)) {
                 outputStream.writeUTF(NOT_OK_REQUEST);
-                logger.log(Level.SEVERE, "Unexpected message from {0}: received {1} instead of {2}", new Object[]{username,request,REQUEST_GRID});
+                logger.log(Level.SEVERE, UNEXPECTED_MESSAGE_RECEIVED, new Object[]{username,request,REQUEST_GRID});
 
             }
         }while (!request.equals(REQUEST_GRID));
         outputStream.writeUTF(OK_REQUEST);
         ArrayList<Grid> grids;
-        do{
+        do {
             grids = (ArrayList<Grid>) gameHandling.getPlayerGrids(this);
         }
-        while (grids==null);
+        while (grids == null);
         outputStream.writeUTF(OK_REQUEST);
         Gson gson= new Gson();
         outputStream.writeUTF(gson.toJson(grids));
@@ -362,7 +358,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }
     }
 
-    public void handleLogin() throws IOException {
+    private void handleLogin() throws IOException {
         boolean logged =false;
         do {
             try {
@@ -375,7 +371,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
                 outputStream.writeUTF(SERVER_FULL);
                 return;
             } catch (DisconnectionException e) {
-                System.out.println("Connection protocol ended. Client disconnected.");
+                logger.log(Level.INFO,"Connection protocol ended. Client disconnected.");
                 throw new IOException();
             } catch (InvalidUsernameException e) {
                 outputStream.writeUTF(USERNAME_NOT_AVAILABLE);

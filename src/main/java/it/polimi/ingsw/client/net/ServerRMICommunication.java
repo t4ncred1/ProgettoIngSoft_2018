@@ -5,7 +5,7 @@ import it.polimi.ingsw.client.configurations.ConfigHandler;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.server.MatchController;
-import it.polimi.ingsw.server.configurations.ConfigurationHandler;
+import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
 import it.polimi.ingsw.server.custom_exception.*;
 import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.net.ServerRemoteInterface;
@@ -123,6 +123,8 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
             throw new ServerIsDownException();
         } catch (NotValidParameterException e) {
             e.printStackTrace();    //should not happen if this client is correctly registered.
+        } catch (IllegalRequestException e) {
+            //fixme
         }
         try {
             Proxy.getInstance().setGridsSelection(grids);
@@ -141,6 +143,8 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
             throw new ServerIsDownException();
         } catch (NotValidParameterException e) {
             e.printStackTrace(); //only thrown if parameter thisClient is invalid, should not happen.
+        } catch (IllegalRequestException e) {
+            //fixme
         }
     }
 
@@ -152,6 +156,8 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
             throw new ServerIsDownException();
         } catch (NotValidParameterException e) {
             e.printStackTrace();//Shall happen if this client is not registered to the match. Should not be the case.
+        } catch (IllegalRequestException e) {
+            //fixme
         }
     }
 
