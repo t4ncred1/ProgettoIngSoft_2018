@@ -295,4 +295,8 @@ public class MatchModel{
         
     }
 
+    public ArrayList<Die> getRoundTrack() {
+        return roundTrack;
+    }
+
 }

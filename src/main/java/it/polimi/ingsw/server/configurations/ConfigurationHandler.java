@@ -94,6 +94,20 @@ public class ConfigurationHandler {
         else throw new NotValidConfigPathException("Incorrect config.json file: TimerToChooseGrids needs to be instanced");
     }
 
+
+    public int getRmiPort() throws NotValidConfigPathException{
+        if (config.getRmiPort()!=0){
+            return config.getRmiPort();
+        }
+        else throw new NotValidConfigPathException("Incorrect config.json file: rmiPort needs to be instanced");
+    }
+
+    public int getSocketPort() throws NotValidConfigPathException {
+        if (config.getSocketPort() != 0) {
+            return config.getSocketPort();
+        } else throw new NotValidConfigPathException("Incorrect config.json file: socketPort needs to be instanced");
+    }
+
     // FIXME: 07/06/2018
     private List<ToolCard> getToolCards() throws NotValidConfigPathException {
         Gson gson = getGsonForToolCards();

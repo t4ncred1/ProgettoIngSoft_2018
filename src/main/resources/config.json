@@ -5,5 +5,7 @@
   "maxPlayersNumber": "4",
   "minPlayersNumber": "2",
   "timerBeforeMatch": "5",
-  "timerToChooseGrid": "15"
+  "timerToChooseGrid": "15",
+  "rmiPort": "11001",
+  "socketPort": "11000"
 }

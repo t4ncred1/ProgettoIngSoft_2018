@@ -1,9 +1,11 @@
 package it.polimi.ingsw.server.net;
 
+import it.polimi.ingsw.client.configurations.ConfigHandler;
 import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
+import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.model.cards.PrivateObjective;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
@@ -15,19 +17,20 @@ import java.util.*;
 public class RmiHandler extends Thread implements ServerRemoteInterface{
 
     private static RmiHandler instance;
-    private static int port=11001;
+    private int port=11001;
 
     private Map<ClientRemoteInterface, RMIUserAgent> clientsHandled;
     private Map<ClientRemoteInterface, MatchController> clientsMatch;
     private static final Object clientsHandledGuard= new Object();
 
     private RmiHandler(){
+        try {
+            port=ConfigurationHandler.getInstance().getRmiPort();
+        } catch (NotValidConfigPathException e) {
+            System.err.println("Configuration file is corrupted. Using defaults.");
+        }
         clientsHandled= new HashMap<>();
         clientsMatch = new HashMap<>();
-    }
-    public RmiHandler(int port){
-        this();
-        this.port=port;
     }
 
     public static RmiHandler getInstance(){

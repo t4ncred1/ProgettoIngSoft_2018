@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.client.Proxy;
+import it.polimi.ingsw.client.configurations.ConfigHandler;
 import it.polimi.ingsw.client.custom_exception.*;
+import it.polimi.ingsw.server.custom_exception.NotValidConfigPathException;
 import it.polimi.ingsw.server.model.cards.PrivateObjective;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.DieConstraints;
@@ -28,8 +30,8 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     private transient DataInputStream inputStream;
     private transient DataOutputStream outputStream;
 
-    private static int serverPort = 11000;
-    private static String serverAddress="127.0.0.1";
+    private int serverPort = 11000;
+    private String serverAddress="127.0.0.1";
 
 
 
@@ -80,6 +82,12 @@ public class ServerSocketCommunication implements ServerCommunicatingInterface {
     @Override
     public void setUpConnection() throws ServerIsDownException {
         try {
+            try {
+                serverPort = ConfigHandler.getInstance().getSocketPort();
+                serverAddress = ConfigHandler.getInstance().getServerIp();
+            } catch (NotValidConfigPathException e) {
+                System.out.println("Wrong configuration file, using defaults.");
+            }
             socket= new Socket(serverAddress, serverPort);
             inputStream = new DataInputStream(socket.getInputStream());
             outputStream= new DataOutputStream(socket.getOutputStream());
