@@ -117,7 +117,7 @@ class MatchModelTest {
     }
 
     @Test
-    void checkSetPlayerToDisconnect() throws NotValidParameterException, NotValidConfigPathException {
+    void checkSetPlayerToDisconnect() throws NotValidParameterException, NotValidConfigPathException, InvalidUsernameException {
         Set<String> playerUserNames = new CopyOnWriteArraySet<String>();
         playerUserNames.add("cancaro");
         playerUserNames.add("test");

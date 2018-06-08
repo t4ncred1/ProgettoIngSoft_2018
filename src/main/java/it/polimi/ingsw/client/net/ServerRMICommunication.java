@@ -5,12 +5,8 @@ import it.polimi.ingsw.client.configurations.ConfigHandler;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.server.MatchController;
-<<<<<<< HEAD
 import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
-=======
-import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.custom_exception.*;
->>>>>>> a121e4be110511ef46457d61c580f2518cb3dee0
 import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.net.ServerRemoteInterface;
 
