@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.net;
 import it.polimi.ingsw.client.Proxy;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.server.MatchController;
+import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
 import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
@@ -116,6 +117,8 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
             throw new ServerIsDownException();
         } catch (NotValidParameterException e) {
             e.printStackTrace();    //should not happen if this client is correctly registered.
+        } catch (IllegalRequestException e) {
+            //fixme
         }
         try {
             Proxy.getInstance().setGridsSelection(grids);
@@ -134,6 +137,8 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
             throw new ServerIsDownException();
         } catch (NotValidParameterException e) {
             e.printStackTrace(); //only thrown if parameter thisClient is invalid, should not happen.
+        } catch (IllegalRequestException e) {
+            //fixme
         }
     }
 
@@ -145,6 +150,8 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
             throw new ServerIsDownException();
         } catch (NotValidParameterException e) {
             e.printStackTrace();//Shall happen if this client is not registered to the match. Should not be the case.
+        } catch (IllegalRequestException e) {
+            //fixme
         }
     }
 

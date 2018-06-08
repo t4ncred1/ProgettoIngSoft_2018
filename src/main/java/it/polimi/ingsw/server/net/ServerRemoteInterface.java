@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.net;
 
 import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
+import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
 import it.polimi.ingsw.server.model.cards.PrivateObjective;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
@@ -20,11 +21,11 @@ public interface ServerRemoteInterface extends Remote {
 
     void setControllerForClient(ClientRemoteInterface client, MatchController controller) throws RemoteException, InvalidOperationException, NotValidParameterException;
 
-    List<Grid> getGrids(ClientRemoteInterface thisClient) throws RemoteException, InvalidOperationException, NotValidParameterException;
+    List<Grid> getGrids(ClientRemoteInterface thisClient) throws RemoteException, InvalidOperationException, NotValidParameterException, IllegalRequestException;
 
-    void setGrid(ClientRemoteInterface thisClient, int gridIndex) throws RemoteException, InvalidOperationException, NotValidParameterException;
+    void setGrid(ClientRemoteInterface thisClient, int gridIndex) throws RemoteException, InvalidOperationException, NotValidParameterException, IllegalRequestException;
 
-    PrivateObjective getPrivateObjective(ClientRemoteInterface thisClient) throws RemoteException, NotValidParameterException;
+    PrivateObjective getPrivateObjective(ClientRemoteInterface thisClient) throws RemoteException, NotValidParameterException, IllegalRequestException;
 
     String askTurn(ClientRemoteInterface thisClient) throws RemoteException, NotValidParameterException, InvalidOperationException, TooManyRoundsException;
 
