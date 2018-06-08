@@ -122,7 +122,7 @@ class MatchModelTest {
         playerUserNames.add("cancaro");
         playerUserNames.add("test");
         MatchModel test = new MatchModel(playerUserNames);
-        assertThrows(NotValidParameterException.class,()->test.setPlayerToDisconnect("test1"));
+        assertThrows(InvalidUsernameException.class,()->test.setPlayerToDisconnect("test1"));
         test.setPlayerToDisconnect("cancaro");
         test.setPlayerToDisconnect("test");
         assertThrows(NotEnoughPlayersException.class,()->test.updateTurn(10));
