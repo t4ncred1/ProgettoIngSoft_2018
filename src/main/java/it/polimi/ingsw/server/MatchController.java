@@ -435,7 +435,7 @@ public class MatchController extends Thread{
 
     public List<Die> getDicePool() {
         synchronized (modelGuard) {
-            return model.getDicePool();
+            return model.getDicePool().showDiceInPool();
         }
     }
 

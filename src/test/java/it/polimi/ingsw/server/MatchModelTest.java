@@ -98,7 +98,7 @@ class MatchModelTest {
         playerUserNames.add("test");
         MatchModel test = new MatchModel(playerUserNames);
         test.insertDieInPool(temp,0);
-        dpCopy=test.getDicePool();
+        dpCopy=test.getDicePool().showDiceInPool();
         assertEquals(dpCopy.get(0),temp);
         test.removeDiePool(0);
     }

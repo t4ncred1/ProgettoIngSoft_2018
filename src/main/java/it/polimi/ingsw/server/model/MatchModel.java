@@ -163,8 +163,8 @@ public class MatchModel{
         return false;
     }
 
-    public List<Die> getDicePool(){
-        return matchDicePool.showDiceInPool();
+    public DicePool getDicePool(){
+        return matchDicePool;
     }
 
     private ArrayList<Grid> selectGridsForPlayer() throws InvalidOperationException {
@@ -270,7 +270,6 @@ public class MatchModel{
 
 
     public Grid getPlayerCurrentGrid(String username) {
-        //FIXME
         for(Player player: playersInGame){
             if(player.getUsername().equals(username)) return player.getSelectedGrid();
         }
