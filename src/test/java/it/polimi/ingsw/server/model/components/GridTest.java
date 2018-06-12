@@ -37,7 +37,44 @@ public class GridTest {
 
         test2=new Grid(test1);
         assertEquals(test1.toString(), test2.toString());
+
     }
+
+    @Test
+    void gridCopyModification(){
+        Grid test1 = null, test2 = null;
+        try {
+            test1=new Grid(3,"test");
+
+            for (int i = 0; i < test1.getColumnNumber(); i++) {
+                for (int j = 0; j < test1.getRowNumber(); j++) {
+                    test1.createBoxInXY(i, j, "yellow");
+                }
+            }
+
+        } catch (NotValidParameterException e) {
+            fail("Failed Initialization");
+        }
+
+        test2=new Grid(test1);
+
+        test1.initializeAllObservers();
+        test2.initializeAllObservers();
+        try {
+            test2.insertDieInXY(0,0,true,true,new Die("yellow",2));
+        } catch (NotValidParameterException | InvalidOperationException e) {
+            fail("Failed Initialization");
+        }
+        assertNotEquals(test1.toString(), test2.toString());
+        try {
+            test1.insertDieInXY(0,0,true,true,new Die("yellow",2));
+        } catch (NotValidParameterException | InvalidOperationException e) {
+            fail("Test has failed. Modification of a copy of a grid also modifies the original grid.");
+        }
+        assertEquals(test1.toString(), test2.toString());
+    }
+
+
 
     @Test
     public void nullStringPassed() {
