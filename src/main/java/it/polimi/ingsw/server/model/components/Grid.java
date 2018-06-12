@@ -14,6 +14,19 @@ public class Grid implements Serializable {
     private Box[][] gameGrid;
     private transient boolean firstInsertion=true;
 
+    public Grid (Grid aGrid){
+        this.name = aGrid.name;
+        this.difficulty = aGrid.difficulty;
+        Box[][] gGrid = new Box[COLUMN_NUMBER][ROW_NUMBER];
+        for(int i=0; i<COLUMN_NUMBER; i++){
+            for (int j=0; j<ROW_NUMBER; j++){
+                gGrid[i][j]=new Box(aGrid.getGrid()[i][j]);
+            }
+        }
+        this.gameGrid=gGrid;
+        firstInsertion=aGrid.firstInsertion;
+    }
+
     public Grid(int difficulty, String name) throws NotValidParameterException {
         final String expectedData= "Difficulty should have a value between 3 and 6 (both included)";
 
@@ -30,6 +43,7 @@ public class Grid implements Serializable {
         build.append(this.getName());
         build.append("\tDifficoltà: ");
         build.append(this.getDifficulty());
+        build.append("\nFirstInsertion: "); build.append(Boolean.toString(firstInsertion));
         build.append("\nBoxes di " +this.getName()+ ":\n");
         int k=0;
         int n;
@@ -121,6 +135,7 @@ public class Grid implements Serializable {
         }
 
     }
+
 
     public Box[][] getGrid(){
         return gameGrid.clone();

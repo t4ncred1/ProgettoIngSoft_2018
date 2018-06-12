@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.components;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,6 +13,16 @@ public class DicePool {
     private final int diceForEachColor= 18;
 
 
+    public DicePool(DicePool dicePool){
+        this.pool = new ArrayList<>();
+
+        for(Die d : dicePool.pool){
+            this.pool.add(new Die(d));
+        }
+
+        this.availableColors = new  ArrayList<>(dicePool.availableColors);
+
+    }
 
     public DicePool(){
         this.pool= new ArrayList<>();
@@ -71,5 +82,10 @@ public class DicePool {
         color=die_to_change.getColor();
         die_changed=new Die(color,value_to_change);
         pool.add(dpIndex,die_changed);*/    /*USEFUL FOR MATCHMODEL*/
+    }
+
+    public void insertDieInPool(Die die) throws NotValidParameterException {
+        if (die==null) throw new NotValidParameterException("die: null","a valid die");
+        pool.add(die);
     }
 }

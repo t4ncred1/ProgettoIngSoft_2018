@@ -19,6 +19,25 @@ public class GridTest {
     //                                  Grid (int Difficulty, String Name)
     /*-**************************************************************************************************-*/
 
+    @Test
+    void gridCopy(){
+        Grid test1 = null, test2 = null;
+        try {
+            test1=new Grid(3,"test");
+
+            for (int i = 0; i < test1.getColumnNumber(); i++) {
+                for (int j = 0; j < test1.getRowNumber(); j++) {
+                    test1.createBoxInXY(i, j, "yellow");
+                }
+            }
+
+        } catch (NotValidParameterException e) {
+            fail("Failed Initialization");
+        }
+
+        test2=new Grid(test1);
+        assertEquals(test1.toString(), test2.toString());
+    }
 
     @Test
     public void nullStringPassed() {
@@ -447,7 +466,7 @@ public class GridTest {
             fail("test failed");
         }
 
-        assertEquals("nome: test\tDifficoltà: 4\n" +
+        assertEquals("nome: test\tDifficoltà: 4\nFirstInsertion: true\n" +
                 "Boxes di test:\n" +
                 " colonna 1:\n" +
                 "\t riga 1: \n" +

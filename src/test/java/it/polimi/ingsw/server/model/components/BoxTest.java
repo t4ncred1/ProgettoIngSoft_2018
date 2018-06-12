@@ -11,6 +11,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class BoxTest {
 
 //Tests sui costruttori
+
+    @Test
+    void boxCopy(){
+        Box test1 = null,test2 = null;
+        try {
+            test1 = new Box("yellow",0,0);
+            test2 = new Box(test1);
+        } catch (NotValidParameterException e) {
+            fail("Failed Initialization");
+        }
+        assertEquals(test1.toString(),test2.toString());
+    }
+
     @Test
     public void boxPositions(){
         assertThrows(NotValidParameterException.class,

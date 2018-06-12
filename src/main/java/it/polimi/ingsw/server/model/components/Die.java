@@ -8,6 +8,11 @@ public class Die implements Serializable {
     private int value;
     private String color;
 
+    public Die(Die die){
+        this.value = die.value;
+        this.color=die.color;
+    }
+
     public Die (String color, int value) throws NotValidParameterException {
         final String expectedColor= "Color: red, yellow, green, blue, purple";
         final String expectedValue= "Value: 1, 2, 3, 4, 5, 6";

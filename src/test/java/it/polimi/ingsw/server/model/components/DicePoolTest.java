@@ -8,6 +8,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DicePoolTest {
 
+//test for constructor
+    @Test
+    public void checkDicePool(){
+        DicePool test1 = new DicePool();
+        try {
+            test1.generateDiceForPull(6);
+        } catch (NotValidParameterException e) {
+            fail("failed test initialization");
+        }
+        DicePool test2 = new DicePool(test1);
+
+        for (int i=0; i<test1.showDiceInPool().size(); i++){
+            assertEquals(test1.showDiceInPool().get(i).getColor(),test2.showDiceInPool().get(i).getColor());
+            assertEquals(test1.showDiceInPool().get(i).getValue(),test2.showDiceInPool().get(i).getValue());
+        }
+    }
 //test for generateDiceForPull
     @Test
     public void checkPoolSize(){
