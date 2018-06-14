@@ -73,7 +73,7 @@ public class BoxTest {
         box.insertDie(dieInBox); //inserisco un dado a caso
 
         //Assert
-        assertFalse(box.tryToInsertDie(true,true, dieToInsert));
+        assertFalse(box.tryToInsertDie(true,true, true, dieToInsert));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class BoxTest {
         boolean checkValueConstraints=true;
 
         //Assert
-        assertFalse(box.tryToInsertDie(checkColorConstraints,checkValueConstraints, dieToInsert));
+        assertFalse(box.tryToInsertDie(checkColorConstraints,checkValueConstraints, true, dieToInsert));
     }
 
     @Test
@@ -109,7 +109,7 @@ public class BoxTest {
 
 
         //Assert
-        assertTrue(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, dieToInsert));
+        assertTrue(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, true, dieToInsert));
     }
 
     @Test
@@ -130,7 +130,7 @@ public class BoxTest {
 
 
         //Assert
-        assertFalse(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, dieToInsert));
+        assertFalse(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, true, dieToInsert));
     }
 
     @Test
@@ -153,7 +153,7 @@ public class BoxTest {
 
 
         //Assert
-        assertTrue(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, dieToInsert));
+        assertTrue(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, true, dieToInsert));
     }
 
     @Test
@@ -174,7 +174,7 @@ public class BoxTest {
 
 
         //Assert
-        assertFalse(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, dieToInsert));
+        assertFalse(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, true, dieToInsert));
     }
 
     @Test
@@ -197,7 +197,7 @@ public class BoxTest {
 
 
         //Assert
-        assertTrue(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, dieToInsert));
+        assertTrue(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, true, dieToInsert));
     }
 
     /*----------------------------------------------------------------------------------------------------*/
