@@ -12,6 +12,8 @@ import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.custom_exception.*;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class MatchModel{
@@ -104,33 +106,57 @@ public class MatchModel{
         if(leftToRight){
             if(justChanged) {  //Se il verso di percorrenza è appena stato modificato currentTurn non deve cambiare.
                 justChanged = false;
+                currentTurn=0;
+                playersInGame.get(currentTurn).setFirstTurn(true);
                 if(turnEnded) {
+
                     playersInGame.add(playersInGame.remove(0));     //reorders players for new Round.
+                    playersInGame.get(currentTurn).setFirstTurn(true);
                     try {
                         roundTrack.add(matchDicePool.getDieFromPool(0));    //if there aren't any dice in DicePool at the end of the turn, throws NotInPoolException.
                         matchDicePool.removeDieFromPool(0);
                         this.prepareForNextRound(maxRounds);
                     } catch (NotInPoolException | NotValidParameterException e) {
-                        e.printStackTrace();
+                        Logger logger = Logger.getLogger(getClass().getName());
+                        logger.log(Level.WARNING,"Error updating the turn.",e);
                     }
                 }
             }
-            else
+            else {
                 currentTurn++;
+                playersInGame.get(currentTurn).setFirstTurn(true);
+            }
             if(currentTurn==playersInGame.size()-1){
                 leftToRight=false;
                 justChanged=true;
+                playersInGame.get(currentTurn).setFirstTurn(false);
             }
         }
         else {
-            if(justChanged)  //Se il verso di percorrenza è appena stato modificato currentTurn non deve cambiare.
-                justChanged=false;
-            else
-                currentTurn--;
-            if(currentTurn==0){
+            if(justChanged) {  //Se il verso di percorrenza è appena stato modificato currentTurn non deve cambiare.
+                playersInGame.get(currentTurn).setFirstTurn(false);
+                if(playersInGame.get(currentTurn).isJumpSecondTurn()) currentTurn--;
+                justChanged = false;
+            }
+            else {
+                if (currentTurn!=0 && playersInGame.get(currentTurn-1).isJumpSecondTurn()){
+                    if(currentTurn-1 == 0) {
+                        leftToRight=true;
+                        justChanged=true;
+                        turnEnded=true;
+                    }
+                    else {
+                        currentTurn = currentTurn-2;
+                    }
+                }
+                else currentTurn--;
+            }
+            if(currentTurn<=0){
+                currentTurn=0;
                 leftToRight=true;
                 justChanged=true;
                 turnEnded=true;
+                playersInGame.get(currentTurn).setFirstTurn(true);
             }
         }
     }
@@ -144,6 +170,9 @@ public class MatchModel{
         matchDicePool.generateDiceForPull(playersInGame.size() * 2 + 1); //(launching this methods later throws a nullPointerExc)
     }
 
+    public Player getCurrentPlayer(){
+        return playersInGame.get(currentTurn);
+    }
 
     public String askTurn() {
         return playersInGame.get(currentTurn).getUsername();
@@ -175,7 +204,7 @@ public class MatchModel{
         */
         if (grids.size()<GRIDS_FOR_A_PLAYER) throw new InvalidOperationException();
         randomGridEvenIndex = ((new Random().nextInt(grids.size()/2)+1)*2)-2;
-        ArrayList<Grid> currentGrids = new ArrayList<Grid>();
+        ArrayList<Grid> currentGrids = new ArrayList<>();
         currentGrids.add(grids.remove(randomGridEvenIndex));
         currentGrids.add(grids.remove(randomGridEvenIndex));
         randomGridEvenIndex = ((new Random().nextInt(grids.size()/2)+1)*2)-2;
@@ -291,7 +320,7 @@ public class MatchModel{
     }
 
     public void getPublicObjectives(){
-        
+        //TODO!!
     }
 
     public ArrayList<Die> getRoundTrack() {
