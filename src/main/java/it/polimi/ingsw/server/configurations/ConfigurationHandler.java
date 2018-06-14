@@ -3,9 +3,7 @@ package it.polimi.ingsw.server.configurations;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.server.model.cards.effects.Effect;
-import it.polimi.ingsw.server.model.cards.effects.InsertDieInDicePoolEffect;
-import it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect;
+import it.polimi.ingsw.server.model.cards.effects.*;
 import it.polimi.ingsw.server.model.cards.PublicObjective;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Grid;
@@ -128,9 +126,10 @@ public class ConfigurationHandler {
         RuntimeTypeAdapterFactory<Effect> adapterFactory= RuntimeTypeAdapterFactory.of(Effect.class);
 
         //Register all classes implementing Effect interface, fixme add all effect subtype
-        adapterFactory.registerSubtype(InsertDieInDicePoolEffect.class, InsertDieInDicePoolEffect.class.getName());
+        adapterFactory.registerSubtype(InsertDieInPoolEffect.class, InsertDieInPoolEffect.class.getName());
         adapterFactory.registerSubtype(RemoveDieFromPoolEffect.class, RemoveDieFromPoolEffect.class.getName());
-
+        adapterFactory.registerSubtype(RemoveDieFromGridEffect.class, RemoveDieFromGridEffect.class.getName());
+        adapterFactory.registerSubtype(IncrementDiceEffect.class, IncrementDiceEffect.class.getName());
         //associate the factory and the builder
         builder.registerTypeAdapterFactory(adapterFactory);
         return builder.create();
