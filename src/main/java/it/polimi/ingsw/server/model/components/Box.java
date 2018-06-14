@@ -137,11 +137,11 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
         return observerList.isEmpty();
     }
 
-    public boolean tryToInsertDie(boolean colorCheck, boolean valueCheck, Die passedDie){
+    public boolean tryToInsertDie(boolean colorCheck, boolean valueCheck, boolean openCheck, Die passedDie){
         DieConstraints toCheck= new DieToConstraintsAdapter(passedDie);
         if(this.die!=null)
             return false;
-        if(this.opened==0)
+        if(this.opened==0 && openCheck)
             return false;
         if(colorCheck && (colorRestriction[toCheck.getColorRestriction()]>0))
             return false;

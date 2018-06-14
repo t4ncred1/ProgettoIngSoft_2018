@@ -113,7 +113,26 @@ public class Grid implements Serializable {
         if(x<0||x> COLUMN_NUMBER -1||y<0||y> ROW_NUMBER -1) throw new NotValidParameterException("("+x+","+y+")", indexOutOfBound);
 
         if(gameGrid[x][y]==null) throw new NotValidParameterException("("+x+","+y+")","the box in this position should be initialized. ");
-        if(gameGrid[x][y].tryToInsertDie(colorCheck, valueCheck, die)==false)
+        if(!gameGrid[x][y].tryToInsertDie(colorCheck, valueCheck, true, die))
+            throw new InvalidOperationException();
+        else
+            gameGrid[x][y].insertDie(die);
+
+        if (firstInsertion) {
+            setBoxesClosed(x,y);
+            firstInsertion=false;
+        }
+    }
+
+    public void insertDieInXY(int x, int y, boolean colorCheck, boolean valueCheck, boolean openCheck, Die die) throws NotValidParameterException, InvalidOperationException {
+        final String indexOutOfBound = "coordinates should be: 0<=x<=3 and 0<=y<=4";
+
+        if(die == null) throw new NullPointerException();
+
+        if(x<0||x> COLUMN_NUMBER -1||y<0||y> ROW_NUMBER -1) throw new NotValidParameterException("("+x+","+y+")", indexOutOfBound);
+
+        if(gameGrid[x][y]==null) throw new NotValidParameterException("("+x+","+y+")","the box in this position should be initialized. ");
+        if(!gameGrid[x][y].tryToInsertDie(colorCheck, valueCheck, openCheck, die))
             throw new InvalidOperationException();
         else
             gameGrid[x][y].insertDie(die);

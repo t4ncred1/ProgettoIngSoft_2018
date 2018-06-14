@@ -12,7 +12,8 @@ public class Player {
         private ArrayList<Grid> gridsSelection;
         private Grid gridSelected;
         private PrivateObjective objective;
-
+        private boolean firstTurn = true;
+        private boolean jumpSecondTurn = false;
 
 
         public Player(String username){
@@ -54,6 +55,22 @@ public class Player {
 
     public boolean hasSelectedAGrid() {
         return this.gridSelected!= null;
+    }
+
+    public boolean isFirstTurn() {
+        return firstTurn;
+    }
+
+    public void setFirstTurn(boolean firstTurn) {
+        this.firstTurn = firstTurn;
+    }
+
+    public boolean isJumpSecondTurn() {
+        return jumpSecondTurn;
+    }
+
+    public void setJumpSecondTurn(boolean jumpSecondTurn) {
+        this.jumpSecondTurn = jumpSecondTurn;
     }
 }
 
