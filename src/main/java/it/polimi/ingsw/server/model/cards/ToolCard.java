@@ -58,10 +58,10 @@ public class ToolCard implements Serializable {
 
 
     ///////////////////////CONSTRUCTOR
-    public ToolCard(String title, String description, ArrayList<Effect> effects,MatchModel model) {
+    public ToolCard(String title, String description, List<Effect> effects,MatchModel model) {
         this.title = title;
         this.description=description;
-        this.effects=effects;
+        this.effects=new ArrayList<>(effects);
         this.setModel(model);
     }
 
@@ -87,6 +87,10 @@ public class ToolCard implements Serializable {
         for(Effect effect: effects){
             effect.setParameters(model, this);
         }
+    }
+
+    public List<Effect> getEffects(){
+        return this.effects;
     }
 
     public void useToolCard() throws Exception{
