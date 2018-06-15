@@ -120,16 +120,22 @@ public class ConfigurationHandler {
         }
     }
 
-    private Gson getGsonForToolCards() {
+    public Gson getGsonForToolCards() {
         GsonBuilder builder= new GsonBuilder();
         //Create a RuntimeTypeAdapterFactory for Effect interface
         RuntimeTypeAdapterFactory<Effect> adapterFactory= RuntimeTypeAdapterFactory.of(Effect.class);
 
-        //Register all classes implementing Effect interface, fixme add all effect subtype
+        //Register all classes implementing Effect interface
+        adapterFactory.registerSubtype(ChangeValueDiceEffect.class,ChangeValueDiceEffect.class.getName());
+        adapterFactory.registerSubtype(IncrementDiceEffect.class, IncrementDiceEffect.class.getName());
+        adapterFactory.registerSubtype(InsertDieInGridEffect.class,InsertDieInGridEffect.class.getName());
         adapterFactory.registerSubtype(InsertDieInPoolEffect.class, InsertDieInPoolEffect.class.getName());
+        adapterFactory.registerSubtype(InsertDieInRoundTrackEffect.class,InsertDieInRoundTrackEffect.class.getName());
+        adapterFactory.registerSubtype(InverseDieValueEffect.class,InverseDieValueEffect.class.getName());
+        adapterFactory.registerSubtype(RemovedDieFromRoundTrackEffect.class,RemovedDieFromRoundTrackEffect.class.getName());
         adapterFactory.registerSubtype(RemoveDieFromPoolEffect.class, RemoveDieFromPoolEffect.class.getName());
         adapterFactory.registerSubtype(RemoveDieFromGridEffect.class, RemoveDieFromGridEffect.class.getName());
-        adapterFactory.registerSubtype(IncrementDiceEffect.class, IncrementDiceEffect.class.getName());
+        adapterFactory.registerSubtype(SwapRTDieAndDPDieEffect.class, SwapRTDieAndDPDieEffect.class.getName());
         //associate the factory and the builder
         builder.registerTypeAdapterFactory(adapterFactory);
         return builder.create();
