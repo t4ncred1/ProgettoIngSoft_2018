@@ -30,6 +30,11 @@ public class SwapRTDieAndDPDieEffect implements Effect{
     }
 
     @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
     public void execute() {
         Die roundTrackDie = toolCard.getRemovedDieFromRoundTrack();
         Die dicePoolDie = toolCard.getDiceRemoved().remove(0);

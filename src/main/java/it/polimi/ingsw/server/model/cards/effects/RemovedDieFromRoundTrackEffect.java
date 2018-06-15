@@ -35,4 +35,9 @@ public class RemovedDieFromRoundTrackEffect implements Effect {
         toolCard.setRemovedDieFromRoundTrack(rt.remove(toolCard.getIndexOfRoundTrackDie()));
         toolCard.setRoundTrack(rt);
     }
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
 }

@@ -56,6 +56,11 @@ public class RemoveDieFromGridEffect implements Effect {
     }
 
     @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
     public void execute() {
         if (model.getPlayerCurrentGrid(model.askTurn()) == null){
             Logger logger = Logger.getLogger(getClass().getName());

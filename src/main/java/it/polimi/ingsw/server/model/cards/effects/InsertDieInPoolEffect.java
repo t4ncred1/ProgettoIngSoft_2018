@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class InsertDieInPoolEffect implements Effect {
     private transient MatchModel model;
     private transient ToolCard toolCard;
-    private static final String NAME = "InsertDieInDicepoolEffect";
+    private static final String NAME = "InsertDieInPoolEffect";
 
     @Override
     public void setParameters(MatchModel matchModel, ToolCard toolCard){
@@ -27,6 +27,11 @@ public class InsertDieInPoolEffect implements Effect {
         } catch (NotValidParameterException e){
             throw new NotValidParameterException("Index of die to be inserted in toolcard "+toolCard.getTitle(),"should be a valid index to insert a die from dicepool.");
         }
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     @Override

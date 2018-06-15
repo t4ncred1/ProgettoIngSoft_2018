@@ -34,6 +34,11 @@ public class IncrementDiceEffect implements Effect {
     }
 
     @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
     public void execute() {
         List<Die> dice = toolCard.getDiceRemoved();
         for (int i=0; i<dice.size(); i++){

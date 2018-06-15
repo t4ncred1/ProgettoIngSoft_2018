@@ -43,6 +43,11 @@ public class RemoveDieFromPoolEffect implements Effect {
     }
 
     @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
     public void execute(){
         boolean removeAllDiceFromDicePool= toolCard.getRemoveAllDiceFromDicePool();
         List<Die> diceRemoved = new ArrayList<>();

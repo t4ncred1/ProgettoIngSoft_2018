@@ -10,4 +10,5 @@ public interface Effect extends Serializable {
     void setParameters(MatchModel matchModel, ToolCard toolCard);
     void execute();
     void executeTest() throws Exception;
+    String getName();
 }

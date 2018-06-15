@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 
 public class InverseDieValueEffect implements Effect{
 
-    private MatchModel model;
-    private ToolCard toolCard;
+    private transient MatchModel model;
+    private transient ToolCard toolCard;
     private static final String NAME = "InverseValueEffect";
 
     @Override
@@ -50,6 +50,11 @@ public class InverseDieValueEffect implements Effect{
 
         }
         toolCard.setDiceRemoved(dice);
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
     }
 
     @Override

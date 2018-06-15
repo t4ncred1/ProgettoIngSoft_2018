@@ -31,6 +31,11 @@ public class InsertDieInRoundTrackEffect implements Effect {
     }
 
     @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
     public void execute() {
         toolCard.getRoundTrack().add(toolCard.getIndexOfRoundTrackDie(),toolCard.getRemovedDieFromRoundTrack());
     }

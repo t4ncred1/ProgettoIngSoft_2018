@@ -14,7 +14,8 @@ import java.util.logging.Logger;
 public class ChangeValueDiceEffect implements Effect {
     private transient MatchModel model;
     private transient ToolCard toolCard;
-    private static final String NAME = "RemoveDieFromGridEffect";
+    private static final String NAME = "ChangeValueDiceEffect";
+
 
     @Override
     public void setParameters(MatchModel matchModel, ToolCard toolCard) {
@@ -37,6 +38,11 @@ public class ChangeValueDiceEffect implements Effect {
     }
 
     @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
     public void execute() {
         List<Die> dice = new ArrayList<>();
         for (Die d : toolCard.getDiceRemoved()){
@@ -53,5 +59,7 @@ public class ChangeValueDiceEffect implements Effect {
         }
         toolCard.setDiceRemoved(dice);
     }
+
+
 
 }

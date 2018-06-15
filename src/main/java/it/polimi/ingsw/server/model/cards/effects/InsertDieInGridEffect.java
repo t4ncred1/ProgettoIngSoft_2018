@@ -38,6 +38,11 @@ public class InsertDieInGridEffect implements Effect {
     }
 
     @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
     public void execute() {
         if (toolCard.getPlayerGrid()==null) toolCard.setPlayerGrid(model.getPlayerCurrentGrid(model.askTurn()));
         Grid playerGrid = toolCard.getPlayerGrid();
