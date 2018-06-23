@@ -27,7 +27,7 @@ public class RemoveDieFromGridEffect implements Effect {
     public void executeTest() throws Exception {
         if (model.getPlayerCurrentGrid(model.askTurn()) == null){
             Logger logger = Logger.getLogger(getClass().getName());
-            logger.log(Level.WARNING, "Failed execution of effect \"" + NAME + "\" in toolcard " + toolCard.getTitle());
+            logger.log(Level.WARNING, "Something went wrong on server side during execution of \"" + NAME + "\" effect in toolcard " + toolCard.getTitle());
             throw new InvalidOperationException();
         }
         Grid playerGrid;

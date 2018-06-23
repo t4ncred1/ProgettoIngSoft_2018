@@ -79,7 +79,7 @@ public class ToolCard implements Serializable {
         return used;
     }
 
-    public void used(boolean used) {
+    private void used(boolean used) {
         this.used = used;
     }
 
@@ -106,10 +106,6 @@ public class ToolCard implements Serializable {
         String rTrackColor = this.roundTrackColor;
         List<Integer>dDestinationCoordinatesX = new ArrayList<>(this.dieDestinationCoordinatesX);
         List<Integer>dDestinationCoordinatesY = new ArrayList<>(this.dieDestinationCoordinatesX);
-        List<Die> rTrack = new ArrayList<>();
-            for(Die d : this.roundTrack){
-                rTrack.add(new Die(d));
-            }
         int iOfRoundTrackDie = this.indexOfRoundTrackDie;
         Die rDieFromRoundTrack = new Die(this.removedDieFromRoundTrack);
 
@@ -138,9 +134,6 @@ public class ToolCard implements Serializable {
         this.dieDestinationCoordinatesX = new ArrayList<>(dDestinationCoordinatesX);
         this.dieDestinationCoordinatesY = new ArrayList<>(dDestinationCoordinatesY);
         this.roundTrack = new ArrayList<>();
-        for(Die d : rTrack){
-            roundTrack.add(new Die (d));
-        }
         this.indexOfRoundTrackDie = iOfRoundTrackDie;
         this.removedDieFromRoundTrack = new Die(rDieFromRoundTrack);
 

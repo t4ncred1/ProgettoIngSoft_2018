@@ -34,7 +34,7 @@ public class ChangeValueDiceEffect implements Effect {
             Die die = dice.remove(i);
             dice.add(i, new Die(die.getColor(),new Random().nextInt(6) + 1));
         }
-        toolCard.setDiceRemoved(dice);
+        toolCard.saveDiceRemoved(dice); //set or save?
     }
 
     @Override
@@ -44,10 +44,7 @@ public class ChangeValueDiceEffect implements Effect {
 
     @Override
     public void execute() {
-        List<Die> dice = new ArrayList<>();
-        for (Die d : toolCard.getDiceRemoved()){
-            dice.add(new Die(d));
-        }
+        List<Die> dice = toolCard.getDiceRemoved();
         for(int i=0; i<dice.size();i++){
             Die die = dice.remove(i);
             try {
@@ -57,7 +54,7 @@ public class ChangeValueDiceEffect implements Effect {
                 logger.log(Level.WARNING, "Failed execution of effect \""+ NAME + "\" in toolcard "+toolCard.getTitle(), e);
             }
         }
-        toolCard.setDiceRemoved(dice);
+        toolCard.setDiceRemoved(dice); //set because is executed on all dice removed.
     }
 
 

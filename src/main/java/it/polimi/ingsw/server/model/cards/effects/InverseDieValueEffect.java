@@ -24,7 +24,10 @@ public class InverseDieValueEffect implements Effect{
 
     @Override
     public void executeTest() throws Exception {
-        ArrayList<Die> dice = new ArrayList<>(toolCard.getDiceRemoved());
+        ArrayList<Die> dice = new ArrayList<>();
+        for(Die d : toolCard.getDiceRemoved()){
+            dice.add(new Die (d));
+        }
         if (dice.isEmpty()) throw new NotValidParameterException("dieRemovedFromDicePool is empty in toolcard" + toolCard.getTitle(), "Should contain at least one die.");
         for (int i=0; i<dice.size(); i++){
             Die d = dice.remove(i);
@@ -47,9 +50,8 @@ public class InverseDieValueEffect implements Effect{
                 default:
                     dice.add(i,new Die(d.getColor(), 1));
             }
-
         }
-        toolCard.setDiceRemoved(dice);
+        toolCard.setDiceRemoved(dice); //set and not save because all dice are modified.
     }
 
     @Override

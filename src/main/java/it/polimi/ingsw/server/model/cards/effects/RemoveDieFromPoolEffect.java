@@ -33,13 +33,15 @@ public class RemoveDieFromPoolEffect implements Effect {
             } catch (IndexOutOfBoundsException e){
                 throw new NotValidParameterException("Index of die to be removed in toolcard "+toolCard.getTitle(),"should be a valid index to remove a die from dicepool.");
             }
+            toolCard.saveDiceRemoved(diceRemoved);
         }
         else{
             for(Die exDie : model.getDicePool().showDiceInPool()){
                 diceRemoved.add(new Die(exDie));
             }
+            toolCard.setDiceRemoved(diceRemoved);
         }
-        toolCard.saveDiceRemoved(diceRemoved);  //it's ok if, during test, only toolcard parameters (not read from file) are written, because they they will be rewritten later on by execute().
+          //it's ok if, during test, only toolcard parameters (not read from file) are written, because they they will be rewritten later on by execute().
     }
 
     @Override
@@ -55,6 +57,7 @@ public class RemoveDieFromPoolEffect implements Effect {
         if (!removeAllDiceFromDicePool){
                 Die exDie = model.getDicePool().showDiceInPool().remove(toolCard.getIndexOfDieToBeRemoved());
                 diceRemoved.add(exDie);
+            toolCard.saveDiceRemoved(diceRemoved);
         }
         else{
             for(int i=0; i<model.getDicePool().showDiceInPool().size(); i++){
@@ -66,8 +69,9 @@ public class RemoveDieFromPoolEffect implements Effect {
                     logger.log(Level.WARNING, "Failed execution of effect \""+ NAME + "\" in toolcard "+toolCard.getTitle(), e);
                 }
             }
+            toolCard.setDiceRemoved(diceRemoved);
         }
 
-        toolCard.setDiceRemoved(diceRemoved);
+
     }
 }

@@ -7,7 +7,7 @@ import it.polimi.ingsw.server.model.components.Die;
 
 import java.util.ArrayList;
 
-public class RemovedDieFromRoundTrackEffect implements Effect {
+public class RemoveDieFromRoundTrackEffect implements Effect {
 
     private transient MatchModel model;
     private transient ToolCard toolCard;

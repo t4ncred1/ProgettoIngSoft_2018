@@ -132,7 +132,7 @@ public class ConfigurationHandler {
         adapterFactory.registerSubtype(InsertDieInPoolEffect.class, InsertDieInPoolEffect.class.getName());
         adapterFactory.registerSubtype(InsertDieInRoundTrackEffect.class,InsertDieInRoundTrackEffect.class.getName());
         adapterFactory.registerSubtype(InverseDieValueEffect.class,InverseDieValueEffect.class.getName());
-        adapterFactory.registerSubtype(RemovedDieFromRoundTrackEffect.class,RemovedDieFromRoundTrackEffect.class.getName());
+        adapterFactory.registerSubtype(RemoveDieFromRoundTrackEffect.class,RemoveDieFromRoundTrackEffect.class.getName());
         adapterFactory.registerSubtype(RemoveDieFromPoolEffect.class, RemoveDieFromPoolEffect.class.getName());
         adapterFactory.registerSubtype(RemoveDieFromGridEffect.class, RemoveDieFromGridEffect.class.getName());
         adapterFactory.registerSubtype(SwapRTDieAndDPDieEffect.class, SwapRTDieAndDPDieEffect.class.getName());
