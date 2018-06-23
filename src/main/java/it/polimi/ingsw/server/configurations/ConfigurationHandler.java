@@ -115,7 +115,7 @@ public class ConfigurationHandler {
             try {
                 return gson.fromJson(new FileReader(config.getToolCardsPath()), listTypeToken.getType());
             } catch (FileNotFoundException e) {
-                throw new NotValidConfigPathException("Incorrect public objectives path in configuration file: "+config.getToolCardsPath());
+                throw new NotValidConfigPathException("Incorrect toolcards path in configuration file: "+config.getToolCardsPath());
             }
         }
     }
