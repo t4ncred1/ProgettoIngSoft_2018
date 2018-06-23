@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model.components;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -48,8 +47,19 @@ public class DicePool {
         } else {
                  strValue=((Integer)number).toString();
                  throw new NotValidParameterException(strValue,expectedValueType);
-               }
         }
+    }
+
+    public List<String> getAvailableColors(){
+        return new ArrayList<>(availableColors);
+    }
+
+    public void swapColor(String color, int index) throws NotValidParameterException {
+        if (!color.equals("red") && !color.equals("green") && !color.equals("yellow") && !color.equals("purple") && !color.equals("blue"))
+            throw new NotValidParameterException("Invalid color string passed", "Must be either red, blue, purple, yellow or green");
+        availableColors.add(color);
+        availableColors.remove(index);
+    }
 
 
     public List<Die> showDiceInPool(){
