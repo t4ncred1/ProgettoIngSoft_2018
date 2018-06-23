@@ -530,7 +530,7 @@ public class MatchController extends Thread{
     }
 
     public int toolCardLetPlayerChoose(String color){
-        //todo this will be the method called by toolcard 11 to get the value from client.
+        //todo this will be the method called by toolcard 11 to get the value for the newly extracted die from client.
         return 6;
     }
 }
