@@ -62,8 +62,8 @@ public class RemoveDieFromPoolEffect implements Effect {
         else{
             for(int i=0; i<model.getDicePool().showDiceInPool().size(); i++){
                 try {
-                    diceRemoved.add(model.getDicePool().getDieFromPool(i));
-                    model.getDicePool().removeDieFromPool(i);
+                    diceRemoved.add(model.getDicePool().getDieFromPool(0));
+                    model.getDicePool().removeDieFromPool(0);
                 } catch (NotInPoolException e){
                     Logger logger = Logger.getLogger(getClass().getName());
                     logger.log(Level.WARNING, "Failed execution of effect \""+ NAME + "\" in toolcard "+toolCard.getTitle(), e);
