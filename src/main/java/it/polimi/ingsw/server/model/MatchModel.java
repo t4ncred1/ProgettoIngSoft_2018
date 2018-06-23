@@ -105,6 +105,7 @@ public class MatchModel{
     }
 
     public void updateTurn(int maxRounds) throws TooManyRoundsException, NotEnoughPlayersException {
+        if (playersInGame.size()<MIN_PLAYERS_NUMBER) throw new NotEnoughPlayersException();
         if (iterator == null) iterator = new PlayersIterator(playersInGame);
         if(iterator.hasNext()) {
            currentPlayer = iterator.next();
