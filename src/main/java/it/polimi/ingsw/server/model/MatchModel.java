@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 
+import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.model.cards.PrivateObjective;
 import it.polimi.ingsw.server.model.cards.PublicObjective;
 import it.polimi.ingsw.server.model.cards.ToolCard;
@@ -25,16 +26,15 @@ public class MatchModel{
     private List<Grid> grids;
     private ArrayList<ToolCard> toolCards;
     private List<PublicObjective> publicObjectives;
-
+    private MatchController controller;
 
     private ArrayList<Die> roundTrack;
     private DicePool matchDicePool;
-    private int currentTurn;
-    private boolean leftToRight;
-    private boolean justChanged;
-    private boolean turnEnded;
+    private Player currentPlayer;
     private ArrayList<Player> playersInGame;
     private Player[] playersNotInGame;
+
+    private PlayersIterator iterator;
 
     private final int GRIDS_FOR_A_PLAYER =4;
     private final int PRIV_FOR_A_PLAYER=1;
@@ -46,6 +46,7 @@ public class MatchModel{
     private static final String PURPLE_OBJ= "purple";
 
     public MatchModel(Set<String> playersUserNames) throws NotValidParameterException, NotValidConfigPathException{
+
         if (playersUserNames==null) throw new NullPointerException();
         try {
             MAX_PLAYERS_NUMBER =ConfigurationHandler.getInstance().getMaxPlayersNumber();
@@ -86,10 +87,6 @@ public class MatchModel{
             }
             playersInGame.add(playerToAdd);
         }
-        currentTurn=0;
-        leftToRight =true;
-        justChanged =true;
-        turnEnded= false;
         matchDicePool = new DicePool();
 
         try {
@@ -99,65 +96,31 @@ public class MatchModel{
         }
     }
 
-    public void updateTurn(int maxRounds) throws TooManyRoundsException, NotEnoughPlayersException {
-        if(playersInGame.size()<MIN_PLAYERS_NUMBER){
-            throw new NotEnoughPlayersException();
+    public MatchModel(Set<String> players, MatchController controller) throws NotValidConfigPathException, NotValidParameterException {
+        this(players);
+        if (controller == null) {
+            throw new NullPointerException();
         }
-        if(leftToRight){
-            if(justChanged) {  //Se il verso di percorrenza è appena stato modificato currentTurn non deve cambiare.
-                justChanged = false;
-                currentTurn=0;
-                playersInGame.get(currentTurn).setFirstTurn(true);
-                if(turnEnded) {
+        this.controller=controller;
+    }
 
-                    playersInGame.add(playersInGame.remove(0));     //reorders players for new Round.
-                    playersInGame.get(currentTurn).setFirstTurn(true);
-                    try {
-                        roundTrack.add(matchDicePool.getDieFromPool(0));    //if there aren't any dice in DicePool at the end of the turn, throws NotInPoolException.
-                        matchDicePool.removeDieFromPool(0);
-                        this.prepareForNextRound(maxRounds);
-                    } catch (NotInPoolException | NotValidParameterException e) {
-                        Logger logger = Logger.getLogger(getClass().getName());
-                        logger.log(Level.WARNING,"Error updating the turn.",e);
-                    }
-                }
+    public void updateTurn(int maxRounds) throws TooManyRoundsException, NotEnoughPlayersException {
+        if (iterator == null) iterator = new PlayersIterator(playersInGame);
+        if(iterator.hasNext()) {
+           currentPlayer = iterator.next();
+        } else{
+            playersInGame.add(playersInGame.remove(0));     //reorders players for new Round.
+            //round + 1 --> il numero del round é aumentato di uno.
+            try {
+                roundTrack.add(matchDicePool.getDieFromPool(0));    //if there aren't any dice in DicePool at the end of the turn, throws NotInPoolException.
+                matchDicePool.removeDieFromPool(0);
+                this.prepareForNextRound(maxRounds);
+            } catch (NotInPoolException | NotValidParameterException e) {
+                Logger logger = Logger.getLogger(getClass().getName());
+                logger.log(Level.WARNING,"Error updating the turn.",e);
             }
-            else {
-                currentTurn++;
-                playersInGame.get(currentTurn).setFirstTurn(true);
-            }
-            if(currentTurn==playersInGame.size()-1){
-                leftToRight=false;
-                justChanged=true;
-                playersInGame.get(currentTurn).setFirstTurn(false);
-            }
-        }
-        else {
-            if(justChanged) {  //Se il verso di percorrenza è appena stato modificato currentTurn non deve cambiare.
-                playersInGame.get(currentTurn).setFirstTurn(false);
-                if(playersInGame.get(currentTurn).isJumpSecondTurn()) currentTurn--;
-                justChanged = false;
-            }
-            else {
-                if (currentTurn!=0 && playersInGame.get(currentTurn-1).isJumpSecondTurn()){
-                    if(currentTurn-1 == 0) {
-                        leftToRight=true;
-                        justChanged=true;
-                        turnEnded=true;
-                    }
-                    else {
-                        currentTurn = currentTurn-2;
-                    }
-                }
-                else currentTurn--;
-            }
-            if(currentTurn<=0){
-                currentTurn=0;
-                leftToRight=true;
-                justChanged=true;
-                turnEnded=true;
-                playersInGame.get(currentTurn).setFirstTurn(true);
-            }
+            iterator = new PlayersIterator(playersInGame);
+            currentPlayer = iterator.next();
         }
     }
 
@@ -171,18 +134,18 @@ public class MatchModel{
     }
 
     public Player getCurrentPlayer(){
-        return playersInGame.get(currentTurn);
+        return currentPlayer;
     }
 
     public String askTurn() {
-        return playersInGame.get(currentTurn).getUsername();
+        return currentPlayer.getUsername();
     }
 
     public void insertDieOperation(int x, int y, int dpIndex) throws InvalidOperationException, NotInPoolException, NotValidParameterException {
         final boolean CHECK_COLOR_CONSTRAINT =true;
         final boolean CHECK_VALUE_CONSTRAINT =true;
         Die dieToInsert= matchDicePool.getDieFromPool(dpIndex);
-        Player playerOfTheTurn = this.playersInGame.get(currentTurn);
+        Player playerOfTheTurn = this.currentPlayer;
         playerOfTheTurn.getSelectedGrid().insertDieInXY(x,y,CHECK_COLOR_CONSTRAINT, CHECK_VALUE_CONSTRAINT, dieToInsert);
         matchDicePool.removeDieFromPool(dpIndex);
     }
@@ -202,6 +165,7 @@ public class MatchModel{
         * Grids are taken from a file and ordered in pairs (on even indexes we have a fronts and on odd indexes we have backs)
         * If i take twice a grids from the same index i will pick for sure a front grids and its back cause of arrayList proprieties.
         */
+
         if (grids.size()<GRIDS_FOR_A_PLAYER) throw new InvalidOperationException();
         randomGridEvenIndex = ((new Random().nextInt(grids.size()/2)+1)*2)-2;
         ArrayList<Grid> currentGrids = new ArrayList<>();
@@ -210,6 +174,7 @@ public class MatchModel{
         randomGridEvenIndex = ((new Random().nextInt(grids.size()/2)+1)*2)-2;
         currentGrids.add(grids.remove(randomGridEvenIndex));
         currentGrids.add(grids.remove(randomGridEvenIndex));
+
         return currentGrids;
     }
 
@@ -239,7 +204,6 @@ public class MatchModel{
                 current.setGrid(grid); //invalidOpExc is thrown if the possible grids are not initialized, NotValidParameter is thrown if grid is not 0 or 1.
             }
         }
-
     }
 
     public boolean checkEndInitialization() {
@@ -327,4 +291,7 @@ public class MatchModel{
         return roundTrack;
     }
 
+    public MatchController getController() {
+        return controller;
+    }
 }
