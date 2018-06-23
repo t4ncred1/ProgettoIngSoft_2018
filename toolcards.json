@@ -1,0 +1,163 @@
+[
+{"effects":[{"type":"it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"},{"type":"it.polimi.ingsw.server.model.cards.effects.IncrementDiceEffect"},{"type":"it.polimi.ingsw.server.model.cards.effects.InsertDieInPoolEffect"}],"title":"Pinza Sgrossatrice","description":"Dopo aver scelto un dado,\naumenta o dominuisci il valore\ndel dado scelto di 1\nNon puoi cambiare\nun 6 in 1 o un 1 in 6","removeAllDiceFromDicePool":false,"colourInRoundtrack":false,"colorCheck":true,"valueCheck":true,"openCheck":true,"jumpNextTurn":false,"mustBeSecondTurn":false},
+{
+	"effects": [{
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromGridEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInGridEffect"
+	}],
+	"title": "Pennello per Eglomise",
+	"description": "Muovi un qualsiasi dado nella tua\nvetrata ignorando le restrizioni\ndi colore\nDevi rispettare tutte le altre\nrestrizioni di piazzamento",
+	"removeAllDiceFromDicePool": false,
+	"colourInRoundtrack": false,
+	"colorCheck": false,
+	"valueCheck": true,
+	"openCheck": true,
+	"jumpNextTurn": false,
+	"mustBeSecondTurn": false
+},
+{
+	"effects": [{
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromGridEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInGridEffect"
+	}],
+	"title": "Alesatore per lamina di rame",
+	"description": "Muovi un qualsiasi dado nella tua\nvetrata ignorando le restrizioni\ndi valore\nDevi rispettare tutte le altre\nrestrizioni di piazzamento",
+	"removeAllDiceFromDicePool": false,
+	"colourInRoundtrack": false,
+	"colorCheck": true,
+	"valueCheck": false,
+	"openCheck": true,
+	"jumpNextTurn": false,
+	"mustBeSecondTurn": false
+},
+{
+	"effects": [{
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromGridEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInGridEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromGridEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInGridEffect"
+	}],
+	"title": "Lathekin",
+	"description": "Muovi esattamente due dadi,\nrispettando tutte le restrizioni di\npiazzamento",
+	"removeAllDiceFromDicePool": false,
+	"colourInRoundtrack": false,
+	"colorCheck": true,
+	"valueCheck": true,
+	"openCheck": true,
+	"jumpNextTurn": false,
+	"mustBeSecondTurn": false
+},
+{
+	"effects": [{
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromRoundTrackEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.SwapRTDieAndDPDieEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInRoundTrackEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInPoolEffect"
+	}],
+	"title": "Taglierina circolare",
+	"description": "Dopo aver scelto un dado,\nscambia quel dado con un dado\nsul Tracciato dei Round",
+	"removeAllDiceFromDicePool": false,
+	"colourInRoundtrack": false,
+	"colorCheck": true,
+	"valueCheck": true,
+	"openCheck": true,
+	"jumpNextTurn": false,
+	"mustBeSecondTurn": false
+},
+{
+	"effects": [{
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.ChangeValueDiceEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInPoolEffect"
+	}],
+	"title": "Pennello per Pasta Salda",
+	"description": "Dopo aver scelto un dado della dicepool,\n tira nuovamente quel dado",
+	"removeAllDiceFromDicePool": false,
+	"colourInRoundtrack": false,
+	"colorCheck": true,
+	"valueCheck": true,
+	"openCheck": true,
+	"jumpNextTurn": false,
+	"mustBeSecondTurn": false
+},
+{
+	"effects": [{
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.ChangeValueDiceEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInPoolEffect"
+	}],
+	"title": "Martelletto",
+	"description": "Tira nuovamente\ntutti i dadi della Riserva\nQuesta carta può essera usata\nsolo durante il tuo secondo turno",
+	"removeAllDiceFromDicePool": true,
+	"colourInRoundtrack": false,
+	"colorCheck": true,
+	"valueCheck": true,
+	"openCheck": true,
+	"jumpNextTurn": false,
+	"mustBeSecondTurn": true
+},
+{
+	"effects": [{
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInGridEffect"
+	}],
+	"title": "Tenaglia a Rotelle",
+	"description": "Dopo il tuo primo turno scegli\nimmediatamente un altro dado\nSalta il tuo secondo turno in\nquesto round",
+	"removeAllDiceFromDicePool": false,
+	"colourInRoundtrack": false,
+	"colorCheck": true,
+	"valueCheck": true,
+	"openCheck": true,
+	"jumpNextTurn": true,
+	"mustBeSecondTurn": false
+},
+{
+	"effects": [{
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInGridEffect"
+	}],
+	"title": "Riga in Sughero",
+	"description": "Dopo aver scelto un dado,\npiazzalo in una casella che non\nsia adiacente a un altro dado\nDevi rispettare tutte le restrizioni\ndi piazzamento",
+	"removeAllDiceFromDicePool": false,
+	"colourInRoundtrack": false,
+	"colorCheck": true,
+	"valueCheck": true,
+	"openCheck": false,
+	"jumpNextTurn": false,
+	"mustBeSecondTurn": false
+},
+{
+	"effects": [{
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InverseDieValueEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInPoolEffect"
+	}],
+	"title": "Tampone Diamantato",
+	"description": "Dopo aver scelto un dado, giralo\nsulla faccia opposta\n(6 diventa 1, 5 diventa 2, 4\ndiventa 3 ecc.)",
+	"removeAllDiceFromDicePool": false,
+	"colourInRoundtrack": false,
+	"colorCheck": true,
+	"valueCheck": true,
+	"openCheck": true,
+	"jumpNextTurn": false,
+	"mustBeSecondTurn": false
+}
+]
