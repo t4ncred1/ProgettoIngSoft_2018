@@ -12,13 +12,16 @@ public class Player {
         private ArrayList<Grid> gridsSelection;
         private Grid gridSelected;
         private PrivateObjective objective;
-
+        private int favorTokens;
+        private boolean firstTurn = true;
+        private boolean jumpSecondTurn = false;
 
 
         public Player(String username){
             gridsSelection=null;
             gridSelected=null;
             objective=null;
+            favorTokens = 0;
             this.username=username;
         }
 
@@ -34,6 +37,7 @@ public class Player {
             if (gridsSelection==null) throw new InvalidOperationException();
             if (i<0||i>=gridsSelection.size()) throw new NotValidParameterException("index of the chosen grid: "+i,"Should be a value between 0 and " + (gridsSelection.size()-1));
             gridSelected=gridsSelection.get(i);
+            setFavorTokens(gridSelected.getDifficulty());
     }
 
     public ArrayList<Grid> getGridsSelection(){
@@ -53,7 +57,31 @@ public class Player {
     }
 
     public boolean hasSelectedAGrid() {
-        return this.gridSelected    != null;
+        return this.gridSelected!= null;
+    }
+
+    public boolean isFirstTurn() {
+        return firstTurn;
+    }
+
+    public void setFirstTurn(boolean firstTurn) {
+        this.firstTurn = firstTurn;
+    }
+
+    public boolean isJumpSecondTurn() {
+        return jumpSecondTurn;
+    }
+
+    public void setJumpSecondTurn(boolean jumpSecondTurn) {
+        this.jumpSecondTurn = jumpSecondTurn;
+    }
+
+    public void setFavorTokens(int favorTokens) {
+        this.favorTokens = favorTokens;
+    }
+
+    public int getFavorTokens() {
+        return favorTokens;
     }
 }
 

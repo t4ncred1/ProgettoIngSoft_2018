@@ -3,9 +3,7 @@ package it.polimi.ingsw.server.configurations;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.server.model.cards.effects.Effect;
-import it.polimi.ingsw.server.model.cards.effects.InsertDieInDicePoolEffect;
-import it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect;
+import it.polimi.ingsw.server.model.cards.effects.*;
 import it.polimi.ingsw.server.model.cards.PublicObjective;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Grid;
@@ -117,20 +115,27 @@ public class ConfigurationHandler {
             try {
                 return gson.fromJson(new FileReader(config.getToolCardsPath()), listTypeToken.getType());
             } catch (FileNotFoundException e) {
-                throw new NotValidConfigPathException("Incorrect public objectives path in configuration file: "+config.getToolCardsPath());
+                throw new NotValidConfigPathException("Incorrect toolcards path in configuration file: "+config.getToolCardsPath());
             }
         }
     }
 
-    private Gson getGsonForToolCards() {
+    public Gson getGsonForToolCards() {
         GsonBuilder builder= new GsonBuilder();
         //Create a RuntimeTypeAdapterFactory for Effect interface
         RuntimeTypeAdapterFactory<Effect> adapterFactory= RuntimeTypeAdapterFactory.of(Effect.class);
 
-        //Register all classes implementing Effect interface, fixme add all effect subtype
-        adapterFactory.registerSubtype(InsertDieInDicePoolEffect.class, InsertDieInDicePoolEffect.class.getName());
+        //Register all classes implementing Effect interface
+        adapterFactory.registerSubtype(ChangeValueDiceEffect.class,ChangeValueDiceEffect.class.getName());
+        adapterFactory.registerSubtype(IncrementDiceEffect.class, IncrementDiceEffect.class.getName());
+        adapterFactory.registerSubtype(InsertDieInGridEffect.class,InsertDieInGridEffect.class.getName());
+        adapterFactory.registerSubtype(InsertDieInPoolEffect.class, InsertDieInPoolEffect.class.getName());
+        adapterFactory.registerSubtype(InsertDieInRoundTrackEffect.class,InsertDieInRoundTrackEffect.class.getName());
+        adapterFactory.registerSubtype(InverseDieValueEffect.class,InverseDieValueEffect.class.getName());
+        adapterFactory.registerSubtype(RemoveDieFromRoundTrackEffect.class,RemoveDieFromRoundTrackEffect.class.getName());
         adapterFactory.registerSubtype(RemoveDieFromPoolEffect.class, RemoveDieFromPoolEffect.class.getName());
-
+        adapterFactory.registerSubtype(RemoveDieFromGridEffect.class, RemoveDieFromGridEffect.class.getName());
+        adapterFactory.registerSubtype(SwapRTDieAndDPDieEffect.class, SwapRTDieAndDPDieEffect.class.getName());
         //associate the factory and the builder
         builder.registerTypeAdapterFactory(adapterFactory);
         return builder.create();

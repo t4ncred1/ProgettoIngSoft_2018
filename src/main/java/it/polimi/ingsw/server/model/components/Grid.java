@@ -12,6 +12,20 @@ public class Grid implements Serializable {
     private String name;
     private int difficulty;
     private Box[][] gameGrid;
+    private transient boolean firstInsertion=true;
+
+    public Grid (Grid aGrid){
+        this.name = aGrid.name;
+        this.difficulty = aGrid.difficulty;
+        Box[][] gGrid = new Box[COLUMN_NUMBER][ROW_NUMBER];
+        for(int i=0; i<COLUMN_NUMBER; i++){
+            for (int j=0; j<ROW_NUMBER; j++){
+                gGrid[i][j]=new Box(aGrid.getGrid()[i][j]);
+            }
+        }
+        this.gameGrid=gGrid;
+        firstInsertion=aGrid.firstInsertion;
+    }
 
     public Grid(int difficulty, String name) throws NotValidParameterException {
         final String expectedData= "Difficulty should have a value between 3 and 6 (both included)";
@@ -29,6 +43,7 @@ public class Grid implements Serializable {
         build.append(this.getName());
         build.append("\tDifficoltà: ");
         build.append(this.getDifficulty());
+        build.append("\nFirstInsertion: "); build.append(Boolean.toString(firstInsertion));
         build.append("\nBoxes di " +this.getName()+ ":\n");
         int k=0;
         int n;
@@ -98,11 +113,49 @@ public class Grid implements Serializable {
         if(x<0||x> COLUMN_NUMBER -1||y<0||y> ROW_NUMBER -1) throw new NotValidParameterException("("+x+","+y+")", indexOutOfBound);
 
         if(gameGrid[x][y]==null) throw new NotValidParameterException("("+x+","+y+")","the box in this position should be initialized. ");
-        if(gameGrid[x][y].tryToInsertDie(colorCheck, valueCheck, die)==false)
+        if(!gameGrid[x][y].tryToInsertDie(colorCheck, valueCheck, true, die))
             throw new InvalidOperationException();
         else
             gameGrid[x][y].insertDie(die);
+
+        if (firstInsertion) {
+            setBoxesClosed(x,y);
+            firstInsertion=false;
+        }
     }
+
+    public void insertDieInXY(int x, int y, boolean colorCheck, boolean valueCheck, boolean openCheck, Die die) throws NotValidParameterException, InvalidOperationException {
+        final String indexOutOfBound = "coordinates should be: 0<=x<=3 and 0<=y<=4";
+
+        if(die == null) throw new NullPointerException();
+
+        if(x<0||x> COLUMN_NUMBER -1||y<0||y> ROW_NUMBER -1) throw new NotValidParameterException("("+x+","+y+")", indexOutOfBound);
+
+        if(gameGrid[x][y]==null) throw new NotValidParameterException("("+x+","+y+")","the box in this position should be initialized. ");
+        if(!gameGrid[x][y].tryToInsertDie(colorCheck, valueCheck, openCheck, die))
+            throw new InvalidOperationException();
+        else
+            gameGrid[x][y].insertDie(die);
+
+        if (firstInsertion) {
+            setBoxesClosed(x,y);
+            firstInsertion=false;
+        }
+    }
+
+    private void setBoxesClosed(int x, int y) {
+        for(Box[] column : gameGrid){
+            for (Box box : column){
+                if (!(box.getCoordY()==y&&box.getCoordX()==x)) box.setToClosed();
+                if (box.getCoordX()==x && (box.getCoordY()==y-1 || box.getCoordY()==y+1)) box.setToOpened();
+                if ((box.getCoordX()==x+1||box.getCoordX()==x-1) && box.getCoordY()==y) box.setToOpened();
+                if ((box.getCoordX()==x+1||box.getCoordX()==x-1) && (box.getCoordY()==y+1||box.getCoordY()==y-1)) box.setToOpened();
+            }
+        }
+
+    }
+
+
     public Box[][] getGrid(){
         return gameGrid.clone();
     }

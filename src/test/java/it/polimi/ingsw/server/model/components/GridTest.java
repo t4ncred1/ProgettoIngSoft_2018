@@ -19,6 +19,68 @@ public class GridTest {
     //                                  Grid (int Difficulty, String Name)
     /*-**************************************************************************************************-*/
 
+    @Test
+    void gridCopy(){
+        Grid test1 = null, test2 = null;
+        try {
+            test1=new Grid(3,"test");
+
+            for (int i = 0; i < test1.getColumnNumber(); i++) {
+                for (int j = 0; j < test1.getRowNumber(); j++) {
+                    test1.createBoxInXY(i, j, "yellow");
+                }
+            }
+
+        } catch (NotValidParameterException e) {
+            fail("Failed Initialization");
+        }
+
+        test2=new Grid(test1);
+        assertEquals(test1.toString(), test2.toString());
+
+
+
+    }
+
+    @Test
+    void gridCopyModification(){
+        Grid test1 = null, test2 = null;
+        try {
+            test1=new Grid(3,"test");
+
+            for (int i = 0; i < test1.getColumnNumber(); i++) {
+                for (int j = 0; j < test1.getRowNumber(); j++) {
+                    test1.createBoxInXY(i, j, "none");
+                }
+            }
+
+        } catch (NotValidParameterException e) {
+            fail("Failed Initialization");
+        }
+
+        test1.initializeAllObservers();
+        try {
+            test1.insertDieInXY(0,0,true,true,new Die("yellow",2));
+        } catch (NotValidParameterException | InvalidOperationException e) {
+            fail("Test has failed. Modification of a copy of a grid also modifies the original grid.");
+        }
+
+        test2=new Grid(test1);
+        test2.initializeAllObservers();
+        assertEquals(test1.toString(), test2.toString());
+
+        try {
+            test2.insertDieInXY(0,1,true,true,new Die("red",6));
+        } catch (NotValidParameterException e) {
+            fail("Test has failed. Modification of a copy of a grid also modifies the original grid.");
+        } catch (InvalidOperationException e){
+            fail("Test has failed. Modification of a copy of a grid also modifies, wrongly, the original grid.");
+        }
+
+        assertNotEquals(test1.toString(), test2.toString());
+    }
+
+
 
     @Test
     public void nullStringPassed() {
@@ -206,14 +268,17 @@ public class GridTest {
         String passedConstraint = "none";
         int passedCoordinateX1 = 0;
         int passedCoordinateY1 = 0;
-        int passedCoordinateX2 = 1;
-        int passedCoordinateY2 = 1;
+        int passedCoordinateX2 = 0;
+        int passedCoordinateY2 = 3;
         Grid toTest1 = new Grid(3, "name");
 
 
         //When
-        toTest1.createBoxInXY(passedCoordinateX1, passedCoordinateY1, passedConstraint);
-        toTest1.createBoxInXY(passedCoordinateX2, passedCoordinateY2, passedConstraint);
+        for (int i=0; i<toTest1.getColumnNumber(); i++){
+            for (int j=0; j<toTest1.getRowNumber(); j++){
+                toTest1.createBoxInXY(i,j,passedConstraint);
+            }
+        }
 
         //Assert
         //this box is opened, methods ends without throwing exceptions
@@ -253,6 +318,43 @@ public class GridTest {
         //Assert
         Throwable exception = assertThrows(NotValidParameterException.class, () -> toTest.insertDieInXY(passedCoordinateX, passedCoordinateY, colorCheck, valueCheck, passedDie));
         assertEquals("Parameter: (10,10). Expected: coordinates should be: 0<=x<=3 and 0<=y<=4", exception.getMessage());
+    }
+
+    @Test
+    public void insertDieAfterFirst() throws NotValidParameterException{
+        int passedCoordinateX1 = 0;
+        int passedCoordinateY1 = 0;
+        int passedCoordinateX2 = 0;
+        int passedCoordinateY2 = 2;
+
+        boolean colorCheck= true, valueCheck=true;
+        Die passedDie = new Die("red", 1);
+
+        Grid toTest;
+        toTest = new Grid(3,"name");
+
+        for (int i=0; i<toTest.getColumnNumber(); i++){
+            for ( int j =0; j< toTest.getRowNumber(); j++){
+                try {
+                    toTest.createBoxInXY(i,j,"none");
+                } catch (NotValidParameterException e) {
+                    fail("Test failed during initialization.");
+                }
+            }
+        }
+
+        toTest.initializeAllObservers();
+
+        try {
+            toTest.insertDieInXY(passedCoordinateX1,passedCoordinateY1,colorCheck,valueCheck,passedDie);
+        } catch (InvalidOperationException e) {
+            fail("test failed in initialization.");
+        }
+
+        assertThrows(InvalidOperationException.class, ()->{
+            toTest.insertDieInXY(passedCoordinateX2,passedCoordinateY2,colorCheck,valueCheck,passedDie);
+        });
+
     }
 
     @Test
@@ -407,7 +509,7 @@ public class GridTest {
             fail("test failed");
         }
 
-        assertEquals("nome: test\tDifficoltà: 4\n" +
+        assertEquals("nome: test\tDifficoltà: 4\nFirstInsertion: true\n" +
                 "Boxes di test:\n" +
                 " colonna 1:\n" +
                 "\t riga 1: \n" +

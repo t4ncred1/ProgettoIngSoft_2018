@@ -13,7 +13,7 @@ class PublicObjectiveTest {
     @Test
     void publicObjective2Test() {
         Grid toTest=null;
-        PublicObjective pubObj2 = new PublicObjective("Test Objective 2", "",2,4);
+        PublicObjective pubObj2 = new PublicObjective("Test Objective 2", "",2,5);
         try {
             toTest = new Grid(3,"testGrid");
             for(int i=0;i<toTest.getColumnNumber();i++){
@@ -26,15 +26,15 @@ class PublicObjectiveTest {
             toTest.insertDieInXY(0,1,true,true, new Die("blue",2));
             toTest.insertDieInXY(0,2,true,true, new Die("yellow",3));
             toTest.insertDieInXY(0,3,true,true, new Die("purple",4));
-            toTest.insertDieInXY(2,0,true,true, new Die("yellow",1));
-            toTest.insertDieInXY(2,1,true,true, new Die("blue",2));
-            toTest.insertDieInXY(2,2,true,true, new Die("yellow",3));
-            toTest.insertDieInXY(2,3,true,true, new Die("purple",4));
+            toTest.insertDieInXY(1,0,true,true, new Die("yellow",5));
+            toTest.insertDieInXY(1,1,true,true, new Die("green",6));
+            toTest.insertDieInXY(1,2,true,true, new Die("blue",1));
+            toTest.insertDieInXY(1,3,true,true, new Die("yellow",2));
 
         } catch (NotValidParameterException | InvalidOperationException e){
             fail("test failed. Invalid initialization Operation.");
         }
-        assertEquals(4,pubObj2.calculatePoints(toTest));
+        assertEquals(5,pubObj2.calculatePoints(toTest));
     }
 
     @Test
@@ -102,10 +102,6 @@ class PublicObjectiveTest {
             toTest.insertDieInXY(1,1,true,true, new Die("blue",2));
             toTest.insertDieInXY(1,2,true,true, new Die("yellow",3));
             toTest.insertDieInXY(1,3,true,true, new Die("purple",4));
-            toTest.insertDieInXY(3,0,true,true, new Die("green",1));
-            toTest.insertDieInXY(3,1,true,true, new Die("blue",2));
-            toTest.insertDieInXY(3,2,true,true, new Die("yellow",1));
-            toTest.insertDieInXY(3,3,true,true, new Die("purple",4));
 
         } catch (NotValidParameterException | InvalidOperationException e){
             fail("test failed. Invalid initialization Operation.");
@@ -129,8 +125,6 @@ class PublicObjectiveTest {
             toTest.insertDieInXY(1,1,true,true, new Die("blue",2));
             toTest.insertDieInXY(1,2,true,true, new Die("yellow",1));
             toTest.insertDieInXY(1,3,true,true, new Die("purple",2));
-            toTest.insertDieInXY(4,2,true,true, new Die("yellow",1));
-            toTest.insertDieInXY(4,1,true,true, new Die("purple",6));
 
         } catch (NotValidParameterException | InvalidOperationException e){
             fail("test failed. Invalid initialization Operation.");
@@ -154,9 +148,6 @@ class PublicObjectiveTest {
             toTest.insertDieInXY(1,1,true,true, new Die("blue",6));
             toTest.insertDieInXY(1,2,true,true, new Die("yellow",3));
             toTest.insertDieInXY(1,3,true,true, new Die("red",4));
-            toTest.insertDieInXY(4,2,true,true, new Die("yellow",5));
-            toTest.insertDieInXY(4,1,true,true, new Die("purple",6));
-            toTest.insertDieInXY(3,3,true,true, new Die("purple",6));
 
         } catch (NotValidParameterException | InvalidOperationException e){
             fail("test failed. Invalid initialization Operation.");
@@ -180,14 +171,34 @@ class PublicObjectiveTest {
             toTest.insertDieInXY(1,1,true,true, new Die("blue",6));
             toTest.insertDieInXY(1,2,true,true, new Die("yellow",3));
             toTest.insertDieInXY(1,3,true,true, new Die("red",4));
-            toTest.insertDieInXY(4,2,true,true, new Die("yellow",5));
-            toTest.insertDieInXY(4,1,true,true, new Die("purple",6));
-            toTest.insertDieInXY(3,3,true,true, new Die("purple",6));
 
         } catch (NotValidParameterException | InvalidOperationException e){
             fail("test failed. Invalid initialization Operation.");
         }
-        assertEquals(4,pubObj7.calculatePoints(toTest));
+        assertEquals(2,pubObj7.calculatePoints(toTest));
+    }
+
+    @Test
+    void publicObjective7WrongTest() {
+        Grid toTest=null;
+        PublicObjective pubObj7 = new PublicObjective("Test Objective 7", "",7,2);
+        try {
+            toTest = new Grid(3,"testGrid");
+            for(int i=0;i<toTest.getColumnNumber();i++){
+                for (int j=0;j<toTest.getRowNumber();j++){
+                    toTest.createBoxInXY(i,j,"none");
+                }
+            }
+            toTest.initializeAllObservers();
+            toTest.insertDieInXY(1,0,true,true, new Die("green",5));
+            toTest.insertDieInXY(1,1,true,true, new Die("blue",2));
+            toTest.insertDieInXY(1,2,true,true, new Die("yellow",3));
+            toTest.insertDieInXY(1,3,true,true, new Die("red",4));
+
+        } catch (NotValidParameterException | InvalidOperationException e){
+            fail("test failed. Invalid initialization Operation.");
+        }
+        assertEquals(0,pubObj7.calculatePoints(toTest));
     }
 
     @Test
@@ -206,9 +217,8 @@ class PublicObjectiveTest {
             toTest.insertDieInXY(1,1,true,true, new Die("blue",2));
             toTest.insertDieInXY(1,2,true,true, new Die("yellow",3));
             toTest.insertDieInXY(1,3,true,true, new Die("red",4));
-            toTest.insertDieInXY(4,2,true,true, new Die("yellow",5));
-            toTest.insertDieInXY(4,1,true,true, new Die("purple",6));
-            toTest.insertDieInXY(3,3,true,true, new Die("purple",6));
+            toTest.insertDieInXY(2,3,true,true, new Die("yellow",5));
+            toTest.insertDieInXY(3,3,true,true, new Die("green",6));
 
         } catch (NotValidParameterException | InvalidOperationException e){
             fail("test failed. Invalid initialization Operation.");
@@ -277,12 +287,12 @@ class PublicObjectiveTest {
             toTest.initializeAllObservers();
             toTest.insertDieInXY(4,0,true,true, new Die("green",1));
             toTest.insertDieInXY(3,1,true,true, new Die("green",3));
-            toTest.insertDieInXY(1,3,true,true, new Die("green",4));
-
+            toTest.insertDieInXY(3,0,true,true, new Die("red",5));
+            toTest.insertDieInXY(2,1,true,true, new Die("red",6));
         } catch (NotValidParameterException | InvalidOperationException e){
             fail("test failed. Invalid initialization Operation.");
         }
-        assertEquals(2,pubObj9.calculatePoints(toTest));
+        assertEquals(4,pubObj9.calculatePoints(toTest));
     }
 
     @Test
@@ -301,8 +311,7 @@ class PublicObjectiveTest {
             toTest.insertDieInXY(1,1,true,true, new Die("blue",2));
             toTest.insertDieInXY(1,2,true,true, new Die("yellow",1));
             toTest.insertDieInXY(1,3,true,true, new Die("purple",2));
-            toTest.insertDieInXY(4,2,true,true, new Die("red",1));
-            toTest.insertDieInXY(4,1,true,true, new Die("purple",2));
+            toTest.insertDieInXY(0,0,true,true, new Die("red", 6));
 
         } catch (NotValidParameterException | InvalidOperationException e){
             fail("test failed. Invalid initialization Operation.");
@@ -323,13 +332,11 @@ class PublicObjectiveTest {
             }
             toTest.initializeAllObservers();
             toTest.insertDieInXY(1,0,true,true, new Die("green",1));
-            toTest.insertDieInXY(2,3,true,true, new Die("green",1));
             toTest.insertDieInXY(1,1,true,true, new Die("blue",2));
             toTest.insertDieInXY(1,2,true,true, new Die("yellow",1));
             toTest.insertDieInXY(1,3,true,true, new Die("purple",2));
-            toTest.insertDieInXY(4,2,true,true, new Die("red",1));
-            toTest.insertDieInXY(4,1,true,true, new Die("purple",2));
-
+            toTest.insertDieInXY(0,0,true,true, new Die("red",2));
+            toTest.insertDieInXY(2,3,true,true, new Die("green",1));
         } catch (NotValidParameterException | InvalidOperationException e){
             fail("test failed. Invalid initialization Operation.");
         }

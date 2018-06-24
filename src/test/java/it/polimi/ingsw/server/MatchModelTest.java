@@ -26,11 +26,12 @@ class MatchModelTest {
     }
 
     @Test
-    void checkAskTurn() throws NotValidConfigPathException, NotValidParameterException {
+    void checkAskTurn() throws NotValidConfigPathException, NotValidParameterException, TooManyRoundsException, NotEnoughPlayersException {
         Set<String> playerUserNames = new CopyOnWriteArraySet<String>();
         playerUserNames.add("cancaro");
         playerUserNames.add("test");
         MatchModel test = new MatchModel(playerUserNames);
+        test.updateTurn(10);
         assertEquals("cancaro",test.askTurn());
     }
 
@@ -98,7 +99,7 @@ class MatchModelTest {
         playerUserNames.add("test");
         MatchModel test = new MatchModel(playerUserNames);
         test.insertDieInPool(temp,0);
-        dpCopy=test.getDicePool();
+        dpCopy=test.getDicePool().showDiceInPool();
         assertEquals(dpCopy.get(0),temp);
         test.removeDiePool(0);
     }
@@ -122,10 +123,7 @@ class MatchModelTest {
         playerUserNames.add("cancaro");
         playerUserNames.add("test");
         MatchModel test = new MatchModel(playerUserNames);
-        assertThrows(NotValidParameterException.class,()->test.setPlayerToDisconnect("test1"));
-        test.setPlayerToDisconnect("cancaro");
-        test.setPlayerToDisconnect("test");
-        assertThrows(NotEnoughPlayersException.class,()->test.updateTurn(10));
+        assertThrows(InvalidUsernameException.class,()->test.setPlayerToDisconnect("test1"));
     }
 
     @Test
@@ -139,19 +137,35 @@ class MatchModelTest {
     }
 
     @Test
-    void checkInsertDieOperation() throws NotValidConfigPathException, NotValidParameterException, InvalidOperationException, NotInPoolException {
-     //TODO
-    }
-
-    @Test
-    void checkGetGridsForPlayer() throws NotValidConfigPathException, NotValidParameterException, InvalidOperationException, InvalidUsernameException {
+    void checkInsertDieOpGetGridsForPlayersGetPlCurrentGrid() throws NotValidConfigPathException, NotValidParameterException, InvalidOperationException, NotInPoolException, TooManyRoundsException, NotEnoughPlayersException, InvalidUsernameException {
+        List<Grid> testgrids = new ArrayList<>();
+        int i,j;
+        Grid grid1 = null;
+        Grid grid2;
+        try{
+            grid1= new Grid(4,"toTest");
+            for(i=0;i<grid1.getColumnNumber();i++){
+                for(j=0;j<grid1.getRowNumber();j++){
+                    grid1.createBoxInXY(i,j,"none");
+                }
+            }
+            grid1.initializeAllObservers();
+        }catch (NotValidParameterException e){
+            fail("test failed");
+        }
+        testgrids.add(grid1);
         Set<String> playerUserNames = new CopyOnWriteArraySet<String>();
         playerUserNames.add("cancaro");
         playerUserNames.add("test");
         MatchModel test = new MatchModel(playerUserNames);
-        test.setPlayerToDisconnect("cancaro");
-        test.setPlayerToDisconnect("test");
-        assertThrows(InvalidUsernameException.class,()->test.getGridsForPlayer("cancaro"));
+        test.updateTurn(10);
+        test.getCurrentPlayer().setGridsSelection(testgrids);
+        assertEquals(testgrids,test.getGridsForPlayer("cancaro"));
+        test.getCurrentPlayer().setGrid(0);
+        test.insertDieOperation(0,0,0);
+        grid2=test.getPlayerCurrentGrid("cancaro");
+        assertEquals(grid2,grid1);
+        assertThrows(InvalidOperationException.class,()->test.getGridsForPlayer("cancaro"));
     }
 
     @Test
@@ -176,5 +190,12 @@ class MatchModelTest {
         assertNotEquals(priv3,priv4);
     }
 
-
+    @Test
+    void checkMatchModelCreator() throws NotValidConfigPathException, NotValidParameterException {
+        Set<String> playerUserNames = new CopyOnWriteArraySet<String>();
+        playerUserNames.add("cancaro");
+        playerUserNames.add("test");
+        MatchController matchController=new MatchController();
+        MatchModel matchModel=new MatchModel(playerUserNames,matchController);
+    }
 }

@@ -11,6 +11,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class BoxTest {
 
 //Tests sui costruttori
+
+    @Test
+    void boxCopy(){
+        Box test1 = null,test2 = null;
+        try {
+            test1 = new Box("yellow",0,0);
+            test2 = new Box(test1);
+        } catch (NotValidParameterException e) {
+            fail("Failed Initialization");
+        }
+        assertEquals(test1.toString(),test2.toString());
+    }
+
     @Test
     public void boxPositions(){
         assertThrows(NotValidParameterException.class,
@@ -60,7 +73,7 @@ public class BoxTest {
         box.insertDie(dieInBox); //inserisco un dado a caso
 
         //Assert
-        assertFalse(box.tryToInsertDie(true,true, dieToInsert));
+        assertFalse(box.tryToInsertDie(true,true, true, dieToInsert));
     }
 
     @Test
@@ -76,7 +89,7 @@ public class BoxTest {
         boolean checkValueConstraints=true;
 
         //Assert
-        assertFalse(box.tryToInsertDie(checkColorConstraints,checkValueConstraints, dieToInsert));
+        assertFalse(box.tryToInsertDie(checkColorConstraints,checkValueConstraints, true, dieToInsert));
     }
 
     @Test
@@ -96,7 +109,7 @@ public class BoxTest {
 
 
         //Assert
-        assertTrue(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, dieToInsert));
+        assertTrue(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, true, dieToInsert));
     }
 
     @Test
@@ -117,7 +130,7 @@ public class BoxTest {
 
 
         //Assert
-        assertFalse(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, dieToInsert));
+        assertFalse(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, true, dieToInsert));
     }
 
     @Test
@@ -140,7 +153,7 @@ public class BoxTest {
 
 
         //Assert
-        assertTrue(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, dieToInsert));
+        assertTrue(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, true, dieToInsert));
     }
 
     @Test
@@ -161,7 +174,7 @@ public class BoxTest {
 
 
         //Assert
-        assertFalse(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, dieToInsert));
+        assertFalse(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, true, dieToInsert));
     }
 
     @Test
@@ -184,7 +197,7 @@ public class BoxTest {
 
 
         //Assert
-        assertTrue(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, dieToInsert));
+        assertTrue(box2.tryToInsertDie(checkColorConstraints,checkValueConstraints, true, dieToInsert));
     }
 
     /*----------------------------------------------------------------------------------------------------*/

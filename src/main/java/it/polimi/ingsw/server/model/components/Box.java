@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Box implements BoxObserver, BoxSubject, Serializable {
 
@@ -28,13 +29,13 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
     * Anche per le caselle "aperte" si usa lo stesso ragionamento ( attributo opened )
     */
 
-    private DieConstraints die;
+    private DieConstraints die = null;
     private int[] colorRestriction;
     private int[] valueRestriction;
     private int constraintIndex;
-    private boolean kindOfConstraint; //FIXME true= value, false color if constraints are different from 0.
-    private transient final boolean COLOR_CONSTRAINT= false; //FIXME
-    private transient final boolean VALUE_CONSTRAINT= true; //FIXME
+    private boolean kindOfConstraint;
+    private transient final boolean COLOR_CONSTRAINT= false;
+    private transient final boolean VALUE_CONSTRAINT= true;
     private transient final int NO_CONSTRAINT = -1;
     private int opened;
     private transient ArrayList<BoxObserver> observerList;
@@ -42,6 +43,18 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
     private int coordY;
 
     //creators
+
+    public Box(Box aBox) {
+        this.coordX = aBox.getCoordX();
+        this.coordY = aBox.getCoordY();
+        this.opened = aBox.opened;
+        this.colorRestriction = Arrays.copyOf(aBox.colorRestriction,aBox.colorRestriction.length);
+        this.valueRestriction = Arrays.copyOf(aBox.valueRestriction,aBox.valueRestriction.length);
+        this.constraintIndex = aBox.constraintIndex;
+        if(aBox.getDie()!=null) this.die = new DieToConstraintsAdapter(new Die(aBox.getDie().getDie()));
+        this.kindOfConstraint = aBox.kindOfConstraint;
+    }
+
     public Box(int x, int y) throws NotValidParameterException {
         final String expectedDataType= "Coord expected value: 0<x<4 and 0<y<3";
         if((x<0||x>4)||(y<0||y>3)) throw new NotValidParameterException("Coord: "+x+", "+ y,expectedDataType);
@@ -51,7 +64,7 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
         colorRestriction = new int[5];
         valueRestriction = new int[6];
         observerList= new ArrayList<>();
-        constraintIndex = NO_CONSTRAINT; //FIXME
+        constraintIndex = NO_CONSTRAINT;
 
         opened=0;
         for (int i = 0; i<colorRestriction.length; i++ ) colorRestriction[i] = 0;
@@ -66,7 +79,7 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
         if(color.equals("red")||color.equals("green")||color.equals("yellow")||color.equals("blue")||color.equals("purple")){
             DieConstraints dieSample = new DieToConstraintsAdapter(new Die(color, 1));
             constraintIndex = dieSample.getColorRestriction();
-            kindOfConstraint = COLOR_CONSTRAINT; //FIXME
+            kindOfConstraint = COLOR_CONSTRAINT;
             for(int i=0; i<colorRestriction.length; i++)
                 if(i!= constraintIndex)colorRestriction[i]=1;
         }
@@ -80,7 +93,7 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
         if(value>=1&&value<=6){
             DieConstraints dieSample = new DieToConstraintsAdapter(new Die("red", value)); //the color isn't important, so it was randomly chosen by the author
             constraintIndex =dieSample.getValueRestriction();
-            kindOfConstraint = VALUE_CONSTRAINT; //FIXME
+            kindOfConstraint = VALUE_CONSTRAINT;
             for(int i=0; i<valueRestriction.length; i++)
                 if(i!=constraintIndex)valueRestriction[i]=1;
         }
@@ -124,11 +137,11 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
         return observerList.isEmpty();
     }
 
-    public boolean tryToInsertDie(boolean colorCheck, boolean valueCheck, Die passedDie){
+    public boolean tryToInsertDie(boolean colorCheck, boolean valueCheck, boolean openCheck, Die passedDie){
         DieConstraints toCheck= new DieToConstraintsAdapter(passedDie);
         if(this.die!=null)
             return false;
-        if(this.opened==0)
+        if(this.opened==0 && openCheck)
             return false;
         if(colorCheck && (colorRestriction[toCheck.getColorRestriction()]>0))
             return false;
@@ -251,5 +264,9 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
                     return "P";
             }
         }
+    }
+
+    public void setToClosed() {
+        this.opened=0;
     }
 }

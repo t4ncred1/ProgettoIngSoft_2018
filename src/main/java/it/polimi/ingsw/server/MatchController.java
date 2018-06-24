@@ -354,7 +354,7 @@ public class MatchController extends Thread{
         try {
             synchronized (playersInMatchGuard) {
                 Set<String> playerUserNames = playersInMatch.keySet();
-                model = new MatchModel(playerUserNames);
+                model = new MatchModel(playerUserNames,this);
             }
         } catch (NotValidParameterException e) {
             e.printStackTrace();
@@ -434,7 +434,7 @@ public class MatchController extends Thread{
 
     public List<Die> getDicePool() {
         synchronized (modelGuard) {
-            return model.getDicePool();
+            return model.getDicePool().showDiceInPool();
         }
     }
 
@@ -526,6 +526,11 @@ public class MatchController extends Thread{
                 }
             }
         }
+    }
+
+    public int toolCardLetPlayerChoose(String color){
+        //todo this will be the method called by toolcard 11 to get the value for the newly extracted die from client.
+        return 6;
     }
 }
 

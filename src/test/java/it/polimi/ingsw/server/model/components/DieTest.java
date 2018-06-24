@@ -10,22 +10,36 @@ import static org.junit.Assert.*;
 
 public class DieTest{
 
+//constructor tests
+    @Test
+    void dieCopy(){
+        Die test1 = null, test2 = null;
+        try {
+            test1 = new Die("yellow", 5);
+            test2 = new Die(test1);
+        } catch (NotValidParameterException e) {
+            fail("Failed initialization.");
+        }
+        assertEquals(test1.getColor(),test2.getColor());
+        assertEquals(test1.getValue(),test2.getValue());
+    }
+
 //tests
     @Test
-    public void dieValue(){
+    void dieValue(){
         assertThrows(NotValidParameterException.class, () ->{
             Die test_die = new Die("green",10);
         });
     }
     @Test
-    public void dieColor() throws NotValidParameterException {
+    void dieColor() throws NotValidParameterException {
         assertThrows(NotValidParameterException.class, ()-> {
             Die test_die = new Die("gray", 5);
         });
     }
 
     @Test
-    public void bothValidParameters() throws NotValidParameterException {
+    void bothValidParameters() throws NotValidParameterException {
 
         //Given
         String passedColor= "red";
@@ -40,7 +54,7 @@ public class DieTest{
     }
 
     @Test
-    public void colorNotCapsSensitive() throws NotValidParameterException {
+    void colorNotCapsSensitive() throws NotValidParameterException {
 
         //Given
         String passedColor= "RED";

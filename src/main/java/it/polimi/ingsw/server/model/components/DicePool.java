@@ -12,6 +12,16 @@ public class DicePool {
     private final int diceForEachColor= 18;
 
 
+    public DicePool(DicePool dicePool){
+        this.pool = new ArrayList<>();
+
+        for(Die d : dicePool.pool){
+            this.pool.add(new Die(d));
+        }
+
+        this.availableColors = new  ArrayList<>(dicePool.availableColors);
+
+    }
 
     public DicePool(){
         this.pool= new ArrayList<>();
@@ -37,8 +47,19 @@ public class DicePool {
         } else {
                  strValue=((Integer)number).toString();
                  throw new NotValidParameterException(strValue,expectedValueType);
-               }
         }
+    }
+
+    public List<String> getAvailableColors(){
+        return new ArrayList<>(availableColors);
+    }
+
+    public void swapColor(String color, int index) throws NotValidParameterException {
+        if (!color.equals("red") && !color.equals("green") && !color.equals("yellow") && !color.equals("purple") && !color.equals("blue"))
+            throw new NotValidParameterException("Invalid color string passed", "Must be either red, blue, purple, yellow or green");
+        availableColors.add(color);
+        availableColors.remove(index);
+    }
 
 
     public List<Die> showDiceInPool(){
@@ -71,5 +92,10 @@ public class DicePool {
         color=die_to_change.getColor();
         die_changed=new Die(color,value_to_change);
         pool.add(dpIndex,die_changed);*/    /*USEFUL FOR MATCHMODEL*/
+    }
+
+    public void insertDieInPool(Die die) throws NotValidParameterException {
+        if (die==null) throw new NotValidParameterException("die: null","a valid die");
+        pool.add(die);
     }
 }
