@@ -136,6 +136,7 @@ public class ConfigurationHandler {
         adapterFactory.registerSubtype(RemoveDieFromPoolEffect.class, RemoveDieFromPoolEffect.class.getName());
         adapterFactory.registerSubtype(RemoveDieFromGridEffect.class, RemoveDieFromGridEffect.class.getName());
         adapterFactory.registerSubtype(SwapRTDieAndDPDieEffect.class, SwapRTDieAndDPDieEffect.class.getName());
+        adapterFactory.registerSubtype(SwapDieEffect.class, SwapDieEffect.class.getName());
         //associate the factory and the builder
         builder.registerTypeAdapterFactory(adapterFactory);
         return builder.create();
