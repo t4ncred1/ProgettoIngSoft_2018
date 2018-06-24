@@ -7,7 +7,16 @@ import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import java.io.Serializable;
 
 public class Grid implements Serializable {
+    public Box[][] getGameGrid() {
+        return gameGrid;
+    }
+
     private static final int COLUMN_NUMBER =5;
+
+    public boolean isFirstInsertion() {
+        return firstInsertion;
+    }
+
     private static final int ROW_NUMBER =4;
     private String name;
     private int difficulty;
@@ -168,25 +177,14 @@ public class Grid implements Serializable {
     }
 
 
-    public String getStructure() {
-        StringBuilder structure= new StringBuilder();
+    public String[][] getStructure() {
+        String[][] constraints= new String[COLUMN_NUMBER][ROW_NUMBER];
         for(Box[] i : gameGrid){
-            structure.append("|");
             for(Box j : i){
-                structure.append("\t");
-                structure.append(j.getConstraint());
-                structure.append("\t|");
+                constraints[j.getCoordX()][j.getCoordY()]= j.getConstraint();
             }
-            structure.append("\n");
-            structure.append("|");
-            for(Box j : i){
-                structure.append("\t");
-                structure.append("-");
-                structure.append("\t|");
-            }
-            structure.append("\n");
         }
-        return structure.toString();
+        return constraints;
     }
 
     public void initializeAllObservers() {

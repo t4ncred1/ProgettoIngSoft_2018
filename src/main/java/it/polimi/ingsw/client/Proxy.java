@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.configurations.GridAdapter;
+import it.polimi.ingsw.client.configurations.GridInterface;
 import it.polimi.ingsw.client.custom_exception.InvalidMoveException;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
@@ -14,7 +16,7 @@ public class Proxy {
 
     private static Proxy instance;
 
-    private ArrayList<Grid> gridsSelection;
+    private ArrayList<GridInterface> gridsSelection;
     private Grid gridSelected;
     private Map<String,Grid> playerGrids;
     private ArrayList<Die> dicePool;
@@ -31,10 +33,12 @@ public class Proxy {
 
     public void setGridsSelection(List<Grid> gridsSelection) throws InvalidOperationException {
         if (!this.gridsSelection.isEmpty()) throw new InvalidOperationException();   //thrown in case grids have already been chosen
-        this.gridsSelection=(ArrayList<Grid>)gridsSelection;
+        for(Grid thisGrid:gridsSelection){
+            this.gridsSelection.add(new GridAdapter(thisGrid));
+        }
     }
 
-    public List<Grid> getGridsSelection() {
+    public List<GridInterface> getGridsSelection() {
         return gridsSelection;
     }
 
