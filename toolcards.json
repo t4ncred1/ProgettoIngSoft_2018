@@ -159,5 +159,43 @@
 	"openCheck": true,
 	"jumpNextTurn": false,
 	"mustBeSecondTurn": false
+},
+{
+	"effects": [{
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.SwapDieEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInGridEffect"
+	}],
+	"title": "Diluente per Pasta Salda",
+	"description": "Dopo aver scelto un dado, riponilo nel\nSacchetto, poi pescane uno dal Sacchetto\nScegli il valore del nuovo dado e\npiazzalo, rispettando tutte le restrizioni di\npiazzamento",
+	"removeAllDiceFromDicePool": false,
+	"colourInRoundtrack": false,
+	"colorCheck": true,
+	"valueCheck": true,
+	"openCheck": true,
+	"jumpNextTurn": false,
+	"mustBeSecondTurn": false
+},
+{
+	"effects": [{
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromGridEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInGridEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromGridEffect"
+	}, {
+		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInGridEffect"
+	}],
+	"title": "Taglierina Manuale",
+	"description": "Muovi fino a due dadi dello\nstesso colore di un dado sul\nTracciato dei Round\nDevi rispettare tutte le restrizioni\ndi piazzamento",
+	"removeAllDiceFromDicePool": false,
+	"colourInRoundtrack": true,
+	"colorCheck": true,
+	"valueCheck": true,
+	"openCheck": true,
+	"jumpNextTurn": false,
+	"mustBeSecondTurn": false
 }
 ]
