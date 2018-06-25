@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ConfigurationHandler {
 
+    private static final int NUMBER_OF_TOOL_CARDS = 12;
     private static ConfigurationHandler instance;
     private Configurations config;
 
@@ -22,6 +23,8 @@ public class ConfigurationHandler {
     private static final Object toolCardsGuard= new Object();
     private static final Object gridsGuard=new Object();
     private static final Object publicObjectivesGuard=new Object();
+
+    private static final int NUMBER_OF_PUBLIC_OBJECTIVES = 10;
     //TODO do this for timers too.
 
     private ConfigurationHandler() throws NotValidConfigPathException {
@@ -46,10 +49,13 @@ public class ConfigurationHandler {
             synchronized (gridsGuard) {
                 grids = gson.fromJson(new FileReader(config.getGridsPath()), listType.getType());
             }
+            for (Grid grid : grids) {
+                if (grid == null) throw new NotValidConfigPathException("Grids are not read correctly.");
+                grid.initializeAllObservers();
+            }
             for(Grid grid: grids){
                 grid.initializeAllObservers();
             }
-            if (grids==null) throw new NotValidConfigPathException("Grids are not read correctly.");
             return grids;
         } catch (FileNotFoundException e) {
             throw new NotValidConfigPathException("Incorrect grids path in configuration file: "+config.getGridsPath());
@@ -72,6 +78,12 @@ public class ConfigurationHandler {
         if (config.getMinPlayersNumber()!=0)
             return config.getMinPlayersNumber();
         else throw new NotValidConfigPathException("Incorrect config.json file: MinPlayersNumber needs to be instanced");
+    }
+
+    public int getPublicObjectivesDistributed() throws NotValidConfigPathException{
+        if (config.getPublicObjectivesDistributed()>0 && config.getPublicObjectivesDistributed()<=NUMBER_OF_PUBLIC_OBJECTIVES)
+            return config.getPublicObjectivesDistributed();
+        else throw new NotValidConfigPathException("Incorrect config.json file: PublicObjectivesDistributed needs to be instanced");
     }
 
     public int getMaxPlayersNumber() throws NotValidConfigPathException{
@@ -106,8 +118,7 @@ public class ConfigurationHandler {
         } else throw new NotValidConfigPathException("Incorrect config.json file: socketPort needs to be instanced");
     }
 
-    // FIXME: 07/06/2018
-    private List<ToolCard> getToolCards() throws NotValidConfigPathException {
+    public List<ToolCard> getToolCards() throws NotValidConfigPathException {
         Gson gson = getGsonForToolCards();
         TypeToken<List<ToolCard>> listTypeToken = new TypeToken<List<ToolCard>>(){};
 
@@ -120,7 +131,13 @@ public class ConfigurationHandler {
         }
     }
 
-    public Gson getGsonForToolCards() {
+    public int getToolCardsDistributed() throws NotValidConfigPathException{
+        if (config.getToolCardsDistributed()>0 && config.getToolCardsDistributed()<=NUMBER_OF_TOOL_CARDS)
+            return config.getToolCardsDistributed();
+        else throw new NotValidConfigPathException("Incorrect config.json file: ToolCardsDistributed needs to be instanced");
+    }
+
+    private Gson getGsonForToolCards() {
         GsonBuilder builder= new GsonBuilder();
         //Create a RuntimeTypeAdapterFactory for Effect interface
         RuntimeTypeAdapterFactory<Effect> adapterFactory= RuntimeTypeAdapterFactory.of(Effect.class);

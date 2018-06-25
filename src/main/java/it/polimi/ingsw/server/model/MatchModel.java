@@ -24,7 +24,7 @@ public class MatchModel{
 
     private ArrayList<PrivateObjective> privateObjectives;
     private List<Grid> grids;
-    private ArrayList<ToolCard> toolCards;
+    private List<ToolCard> toolCards;
     private List<PublicObjective> publicObjectives;
     private MatchController controller;
 
@@ -64,7 +64,8 @@ public class MatchModel{
 
         grids=ConfigurationHandler.getInstance().getGrids();
 
-        publicObjectives=ConfigurationHandler.getInstance().getPublicObjectives();
+        publicObjectives= selectPublicObjectives();
+        toolCards= selectToolCards();
 
         privateObjectives = new ArrayList<>();
         privateObjectives.add(new PrivateObjective(GREEN_OBJ));
@@ -83,17 +84,13 @@ public class MatchModel{
                 playerToAdd.setObjective(selectPrivateObjective());
                 playerToAdd.setGridsSelection(selectGridsForPlayer());
             } catch (InvalidOperationException e) {
-                e.printStackTrace();    //this error shall be thrown if there aren't enough grids for the player (should not happen because of the boundaries above)
+                Logger logger = Logger.getLogger(this.getClass().getName());
+                logger.log(Level.WARNING, "Error while creating a new player.", e);
             }
             playersInGame.add(playerToAdd);
         }
         matchDicePool = new DicePool();
-
-        try {
-            initializeRound();
-        } catch (NotInPoolException e) {
-            e.printStackTrace();
-        }
+        initializeRound();
     }
 
     public MatchModel(Set<String> players, MatchController controller) throws NotValidConfigPathException, NotValidParameterException {
@@ -124,13 +121,38 @@ public class MatchModel{
             currentPlayer = iterator.next();
         }
     }
+     private List<PublicObjective> selectPublicObjectives() throws NotValidConfigPathException {
+         List<PublicObjective> pubs;
+         pubs = ConfigurationHandler.getInstance().getPublicObjectives();
+         List<PublicObjective> publicObj = new ArrayList<>();
+         for (int i = 0; i<ConfigurationHandler.getInstance().getPublicObjectivesDistributed();i++)
+             publicObj.add(pubs.remove(new Random().nextInt(pubs.size())));
+         return publicObj;
+     }
 
-    private void prepareForNextRound(int maxRounds) throws NotInPoolException, TooManyRoundsException, NotValidParameterException {
+    public List<PublicObjective> getPublicObjectives() {
+        return publicObjectives;
+    }
+
+     private List<ToolCard> selectToolCards() throws NotValidConfigPathException {
+         List<ToolCard> tools;
+         tools = ConfigurationHandler.getInstance().getToolCards();
+         List<ToolCard> tc = new ArrayList<>();
+         for (int i = 0; i<ConfigurationHandler.getInstance().getToolCardsDistributed();i++)
+             tc.add(tools.remove(new Random().nextInt(tools.size())));
+         return tc;
+     }
+
+    public List<ToolCard> getToolCards() {
+        return toolCards;
+    }
+
+    private void prepareForNextRound(int maxRounds) throws TooManyRoundsException, NotValidParameterException {
         if (roundTrack.size()>= maxRounds) throw new TooManyRoundsException(); // throw exception if roundtrack is more than ten.
         initializeRound();
     }
 
-    private void initializeRound() throws NotValidParameterException, NotInPoolException {
+    private void initializeRound() throws NotValidParameterException{
         matchDicePool.generateDiceForPull(playersInGame.size() * 2 + 1); //(launching this methods later throws a nullPointerExc)
     }
 
@@ -208,16 +230,16 @@ public class MatchModel{
     }
 
     public boolean checkEndInitialization() {
-        for (Player currentPlayer : playersInGame){
-            if (currentPlayer.getSelectedGrid()==null) return false;
+        for (Player current : playersInGame){
+            if (current.getSelectedGrid()==null) return false;
         }
         return true;
     }
 
     public boolean hasPlayerChosenAGrid(String username) throws NotValidParameterException {
-       for (Player currentPlayer : playersInGame){
-           if (currentPlayer.getUsername().equals(username)) {
-               return currentPlayer.getSelectedGrid() != null;
+       for (Player current : playersInGame){
+           if (current.getUsername().equals(username)) {
+               return current.getSelectedGrid() != null;
            }
        }
        throw new NotValidParameterException("username: "+username,"Should be a player inside this match.");
@@ -246,11 +268,11 @@ public class MatchModel{
 
     public PrivateObjective getPrivateObjective(String username) throws InvalidUsernameException {
         List<PrivateObjective> stream=  playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective).collect(Collectors.toList());
-        if (stream.stream().count()==0) throw new InvalidUsernameException();
+        if (stream.isEmpty()) throw new InvalidUsernameException();
         return stream.get(0);
     }
 
-    public Die getDieFromRoundtrack(int index) throws NotInPoolException {
+    public Die getDieFromRoundTrack(int index) throws NotInPoolException {
         if(index>=0&&index<=roundTrack.size())
             return this.roundTrack.get(index);
         else
@@ -258,7 +280,7 @@ public class MatchModel{
     }
 
     public void removeDieFromRoundTrack(int index) throws NotInPoolException {
-        this.getDieFromRoundtrack(index);
+        this.getDieFromRoundTrack(index);
         this.roundTrack.remove(index);
     }
 
@@ -267,13 +289,13 @@ public class MatchModel{
         for(Player player: playersInGame){
             if(player.getUsername().equals(username)) return player.getSelectedGrid();
         }
-        return null; //FIXME throw an exception?
+        return null; //throw an exception? I think we shall not, it's ok like this.
     }
 
-    public void insertdieinRT(Die die, int RTindex) throws NotValidParameterException {
+    public void insertDieInRT(Die die, int roundTrackIndex) throws NotValidParameterException {
         if (die==null) throw new NotValidParameterException("die:null","a valid die");
-        if(RTindex>roundTrack.size()) throw new NotValidParameterException("IndexOutOfBounds:"+RTindex,"A value betweeen");
-        roundTrack.add(RTindex,die);
+        if(roundTrackIndex>roundTrack.size()) throw new NotValidParameterException("IndexOutOfBounds:"+roundTrackIndex,"A value betweeen");
+        roundTrack.add(roundTrackIndex,die);
     }
 
     public void insertDieInPool(Die die, int index) throws NotValidParameterException {
@@ -284,11 +306,7 @@ public class MatchModel{
         matchDicePool.removeDieFromPool(index);
     }
 
-    public void getPublicObjectives(){
-        //TODO!!
-    }
-
-    public ArrayList<Die> getRoundTrack() {
+    public List<Die> getRoundTrack() {
         return roundTrack;
     }
 

@@ -13,9 +13,11 @@ class Configurations implements Serializable {
     private int timerToChooseGrid;
     private int rmiPort;
     private int socketPort;
+    private int publicObjectivesDistributed;
+    private int toolCardsDistributed;
 
 
-    Configurations(String gridsPath,String publicObjectivesPath, String toolCardsPath, int maxPlayersNumber, int minPlayersNumber, int timerToChooseGrids, int timerBeforeMatch, int rmiPort, int socketPort){
+    Configurations(String gridsPath,String publicObjectivesPath, String toolCardsPath, int maxPlayersNumber, int minPlayersNumber, int timerToChooseGrids, int timerBeforeMatch, int rmiPort, int socketPort, int publicObjectivesDistributed, int toolCardsDistributed){
         this.gridsPath=gridsPath;
         this.publicObjectivesPath=publicObjectivesPath;
         this.toolCardsPath = toolCardsPath;
@@ -25,6 +27,8 @@ class Configurations implements Serializable {
         this.timerToChooseGrid =timerToChooseGrids;
         this.rmiPort=rmiPort;
         this.socketPort=socketPort;
+        this.publicObjectivesDistributed=publicObjectivesDistributed;
+        this.toolCardsDistributed=toolCardsDistributed;
     }
 
     String getGridsPath(){
@@ -57,4 +61,11 @@ class Configurations implements Serializable {
 
     int getSocketPort(){ return socketPort; }
 
+    int getPublicObjectivesDistributed() {
+        return publicObjectivesDistributed;
+    }
+
+    public int getToolCardsDistributed() {
+        return toolCardsDistributed;
+    }
 }
