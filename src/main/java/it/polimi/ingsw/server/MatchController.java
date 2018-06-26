@@ -303,7 +303,7 @@ public class MatchController extends Thread{
     }
 
     public void remove(UserInterface client) throws InvalidOperationException {
-        if(gameStartingSoon) {
+        if(gameStartingSoon||gameStarted) {
             throw new InvalidOperationException();
         }
         else {
