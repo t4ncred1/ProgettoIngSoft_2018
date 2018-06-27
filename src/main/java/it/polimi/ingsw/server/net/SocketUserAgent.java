@@ -86,16 +86,16 @@ public class SocketUserAgent extends Thread implements UserInterface {
     SocketUserAgent(Socket client) {
         connected=true;
         actualConnectionNumber =connectionNumber++;
-        try {
+//        try {
             logger = Logger.getLogger(SocketUserAgent.class.getName()+actualConnectionNumber);
-            handler = new FileHandler("src/main/resources/log_files/clientLog_"+ actualConnectionNumber+".log");
+//            handler = new FileHandler("src/main/resources/log_files/clientLog_"+ actualConnectionNumber+".log");
             SimpleFormatter formatter = new SimpleFormatter();
-            handler.setFormatter(formatter);
+//            handler.setFormatter(formatter);
             logger.setLevel(Level.FINER);
-            logger.addHandler(handler);
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "FileHandler not found",e);
-        }
+//            logger.addHandler(handler);
+//        } catch (IOException e) {
+//            logger.log(Level.SEVERE, "FileHandler not found",e);
+//        }
         try{
             this.inputStream= new DataInputStream(client.getInputStream());
             this.outputStream= new DataOutputStream(client.getOutputStream());
@@ -108,7 +108,10 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     @Override
     public void run(){
-
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            handler.flush();
+            handler.close();
+        }));
         logger.fine("Connection request received on Socket system");
         try {
             handleConnection();
@@ -130,9 +133,9 @@ public class SocketUserAgent extends Thread implements UserInterface {
             }
         } finally {
             logger.log(Level.FINE, "Logger file closed. SocketUserAgent {0} shut down",actualConnectionNumber);
-            handler.close();
+//            handler.flush();
+//            handler.close();
         }
-
     }
 
     private void handleGameLogic() throws IOException, IllegalRequestException {

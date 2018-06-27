@@ -12,10 +12,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 
 
-/**
- * Hello world!
- *
- */
+
 public class App 
 {
     public static void main( String[] args )
@@ -27,9 +24,7 @@ public class App
             ServerRemoteInterface stub = (ServerRemoteInterface) UnicastRemoteObject.exportObject(RmiHandler.getInstance(), RmiHandler.getInstance().getPort());
             Registry registry = LocateRegistry.createRegistry(RmiHandler.getInstance().getPort());
             registry.bind("MatchHandler", stub);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (AlreadyBoundException e) {
+        } catch (RemoteException | AlreadyBoundException e) {
             e.printStackTrace();
         }
         Thread.yield();

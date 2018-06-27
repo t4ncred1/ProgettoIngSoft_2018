@@ -76,16 +76,16 @@ class MatchModelTest {
         playerUserNames.add("cancaro");
         playerUserNames.add("test");
         MatchModel test = new MatchModel(playerUserNames);
-        assertThrows(NotValidParameterException.class,()->test.insertdieinRT(temp,0));
-        assertThrows(NotValidParameterException.class,()->test.insertdieinRT(temp1,1));
-        test.insertdieinRT(temp1,0);
-        copy=test.getRoundTrack();
+        assertThrows(NotValidParameterException.class,()->test.insertDieInRT(temp,0));
+        assertThrows(NotValidParameterException.class,()->test.insertDieInRT(temp1,1));
+        test.insertDieInRT(temp1,0);
+        copy=new ArrayList<>(test.getRoundTrack());
         assertEquals(copy.get(0),temp1);
-        assertEquals(copy.get(0),test.getDieFromRoundtrack(0));
-        assertThrows(NotInPoolException.class,()->test.getDieFromRoundtrack(-1));
-        assertThrows(IndexOutOfBoundsException.class,()->test.getDieFromRoundtrack(1));
-        test.removeDieFromRoundTrack(0);;
-        copy=test.getRoundTrack();
+        assertEquals(copy.get(0),test.getDieFromRoundTrack(0));
+        assertThrows(NotInPoolException.class,()->test.getDieFromRoundTrack(-1));
+        assertThrows(IndexOutOfBoundsException.class,()->test.getDieFromRoundTrack(1));
+        test.removeDieFromRoundTrack(0);
+        copy=new ArrayList<>(test.getRoundTrack());
         bool=copy.isEmpty();
         assertEquals(bool,true);
     }

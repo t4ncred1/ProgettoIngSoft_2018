@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.configurations.GridInterface;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.net.ServerCommunicatingInterface;
 import it.polimi.ingsw.client.net.ServerRMICommunication;
@@ -136,9 +137,9 @@ public class ReworkedClientMain {
         System.out.println("Insert: Die position in dice pool");
         Scanner scanner= new Scanner(System.in);
         int position = scanner.nextInt();
-        System.out.println("Insert: Coordinate X");
+        System.out.println("Insert row:");
         int x = scanner.nextInt();
-        System.out.println("Insert: Coordinate Y");
+        System.out.println("Insert column");
         int y = scanner.nextInt();
 
         //Proxy.getInstance().tryToInsertDieInXY(position,x,y);
@@ -182,9 +183,9 @@ public class ReworkedClientMain {
         final int INDEX_SHIFT=1;
         try {
             server.getGrids();
-            ArrayList<Grid> toPrint = (ArrayList<Grid>) Proxy.getInstance().getGridsSelection();
-            for(Grid grid: toPrint){
-                System.out.println(grid.getStructure());
+            ArrayList<GridInterface> toPrint = (ArrayList<GridInterface>) Proxy.getInstance().getGridsSelection();
+            for(GridInterface grid: toPrint){
+                System.out.println(grid.getGridInterface());
             }
             System.out.println("Insert a value from 1 to "+Proxy.getInstance().getGridsSelectionDimension() +" to chose a grid");
             do{

@@ -56,10 +56,9 @@ public class MatchController extends Thread{
     @Override
     public void run(){
         checkForDisconnectionUntilStart();
-        //Initializing game
-        new Thread(this::checkForDisconnections).start();
 
-        logger.log(Level.FINE, "Match {0} started.", thisMatchNumber);
+        logger.log(Level.FINE, "Match {0} starting.", thisMatchNumber);
+        new Thread(this::checkForDisconnections).start(); //this will let player to reconnect
         initializeGame();
         handleGame();
     }
@@ -304,7 +303,7 @@ public class MatchController extends Thread{
     }
 
     public void remove(UserInterface client) throws InvalidOperationException {
-        if(gameStartingSoon) {
+        if(gameStartingSoon||gameStarted) {
             throw new InvalidOperationException();
         }
         else {
