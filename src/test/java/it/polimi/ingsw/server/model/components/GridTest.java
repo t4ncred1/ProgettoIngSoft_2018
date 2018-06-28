@@ -509,7 +509,7 @@ public class GridTest {
             fail("test failed");
         }
 
-        assertEquals("nome: test\tDifficoltà: 4\nFirstInsertion: true\n" +
+        assertEquals("nome: test\tDifficoltà: 4\nWasFirstDieInserted: false\n" +
                 "Boxes di test:\n" +
                 " colonna 1:\n" +
                 "\t riga 1: \n" +

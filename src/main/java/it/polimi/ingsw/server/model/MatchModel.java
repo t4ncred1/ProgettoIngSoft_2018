@@ -5,10 +5,7 @@ import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.model.cards.PrivateObjective;
 import it.polimi.ingsw.server.model.cards.PublicObjective;
 import it.polimi.ingsw.server.model.cards.ToolCard;
-import it.polimi.ingsw.server.model.components.DicePool;
-import it.polimi.ingsw.server.model.components.Die;
-import it.polimi.ingsw.server.model.components.Grid;
-import it.polimi.ingsw.server.model.components.Player;
+import it.polimi.ingsw.server.model.components.*;
 import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.custom_exception.*;
 
@@ -174,7 +171,7 @@ public class MatchModel{
     }
 
     public boolean useToolCardOperation() {
-        //TODO implement me.
+        //TODO implement me. Should this be implemented under controller?
         return false;
     }
 
@@ -256,7 +253,7 @@ public class MatchModel{
     }
 
     public void setPlayerToConnect(String username) throws NotValidParameterException{
-        //todo if a player is already connected exception shouldn't be launched.
+        //todo if a player is already connected exception shouldn't be thrown.
         // This happen when player reconnect before the timeout event of his turn
     }
 
@@ -317,11 +314,39 @@ public class MatchModel{
         return controller;
     }
 
+
     public Map<String,Grid> getAllGrids() {
-        Map<String,Grid> toReturn= new HashMap<>();
-        for(Player player: playersInGame){
+        Map<String, Grid> toReturn = new HashMap<>();
+        for (Player player : playersInGame) {
             toReturn.put(player.getUsername(), player.getSelectedGrid());
         }
         return toReturn;
+    }
+
+    public Map<String,Integer> calculatePoints(){
+        Map<String,Integer> map = new HashMap<>();
+        for(Player player : this.playersInGame){
+            map.put(player.getUsername(),getPointsForPlayer(player));
+        }
+        return map;
+
+    }
+
+    private Integer getPointsForPlayer(Player player){
+        int pubObjPoints;
+        int emptyBoxesPoints=0;
+        int privateObjectivePoints;
+        int favorTokensPoints;
+
+        pubObjPoints = getPublicObjectives().stream().mapToInt(publicObjective ->publicObjective.calculatePoints(player.getSelectedGrid())).sum();
+        for(Box[] boxArray : player.getSelectedGrid().getGrid()){
+            for(Box box : boxArray){
+                if (box.getDieConstraint()==null) emptyBoxesPoints++;
+            }
+        }
+        privateObjectivePoints = player.getObjective().calculatePoints(player.getSelectedGrid());
+        favorTokensPoints = player.getFavorTokens();
+
+        return pubObjPoints + privateObjectivePoints + favorTokensPoints - emptyBoxesPoints;
     }
 }
