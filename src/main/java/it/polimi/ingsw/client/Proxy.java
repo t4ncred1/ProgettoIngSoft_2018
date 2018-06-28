@@ -72,7 +72,6 @@ public class Proxy {
         try {
             gridSelected.insertDieInXY(row, column, checkColorConstraint, checkValueConstraint, die);
         } catch (InvalidOperationException | NotValidParameterException e) {
-            e.printStackTrace();
             throw new InvalidMoveException();
         }
     }

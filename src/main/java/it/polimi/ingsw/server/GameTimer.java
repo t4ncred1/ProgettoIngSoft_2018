@@ -21,7 +21,7 @@ public class GameTimer {
     private static final String GAME_START_TIMER = "game";
     private long timerToStart=15;
     private static final String OPERATION_TIMER = "operation";
-    private long timerForOperation=60;
+    private long timerForOperation=10;
     private static final String GRID_CHOOSE_TIMER="initialization";
 
     private Timer timer = new Timer();

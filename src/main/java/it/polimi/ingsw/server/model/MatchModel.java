@@ -86,6 +86,7 @@ public class MatchModel{
             }
             playersInGame.add(playerToAdd);
         }
+        playersNotInGame=new Player[playersInGame.size()];
         matchDicePool = new DicePool();
         initializeRound();
     }
@@ -243,11 +244,13 @@ public class MatchModel{
     }
 
     public void setPlayerToDisconnect(String username) throws InvalidUsernameException{
-        if (playersNotInGame==null) playersNotInGame=new Player[playersInGame.size()];
         boolean flag = false;
         int i;
         for (i=0; i<playersInGame.size();i++){
-            if (playersInGame.get(i).getUsername().equals(username)) {playersNotInGame[i]=playersInGame.remove(i); flag=true;}
+            if (playersInGame.get(i).getUsername().equals(username)) {
+                playersNotInGame[i]=playersInGame.remove(i);
+                flag=true;
+            }
         }
         if (!flag) throw new InvalidUsernameException();
     }
@@ -287,7 +290,7 @@ public class MatchModel{
             if(player.getUsername().equals(username)) return player.getSelectedGrid();
         }
         for(Player player: playersNotInGame){
-            if(player.getUsername().equals(username)) return player.getSelectedGrid();
+            if(player!=null&&player.getUsername().equals(username)) return player.getSelectedGrid();
         }
         return null; //throw an exception? I think we shall not, it's ok like this.
     }

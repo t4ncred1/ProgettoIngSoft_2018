@@ -20,7 +20,7 @@ public abstract class DicePoolInterface {
     public abstract String getDicePoolInterface();
     public Die getDie(int position){
         if(position<0||position>=dicePool.size()) throw new IndexOutOfBoundsException();
-        return dicePool.remove(position);
+        return new Die(dicePool.get(position));
     }
 
 }
