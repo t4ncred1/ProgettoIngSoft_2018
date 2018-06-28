@@ -14,14 +14,14 @@ public class Grid implements Serializable {
     private static final int COLUMN_NUMBER =5;
 
     public boolean isFirstInsertion() {
-        return firstInsertion;
+        return wasFirstDieInserted;
     }
 
     private static final int ROW_NUMBER =4;
     private String name;
     private int difficulty;
     private Box[][] gameGrid;
-    private transient boolean firstInsertion=true;
+    private transient boolean wasFirstDieInserted=false;
 
     public Grid (Grid aGrid){
         this.name = aGrid.name;
@@ -33,7 +33,7 @@ public class Grid implements Serializable {
             }
         }
         this.gameGrid=gGrid;
-        firstInsertion=aGrid.firstInsertion;
+        wasFirstDieInserted=aGrid.wasFirstDieInserted;
     }
 
     public Grid(int difficulty, String name) throws NotValidParameterException {
@@ -52,7 +52,7 @@ public class Grid implements Serializable {
         build.append(this.getName());
         build.append("\tDifficoltà: ");
         build.append(this.getDifficulty());
-        build.append("\nFirstInsertion: "); build.append(Boolean.toString(firstInsertion));
+        build.append("\nWasFirstDieInserted: "); build.append(Boolean.toString(wasFirstDieInserted));
         build.append("\nBoxes di " +this.getName()+ ":\n");
         int k=0;
         int n;
@@ -127,9 +127,9 @@ public class Grid implements Serializable {
         else
             gameGrid[x][y].insertDie(die);
 
-        if (firstInsertion) {
+        if (!wasFirstDieInserted) {
             setBoxesClosed(x,y);
-            firstInsertion=false;
+            wasFirstDieInserted=true;
         }
     }
 
@@ -146,9 +146,9 @@ public class Grid implements Serializable {
         else
             gameGrid[x][y].insertDie(die);
 
-        if (firstInsertion) {
+        if (!wasFirstDieInserted) {
             setBoxesClosed(x,y);
-            firstInsertion=false;
+            wasFirstDieInserted=true;
         }
     }
 
