@@ -289,6 +289,9 @@ public class MatchModel{
         for(Player player: playersInGame){
             if(player.getUsername().equals(username)) return player.getSelectedGrid();
         }
+        for(Player player: playersNotInGame){
+            if(player.getUsername().equals(username)) return player.getSelectedGrid();
+        }
         return null; //throw an exception? I think we shall not, it's ok like this.
     }
 
@@ -312,5 +315,13 @@ public class MatchModel{
 
     public MatchController getController() {
         return controller;
+    }
+
+    public Map<String,Grid> getAllGrids() {
+        Map<String,Grid> toReturn= new HashMap<>();
+        for(Player player: playersInGame){
+            toReturn.put(player.getUsername(), player.getSelectedGrid());
+        }
+        return toReturn;
     }
 }
