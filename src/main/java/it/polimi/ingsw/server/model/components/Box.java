@@ -1,4 +1,5 @@
 package it.polimi.ingsw.server.model.components;
+import it.polimi.ingsw.server.custom_exception.EmptyBoxException;
 import it.polimi.ingsw.server.custom_exception.LimitValueException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 
@@ -51,7 +52,7 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
         this.colorRestriction = Arrays.copyOf(aBox.colorRestriction,aBox.colorRestriction.length);
         this.valueRestriction = Arrays.copyOf(aBox.valueRestriction,aBox.valueRestriction.length);
         this.constraintIndex = aBox.constraintIndex;
-        if(aBox.getDie()!=null) this.die = new DieToConstraintsAdapter(new Die(aBox.getDie().getDie()));
+        if(aBox.getDieConstraint()!=null) this.die = new DieToConstraintsAdapter(new Die(aBox.getDieConstraint().getDie()));
         this.kindOfConstraint = aBox.kindOfConstraint;
     }
 
@@ -129,7 +130,7 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
         return coordY;
     }
 
-    public DieConstraints getDie() {
+    public DieConstraints getDieConstraint() {
         return die;
     }
 
@@ -141,12 +142,16 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
         DieConstraints toCheck= new DieToConstraintsAdapter(passedDie);
         if(this.die!=null)
             return false;
-        if(this.opened==0 && openCheck)
+        if(this.opened==0 && openCheck){
             return false;
-        if(colorCheck && (colorRestriction[toCheck.getColorRestriction()]>0))
+        }
+
+        if(colorCheck && (colorRestriction[toCheck.getColorRestriction()]>0)) {
             return false;
-        if(valueCheck && (valueRestriction[toCheck.getValueRestriction()]>0))
+        }
+        if(valueCheck && (valueRestriction[toCheck.getValueRestriction()]>0)) {
             return false;
+        }
 
         return true;
 
@@ -268,5 +273,12 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
 
     public void setToClosed() {
         this.opened=0;
+    }
+
+    public Die getDie() throws EmptyBoxException {
+        if(die!=null)
+            return new Die(this.die.getDie());
+        else
+            throw new EmptyBoxException();
     }
 }
