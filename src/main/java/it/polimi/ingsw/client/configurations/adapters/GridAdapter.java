@@ -26,7 +26,13 @@ public class GridAdapter implements GridInterface {
 
     public String getGridInterface(){
         StringBuilder structure= new StringBuilder();
+        structure.append("Nome: ");
+        structure.append(grid.getName());
+        structure.append("\t Difficoltà: ");
+        structure.append(grid.getDifficulty());
+        structure.append("\n");
         for(String[] i : constraints){
+            structure.append("|");
             for(String j : i){
                 structure.append("\t");
                 structure.append(j);

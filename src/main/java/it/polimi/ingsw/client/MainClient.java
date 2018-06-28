@@ -1,19 +1,23 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.configurations.GridInterface;
+import it.polimi.ingsw.client.configurations.adapters.GridInterface;
 import it.polimi.ingsw.client.custom_exception.*;
-import it.polimi.ingsw.client.net.ServerCommunicatingInterface;
+import it.polimi.ingsw.client.custom_exception.invalid_operations.AlreadyDoneOperationException;
+import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
+import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.client.net.ServerCommunicatingInterfaceV2;
 import it.polimi.ingsw.client.net.ServerSocketCommunicationV2;
+import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainClient {
 
@@ -25,17 +29,27 @@ public class MainClient {
     private boolean gameStarted;
     private boolean gridsInProxy;
     private boolean gridsAlreadySelected;
+    private boolean gameInitialized;
+    private Boolean turnUpdated;
+    private boolean somethingChanged; //fixme
+    private boolean gameFinished;
+    private boolean turnEnded;
+    
 
     private Lock lock;
     private Condition condition;
+    private Logger logger;
 
     private static final long SLEEP_TIME = 1000;
 
     private static final String USE_SOCKET = "socket";
     private static final String USE_RMI= "rmi";
     private static final String LOG_IN_REQUEST = "login";
-    private static final String QUIT_REQUEST = "quit";
+    private static final String QUIT_REQUEST = "chiudi";
     private static final String LOGOUT_REQUEST = "logout";
+    private static final String INSERT_DIE="inserisci dado";
+    private static final String USE_TOOL_CARD= "usa carta strumento";
+    private static final String END_TURN="finisci turno";
 
 
     private MainClient(){
@@ -45,6 +59,9 @@ public class MainClient {
         gameStarted=false;
         gridsInProxy=false;
         gridsAlreadySelected=false;
+        turnUpdated=false;
+        turnEnded=false;
+        logger= Logger.getLogger(MainClient.class.getName());
     }
 
 
@@ -58,27 +75,171 @@ public class MainClient {
             instance.handleLoginCLI();
             instance.handleWaitForGameCLI();
             instance.handleGameInitializationLogic();
+            instance.handleGameLogic();
         }
         catch (ServerIsDownException e){
-            System.err.println("Can't connect to server, something went wrong!");
-            System.exit(0);
+            System.err.println("Non è possibile connettersi al server. Qualcosa è andato storto");
         } catch (LoggedOutException e) {
             System.out.println("Logged Out");
-            System.exit(0);
+        } catch (DisconnectionException e) {
+            System.err.println("Sei stato disconnesso per inattività");
         }
+        System.exit(0);
+    }
+
+    private void handleGameLogic() throws ServerIsDownException {
+        do{
+            try {
+                boolean isMyTurn= askProxyIfItsMyTurn();
+                if(isMyTurn)
+                    handleMyTurn();
+                else
+                    waitEndOfOtherPlayerTurn();
+            } catch (GameFinishedException e) {
+                gameFinished=true;
+            }
+        }while (!gameFinished);
+        System.out.println("La partita è finita");
+    }
+
+    private void waitEndOfOtherPlayerTurn() {
+        String turnPlayer=Proxy.getInstance().getTurnPlayer();
+        System.out.println("E' il turno di " + turnPlayer);
+        while(!turnEnded){
+            printOtherPlayerTurnThings(turnPlayer);
+            while (!somethingChanged){
+                waitForServer();
+            }
+            lock.lock();
+            somethingChanged=false;
+            lock.unlock();
+        }
+        turnEnded=false;
+        printOtherPlayerTurnThings(turnPlayer);
 
     }
 
-    private void handleGameInitializationLogic() throws ServerIsDownException {
+    private void printOtherPlayerTurnThings(String turnPlayer) {
+        try {
+            System.out.println("La dice pool:");
+            System.out.println(Proxy.getInstance().getDicePool().getDicePoolInterface());
+            System.out.println("La mappa di " + turnPlayer);
+            System.out.println(Proxy.getInstance().getGridsOf(turnPlayer).getGridInterface());
+        } catch (InvalidUsernameException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void handleMyTurn() throws ServerIsDownException {
+        Scanner scanner = new Scanner(System.in);
+        boolean myTurnFinished=false;
+        do {
+            printThingsOnMyTurn();
+            String command = scanner.nextLine().toLowerCase();
+            switch (command){
+                case INSERT_DIE:
+                    handleDieInsertion();
+                    break;
+                case USE_TOOL_CARD:
+                    hadleToolCard();
+                    break;
+                case END_TURN:
+                    myTurnFinished=true;
+                    server.endTurn();
+                    break;
+                default:
+                    System.err.println("Nessun comando corrisponde a quello inserito ("+command+"). Reinserire un comando valido");
+            }
+        }while (!myTurnFinished);
+    }
+
+    private void printThingsOnMyTurn() {
+        System.out.println("La dice pool:");
+        System.out.println(Proxy.getInstance().getDicePool().getDicePoolInterface());
+        System.out.println("La tua mappa:");
+        System.out.println(Proxy.getInstance().getGridSelected().getGridInterface());
+        System.out.println("E' il tuo turno");
+        System.out.println("Ricorda, puoi eseguire solo una volta nel turno");
+        System.out.println("l'inserimento dei dati o l'uso della carta strumento");
+        System.out.println("Puoi usare i comandi "+INSERT_DIE+", "+USE_TOOL_CARD+" e "+END_TURN);
+    }
+
+    private void hadleToolCard() {
+        // TODO: 27/06/2018
+    }
+
+    private void handleDieInsertion() throws ServerIsDownException {
+        Scanner scanner= new Scanner(System.in);
+        System.out.println("Inserisci la posizione del dado nella dice pool");
+        int position= scanner.nextInt()-1;
+        System.out.println("Inserisci la riga della mappa in cui inserirlo");
+        int row= scanner.nextInt()-1;
+        System.out.println("Inserisci la colonna della mappa in cui inserirlo");
+        int column= scanner.nextInt()-1;
+        try {
+            Proxy.getInstance().tryToInsertDieInXY(position, row, column);
+            server.insertDie(position,column,row);
+        } catch (InvalidMoveException e) {
+            System.err.println("Non è possibile inserire un dado alle coordinate indicate");
+        } catch (DieNotExistException e) {
+            System.err.println("Non esite alcun dado nella posizione indicata");
+        } catch (AlreadyDoneOperationException e) {
+            System.err.println("L'operazione è già stata eseguita, non può essere eseguita nuovamente");
+        }
+    }
+
+    private boolean askProxyIfItsMyTurn() throws GameFinishedException {
+        while (!turnUpdated){
+            waitForServer();
+        }
+        lock.lock();
+        turnUpdated=false;
+        lock.unlock();
+        return Proxy.getInstance().askIfItsMyTurn();
+    }
+
+    private void waitForServer() {
+        lock.lock();
+        try {
+            condition.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        lock.unlock();
+    }
+
+    private void handleGameInitializationLogic() throws ServerIsDownException, DisconnectionException {
         try {
             waitForGridsFromServer();
             selectAGrid();
+            System.out.println("Aspettando gli altri giocatori...");
         } catch (GameInProgressException e) {
-            System.out.println("Game already in progress, you have been reinserted correctly");
+            System.out.println("La tua partita è gia in corso, sei stato reinserito correttamente.");
         }
+        waitForOtherPlayers();
+        if(!gameFinished) printGridsDicePoolAndObjectives();
     }
 
-    private void selectAGrid() throws ServerIsDownException {
+    private void printGridsDicePoolAndObjectives() {
+        System.out.println("La tua mappa:");
+        System.out.println(Proxy.getInstance().getGridSelected().getGridInterface());
+    }
+
+    private void waitForOtherPlayers() {
+        lock.lock();
+        do{
+            try {
+                condition.await();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            gameFinished=Proxy.getInstance().isGameFinished();
+        }while (!gameInitialized&&!gameFinished);
+        lock.unlock();
+    }
+
+    private void selectAGrid() throws ServerIsDownException, DisconnectionException {
         Scanner scanner= new Scanner(System.in);
         String request;
         int value;
@@ -87,15 +248,15 @@ public class MainClient {
         for(GridInterface grid:gridSelection){
             System.out.println(grid.getGridInterface());
         }
-        System.out.println("Choose a grid between those (select a number from 1 to "+Proxy.getInstance().getGridsSelectionDimension()+"):");
+        System.out.println("Scegli una mappa tra le seguenti (scegli un numero da 1 a "+Proxy.getInstance().getGridsSelectionDimension()+"):");
         do{
             request= scanner.nextLine();
             try {
                 value = Integer.parseInt(request);
-                if(value<1||value>Proxy.getInstance().getGridsSelectionDimension()) System.err.println("Insert a valid number. "+value+" isn't in range.");
+                if(value<1||value>Proxy.getInstance().getGridsSelectionDimension()) System.err.println("Inserire un numero valido. "+value+" non è in range");
             }catch (NumberFormatException e){
                 value=-1;
-                System.err.println(request+" is not a number. Please insert a valid number");
+                logger.log(Level.INFO,"{0} non è un numero. Inserire un numero valido",request);
             }
         }while(value<1||value>Proxy.getInstance().getGridsSelectionDimension());
         server.selectGrid(value-1);
@@ -115,11 +276,11 @@ public class MainClient {
     }
 
     private void handleWaitForGameCLI() throws ServerIsDownException, LoggedOutException {
-        System.out.println("Use 'Logout' command to logout. You can't logout while game is starting");
+        System.out.println("Usa 'Logout' per uscire dalla coda. Non puoi uscire una volta che la partita sta incominciando");
         waitForGameStartingSoonMessage();
-        System.out.println("A game will start soon");
+        System.out.println("Una partita inizierà presto");
         waitForGameStartedMessage();
-        System.out.println("Game started");
+        System.out.println("Inizia la partita");
     }
 
     private void waitForGameStartedMessage() {
@@ -182,7 +343,7 @@ public class MainClient {
     private void chooseConnectionSystemCLI() {
         Scanner scanner = new Scanner(System.in);
         String written;
-        System.out.println("Choose between Socket or RMI to connect to server: ");
+        System.out.println("Scegli tra '"+USE_SOCKET+"' e '"+USE_RMI+"' come modalità di connessione: ");
         do {
             written = scanner.nextLine();
             written = written.toLowerCase();
@@ -194,7 +355,7 @@ public class MainClient {
                     //instance.server = new ServerRMICommunication(); //fixme
                     break;
                 default:
-                    System.err.println("Invalid input: please enter Socket or RMI");
+                    System.err.println("Input invalido: scegli tra Socket e RMI");
             }
         }
         while (!(written.equals(USE_SOCKET) || written.equals(USE_RMI)));
@@ -203,7 +364,7 @@ public class MainClient {
     private void handleLoginCLI() throws ServerIsDownException {
         String written;
         Scanner scanner= new Scanner(System.in);
-        System.out.println("To log in enter Login, otherwise enter Quit to exit");
+        System.out.println("Per loggare usa il comando "+LOG_IN_REQUEST+", altrimenti usa "+QUIT_REQUEST+" per chiudere");
         do {
             written = scanner.nextLine();
             written = written.toLowerCase();
@@ -211,7 +372,7 @@ public class MainClient {
                 case LOG_IN_REQUEST:
                     boolean ok=false;
                     instance.server.setUpConnection();
-                    System.out.println("Welcome to Sagrada server. Please choose a username:");
+                    System.out.println("Benvenuto nel server di Sagrada. Per favore scegli uno username:");
 
                     do {
                         try {
@@ -219,22 +380,22 @@ public class MainClient {
                             instance.server.login(usernameChosen);
                             ok=true;
                             this.username=usernameChosen;
-                            System.out.println("You successfully logged. You have been inserted in game queue.");
+                            System.out.println("Ti sei connesso. Sei stato inserito nella lobby.");
                         } catch (ServerIsFullException e) {
-                            System.err.println("Server is now full, retry later.");
+                            logger.log(Level.INFO,"Il server è pieno, riprova più tardi");
                             System.exit(0);
                         } catch (InvalidUsernameException e) {
-                            System.err.println("This username already exist or it's invalid. Please choose another one: ");
+                            logger.log(Level.INFO,"Questo username non è valido o è gia esistente. Per favore scegline un altro:");
                         }
                     }
                     while (!ok);
                     break;
                 case QUIT_REQUEST:
-                    System.out.println("Closing Sagrada...");
+                    System.out.println("Chiudendo Sagrada...");
                     System.exit(0);
                     break;
                 default:
-                    System.err.println("Invalid input: please enter Login or Quit");
+                    logger.log(Level.INFO,"Input invalido: Per favore usa {0} o {1}", new Object[]{LOG_IN_REQUEST,QUIT_REQUEST});
             }
 
         }
@@ -258,6 +419,39 @@ public class MainClient {
     public void notifyGridsAreInProxy() {
         lock.lock();
         gridsInProxy =true;
+        condition.signal();
+        lock.unlock();
+    }
+
+    public void setGameToInitialized() {
+        lock.lock();
+        gameInitialized=true;
+        condition.signal();
+        lock.unlock();
+    }
+
+    public void setGridsAlreadySelected(boolean state){
+        this.gridsAlreadySelected=state;
+    }
+
+    public void notifyTurnUpdated() {
+        lock.lock();
+        turnUpdated=true;
+        condition.signal();
+        lock.unlock();
+    }
+
+    public void notifySomethingChanged() {
+        lock.lock();
+        somethingChanged=true;
+        condition.signal();
+        lock.unlock();
+    }
+
+    public void notifyEndTurn() {
+        lock.lock();
+        somethingChanged=true;
+        turnEnded=true;
         condition.signal();
         lock.unlock();
     }
