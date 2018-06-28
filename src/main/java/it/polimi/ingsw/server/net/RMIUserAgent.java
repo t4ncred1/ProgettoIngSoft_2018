@@ -4,8 +4,12 @@ import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.custom_exception.*;
+import it.polimi.ingsw.server.model.components.Die;
+import it.polimi.ingsw.server.model.components.Grid;
 
 import java.rmi.RemoteException;
+import java.util.List;
+import java.util.Map;
 
 public class RMIUserAgent implements UserInterface {
 
@@ -115,6 +119,46 @@ public class RMIUserAgent implements UserInterface {
     @Override
     public void notifyEndTurn() {
         // TODO: 05/06/2018  
+    }
+
+    @Override
+    public void sendGrids(Map<String, Grid> playersGrids) {
+        // TODO: 26/06/2018
+    }
+
+    @Override
+    public void notifyTurnInitialized() {
+        // TODO: 26/06/2018
+    }
+
+    @Override
+    public void notifyTurnOf(String username) {
+        // TODO: 26/06/2018
+    }
+
+    @Override
+    public void setToReconnecting() {
+        // TODO: 27/06/2018  
+    }
+
+    @Override
+    public void sendDicePool(List<Die> dicePool) {
+        // TODO: 27/06/2018  
+    }
+
+    @Override
+    public void sendGrid(Grid grid) {
+        // TODO: 27/06/2018  
+    }
+
+    @Override
+    public void synchronize(boolean disconnected, Grid grid, List<Die> dicePool) {
+        // TODO: 28/06/2018  
+    }
+
+    @Override
+    public void notifyEnd() {
+        // TODO: 28/06/2018
     }
 
     //TODO from here.

@@ -267,7 +267,7 @@ public class BoxTest {
         testbox.insertDie(testdie);
         testbox.removeDie();
 
-        assertEquals(null,testbox.getDie());
+        assertNull(testbox.getDieConstraint());
     }
 
     @Test

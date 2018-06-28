@@ -38,7 +38,7 @@ public class PrivateObjective extends Objective {
             for (j = 0; j < actual_grid[i].length; j++) {
 
                 try {
-                    die_temp = actual_grid[i][j].getDie();
+                    die_temp = actual_grid[i][j].getDieConstraint();
                     die_temp1 = die_temp.getDie();
                 } catch (NullPointerException e) {
                     continue;

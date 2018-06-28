@@ -50,11 +50,11 @@ public class PublicObjective extends Objective{
                     boolean[] colorVector = new boolean[]{false, false, false, false, false};
                     for (Box j : i) {
                         try {
-                                if (colorVector[j.getDie().getColorRestriction()]) {
+                                if (colorVector[j.getDieConstraint().getColorRestriction()]) {
                                     isColumnOk = false;
                                     break;
                                 }
-                                colorVector[j.getDie().getColorRestriction()] = true;
+                                colorVector[j.getDieConstraint().getColorRestriction()] = true;
                         } catch (NullPointerException e) {
                             isColumnOk = false;
                         }
@@ -73,11 +73,11 @@ public class PublicObjective extends Objective{
                     boolean[] valueVector = new boolean[]{false, false, false, false, false, false};
                     for (Box j : i) {
                         try {
-                                if (valueVector[j.getDie().getValueRestriction()]) {
+                                if (valueVector[j.getDieConstraint().getValueRestriction()]) {
                                     isColumnOk = false;
                                     break;
                                 }
-                                valueVector[j.getDie().getValueRestriction()] = true;
+                                valueVector[j.getDieConstraint().getValueRestriction()] = true;
                         } catch (NullPointerException e) {
                             isColumnOk = false;
                         }
@@ -117,7 +117,7 @@ public class PublicObjective extends Objective{
         for(int i=0; i<actualGrid.length;i++){
             for (int j=0; j<actualGrid[0].length;j++){
                 try {
-                    if (actualGrid[i][j].getDie().getColorRestriction() == colorConstraintsToCheck[0] && !alreadyUsed[i][j]) {
+                    if (actualGrid[i][j].getDieConstraint().getColorRestriction() == colorConstraintsToCheck[0] && !alreadyUsed[i][j]) {
                         alreadyUsed[i][j]=true;
                         if (colorConstraintsToCheck.length==1) returnValue++;
                         else {
@@ -138,7 +138,7 @@ public class PublicObjective extends Objective{
         for(int i=0; i<actualGrid.length;i++) {
             for (int j = 0; j < actualGrid[0].length; j++) {
                 try{
-                    if (actualGrid[i][j].getDie().getColorRestriction() == colorConstraints[0] && !alreadyUsed[i][j]){
+                    if (actualGrid[i][j].getDieConstraint().getColorRestriction() == colorConstraints[0] && !alreadyUsed[i][j]){
                         alreadyUsed[i][j]=true;
                         if(colorConstraints.length==1){
                             return true;
@@ -159,7 +159,7 @@ public class PublicObjective extends Objective{
         for(int i=0; i<actualGrid.length;i++){
             for (int j=0; j<actualGrid[0].length;j++){
                 try {
-                    if (actualGrid[i][j].getDie().getValueRestriction() + 1 == valuesToCheck[0] && !alreadyUsed[i][j]) {
+                    if (actualGrid[i][j].getDieConstraint().getValueRestriction() + 1 == valuesToCheck[0] && !alreadyUsed[i][j]) {
                         alreadyUsed[i][j]=true;
                         if (valuesToCheck.length==1) returnValue++;
                         else {
@@ -181,7 +181,7 @@ public class PublicObjective extends Objective{
         for(int i=0; i<actualGrid.length;i++) {
             for (int j = 0; j < actualGrid[0].length; j++) {
                 try{
-                    if (actualGrid[i][j].getDie().getValueRestriction() + 1 == valuesToCheck[0] && !alreadyUsed[i][j]){
+                    if (actualGrid[i][j].getDieConstraint().getValueRestriction() + 1 == valuesToCheck[0] && !alreadyUsed[i][j]){
                         alreadyUsed[i][j]=true;
                         if(valuesToCheck.length==1){
                             return true;
@@ -204,7 +204,7 @@ public class PublicObjective extends Objective{
             previousColor=-1;
             for (Box j : i){
                 try {
-                    currentColor = j.getDie().getColorRestriction();
+                    currentColor = j.getDieConstraint().getColorRestriction();
                 } catch (NullPointerException e){
                     currentColor=-1;
                 }

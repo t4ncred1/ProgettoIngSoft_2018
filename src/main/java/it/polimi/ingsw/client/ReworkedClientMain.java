@@ -1,11 +1,11 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.configurations.GridInterface;
+import it.polimi.ingsw.client.configurations.adapters.GridInterface;
 import it.polimi.ingsw.client.custom_exception.*;
+import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
 import it.polimi.ingsw.client.net.ServerCommunicatingInterface;
 import it.polimi.ingsw.client.net.ServerRMICommunication;
 import it.polimi.ingsw.client.net.ServerSocketCommunication;
-import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 
 import java.io.DataInputStream;

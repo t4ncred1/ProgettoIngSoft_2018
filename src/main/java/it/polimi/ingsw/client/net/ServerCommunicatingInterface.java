@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.net;
 
 import it.polimi.ingsw.client.custom_exception.*;
+import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 
 
