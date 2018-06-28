@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.configurations;
+package it.polimi.ingsw.client.configurations.adapters;
 
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
