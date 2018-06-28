@@ -43,6 +43,7 @@ public class MatchController extends Thread{
     private Logger logger;
     private static long matchNumber = 0L;
     private long thisMatchNumber;
+    private boolean disconnected;
 
 
     public MatchController(){
@@ -78,6 +79,9 @@ public class MatchController extends Thread{
             }
         }
         while(!gameFinished);
+        synchronized (playersInMatchGuard){
+            playersInMatch.forEach((username,player)->player.notifyEnd());
+        }
     }
 
 
@@ -88,6 +92,32 @@ public class MatchController extends Thread{
     */
     private void initializeGame() {
         initializeGrids();
+    }
+
+    private void sendDicePool() {
+        List<Die> dicePool;
+        synchronized (modelGuard){
+            dicePool=model.getDicePool().showDiceInPool();
+        }
+        synchronized (playersInMatchGuard){
+            playersInMatch.forEach((username,player)->player.sendDicePool(dicePool));
+        }
+    }
+
+    private void notifyGameInitialized() {
+        synchronized (playersInMatchGuard) {
+            playersInMatch.forEach((username, player) -> player.notifyTurnInitialized());
+        }
+    }
+
+    private void sendGrids() {
+        Map<String,Grid> playersGrids;
+        synchronized (playersInMatchGuard) {
+            synchronized (modelGuard) {
+                playersGrids= model.getAllGrids();
+            }
+            playersInMatch.forEach((username, player) -> player.sendGrids(playersGrids));
+        }
     }
 
     private void initializeGrids() {
@@ -149,12 +179,6 @@ public class MatchController extends Thread{
 
     private void handleTurn() throws TooManyRoundsException, NotEnoughPlayersException {
 
-        //Let player reconnect
-        try {
-            Thread.sleep(SLEEP_TIME);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
         lock.lock();
         String username;
         synchronized (modelGuard) {
@@ -182,13 +206,14 @@ public class MatchController extends Thread{
             }
             lock.unlock();
             if (dieInserted&&!updatedDie) {
-                notifyDieInsertionBy(username);
                 updatedDie=true;
                 timer.stop();
+                synchronized (playersInMatchGuard){
+                    playersInMatch.forEach(this::sendDataForDieInsertion);
+                }
             }
 
             if (toolCardUsed&&!updatedTool) {
-                notifyToolCardUsedBy(username);
                 updatedTool=true;
                 timer.stop();
             }
@@ -196,14 +221,26 @@ public class MatchController extends Thread{
             lock.lock();
             handleEventualTimeout(timer,username);
             lock.unlock();
-            try {
-                Thread.sleep(SLEEP_TIME);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
         }while (!turnFinished);
         timer.stop();
+        synchronized (playersInMatchGuard){
+            playersInMatch.forEach(this::updateEndTurn);
+        }
+        disconnected=false;
+        turnFinished=false;
     }
+
+    private void updateEndTurn(String username, UserInterface player) {
+        List<Die> dicePool;
+        Grid grid;
+        synchronized (modelGuard){
+            dicePool= model.getDicePool().showDiceInPool();
+            grid=model.getPlayerCurrentGrid(turnPlayer.getUsername());
+            //todo pass toolcards, roundtrack
+        }
+        player.synchronize(disconnected,grid,dicePool);
+    }
+
 
     private void handleEventualTimeout(GameTimer timer, String username) {
         if (timer.getTimeoutEvent()) {
@@ -215,8 +252,7 @@ public class MatchController extends Thread{
                     logger.log(Level.SEVERE, MESSAGE_FOR_PLAYER_NOT_IN_MODEL, e);
                 }
             }
-            for (Map.Entry<String, UserInterface> players : playersInMatch.entrySet())
-                players.getValue().notifyDisconnection(); //FIXME
+            disconnected= true;
             turnFinished = true;
             timer.stop();
         }
@@ -243,7 +279,13 @@ public class MatchController extends Thread{
         dieInserted= false;
         toolCardUsed=false;
         turnFinished=false;
-        turnPlayer= playersInMatch.get(username);
+        synchronized (playersInMatchGuard){
+            turnPlayer= playersInMatch.get(username);
+            playersInMatch.forEach((playerName,player)-> player.notifyTurnOf(username));
+        }
+        sendDicePool();
+        sendGrids();
+        notifyGameInitialized();
     }
 
     int playerInGame() {
@@ -346,11 +388,8 @@ public class MatchController extends Thread{
     }
 
     void setGameToStarted() {
-        final boolean gameStartedStatus =true;
-        final boolean gameIsNotStartingAnymore = false;
-
-        this.gameStartingSoon=gameIsNotStartingAnymore;
-        this.gameStarted=gameStartedStatus;
+        this.gameStartingSoon= false; //game is not starting anymore: in fact it's started
+        this.gameStarted=true; //game is started
         try {
             synchronized (playersInMatchGuard) {
                 Set<String> playerUserNames = playersInMatch.keySet();
@@ -373,6 +412,7 @@ public class MatchController extends Thread{
     void handleReconnection(UserInterface player) {
         lock.lock();
         String username = player.getUsername();
+        player.setToReconnecting();
         synchronized (playersInMatchGuard) {
             playersInMatch.put(username, player);
         }
@@ -397,7 +437,9 @@ public class MatchController extends Thread{
         securityControl(userInterface);
 
         try {
-            return model.getGridsForPlayer(username);
+            synchronized (modelGuard) {
+                return model.getGridsForPlayer(username);
+            }
         } catch (InvalidUsernameException e) {
             logger.log(Level.SEVERE, MESSAGE_FOR_PLAYER_NOT_IN_MODEL, e);
         }
@@ -449,9 +491,9 @@ public class MatchController extends Thread{
         return null;
     }
 
-    public void insertDie(UserInterface player, int position, int x, int y) throws InvalidOperationException, NotInPoolException, IllegalRequestException {
+    public void insertDie(UserInterface player, int position, int x, int y) throws InvalidOperationException, NotInPoolException, IllegalRequestException, OperationAlreadyDoneException {
         securityControl(player);
-        if(dieInserted) /*TODO throw an exception*/;
+        if(dieInserted) throw new OperationAlreadyDoneException();
         try {
             model.insertDieOperation(x, y, position);
             this.dieInserted = true;
@@ -460,8 +502,25 @@ public class MatchController extends Thread{
             //FIXME this exception should go upper
             e.printStackTrace();
         }
+        dieInserted=true;
+        lock.lock();
+        condition.signal();
+        lock.unlock();
+    }
 
 
+
+    private void sendDataForDieInsertion(String username, UserInterface userInterface) {
+
+        List<Die> dicePool;
+        Grid grid;
+        synchronized (modelGuard){
+            dicePool= model.getDicePool().showDiceInPool();
+            grid=model.getPlayerCurrentGrid(turnPlayer.getUsername());
+        }
+        userInterface.sendGrid(grid);
+        userInterface.sendDicePool(dicePool);
+        userInterface.notifyTurnInitialized();
     }
 
 
@@ -482,12 +541,8 @@ public class MatchController extends Thread{
     public void notifyEnd() {
         lock.lock();
         turnFinished=true;
-        ready=false;
         condition.signal();
         lock.unlock();
-        synchronized (playersInMatchGuard) {
-            playersInMatch.keySet().forEach(player -> playersInMatch.get(player).notifyEndTurn());
-        }
     }
 
     private void checkForDisconnectionUntilStart() {
