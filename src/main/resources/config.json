@@ -9,5 +9,6 @@
   "rmiPort": "11001",
   "socketPort": "11000",
   "publicObjectivesDistributed" : "3",
-  "toolCardsDistributed" : "3"
+  "toolCardsDistributed" : "3",
+  "timerForOperation" : "30"
 }
