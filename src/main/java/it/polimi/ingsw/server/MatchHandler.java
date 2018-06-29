@@ -1,10 +1,8 @@
 package it.polimi.ingsw.server;
 
 
-import it.polimi.ingsw.server.custom_exception.DisconnectionException;
-import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
-import it.polimi.ingsw.server.custom_exception.InvalidUsernameException;
-import it.polimi.ingsw.server.custom_exception.ReconnectionException;
+import it.polimi.ingsw.server.configurations.ConfigurationHandler;
+import it.polimi.ingsw.server.custom_exception.*;
 import it.polimi.ingsw.server.net.UserInterface;
 
 import java.util.ArrayList;
@@ -13,6 +11,8 @@ import java.util.Map;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MatchHandler extends Thread {
 
@@ -31,13 +31,14 @@ public class MatchHandler extends Thread {
 
 
     private boolean timeout;
-    private static int maximumMatchNumber =2;
+    private int maximumMatchNumber =2;
     private static final int MAX_PLAYERS_IN_GAME =4;
     private static final int MIN_PLAYERS_IN_GAME =2;
     private GameTimer timer;
     private boolean shutdown;
 
 
+    private Logger logger;
     //these color are used to highlight server log message and they are
     //not supposed in any way to be part of the view.
     private static final String ANSI_RESET = "\u001B[0m";
@@ -98,7 +99,13 @@ public class MatchHandler extends Thread {
 
     @Override
     public void run() {
-        System.out.println("MatchHandlerStarted");
+        logger = Logger.getLogger(MatchHandler.class.getName());
+        try {
+            maximumMatchNumber=ConfigurationHandler.getInstance().getNumberOfMatchHandled();
+        } catch (NotValidConfigPathException e) {
+            logger.log(Level.SEVERE, "Can't load maximum match number", e);
+        }
+        logger.log(Level.INFO,"MatchHandlerStarted");
         while (!shutdown) {
             boolean ok;
             MatchHandler.loadNewGame();
@@ -110,17 +117,16 @@ public class MatchHandler extends Thread {
                 ok=startGameCountdown();
             }
             while (!ok);
-            System.out.println("Game started");
-            while(startedMatches.size()==maximumMatchNumber){
-                lock.lock();
+            logger.log(Level.INFO,"Game started");
+            lock.lock();
+            while(startedMatches.size()>=maximumMatchNumber){
                 try {
                     condition.await();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                     Thread.currentThread().interrupt();
                 }
-                lock.unlock();
             }
+            lock.unlock();
         }
     }
 
