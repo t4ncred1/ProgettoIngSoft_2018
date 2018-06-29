@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.custom_exception.NotEnoughPlayersException;
 import it.polimi.ingsw.server.model.components.Player;
 
 import java.util.Iterator;

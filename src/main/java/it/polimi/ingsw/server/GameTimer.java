@@ -48,10 +48,9 @@ public class GameTimer {
                     secondsPassed = secondsPassed % SECOND_TO_MINUTE_RATIO;
                     minutesPassed++;
                 }
-                Logger logger = Logger.getLogger(this.getClass().getName());
-                logger.log(Level.INFO,minutesPassed + ":" + secondsPassed);
+                System.out.println(minutesPassed + ":" + secondsPassed);
                 if ((secondsPassed + minutesPassed * SECOND_TO_MINUTE_RATIO) >= timerSet) {
-                    logger.log(Level.INFO,"Timeout");
+                    System.out.println("Timeout");
                     MatchHandler.getInstance().notifyTimeout();
                 }
 
