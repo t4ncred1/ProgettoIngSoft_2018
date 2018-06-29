@@ -386,7 +386,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     }
 
     @Override
-    public void insertDie(int position, int column, int row) throws ServerIsDownException, InvalidMoveException, DieNotExistException, AlreadyDoneOperationException {
+    public void insertDie(int position, int column, int row) throws ServerIsDownException, InvalidMoveException, DieNotExistException, AlreadyDoneOperationException, DisconnectionException {
         try {
             outputStream.writeUTF(INSERT_DIE);
             outputStream.writeInt(position);
@@ -408,6 +408,8 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
                     throw new DieNotExistException();
                 case ALREADY_DONE_OPERATION:
                     throw new AlreadyDoneOperationException();
+                case DISCONNECTION:
+                    throw new DisconnectionException();
                 default:
                     logger.log(Level.SEVERE, "Unexpected response from server: {0}", response);
             }
@@ -417,12 +419,15 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     }
 
     @Override
-    public void endTurn() throws ServerIsDownException {
+    public void endTurn() throws ServerIsDownException, DisconnectionException {
         try {
             outputStream.writeUTF(END_TURN);
             String response= readRemoteInput();
             if(!response.equals(OK_MESSAGE)){
-                logger.log(Level.SEVERE, "Unexpected message from server: {0}", response);
+                if(response.equals(DISCONNECTION))
+                    throw new DisconnectionException();
+                else
+                    logger.log(Level.SEVERE, "Unexpected message from server: {0}", response);
             }
             lock.lock();
             doneOperation=true;

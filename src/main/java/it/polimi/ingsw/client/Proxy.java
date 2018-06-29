@@ -153,10 +153,12 @@ public class Proxy {
     }
 
     public synchronized void setPlayerToDisconnected() {
-        disconnectedPlayers.put(turnPlayer,connectedPlayers.remove(turnPlayer));
+        disconnectedPlayers.put(turnPlayer, connectedPlayers.remove(turnPlayer));
     }
 
-    public boolean isGameFinished() {
+    public synchronized boolean isGameFinished() {
         return gameFinished;
     }
+
+
 }

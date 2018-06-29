@@ -87,7 +87,7 @@ public class MainClient {
         System.exit(0);
     }
 
-    private void handleGameLogic() throws ServerIsDownException {
+    private void handleGameLogic() throws ServerIsDownException, DisconnectionException {
         do{
             try {
                 boolean isMyTurn= askProxyIfItsMyTurn();
@@ -131,7 +131,7 @@ public class MainClient {
     }
 
 
-    private void handleMyTurn() throws ServerIsDownException {
+    private void handleMyTurn() throws ServerIsDownException, DisconnectionException {
         Scanner scanner = new Scanner(System.in);
         boolean myTurnFinished=false;
         do {
@@ -169,7 +169,7 @@ public class MainClient {
         // TODO: 27/06/2018
     }
 
-    private void handleDieInsertion() throws ServerIsDownException {
+    private void handleDieInsertion() throws ServerIsDownException, DisconnectionException {
         Scanner scanner= new Scanner(System.in);
         System.out.println("Inserisci la posizione del dado nella dice pool");
         int position= scanner.nextInt()-1;

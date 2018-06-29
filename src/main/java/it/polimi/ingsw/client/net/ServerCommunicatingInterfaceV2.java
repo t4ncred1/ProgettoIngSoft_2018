@@ -15,7 +15,7 @@ public interface ServerCommunicatingInterfaceV2 {
 
     void login(String usernameChosen) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException;
 
-    void insertDie(int position, int column, int row) throws ServerIsDownException, InvalidMoveException, DieNotExistException, AlreadyDoneOperationException;
+    void insertDie(int position, int column, int row) throws ServerIsDownException, InvalidMoveException, DieNotExistException, AlreadyDoneOperationException, DisconnectionException;
 
-    void endTurn() throws ServerIsDownException;
+    void endTurn() throws ServerIsDownException, DisconnectionException;
 }
