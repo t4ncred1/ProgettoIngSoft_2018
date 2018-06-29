@@ -290,8 +290,19 @@ public class MatchController extends Thread{
             playersInMatch.forEach((playerName,player)-> player.notifyTurnOf(username));
         }
         sendDicePool();
+        sendRoundTrack();
         sendGrids();
         notifyGameInitialized();
+    }
+
+    private void sendRoundTrack() {
+        List<Die> roundTrack;
+        synchronized (modelGuard){
+            roundTrack=model.getRoundTrack();
+        }
+        synchronized (playersInMatchGuard){
+            playersInMatch.forEach((username,player)->player.sendRoundTrack(roundTrack));
+        }
     }
 
     int playerInGame() {
