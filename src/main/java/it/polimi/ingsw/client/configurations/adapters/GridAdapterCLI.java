@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.configurations.adapters;
 
+import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
 
@@ -8,25 +9,8 @@ import java.util.Map;
 
 public class GridAdapterCLI extends GridAdapter {
 
-    private Map<String,String> colors;
-    private static final String ANSI_RESET = "\u001B[0m";
-    private static final String[] faces = {
-            "\u2680",
-            "\u2681",
-            "\u2682",
-            "\u2683",
-            "\u2684",
-            "\u2685"
-    };
-
     public GridAdapterCLI(Grid grid){
         super(grid);
-        colors = new HashMap<>();
-        colors.put("red", "\033[0;31m");
-        colors.put("yellow", "\033[0;33m");
-        colors.put("green","\033[0;92m" );
-        colors.put("blue", "\033[0;34m");
-        colors.put("purple", "\033[0;35m");
     }
 
     @Override
@@ -49,11 +33,11 @@ public class GridAdapterCLI extends GridAdapter {
             structure.append("\t\t|");
             for(int j=0;j<constraints[i].length&&j<diceInGrid[i].length;j++){
                 structure.append("\t");
-                Die die=diceInGrid[i][j];
-                if(die!=null) {
-                    structure.append(colors.get(die.getColor()));
-                    structure.append(faces[die.getValue()-1]);
-                    structure.append(ANSI_RESET);
+                try {
+                    DieInterface die = new DieAdapterCLI(diceInGrid[i][j]);
+                    structure.append(die.getDieInterface());
+                } catch (DieNotExistException e) {
+                    structure.append(" ");
                 }
                 structure.append("\t|");
             }

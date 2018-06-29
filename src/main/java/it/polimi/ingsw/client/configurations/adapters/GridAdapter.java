@@ -10,7 +10,7 @@ public abstract class GridAdapter implements GridInterface {
     private String[][] constraints;
     private Die[][] diceInGrid;
 
-    public GridAdapter(Grid grid){
+    protected GridAdapter(Grid grid){
         final int indexForDimension= 0;
 
         this.grid=grid;
