@@ -35,6 +35,7 @@ public class MatchModel{
 
     private final int GRIDS_FOR_A_PLAYER =4;
     private final int PRIV_FOR_A_PLAYER=1;
+    private static final String DISCONNECTED_STATUS ="disconnected";
 
     private static final String GREEN_OBJ= "green";
     private static final String RED_OBJ= "red";
@@ -326,13 +327,21 @@ public class MatchModel{
         return toReturn;
     }
 
-    public Map<String,Integer> calculatePoints(){
-        Map<String,Integer> map = new HashMap<>();
+    public Map<String,String> calculatePoints(){
+        Map<String,String> map = new LinkedHashMap<>();
+        SortedMap<String,Integer> temp= new TreeMap<>();
         for(Player player : this.playersInGame){
-            map.put(player.getUsername(),getPointsForPlayer(player));
+            temp.put(player.getUsername(),getPointsForPlayer(player));
+        }
+        while (!temp.isEmpty()){
+            Map.Entry<String,Integer> entry= ((TreeMap<String, Integer>) temp).lastEntry();
+            temp.remove(entry.getKey());
+            map.put(entry.getKey(), Integer.toString(entry.getValue()));
+        }
+        for(Player player : this.playersNotInGame){
+            if(player!=null)map.put(player.getUsername(), DISCONNECTED_STATUS);
         }
         return map;
-
     }
 
     private Integer getPointsForPlayer(Player player){
