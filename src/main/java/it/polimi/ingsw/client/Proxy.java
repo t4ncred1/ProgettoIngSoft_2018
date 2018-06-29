@@ -1,9 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.configurations.adapters.DicePoolAdapterCLI;
-import it.polimi.ingsw.client.configurations.adapters.DicePoolInterface;
-import it.polimi.ingsw.client.configurations.adapters.GridAdapterCLI;
-import it.polimi.ingsw.client.configurations.adapters.GridInterface;
+import it.polimi.ingsw.client.configurations.adapters.*;
 import it.polimi.ingsw.client.custom_exception.GameFinishedException;
 import it.polimi.ingsw.client.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
@@ -27,6 +24,7 @@ public class Proxy {
     private Map<String,GridInterface> disconnectedPlayers;
     private Map<String,String> playersRanking;
     private DicePoolInterface dicePool;
+    private RoundTrackInterface roundTrack;
     private boolean gameFinished;
     private boolean useGUI;
 
@@ -163,11 +161,28 @@ public class Proxy {
     }
 
 
-    public void setPoints(Map<String,String> playerPoints) {
+    public synchronized void setPoints(Map<String,String> playerPoints) {
         playersRanking= playerPoints;
     }
 
     public Map<String,String> getPlayerRanking() {
         return this.playersRanking;
+    }
+
+    public synchronized void setRoundTrack(List<Die> roundTrack) {
+        this.roundTrack= newRoundTrackAdapter(roundTrack);
+    }
+
+    private RoundTrackInterface newRoundTrackAdapter(List<Die> roundTrack) {
+        if(useGUI){
+            // TODO: 29/06/2018
+            return null;
+        }else{
+            return new RoundTrackAdapterCLI(roundTrack);
+        }
+    }
+
+    public RoundTrackInterface getRoundTrack() {
+        return this.roundTrack;
     }
 }
