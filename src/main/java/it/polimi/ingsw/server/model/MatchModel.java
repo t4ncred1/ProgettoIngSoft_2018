@@ -248,6 +248,7 @@ public class MatchModel{
         int i;
         for (i=0; i<playersInGame.size();i++){
             if (playersInGame.get(i).getUsername().equals(username)) {
+                System.err.println("Removing player "+username);
                 playersNotInGame[i]=playersInGame.remove(i);
                 flag=true;
             }
