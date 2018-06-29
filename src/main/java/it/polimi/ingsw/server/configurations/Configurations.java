@@ -16,9 +16,10 @@ class Configurations implements Serializable {
     private int publicObjectivesDistributed;
     private int toolCardsDistributed;
     private int timerForOperation;
+    private int numberOfMatchHandled;
 
 
-    Configurations(String gridsPath,String publicObjectivesPath, String toolCardsPath, int maxPlayersNumber, int minPlayersNumber, int timerToChooseGrids, int timerBeforeMatch, int rmiPort, int socketPort, int publicObjectivesDistributed, int toolCardsDistributed, int timerForOperation){
+    Configurations(String gridsPath,String publicObjectivesPath, String toolCardsPath, int maxPlayersNumber, int minPlayersNumber, int timerToChooseGrids, int timerBeforeMatch, int rmiPort, int socketPort, int publicObjectivesDistributed, int toolCardsDistributed, int timerForOperation, int numberOfMatchHandled){
         this.gridsPath=gridsPath;
         this.publicObjectivesPath=publicObjectivesPath;
         this.toolCardsPath = toolCardsPath;
@@ -31,6 +32,7 @@ class Configurations implements Serializable {
         this.publicObjectivesDistributed=publicObjectivesDistributed;
         this.toolCardsDistributed=toolCardsDistributed;
         this.timerForOperation=timerForOperation;
+        this.numberOfMatchHandled=numberOfMatchHandled;
     }
 
     String getGridsPath(){
@@ -73,6 +75,10 @@ class Configurations implements Serializable {
 
     public int getTimerForOperation() {
         return timerForOperation;
+    }
+
+    public int getNumberOfMatchHandled() {
+        return numberOfMatchHandled;
     }
 
     public void setTimerForOperation(int timerForOperation) {

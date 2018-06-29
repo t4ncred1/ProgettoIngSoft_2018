@@ -166,6 +166,11 @@ public class RMIUserAgent implements UserInterface {
         // TODO: 29/06/2018  
     }
 
+    @Override
+    public void sendRoundTrack(List<Die> roundTrack) {
+        // TODO: 30/06/2018  
+    }
+
     //TODO from here.
 
     @Override

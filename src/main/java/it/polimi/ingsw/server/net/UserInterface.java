@@ -53,4 +53,6 @@ public interface UserInterface {
     void notifyEnd();
 
     void sendPoints(Map<String, String> playersPoints);
+
+    void sendRoundTrack(List<Die> roundTrack);
 }

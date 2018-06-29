@@ -163,4 +163,8 @@ public class ConfigurationHandler {
         if (config.getTimerForOperation()>0) return config.getTimerForOperation();
         else throw new NotValidConfigPathException("Incorrect config.json file: timerForOperation needs to be instanced");
     }
+
+    public int getNumberOfMatchHandled() {
+        return config.getNumberOfMatchHandled();
+    }
 }
