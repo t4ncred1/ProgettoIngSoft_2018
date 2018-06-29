@@ -90,6 +90,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     private static final String TOOL_DATA="tool";
     private static final String END_DATA= "end_data";
     private static final String DICE_POOL_DATA= "dice_pool";
+    private static final String ROUND_TRACK_DATA= "round_track";
     private static final String DISCONNECTION = "disconnected";
 
     private static final String PLAYERS_POINTS="points";
@@ -214,6 +215,9 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
                 case DICE_POOL_DATA:
                     retrieveDicePoolFromServer();
                     break;
+                case ROUND_TRACK_DATA:
+                    retrieveRoundTrackFromServer();
+                    break;
                 case DISCONNECTION:
                     Proxy.getInstance().setPlayerToDisconnected();
                     break;
@@ -225,6 +229,14 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
             }
         }while (!endData);
         return false;
+    }
+
+    private void retrieveRoundTrackFromServer() throws IOException {
+        ArrayList<Die> roundTrack;
+        Gson gson = new Gson();
+        TypeToken<ArrayList<Die>> typeToken= new TypeToken<ArrayList<Die>>(){};
+        roundTrack=gson.fromJson(readRemoteInput(), typeToken.getType());
+        Proxy.getInstance().setRoundTrack(roundTrack);
     }
 
     private void waitForGridSelection() {
@@ -249,6 +261,9 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
                     break;
                 case DICE_POOL_DATA:
                     retrieveDicePoolFromServer();
+                    break;
+                case ROUND_TRACK_DATA:
+                    retrieveRoundTrackFromServer();
                     break;
                 case END_DATA:
                     ok=true;

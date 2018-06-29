@@ -92,6 +92,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private static final String GRID_DATA= "grid";
     private static final String ALL_GRIDS_DATA= "all_grid";
     private static final String TOOL_DATA="tool";
+    private static final String ROUND_TRACK_DATA= "round_track";
     private static final String END_DATA= "end_data";
     private static final String TURN_FINISHED= "finish";
     private static final String DICE_POOL_DATA= "dice_pool";
@@ -564,6 +565,14 @@ public class SocketUserAgent extends Thread implements UserInterface {
         LinkedHashMap<String,String> data = (LinkedHashMap<String,String>) playersPoints;
         String toSend = gson.toJson(data);
         sendData(PLAYERS_POINTS, toSend);
+    }
+
+    @Override
+    public void sendRoundTrack(List<Die> roundTrack) {
+        ArrayList<Die> dieList = (ArrayList<Die>) roundTrack;
+        Gson gson = new Gson();
+        String dataToSend = gson.toJson(dieList);
+        sendData(ROUND_TRACK_DATA,dataToSend);
     }
 
     private void waitDataRetrieve() {
