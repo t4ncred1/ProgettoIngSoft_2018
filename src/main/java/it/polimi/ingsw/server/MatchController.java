@@ -79,9 +79,15 @@ public class MatchController extends Thread{
             }
         }
         while(!gameFinished);
+        Map<String,String> playersPoints;
+        synchronized (modelGuard){
+            playersPoints = model.calculatePoints();
+        }
         synchronized (playersInMatchGuard){
             playersInMatch.forEach((username,player)->player.notifyEnd());
+            playersInMatch.forEach((username,player)->player.sendPoints(playersPoints));
         }
+
     }
 
 
