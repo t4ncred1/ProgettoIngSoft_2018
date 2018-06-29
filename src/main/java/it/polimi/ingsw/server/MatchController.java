@@ -303,6 +303,11 @@ public class MatchController extends Thread{
             playersInMatch.forEach((username,player)->{
                 if(!player.isConnected()){
                     logger.log(Level.WARNING, "{0} disconnected",username);
+                    try {
+                        model.setPlayerToDisconnect(username);
+                    } catch (InvalidUsernameException e) {
+                        logger.log(Level.WARNING,"disconnected player's name is invalid"+username,e);
+                    }
                     MatchHandler.getInstance().notifyAboutDisconnection(username);
                 }
             });
@@ -573,6 +578,11 @@ public class MatchController extends Thread{
                     if (!stopCheck.contains(username) && !playersInMatch.get(username).isConnected()) {
                         //in this instruction player is removed only from connectedPlayers
                         logger.log(Level.WARNING, "{0} disconnected",username);
+                        try {
+                            model.setPlayerToDisconnect(username);
+                        } catch (InvalidUsernameException e) {
+                            logger.log(Level.WARNING,"disconnected player's name is invalid"+username,e);
+                        }
                         stopCheck.add(username);
                         MatchHandler.getInstance().notifyAboutDisconnection(username);
                     } else if (stopCheck.contains(username) && playersInMatch.get(username).isConnected()) {
