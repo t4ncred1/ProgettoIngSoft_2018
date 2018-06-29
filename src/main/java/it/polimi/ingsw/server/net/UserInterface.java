@@ -51,4 +51,6 @@ public interface UserInterface {
     void synchronize(boolean disconnected, Grid grid, List<Die> dicePool);
 
     void notifyEnd();
+
+    void sendPoints(Map<String, String> playersPoints);
 }

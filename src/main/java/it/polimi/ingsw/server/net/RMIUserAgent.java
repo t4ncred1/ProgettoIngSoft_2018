@@ -161,6 +161,11 @@ public class RMIUserAgent implements UserInterface {
         // TODO: 28/06/2018
     }
 
+    @Override
+    public void sendPoints(Map<String, String> playersPoints) {
+        // TODO: 29/06/2018  
+    }
+
     //TODO from here.
 
     @Override

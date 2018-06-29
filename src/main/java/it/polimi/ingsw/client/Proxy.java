@@ -25,6 +25,7 @@ public class Proxy {
     private GridInterface gridSelected;
     private Map<String,GridInterface> connectedPlayers;
     private Map<String,GridInterface> disconnectedPlayers;
+    private Map<String,String> playersRanking;
     private DicePoolInterface dicePool;
     private boolean gameFinished;
     private boolean useGUI;
@@ -33,6 +34,7 @@ public class Proxy {
         gridsSelection= new ArrayList<>();
         connectedPlayers = new LinkedHashMap<>();
         disconnectedPlayers = new LinkedHashMap<>();
+        playersRanking = new LinkedHashMap<>();
         useGUI=false;
     }
 
@@ -161,4 +163,11 @@ public class Proxy {
     }
 
 
+    public void setPoints(Map<String,String> playerPoints) {
+        playersRanking= playerPoints;
+    }
+
+    public Map<String,String> getPlayerRanking() {
+        return this.playersRanking;
+    }
 }
