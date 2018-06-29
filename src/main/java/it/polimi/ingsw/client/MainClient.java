@@ -141,6 +141,8 @@ public class MainClient {
         try {
             System.out.println("La dice pool:");
             System.out.println(Proxy.getInstance().getDicePool().getDicePoolInterface());
+            System.out.println("La round track:");
+            System.out.println(Proxy.getInstance().getRoundTrack().getRoundTrackInterface());
             System.out.println("La mappa di " + turnPlayer);
             System.out.println(Proxy.getInstance().getGridsOf(turnPlayer).getGridInterface());
         } catch (InvalidUsernameException e) {
@@ -173,6 +175,8 @@ public class MainClient {
     }
 
     private void printThingsOnMyTurn() {
+        System.out.println("La round track:");
+        System.out.println(Proxy.getInstance().getRoundTrack().getRoundTrackInterface());
         System.out.println("La dice pool:");
         System.out.println(Proxy.getInstance().getDicePool().getDicePoolInterface());
         System.out.println("La tua mappa:");
