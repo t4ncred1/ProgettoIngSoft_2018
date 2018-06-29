@@ -159,4 +159,8 @@ public class ConfigurationHandler {
         return builder.create();
     }
 
+    public int getTimerForOperation() throws NotValidConfigPathException {
+        if (config.getTimerForOperation()>0) return config.getTimerForOperation();
+        else throw new NotValidConfigPathException("Incorrect config.json file: timerForOperation needs to be instanced");
+    }
 }

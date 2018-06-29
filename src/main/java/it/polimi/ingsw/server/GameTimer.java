@@ -5,6 +5,8 @@ import it.polimi.ingsw.server.custom_exception.NotValidConfigPathException;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GameTimer {
 
@@ -46,9 +48,10 @@ public class GameTimer {
                     secondsPassed = secondsPassed % SECOND_TO_MINUTE_RATIO;
                     minutesPassed++;
                 }
-                System.out.println(minutesPassed + ":" + secondsPassed);
+                Logger logger = Logger.getLogger(this.getClass().getName());
+                logger.log(Level.INFO,minutesPassed + ":" + secondsPassed);
                 if ((secondsPassed + minutesPassed * SECOND_TO_MINUTE_RATIO) >= timerSet) {
-                    System.out.println("Timeout");
+                    logger.log(Level.INFO,"Timeout");
                     MatchHandler.getInstance().notifyTimeout();
                 }
 
@@ -63,8 +66,9 @@ public class GameTimer {
         this.gameHandled=matchController;
         try {
             this.timeForGridsInitialization=ConfigurationHandler.getInstance().getTimerToChooseGrids();
+            this.timerForOperation=ConfigurationHandler.getInstance().getTimerForOperation();
         } catch (NotValidConfigPathException e) {
-            System.err.println("Configuration file wasn't read correctly.");
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"Configuration file wasn't read correctly.",e);
         }
         //if there's an error on read from config file, standard time (as declared between globals) will kick in
         switch (message){
