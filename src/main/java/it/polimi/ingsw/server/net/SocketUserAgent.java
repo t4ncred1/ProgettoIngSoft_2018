@@ -19,10 +19,7 @@ import it.polimi.ingsw.server.custom_exception.ReconnectionException;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -100,6 +97,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private static final String DICE_POOL_DATA= "dice_pool";
     private static final String DISCONNECTION = "disconnected";
 
+    private static final String PLAYERS_POINTS="points";
 
     SocketUserAgent(Socket client) {
         connected=true;
@@ -183,36 +181,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }while (!gameFinished);
     }
 
-
-    private void handleTurn() throws IOException, IllegalRequestException {
-        String request;
-        request=inputStream.readUTF();
-        logger.log(Level.FINE, "Request: {0} from {1} ", new Object[]{request,username});
-        if(request.equals(LISTEN_STATE)){
-            request=inputStream.readUTF();
-            if(!request.equals(END_LISTEN)){
-                logger.log(Level.SEVERE, UNEXPECTED_MESSAGE_RECEIVED, new Object[]{username,request,END_LISTEN});
-            }
-        }
-        else{
-            boolean turnFinished=false;
-            do{
-                switch (request){
-                    case INSERT_DIE:
-                        handleDieInsertion();
-                        break;
-                    case END_TURN:
-                        turnFinished=true;
-                        System.err.println("Here");
-                        gameHandling.notifyEnd();
-                        break;
-                    default:
-                        logger.log(Level.SEVERE, "Unexpected message from {0}: received {1} instead of an operation", new Object[]{username,request});
-                }
-                if(!turnFinished) request=inputStream.readUTF();
-            }while (!turnFinished&&connected);
-        }
-    }
 
     private void handleDieInsertion() throws IOException, IllegalRequestException {
         int position=inputStream.readInt();
@@ -590,6 +558,14 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }
     }
 
+    @Override
+    public void sendPoints(Map<String, String> playersPoints) {
+        Gson gson= new Gson();
+        LinkedHashMap<String,String> data = (LinkedHashMap<String,String>) playersPoints;
+        String toSend = gson.toJson(data);
+        sendData(PLAYERS_POINTS, toSend);
+    }
+
     private void waitDataRetrieve() {
 
         while(retrievingData){
@@ -612,11 +588,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
             lock.unlock();
         }
     }
-
-
-    //TODO from here.
-
-
 
     @Override
     public void notifyDisconnection() {

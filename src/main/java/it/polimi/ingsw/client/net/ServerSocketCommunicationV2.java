@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -89,8 +90,11 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     private static final String TOOL_DATA="tool";
     private static final String END_DATA= "end_data";
     private static final String DICE_POOL_DATA= "dice_pool";
-    private static final String TURN_FINISHED= "finish";
     private static final String DISCONNECTION = "disconnected";
+
+    private static final String PLAYERS_POINTS="points";
+
+
     private boolean myGridSetted;
     private boolean gameFinished;
     private boolean doneOperation;
@@ -116,7 +120,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
             handleGameLogic();
         } catch (IOException e) {
             logger.log(Level.WARNING,"Can't connect to server, something went wrong!");
-            System.exit(0);
+            System.exit(-1);
         }
 
     }
@@ -145,12 +149,24 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
                 case GAME_FINISHED:
                     logger.log(Level.FINE, "{0}",serverResponse);
                     Proxy.getInstance().setGameToFinished();
+                    handleGameEnd();
                     MainClient.getInstance().notifyTurnUpdated();
                     break;
                 default:
                     logger.log(Level.SEVERE,"Unexpected game status from server: {0}", serverResponse);
             }
         }while(!gameFinished);
+
+    }
+
+    private void handleGameEnd() throws IOException {
+        String serverMessage = readRemoteInput();
+        if(!serverMessage.equals(PLAYERS_POINTS)) logger.log(Level.SEVERE,"Unexpected data type from server: {0}", serverMessage);
+        Gson gson= new Gson();
+        serverMessage=readRemoteInput();
+        TypeToken<LinkedHashMap<String,String>> typeToken= new TypeToken<LinkedHashMap<String,String>>(){};
+        LinkedHashMap<String,String> playerPoints= gson.fromJson(serverMessage,typeToken.getType());
+        Proxy.getInstance().setPoints(playerPoints);
     }
 
     private void handleTurn(boolean myTurn) throws IOException {
