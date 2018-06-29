@@ -11,8 +11,7 @@ import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -100,6 +99,25 @@ public class MainClient {
             }
         }while (!gameFinished);
         System.out.println("La partita è finita");
+        handleGameEnd();
+    }
+
+    private void handleGameEnd() {
+        LinkedHashMap<String,String> ranks= (LinkedHashMap<String, String>) Proxy.getInstance().getPlayerRanking();
+        ranks.forEach(this::printRanks);
+        if(ranks.entrySet().iterator().hasNext()){
+           String winner= ranks.entrySet().iterator().next().getKey();
+           System.out.println("Il vincitore è "+winner);
+        }
+    }
+
+    private void printRanks(String s, String s1) {
+        try{
+            int points=Integer.parseInt(s1);
+            System.out.println(s+" ha totalizzato "+points+" punti");
+        }catch (NumberFormatException e){
+            System.out.println(s+" non era connesso al termine della partita");
+        }
     }
 
     private void waitEndOfOtherPlayerTurn() {
