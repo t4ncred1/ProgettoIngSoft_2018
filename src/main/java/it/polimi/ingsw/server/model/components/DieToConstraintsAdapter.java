@@ -8,6 +8,10 @@ public class DieToConstraintsAdapter implements DieConstraints, Serializable {
     private int colorRestriction;
     private int valueRestriction;
 
+    /**
+     * Constructor for DieToConstraintsAdapter.
+     * @param die The die to be assigned.
+     */
     public DieToConstraintsAdapter(Die die){
         //assegno die
         this.die=die;
@@ -34,25 +38,36 @@ public class DieToConstraintsAdapter implements DieConstraints, Serializable {
     }
 
 
-
+    /**
+     *
+     * @inheritDoc
+     */
     @Override
     public int getColorRestriction(){
         return this.colorRestriction;
     }
 
+    /**
+     *
+     * @inheritDoc
+     */
     @Override
     public int getValueRestriction(){
         return this.valueRestriction;
     }
 
+    /**
+     *
+     * @inheritDoc
+     */
     @Override
     public Die getDie() {
         return this.die;
     }
 
-    @Override
+   /* @Override
     public void modifyDie(){
         //TODO modifier for die
-    }
+    }*/
 
 }

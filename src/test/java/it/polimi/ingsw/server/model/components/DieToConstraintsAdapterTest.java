@@ -38,9 +38,9 @@ class DieToConstraintsAdapterTest {
 
     }
 
-    @Test
+   /* @Test
     public void modify_test() throws NotValidParameterException {
         new DieToConstraintsAdapter(new Die("green",5)).modifyDie();
-    }
+    }*/
 
 }
