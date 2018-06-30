@@ -167,6 +167,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             String command=inputStream.readUTF();
             switch (command){
                 case INSERT_DIE:
+                    logger.log(Level.FINE,"{0} requested to end turn",username);
                     handleDieInsertion();
                     break;
                 case USE_TOOL_CARD:
@@ -174,6 +175,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
                     break;
                 case END_TURN:
                     outputStream.writeUTF(OK_REQUEST);
+                    logger.log(Level.FINE,"{0} requested to end turn",username);
                     gameHandling.notifyEnd();
                     break;
                 default:
@@ -324,6 +326,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         outputStream.writeUTF(OK_REQUEST);
         Gson gson= new Gson();
         outputStream.writeUTF(gson.toJson(grids));
+        logger.log(Level.FINE, "send grid selection to {0}", username);
     }
 
     private void handleLogoutRequestBeforeStart() throws IOException, DisconnectionException {

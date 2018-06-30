@@ -163,7 +163,7 @@ public class MatchHandler extends Thread {
                 timeout=false;
             }
             synchronized (startingMatchGuard){
-                startingMatch.setGameStartingSoon(timeout);
+                startingMatch.setGameToStartingSoon(timeout);
             }
             condition.await();
 

@@ -128,7 +128,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
 
     private void handleGridSetting() throws IOException {
         try {
-            setGridSelection();
+            setGridSelectionInProxy();
             waitForGridSelection();
         } catch (GameInProgressException e) {
             logger.log(Level.CONFIG, "grids already selected", e);
@@ -301,7 +301,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         Proxy.getInstance().updateGrid(grid);
     }
 
-    private void setGridSelection() throws IOException, GameInProgressException {
+    private void setGridSelectionInProxy() throws IOException, GameInProgressException {
         String serverResponse;
         String logUnexpectedResponse= "Unexpected response: {0}";
         try{
@@ -355,7 +355,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     private void handleWaitForGame() throws IOException {
         String serverResponse;
         do{
-            sleepForASec();
+            sleepALittle();
             lock.lock();
             serverResponse=inputStream.readUTF();
             lock.unlock();
@@ -363,7 +363,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         MainClient.getInstance().notifyGameStarting();
     }
 
-    private void sleepForASec() {
+    private void sleepALittle() {
         try {
             Thread.sleep(SLEEP_TIME);
         } catch (InterruptedException e) {

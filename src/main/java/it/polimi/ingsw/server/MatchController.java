@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 public class MatchController extends Thread{
     private Map<String,UserInterface> playersInMatch;
+    private Map<String,Boolean> flagNotifyStatPlayer;
     private static final Object playersInMatchGuard = new Object();
     private boolean gameStarted;
     private boolean gameStartingSoon;
@@ -50,6 +51,7 @@ public class MatchController extends Thread{
         this.lock = new ReentrantLock();
         this.condition= lock.newCondition();
         this.playersInMatch= new LinkedHashMap<>();
+        this.flagNotifyStatPlayer=new LinkedHashMap<>();
         logger= Logger.getLogger(this.getClass().getName()+"_"+matchNumber);
         thisMatchNumber=matchNumber++;
     }
@@ -202,7 +204,7 @@ public class MatchController extends Thread{
         boolean updatedDie=false;
         boolean updatedTool=false;
         GameTimer timer=null;
-        do {
+        while (!turnFinished) {
             if(timer==null|| timer.isStopped())timer = new GameTimer(this,OPERATION_TIMER);
             lock.lock();
             try {
@@ -227,7 +229,7 @@ public class MatchController extends Thread{
             lock.lock();
             handleEventualTimeout(timer,username);
             lock.unlock();
-        }while (!turnFinished);
+        }
         timer.stop();
         synchronized (playersInMatchGuard){
             playersInMatch.forEach(this::updateEndTurn);
@@ -331,12 +333,13 @@ public class MatchController extends Thread{
 
     void insert(UserInterface client) {
         synchronized (playersInMatchGuard) {
+            flagNotifyStatPlayer.put(client.getUsername(), false);
             playersInMatch.put(client.getUsername(),client);
         }
     }
 
     //state modifier
-    void setGameStartingSoon(boolean timeout) {
+    void setGameToStartingSoon(boolean timeout) {
         final boolean startingSoonState =true;
         if(!gameStartingSoon||timeout) {
             this.gameStartingSoon = startingSoonState;
@@ -345,17 +348,26 @@ public class MatchController extends Thread{
         else {
             synchronized (playersInMatchGuard) {
                 if(!timeout) {
-                    Set list = playersInMatch.keySet();
-                    Iterator iterator = list.iterator();
-                    UserInterface lastConnection= null;
-                    while (iterator.hasNext()) lastConnection =playersInMatch.get(iterator.next().toString()); //Fixme is this the cause why "a game will start soon is sent twice?
-                    try {
-                        if(lastConnection!=null) lastConnection.notifyStarting();
-                    } catch (DisconnectionException e) {
-                        String username = lastConnection.getUsername();
-                        playersInMatch.remove(username);
-                        MatchHandler.getInstance().notifyAboutDisconnection(username);
-                    }
+                    notifyAllPlayersNotNotified();
+                }
+            }
+        }
+    }
+
+    private void notifyAllPlayersNotNotified() {
+        Iterator<Map.Entry<String,Boolean>> iterator = flagNotifyStatPlayer.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String,Boolean> playerAndStatus= iterator.next();
+            String username = playerAndStatus.getKey();
+            boolean notified = playerAndStatus.getValue();
+            if(!notified){
+                try {
+                    playersInMatch.get(username).notifyStarting();
+                    playerAndStatus.setValue(true);
+                } catch (DisconnectionException e) {
+                    playersInMatch.remove(username);
+                    iterator.remove();
+                    MatchHandler.getInstance().notifyAboutDisconnection(username);
                 }
             }
         }
@@ -368,6 +380,7 @@ public class MatchController extends Thread{
         else {
             synchronized (playersInMatchGuard) {
                 playersInMatch.remove(client.getUsername());
+                flagNotifyStatPlayer.remove(client.getUsername());
             }
         }
     }
@@ -380,6 +393,7 @@ public class MatchController extends Thread{
                 Map.Entry<String,UserInterface> player= iterator.next();
                 try {
                     player.getValue().notifyStarting();
+                    flagNotifyStatPlayer.put(player.getKey(), true);
                 } catch (DisconnectionException e) {
                     iterator.remove();
                     MatchHandler.getInstance().notifyAboutDisconnection(player.getKey());
@@ -409,6 +423,7 @@ public class MatchController extends Thread{
         this.gameStarted=true; //game is started
         try {
             synchronized (playersInMatchGuard) {
+                flagNotifyStatPlayer.forEach(this::notifyPlayerStillNotNotified);
                 Set<String> playerUserNames = playersInMatch.keySet();
                 model = new MatchModel(playerUserNames,this);
             }
@@ -418,6 +433,16 @@ public class MatchController extends Thread{
             e.printStackTrace();    //FIXME this exception is thrown if the configuration file is wrong.
         }
         this.notifyStartToPlayers();
+    }
+
+    private void notifyPlayerStillNotNotified(String username, Boolean notified) {
+        if(!notified){
+            try {
+                playersInMatch.get(username).notifyStarting();
+            } catch (DisconnectionException e) {
+                MatchHandler.getInstance().notifyAboutDisconnection(username);
+            }
+        }
     }
 
     void wakeUpController(){
@@ -431,6 +456,7 @@ public class MatchController extends Thread{
         String username = player.getUsername();
         player.setToReconnecting();
         synchronized (playersInMatchGuard) {
+            flagNotifyStatPlayer.put(username, false);
             playersInMatch.put(username, player);
         }
         synchronized (modelGuard){
