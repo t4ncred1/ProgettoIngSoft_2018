@@ -14,6 +14,7 @@ import it.polimi.ingsw.server.configurations.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidConfigPathException;
+import it.polimi.ingsw.server.custom_exception.ReconnectionException;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.DieConstraints;
 import it.polimi.ingsw.server.model.components.DieToConstraintsAdapter;
@@ -54,11 +55,12 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     private static final String SUCCESSFULLY_LOGGED = "logged";
     private static final String SERVER_FULL = "notLogged_server_full";
     private static final String USERNAME_NOT_AVAILABLE= "notLogged_username_not_available";
+    private static final String RECONNECTED ="reconnected";
 
 
     private static final String LAUNCHING_GAME = "launching_game";
     private static final String GAME_STARTED = "game_started";
-    private static final String GAME_ALREADY_IN_PROGRESS = "reconnected";
+    private static final String GAME_ALREADY_IN_PROGRESS = "in_progress";
 
     private static final String TRY_LOGOUT= "try_logout";
     private static final String SUCCESSFULLY_LOGGED_OUT= "logged_out";
@@ -100,6 +102,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     private boolean gameFinished;
     private boolean doneOperation;
     private boolean dataRetrieved;
+    private boolean reconnecting;
 
     public ServerSocketCommunicationV2(){
         this.lock = new ReentrantLock();
@@ -389,26 +392,38 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         }
     }
 
-    public void login(String username) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException {
-        String read;
+    public void login(String username) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException, ReconnectionException {
+        String loginResponse;
         try {
             do {
-                read = inputStream.readUTF();
+                loginResponse = inputStream.readUTF();
             }
-            while (!read.equals(LOGIN_MESSAGE_FROM_SERVER));
+            while (!loginResponse.equals(LOGIN_MESSAGE_FROM_SERVER));
             outputStream.writeUTF(username);
-            do {
-                read = inputStream.readUTF();
-            }
-            while (!(read.equals(SUCCESSFULLY_LOGGED) || read.equals(SERVER_FULL) || read.equals(USERNAME_NOT_AVAILABLE)));
-            switch (read) {
-                case SERVER_FULL:
-                    throw new ServerIsFullException();
-                case USERNAME_NOT_AVAILABLE:
-                    throw new InvalidUsernameException();
-                default:
-                    Proxy.getInstance().setMyUsername(username);
-                    this.start();
+            boolean ok=false;
+            while (!ok) {
+                loginResponse=readRemoteInput();
+                switch (loginResponse) {
+                    case SERVER_FULL:
+                        logger.log(Level.FINE, "Server is full");
+                        throw new ServerIsFullException();
+                    case USERNAME_NOT_AVAILABLE:
+                        logger.log(Level.CONFIG, "Username not available");
+                        throw new InvalidUsernameException();
+                    case SUCCESSFULLY_LOGGED:
+                        logger.log(Level.FINE, "Connected successfully");
+                        Proxy.getInstance().setMyUsername(username);
+                        this.start();
+                        ok=true;
+                        break;
+                    case RECONNECTED:
+                        logger.log(Level.FINE, "Reconnected successfully");
+                        Proxy.getInstance().setMyUsername(username);
+                        this.start();
+                        throw new ReconnectionException();
+                    default:
+                        logger.log(Level.SEVERE, "Unexpected login response from server: {0}", loginResponse);
+                }
             }
         }
         catch (IOException e){
@@ -434,12 +449,16 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
                     lock.unlock();
                     break;
                 case NOT_OK_MESSAGE:
+                    logger.log(Level.FINE,"NOT_OK_MESSAGE received");
                     throw new InvalidMoveException();
                 case INVALID_POSITION:
+                    logger.log(Level.FINE,"INVALID_POSITION_IN_DICE_POOL received");
                     throw new DieNotExistException();
                 case ALREADY_DONE_OPERATION:
+                    logger.log(Level.FINE,"OPERATION_ALREADY_DONE received");
                     throw new AlreadyDoneOperationException();
                 case DISCONNECTION:
+                    logger.log(Level.FINE,"DISCONNECTION message received");
                     throw new DisconnectionException();
                 default:
                     logger.log(Level.SEVERE, "Unexpected response from server: {0}", response);
@@ -455,10 +474,14 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
             outputStream.writeUTF(END_TURN);
             String response= readRemoteInput();
             if(!response.equals(OK_MESSAGE)){
-                if(response.equals(DISCONNECTION))
+                if(response.equals(DISCONNECTION)) {
+                    logger.log(Level.FINE, "disconnected for inactivity");
                     throw new DisconnectionException();
+                }
                 else
                     logger.log(Level.SEVERE, "Unexpected message from server: {0}", response);
+            } else{
+                logger.log(Level.FINE,"turn ended successfully");
             }
             lock.lock();
             doneOperation=true;
@@ -488,8 +511,10 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
             String response= readRemoteInput();
             switch (response) {
                 case SUCCESSFULLY_LOGGED_OUT:
+                    logger.log(Level.FINE,"notified about log out: {0}", response);
                     throw new LoggedOutException();
                 case LAUNCHING_GAME:
+                    logger.log(Level.FINE,"notified about game starting: {0}", response);
                     throw new GameStartingException();
                 default:
                     logger.log(Level.SEVERE,"Unexpected response from server: {0}", response);
@@ -514,6 +539,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
             outputStream.writeUTF(CHOOSE_GRID);
             String response= readRemoteInput();
             if(response.equals(DISCONNECTION)){
+                logger.log(Level.FINE, "Received unexpected response {0}", response);
                 throw new DisconnectionException();
             } else if(!response.equals(OK_MESSAGE)) {
                 logger.log(Level.SEVERE, "Received unexpected response {0}", response);

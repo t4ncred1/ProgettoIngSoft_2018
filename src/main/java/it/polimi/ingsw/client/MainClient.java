@@ -8,6 +8,7 @@ import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistExc
 import it.polimi.ingsw.client.net.ServerCommunicatingInterfaceV2;
 import it.polimi.ingsw.client.net.ServerSocketCommunicationV2;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
+import it.polimi.ingsw.server.custom_exception.ReconnectionException;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -408,6 +409,8 @@ public class MainClient {
                             System.exit(0);
                         } catch (InvalidUsernameException e) {
                             logger.log(Level.INFO,"Questo username non è valido o è gia esistente. Per favore scegline un altro:");
+                        } catch (ReconnectionException e) {
+                            System.out.println("Ti sei riconnesso a una partita precedente.");
                         }
                     }
                     while (!ok);
@@ -440,7 +443,6 @@ public class MainClient {
 
     public void notifyGridsAreInProxy() {
         lock.lock();
-        System.err.println("Here");
         gridsInProxy =true;
         condition.signal();
         lock.unlock();

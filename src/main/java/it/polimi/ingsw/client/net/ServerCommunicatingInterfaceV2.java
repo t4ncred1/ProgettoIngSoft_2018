@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.custom_exception.invalid_operations.AlreadyDoneOpe
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
+import it.polimi.ingsw.server.custom_exception.ReconnectionException;
 
 public interface ServerCommunicatingInterfaceV2 {
     void selectGrid(int i) throws ServerIsDownException, DisconnectionException;
@@ -13,7 +14,7 @@ public interface ServerCommunicatingInterfaceV2 {
 
     void setUpConnection() throws ServerIsDownException;
 
-    void login(String usernameChosen) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException;
+    void login(String usernameChosen) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException, ReconnectionException;
 
     void insertDie(int position, int column, int row) throws ServerIsDownException, InvalidMoveException, DieNotExistException, AlreadyDoneOperationException, DisconnectionException;
 
