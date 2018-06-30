@@ -23,6 +23,9 @@ public class DicePool {
 
     }
 
+    /**
+     * Constructor for DicePool.
+     */
     public DicePool(){
         this.pool= new ArrayList<>();
         this.availableColors = new ArrayList<>();
@@ -33,6 +36,11 @@ public class DicePool {
         for(int i=0;i<diceForEachColor; i++) this.availableColors.add("purple");
     }
 
+    /**
+     *
+     * @param number Number of dice to be randomly generated.
+     * @throws NotValidParameterException Thrown if number is not between 3 and 9 (minimum and maximum number of dice to be generated in a single round).
+     */
     public void generateDiceForPull(int number) throws NotValidParameterException {
         String randomAvailableColor;
         int randomDieValue;
@@ -50,10 +58,20 @@ public class DicePool {
         }
     }
 
+    /**
+     *
+     * @return A list of strings containing the available colors.
+     */
     public List<String> getAvailableColors(){
         return new ArrayList<>(availableColors);
     }
 
+    /**
+     *
+     * @param color The color to be added to 'AvailableColors'.
+     * @param index A randomly generated index of 'AvailableColors' where to remove a color .
+     * @throws NotValidParameterException Thrown when 'color' is not of the 5 admitted ones.
+     */
     public void swapColor(String color, int index) throws NotValidParameterException {
         if (!color.equals("red") && !color.equals("green") && !color.equals("yellow") && !color.equals("purple") && !color.equals("blue"))
             throw new NotValidParameterException("Invalid color string passed", "Must be either red, blue, purple, yellow or green");
@@ -61,41 +79,52 @@ public class DicePool {
         availableColors.remove(index);
     }
 
-
+    /**
+     *
+     * @return The pool to be shown.
+     */
     public List<Die> showDiceInPool(){
         return pool;
     }
 
+    /**
+     *
+     * @param index The index of the pool where to get the die.
+     * @return The die chosen.
+     * @throws NotInPoolException Thrown when 'index' is out of bounds.
+     */
     public Die getDieFromPool(int index) throws NotInPoolException {
         if(index>=0&&index<this.pool.size())
             return this.pool.get(index);
         else
             throw new NotInPoolException();
     }
+
+    /**
+     *
+     * @param index The index of the pool where to get the die to remove.
+     * @throws NotInPoolException Thrown if 'index' position in pool doesn't contain a die.
+     */
     public void removeDieFromPool(int index) throws NotInPoolException {
         this.getDieFromPool(index);
         this.pool.remove(index);
     }
 
+    /**
+     *
+     * @param die The die to be inserted in the pool.
+     * @param dpIndex The index of the pool where to place 'die'.
+     * @throws NotInPoolException Thrown when 'index' is out of bounds.
+     * @throws NotValidParameterException Thrown when 'die' is null.
+     */
     public void insertDieInPool(Die die, int dpIndex) throws NotValidParameterException {
         if (die==null) throw new NotValidParameterException("die: null","a valid die");
-        if (dpIndex>pool.size()) throw new NotValidParameterException("IndexOutOfBounds: "+dpIndex,"A value betweeen");
+        if (dpIndex>pool.size()||dpIndex<0) throw new NotValidParameterException("IndexOutOfBounds: "+dpIndex,"A value betweeen");
         pool.add(dpIndex,die);
-
-        /*Die die_to_change,die_changed;
-        String color;
-        int value_to_change;
-        die_to_change=this.getDieFromPool(dpIndex);
-        this.RemoveDieFromPoolEffect(dpIndex);
-        value_to_change=die_to_change.getValue();
-        value_to_change++;
-        color=die_to_change.getColor();
-        die_changed=new Die(color,value_to_change);
-        pool.add(dpIndex,die_changed);*/    /*USEFUL FOR MATCHMODEL*/
     }
 
-    public void insertDieInPool(Die die) throws NotValidParameterException {
+    /*public void insertDieInPool(Die die) throws NotValidParameterException {
         if (die==null) throw new NotValidParameterException("die: null","a valid die");
         pool.add(die);
-    }
+    }*/
 }

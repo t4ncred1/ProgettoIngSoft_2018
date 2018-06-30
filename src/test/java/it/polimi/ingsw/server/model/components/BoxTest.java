@@ -218,7 +218,7 @@ public class BoxTest {
         String colorToCheck = "red";
 
         //Assert
-        assertEquals(dieValue, box.checkPrivatePoints(colorToCheck));
+        assertEquals(dieValue, box.getDieConstraint().getValueRestriction()+1);
     }
 
     @Test
@@ -235,8 +235,8 @@ public class BoxTest {
         String colorToCheck = "yellow";
 
         //Assert
-        assertNotEquals(dieValue, box.checkPrivatePoints(colorToCheck));
-        assertEquals(0, box.checkPrivatePoints(colorToCheck));
+        assertNotEquals(dieValue, box.getDieConstraint().getValueRestriction());
+        assertEquals(1, box.getDieConstraint().getColorRestriction());
     }
 
     @Test
