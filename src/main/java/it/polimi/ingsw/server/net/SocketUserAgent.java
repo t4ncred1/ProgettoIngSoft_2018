@@ -57,11 +57,12 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private static final String SUCCESSFULLY_LOGGED = "logged";
     private static final String SERVER_FULL = "notLogged_server_full";
     private static final String USERNAME_NOT_AVAILABLE= "notLogged_username_not_available";
+    private static final String RECONNECTED ="reconnected";
 
 
     private static final String LAUNCHING_GAME = "launching_game";
     private static final String GAME_STARTED = "game_started";
-    private static final String GAME_ALREADY_IN_PROGRESS = "reconnected";
+    private static final String GAME_ALREADY_IN_PROGRESS = "in_progress";
 
     private static final String TRY_LOGOUT= "try_logout";
     private static final String SUCCESSFULLY_LOGGED_OUT= "logged_out";
@@ -138,8 +139,10 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }));
         logger.fine("Connection request received on Socket system");
         try {
+            lock.lock();
             handleConnection();
             handleLogin();
+            lock.unlock();
             handleLogoutRequestBeforeStart();
 
             handleGameInitialization();
@@ -157,8 +160,8 @@ public class SocketUserAgent extends Thread implements UserInterface {
             }
         } finally {
             logger.log(Level.FINE, "Logger file closed. SocketUserAgent {0} shut down",actualConnectionNumber);
-//            handler.flush();
-//            handler.close();
+            handler.close();
+            lock.unlock();
         }
     }
 
@@ -369,7 +372,8 @@ public class SocketUserAgent extends Thread implements UserInterface {
                 outputStream.writeUTF(USERNAME_NOT_AVAILABLE);
                 logger.log(Level.INFO, "Username not available", e);
             } catch (ReconnectionException e) {
-                logger.log(Level.CONFIG,"Connection protocol ended. Client joined the game left before",e);
+                outputStream.writeUTF(RECONNECTED);
+                logger.log(Level.INFO,"Connection protocol ended. Client joined the game left before",e);
                 logged=true;
             }
         }
@@ -378,10 +382,17 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     private void handleConnection() throws IOException {
         String hello;
+        boolean ok=false;
         do{
             hello= inputStream.readUTF();
+            if(hello.equals(HELLO_MESSAGE)) {
+                logger.log(Level.FINE,"hello message received");
+                ok=true;
+            } else {
+                logger.log(Level.SEVERE,"unexpected message waiting for hello: {0}",hello);
+            }
         }
-        while(!hello.equals(HELLO_MESSAGE));
+        while(!ok);
     }
 
     @Override
@@ -430,27 +441,36 @@ public class SocketUserAgent extends Thread implements UserInterface {
     @Override
     public void notifyStarting() throws DisconnectionException {
         try {
+            lock.lock();
             outputStream.writeUTF(LAUNCHING_GAME);
             logger.log(Level.FINE,"{0} notified about game starting", username);
         } catch (IOException e) {
             connected=false;
             throw new DisconnectionException();
+        } finally {
+            lock.unlock();
         }
+
     }
 
     @Override
     public void notifyStart() throws DisconnectionException {
         try {
+            lock.lock();
             outputStream.writeUTF(GAME_STARTED);
             logger.log(Level.FINE,"{0} notified about game start", username);
         } catch (IOException e) {
             connected=false;
             throw new DisconnectionException();
+        } finally {
+            lock.unlock();
         }
+
     }
 
     @Override
     public void notifyReconnection() throws DisconnectionException {
+        //fixme
         try {
             outputStream.writeUTF(SUCCESSFULLY_LOGGED);
             outputStream.writeUTF(GAME_ALREADY_IN_PROGRESS);
