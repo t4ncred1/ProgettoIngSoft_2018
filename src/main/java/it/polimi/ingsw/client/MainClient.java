@@ -250,14 +250,14 @@ public class MainClient {
 
     private void waitForOtherPlayers() {
         lock.lock();
-        do{
+        while (!gameInitialized&&!gameFinished) {
             try {
                 condition.await();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            gameFinished=Proxy.getInstance().isGameFinished();
-        }while (!gameInitialized&&!gameFinished);
+            gameFinished = Proxy.getInstance().isGameFinished();
+        }
         lock.unlock();
     }
 
@@ -285,7 +285,7 @@ public class MainClient {
     }
 
     private void waitForGridsFromServer() throws GameInProgressException {
-        do{
+        while (!gridsInProxy) {
             lock.lock();
             try {
                 condition.await();
@@ -293,8 +293,8 @@ public class MainClient {
                 Thread.currentThread().interrupt();
             }
             lock.unlock();
-            if(gridsAlreadySelected) throw new GameInProgressException();
-        }while (!gridsInProxy);
+            if (gridsAlreadySelected) throw new GameInProgressException();
+        }
     }
 
     private void handleWaitForGameCLI() throws ServerIsDownException, LoggedOutException {
@@ -307,31 +307,31 @@ public class MainClient {
 
     private void waitForGameStartedMessage() {
         lock.lock();
-        do {
+        while(!gameStarted){
             try {
                 condition.await();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
             if(!gameStarted) System.out.println("Someone disconnected, game countdown restarted");
-        }while (!gameStarted);
+        }
         lock.unlock();
     }
 
     private void waitForGameStartingSoonMessage() throws ServerIsDownException, LoggedOutException {
         lock.lock();
-        do {
+        while (!gameStarting) {
             lock.unlock();
             DataInputStream dataInputStream = new DataInputStream(System.in);
-            Scanner scanner= new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
             String read;
             try {
                 if (dataInputStream.available() > 0) {
                     read = scanner.nextLine();
-                    read= read.toLowerCase();
-                    if(read.equals(LOGOUT_REQUEST)){
+                    read = read.toLowerCase();
+                    if (read.equals(LOGOUT_REQUEST)) {
                         tryLogout();
-                    }else{
+                    } else {
                         System.out.println("Invalid request");
                     }
                 }
@@ -344,7 +344,7 @@ public class MainClient {
                 Thread.currentThread().interrupt();
             }
             lock.lock();
-        }while (!gameStarting);
+        }
         lock.unlock();
     }
 
@@ -440,6 +440,7 @@ public class MainClient {
 
     public void notifyGridsAreInProxy() {
         lock.lock();
+        System.err.println("Here");
         gridsInProxy =true;
         condition.signal();
         lock.unlock();
