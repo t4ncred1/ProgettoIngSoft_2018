@@ -394,12 +394,14 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         do{
             sleepALittle();
             lock.lock();
-            serverResponse=readRemoteInput();
-            if(serverResponse.equals(LAUNCHING_GAME)){
-                ok=true;
-                logger.log(Level.FINE, "Received game starting from server");
-            }else {
-                logger.log(Level.SEVERE, "Unexpected message from server");
+            if(inputStream.available()>0) {
+                serverResponse = inputStream.readUTF();
+                if(serverResponse.equals(LAUNCHING_GAME)){
+                    ok=true;
+                    logger.log(Level.FINE, "Received game starting from server");
+                }else if(!serverResponse.equals(PING_MESSAGE)){
+                    logger.log(Level.SEVERE, "Unexpected message from server");
+                }
             }
             lock.unlock();
         }while (!ok);
@@ -567,6 +569,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         try{
             lock.lock();
             outputStream.writeUTF(TRY_LOGOUT);
+            logger.log(Level.FINE,"sent a logout request");
             String response= readRemoteInput();
             switch (response) {
                 case SUCCESSFULLY_LOGGED_OUT:
