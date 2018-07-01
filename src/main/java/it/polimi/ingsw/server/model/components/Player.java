@@ -116,7 +116,7 @@ public class Player {
     /**
      * Setter for firstTurn.
      *
-     * @param firstTurn
+     * @param firstTurn True if player's turn is his first one, false if not.
      */
     public void setFirstTurn(boolean firstTurn) {
         this.firstTurn = firstTurn;
@@ -133,7 +133,7 @@ public class Player {
     /**
      * Setter for jumpSecondTurn.
      *
-     * @param jumpSecondTurn
+     * @param jumpSecondTurn True if player has to skip his second turn (tool card effect), false if not.
      */
     public void setJumpSecondTurn(boolean jumpSecondTurn) {
         this.jumpSecondTurn = jumpSecondTurn;
