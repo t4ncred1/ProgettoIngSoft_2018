@@ -24,6 +24,11 @@ public class Grid implements Serializable {
     private Box[][] gameGrid;
     private transient boolean wasFirstDieInserted=false;
 
+    /**
+     * Constructor for grid (clone).
+     *
+     * @param aGrid The grid to clone.
+     */
     public Grid (Grid aGrid){
         this.name = aGrid.name;
         this.difficulty = aGrid.difficulty;
@@ -37,6 +42,13 @@ public class Grid implements Serializable {
         wasFirstDieInserted=aGrid.wasFirstDieInserted;
     }
 
+    /**
+     * Constructor for grid.
+     *
+     * @param difficulty The difficulty of the grid.
+     * @param name The name of the grid.
+     * @throws NotValidParameterException Thrown when difficulty is not between 3 and 6.
+     */
     public Grid(int difficulty, String name) throws NotValidParameterException {
         final String expectedData= "Difficulty should have a value between 3 and 6 (both included)";
 
@@ -47,6 +59,10 @@ public class Grid implements Serializable {
         this.name=name;
     }
 
+    /**
+     *
+     * @return A string that textually represents a grid object.
+     */
     @Override
     public String toString(){
         StringBuilder build = new StringBuilder("nome: ");
@@ -75,16 +91,33 @@ public class Grid implements Serializable {
         }
         return build.toString();
     }
+
     //Observer
+    /**
+     *
+     * @return The name of the grid.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @return The difficulty of the grid.
+     */
     public int getDifficulty() {
         return difficulty;
     }
 
     //Modifier
+
+    /**
+     *
+     * @param x Abscissa of the box to create.
+     * @param y Ordinate of the box to create.
+     * @param constraint The constraint of the box to create.
+     * @throws NotValidParameterException Thrown when 'x' or 'y' is out of bounds (x not between 0 and 3, y not between 0 and 4) or when a box has already been created in x,y.
+     */
     public void createBoxInXY(int x, int y, String constraint) throws NotValidParameterException {
         final String indexOutOfBound = "coordinates should be: 0<=x<=3 and 0<=y<=4";
         final String expectedEmptyBox = "other coordinates: in this place already exist a Box!";
@@ -114,7 +147,18 @@ public class Grid implements Serializable {
     }
 
 
-
+    /**
+     *
+     * Method to insert a die (openCheck always true).
+     *
+     * @param x Abscissa of the box.
+     * @param y Ordinate of the box.
+     * @param colorCheck If true, the method ignores the color restriction.
+     * @param valueCheck If true, the method ignores the value restriction.
+     * @param die The die to be inserted.
+     * @throws NotValidParameterException Thrown when 'x' or 'y' is out of bounds or when there's not a box in x,y.
+     * @throws InvalidOperationException Thrown when 'die' cannot be correctly inserted in the grid.
+     */
     public void insertDieInXY(int x, int y, boolean colorCheck, boolean valueCheck, Die die) throws NotValidParameterException, InvalidOperationException {
         final String indexOutOfBound = "coordinates should be: 0<=x<=3 and 0<=y<=4";
 
@@ -134,6 +178,19 @@ public class Grid implements Serializable {
         }
     }
 
+    /**
+     *
+     * Method to insert a die.
+     *
+     * @param x Abscissa of the box.
+     * @param y Ordinate of the box.
+     * @param colorCheck If true, the method ignores the color restriction.
+     * @param valueCheck If true, the method ignores the value restriction.
+     * @param openCheck If true, the method ignores 'opened' flag.
+     * @param die The die to be inserted.
+     * @throws NotValidParameterException Thrown when 'x' or 'y' is out of bounds or when there's not a box in x,y.
+     * @throws InvalidOperationException Thrown when 'die' cannot be correctly inserted in the grid.
+     */
     public void insertDieInXY(int x, int y, boolean colorCheck, boolean valueCheck, boolean openCheck, Die die) throws NotValidParameterException, InvalidOperationException {
         final String indexOutOfBound = "coordinates should be: 0<=x<=3 and 0<=y<=4";
 
@@ -153,6 +210,12 @@ public class Grid implements Serializable {
         }
     }
 
+    /**
+     *
+     *
+     * @param x Abscissa of the box to set opened/closed.
+     * @param y Ordinate of the box to set opened/closed.
+     */
     private void setBoxesClosed(int x, int y) {
         for(Box[] column : gameGrid){
             for (Box box : column){
@@ -165,19 +228,32 @@ public class Grid implements Serializable {
 
     }
 
-
+    /**
+     *
+     * @return A 'boxes' representation of a grid.
+     */
     public Box[][] getGrid(){
         return gameGrid.clone();
     }
 
+    /**
+     *
+     * @return The number of columns of a grid.
+     */
     public int getColumnNumber(){ return COLUMN_NUMBER;}
 
-
+    /**
+     *
+     * @return The number of rows of a grid.
+     */
     public int getRowNumber(){
         return ROW_NUMBER;
     }
 
-
+    /**
+     *
+     * @return A list of strings that represents all the constraints of a grid.
+     */
     public String[][] getStructure() {
         String[][] constraints= new String[COLUMN_NUMBER][ROW_NUMBER];
         for(Box[] i : gameGrid){
@@ -188,11 +264,17 @@ public class Grid implements Serializable {
         return constraints;
     }
 
+    /**
+     * Initialization of all the observers.
+     */
     public void initializeAllObservers() {
         initializeObserverListForEachBox();
         registerObserversForEachBox();
     }
 
+    /**
+     * Creation of observers for each box in a grid.
+     */
     private void registerObserversForEachBox() {
         for (int column = 0; column < COLUMN_NUMBER; column++) {
             for (int row = 0; row < ROW_NUMBER; row++) {
@@ -216,6 +298,9 @@ public class Grid implements Serializable {
         }
     }
 
+    /**
+     * Initialization of observers for each box in a grid.
+     */
     private void initializeObserverListForEachBox() {
         for (Box[] column : gameGrid) {
             for (Box box : column) {
@@ -225,7 +310,14 @@ public class Grid implements Serializable {
         }
     }
 
-
+    /**
+     *
+     * @param x Abscissa of the box where to get the die to remove.
+     * @param y Ordinate of the box where to get the die to remove.
+     * @return The die removed.
+     * @throws NotValidParameterException Thrown when 'x' or 'y' is out of bounds (x not between 0 and 3, y not between 0 and 4) or when there's not a box in x,y.
+     * @throws InvalidOperationException
+     */
     public Die removeDieFromXY(int x, int y) throws NotValidParameterException, InvalidOperationException {
         final String indexOutOfBound = "coordinates should be: 0<=x<"+COLUMN_NUMBER +" and 0<=y<"+ROW_NUMBER;
         Die temp;
@@ -242,6 +334,10 @@ public class Grid implements Serializable {
         return temp;
     }
 
+    /**
+     *
+     * @return The dice inserted in a grid.
+     */
     public Die[][] getDice(){
         Die[][] temp= new Die[COLUMN_NUMBER][ROW_NUMBER];
         for(int column=0; column<COLUMN_NUMBER;column++){
