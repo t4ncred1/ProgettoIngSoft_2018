@@ -43,6 +43,13 @@ public class MatchModel{
     private static final String BLUE_OBJ= "blue";
     private static final String PURPLE_OBJ= "purple";
 
+    /**
+     * Constructor for MatchModel.
+     *
+     * @param playersUserNames Players in a match.
+     * @throws NotValidParameterException Thrown when the number of players is not between 2 and 4 (minimum and maximum number of players).
+     * @throws NotValidConfigPathException Thrown when the method can't get minimum and maximum number of players because of an invalid configuration path.
+     */
     public MatchModel(Set<String> playersUserNames) throws NotValidParameterException, NotValidConfigPathException{
 
         if (playersUserNames==null) throw new NullPointerException();
@@ -92,6 +99,14 @@ public class MatchModel{
         initializeRound();
     }
 
+    /**
+     * Constructor for MatchModel (with a controller reference).
+     *
+     * @param players Players in a match.
+     * @param controller Controller associated.
+     * @throws NotValidConfigPathException Thrown when the method can't get minimum and maximum number of players because of an invalid configuration path.
+     * @throws NotValidParameterException Thrown when the number of players is not between 2 and 4 (minimum and maximum number of players).
+     */
     public MatchModel(Set<String> players, MatchController controller) throws NotValidConfigPathException, NotValidParameterException {
         this(players);
         if (controller == null) {
@@ -100,6 +115,13 @@ public class MatchModel{
         this.controller=controller;
     }
 
+    /**
+     * Update a turn.
+     *
+     * @param maxRounds Maximum number of rounds in a match.
+     * @throws TooManyRoundsException Thrown when the round track size is greater than the maximum number of rounds.
+     * @throws NotEnoughPlayersException Thrown when the number of players in a match is less than the minimum number of players admitted in a match.
+     */
     public void updateTurn(int maxRounds) throws TooManyRoundsException, NotEnoughPlayersException {
         if (playersInGame.size()<MIN_PLAYERS_NUMBER) throw new NotEnoughPlayersException();
         if (iterator == null) iterator = new PlayersIterator(playersInGame);
@@ -120,6 +142,13 @@ public class MatchModel{
             currentPlayer = iterator.next();
         }
     }
+
+    /**
+     * Method that randomly selects the public objectives of the match.
+     *
+     * @return A list containing the public objectives of a match.
+     * @throws NotValidConfigPathException Thrown when the method can't get the public objectives because of an invalid configuration path.
+     */
      private List<PublicObjective> selectPublicObjectives() throws NotValidConfigPathException {
          List<PublicObjective> pubs;
          pubs = ConfigurationHandler.getInstance().getPublicObjectives();
@@ -129,10 +158,21 @@ public class MatchModel{
          return publicObj;
      }
 
+    /**
+     * Getter for publicObjectives.
+     *
+     * @return The list of public objectives of a match.
+     */
     public List<PublicObjective> getPublicObjectives() {
         return publicObjectives;
     }
 
+    /**
+     * Method that selects the tool cards of the match.
+     *
+     * @return A list containing the tool cards of a match.
+     * @throws NotValidConfigPathException Thrown when the method can't get the tool cards because of an invalid configuration path.
+     */
      private List<ToolCard> selectToolCards() throws NotValidConfigPathException {
          List<ToolCard> tools;
          tools = ConfigurationHandler.getInstance().getToolCards();
@@ -142,27 +182,61 @@ public class MatchModel{
          return tc;
      }
 
+    /**
+     * Getter for toolCards.
+     *
+     * @return The list of tool cards of a match.
+     */
     public List<ToolCard> getToolCards() {
         return toolCards;
     }
 
+    /**
+     * Initialization of next round.
+     *
+     * @param maxRounds Maximum number of rounds in the match.
+     * @throws TooManyRoundsException Thrown when round track size is greater than maxRounds.
+     * @throws NotValidParameterException See generateDiceForPull doc in DicePool class.
+     */
     private void prepareForNextRound(int maxRounds) throws TooManyRoundsException, NotValidParameterException {
         if (roundTrack.size()>= maxRounds) throw new TooManyRoundsException(); // throw exception if roundtrack is more than ten.
         initializeRound();
     }
 
+    /**
+     *
+     * @throws NotValidParameterException See generateDiceForPull doc in DicePool class.
+     */
     private void initializeRound() throws NotValidParameterException{
         matchDicePool.generateDiceForPull(playersInGame.size() * 2 + 1); //(launching this methods later throws a nullPointerExc)
     }
 
+    /**
+     * Getter for currentPlayer.
+     *
+     * @return The current player.
+     */
     public Player getCurrentPlayer(){
         return currentPlayer;
     }
 
+    /**
+     *
+     * @return Current player's username.
+     */
     public String askTurn() {
         return currentPlayer.getUsername();
     }
 
+    /**
+     *
+     * @param x Abscissa of the box.
+     * @param y Ordinate of the box.
+     * @param dpIndex The index of the pool where to get the die.
+     * @throws InvalidOperationException See insertDieInXY doc in Grid class.
+     * @throws NotInPoolException See getDieFromPool doc in DicePool class.
+     * @throws NotValidParameterException See insertDieInXY doc in Grid class.
+     */
     public void insertDieOperation(int x, int y, int dpIndex) throws InvalidOperationException, NotInPoolException, NotValidParameterException {
         final boolean CHECK_COLOR_CONSTRAINT =true;
         final boolean CHECK_VALUE_CONSTRAINT =true;
@@ -177,10 +251,21 @@ public class MatchModel{
         return false;
     }
 
+    /**
+     * Getter for matchDicePool.
+     *
+     * @return The dice pool of the match.
+     */
     public DicePool getDicePool(){
         return matchDicePool;
     }
 
+    /**
+     * Method that selects 4 unique grids for a player.
+     *
+     * @return An arraylist containing 4 grids for a player.
+     * @throws InvalidOperationException Thrown when there aren't enough grids for a player.
+     */
     private ArrayList<Grid> selectGridsForPlayer() throws InvalidOperationException {
         int randomGridEvenIndex;
         /*
@@ -200,6 +285,13 @@ public class MatchModel{
         return currentGrids;
     }
 
+    /**
+     *
+     * @param username Player's username.
+     * @return A list containing the 4 grids chosen for a player.
+     * @throws InvalidOperationException Thrown when the player has already selected a grid.
+     * @throws InvalidUsernameException Thrown when there isn't a player whose username matches 'username'.
+     */
     public List<Grid> getGridsForPlayer(String username) throws InvalidOperationException, InvalidUsernameException {
         /*
         * The idea is that when matchModel create players, it automatically takes 2 pairs of grids and put it in player
@@ -219,6 +311,14 @@ public class MatchModel{
         return playerPassed.getGridsSelection(); //returns null if playerPassed doesn't have any grids.
     }
 
+    /**
+     * Method that sets the grid for a player.
+     *
+     * @param player Player.
+     * @param grid Index of the grid chosen by the player.
+     * @throws InvalidOperationException Thrown when 'grid' is not a valid parameter (i.e. 'grid' greater than 4).
+     * @throws NotValidParameterException See setGrid doc in Player class.
+     */
     public void setPlayerGrid(String player, int grid) throws InvalidOperationException, NotValidParameterException {
         if(grid>=GRIDS_FOR_A_PLAYER) throw new InvalidOperationException();
         for (Player current : playersInGame){
@@ -228,6 +328,10 @@ public class MatchModel{
         }
     }
 
+    /**
+     *
+     * @return True if all players have chosen a grid, false if not.
+     */
     public boolean checkEndInitialization() {
         for (Player current : playersInGame){
             if (current.getSelectedGrid()==null) return false;
@@ -235,6 +339,12 @@ public class MatchModel{
         return true;
     }
 
+    /**
+     *
+     * @param username Player's username.
+     * @return True if the player has chosen a grid, false if not.
+     * @throws NotValidParameterException Thrown when there isn't a player whose username matches 'username'.
+     */
     public boolean hasPlayerChosenAGrid(String username) throws NotValidParameterException {
        for (Player current : playersInGame){
            if (current.getUsername().equals(username)) {
@@ -244,6 +354,12 @@ public class MatchModel{
        throw new NotValidParameterException("username: "+username,"Should be a player inside this match.");
     }
 
+    /**
+     * Method that disconnects a player.
+     *
+     * @param username Player's username.
+     * @throws InvalidUsernameException Thrown when there isn't a player whose username matches 'username'.
+     */
     public void setPlayerToDisconnect(String username) throws InvalidUsernameException{
         boolean flag = false;
         int i;
@@ -262,18 +378,36 @@ public class MatchModel{
         // This happen when player reconnect before the timeout event of his turn
     }
 
+    /**
+     * Method that selects a random private objective unique for one player.
+     *
+     * @return A private objective.
+     * @throws InvalidOperationException Thrown when there aren't enough private objective for a player.
+     */
     private PrivateObjective selectPrivateObjective() throws InvalidOperationException {
 
         if(privateObjectives.size()<PRIV_FOR_A_PLAYER) throw new InvalidOperationException();
         return (privateObjectives.remove(new Random().nextInt(privateObjectives.size())));
     }
 
+    /**
+     *
+     * @param username Player's username.
+     * @return Player's private objective.
+     * @throws InvalidUsernameException Thrown when there isn't a player whose username matches 'username'.
+     */
     public PrivateObjective getPrivateObjective(String username) throws InvalidUsernameException {
         List<PrivateObjective> stream=  playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective).collect(Collectors.toList());
         if (stream.isEmpty()) throw new InvalidUsernameException();
         return stream.get(0);
     }
 
+    /**
+     *
+     * @param index Die position in round track.
+     * @return The chosen die.
+     * @throws NotInPoolException Thrown when 'index' is out of bounds.
+     */
     public Die getDieFromRoundTrack(int index) throws NotInPoolException {
         if(index>=0&&index<=roundTrack.size())
             return this.roundTrack.get(index);
@@ -281,12 +415,22 @@ public class MatchModel{
             throw new NotInPoolException();
     }
 
+    /**
+     *
+     * @param index Die position in round track.
+     * @throws NotInPoolException Thrown when 'index' is out of bounds.
+     */
     public void removeDieFromRoundTrack(int index) throws NotInPoolException {
         this.getDieFromRoundTrack(index);
         this.roundTrack.remove(index);
     }
 
-
+    /**
+     * Getter for player's grid.
+     *
+     * @param username Player's username.
+     * @return Player's grid.
+     */
     public Grid getPlayerCurrentGrid(String username) {
         for(Player player: playersInGame){
             if(player.getUsername().equals(username)) return player.getSelectedGrid();
@@ -297,29 +441,59 @@ public class MatchModel{
         return null; //throw an exception? I think we shall not, it's ok like this.
     }
 
+    /**
+     *
+     * @param die The die to be inserted.
+     * @param roundTrackIndex Where to insert 'die'.
+     * @throws NotValidParameterException Thrown if 'die' is null or 'roundTrackIndex' is greater than round track size.
+     */
     public void insertDieInRT(Die die, int roundTrackIndex) throws NotValidParameterException {
         if (die==null) throw new NotValidParameterException("die:null","a valid die");
         if(roundTrackIndex>roundTrack.size()) throw new NotValidParameterException("IndexOutOfBounds:"+roundTrackIndex,"A value betweeen");
         roundTrack.add(roundTrackIndex,die);
     }
 
+    /**
+     *
+     * @param die The die to be inserted.
+     * @param index Where to insert 'die'.
+     * @throws NotValidParameterException See insertDieInPool doc in DicePool class.
+     */
     public void insertDieInPool(Die die, int index) throws NotValidParameterException {
         matchDicePool.insertDieInPool(die,index);
     }
 
+    /**
+     *
+     * @param index Where to remove the die.
+     * @throws NotInPoolException See removeDieFromPool doc in DicePool class.
+     */
     public void removeDiePool(int index) throws  NotInPoolException {
         matchDicePool.removeDieFromPool(index);
     }
 
+    /**
+     * Getter for roundTrack.
+     *
+     * @return A list of dice.
+     */
     public List<Die> getRoundTrack() {
         return roundTrack;
     }
 
+    /**
+     * Getter for controller.
+     *
+     * @return A matchController.
+     */
     public MatchController getController() {
         return controller;
     }
 
-
+    /**
+     *
+     * @return All players' usernames associated with their grid.
+     */
     public Map<String,Grid> getAllGrids() {
         Map<String, Grid> toReturn = new HashMap<>();
         for (Player player : playersInGame) {
@@ -328,6 +502,10 @@ public class MatchModel{
         return toReturn;
     }
 
+    /**
+     *
+     * @return Match results: all usernames associated with their result (username and result are both a string).
+     */
     public Map<String,String> calculatePoints(){
         Map<String,String> map = new LinkedHashMap<>();
         SortedMap<String,Integer> temp= new TreeMap<>();
@@ -345,6 +523,12 @@ public class MatchModel{
         return map;
     }
 
+    /**
+     * Method that calculates player's points.
+     *
+     * @param player Player.
+     * @return An integer containing player's points.
+     */
     private Integer getPointsForPlayer(Player player){
         int pubObjPoints;
         int emptyBoxesPoints=0;
