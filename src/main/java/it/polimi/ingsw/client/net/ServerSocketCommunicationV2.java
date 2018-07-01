@@ -30,8 +30,7 @@ import java.util.LinkedHashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 public class ServerSocketCommunicationV2 extends Thread implements ServerCommunicatingInterfaceV2{
 
@@ -98,17 +97,28 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     private static final String PLAYERS_POINTS="points";
 
 
-    private boolean myGridSetted;
+    private boolean myGridSet;
     private boolean gameFinished;
     private boolean doneOperation;
     private boolean dataRetrieved;
     private boolean reconnecting;
 
+    private Handler handler;
+
     public ServerSocketCommunicationV2(){
         this.lock = new ReentrantLock();
         this.condition= lock.newCondition();
         logger = Logger.getLogger(ServerSocketCommunicationV2.class.getName());
-        myGridSetted=false;
+        try {
+            handler = new FileHandler("src/main/resources/client_log/ClientLog_%u.log");
+            SimpleFormatter formatter = new SimpleFormatter();
+            handler.setFormatter(formatter);
+            logger.setLevel(Level.FINER);
+            logger.addHandler(handler);
+        } catch (IOException e) {
+            logger.log(Level.WARNING, "{0}", e);
+        }
+        myGridSet =false;
         gameFinished=false;
         doneOperation=false;
         dataRetrieved=false;
@@ -125,6 +135,8 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         } catch (IOException e) {
             logger.log(Level.WARNING,"Can't connect to server, something went wrong!");
             System.exit(-1);
+        } finally {
+            handler.close();
         }
 
     }
@@ -144,7 +156,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
             switch (serverResponse){
                 case TURN_PLAYER:
                     serverResponse=readRemoteInput();
-                    logger.log(Level.FINE, "{0}",serverResponse);
+                    logger.log(Level.FINE, "turn player received from player: {0}",serverResponse);
                     Proxy.getInstance().setTurnPlayer(serverResponse); //todo throw an exception if necessary
                     handleTurnInitialization();
                     MainClient.getInstance().notifyTurnUpdated();
@@ -152,6 +164,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
                     break;
                 case GAME_FINISHED:
                     logger.log(Level.FINE, "{0}",serverResponse);
+                    logger.log(Level.FINE, "turn player received from player: {0}",serverResponse);
                     Proxy.getInstance().setGameToFinished();
                     handleGameEnd();
                     MainClient.getInstance().notifyTurnUpdated();
@@ -166,11 +179,13 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     private void handleGameEnd() throws IOException {
         String serverMessage = readRemoteInput();
         if(!serverMessage.equals(PLAYERS_POINTS)) logger.log(Level.SEVERE,"Unexpected data type from server: {0}", serverMessage);
+        else logger.log(Level.FINE,"Server will send points in the next stream: {0}", serverMessage);
         Gson gson= new Gson();
         serverMessage=readRemoteInput();
         TypeToken<LinkedHashMap<String,String>> typeToken= new TypeToken<LinkedHashMap<String,String>>(){};
         LinkedHashMap<String,String> playerPoints= gson.fromJson(serverMessage,typeToken.getType());
         Proxy.getInstance().setPoints(playerPoints);
+        logger.log(Level.FINE,"Points received and set");
     }
 
     private void handleTurn(boolean myTurn) throws IOException {
@@ -214,6 +229,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
                     retrieveAGridFromServer();
                     break;
                 case END_TURN:
+                    logger.log(Level.FINE,"End turn notified by server");
                     return true;
                 case DICE_POOL_DATA:
                     retrieveDicePoolFromServer();
@@ -222,9 +238,11 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
                     retrieveRoundTrackFromServer();
                     break;
                 case DISCONNECTION:
+                    logger.log(Level.FINE,"Server notified about a disconnection");
                     Proxy.getInstance().setPlayerToDisconnected();
                     break;
                 case END_DATA:
+                    logger.log(Level.FINE,"End data notified by server");
                     endData=true;
                     break;
                 default:
@@ -235,15 +253,17 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     }
 
     private void retrieveRoundTrackFromServer() throws IOException {
+        logger.log(Level.FINE,"Retrieving round track from server");
         ArrayList<Die> roundTrack;
         Gson gson = new Gson();
         TypeToken<ArrayList<Die>> typeToken= new TypeToken<ArrayList<Die>>(){};
         roundTrack=gson.fromJson(readRemoteInput(), typeToken.getType());
         Proxy.getInstance().setRoundTrack(roundTrack);
+        logger.log(Level.FINE,"Round track retrieved and set");
     }
 
     private void waitForGridSelection() {
-        while (!myGridSetted){
+        while (!myGridSet){
             try {
                 lock.lock();
                 condition.await();
@@ -269,6 +289,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
                     retrieveRoundTrackFromServer();
                     break;
                 case END_DATA:
+                    logger.log(Level.FINE,"End data notified by server");
                     ok=true;
                     break;
                 default:
@@ -279,14 +300,17 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     }
 
     private void retrieveDicePoolFromServer() throws IOException {
+        logger.log(Level.FINE,"Retrieving dice pool from server");
         ArrayList<Die> dicePool;
         TypeToken<ArrayList<Die>> typeToken= new TypeToken<ArrayList<Die>>(){};
         Gson gson = new Gson();
         dicePool=gson.fromJson(readRemoteInput(), typeToken.getType());
         Proxy.getInstance().setDicePool(dicePool);
+        logger.log(Level.FINE,"Dice pool retrieved and set");
     }
 
     private void retrieveGridsFromServer() throws IOException {
+        logger.log(Level.FINE,"Retrieving all grids from server");
         String serverResponse;
         HashMap<String,Grid> playersGrids;
         TypeToken<HashMap<String,Grid>> typeToken= new TypeToken<HashMap<String, Grid>>(){};
@@ -294,14 +318,17 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         serverResponse=readRemoteInput();
         playersGrids= gson.fromJson(serverResponse, typeToken.getType());
         Proxy.getInstance().setGridsForEachPlayer(playersGrids);
+        logger.log(Level.FINE,"Grids retrieved and set");
     }
 
     private void retrieveAGridFromServer() throws IOException {
+        logger.log(Level.FINE,"Retrieving a single grid from server");
         String serverResponse;
         Gson gson= getGsonForGrid();
         serverResponse=readRemoteInput();
         Grid grid = gson.fromJson(serverResponse, Grid.class);
         Proxy.getInstance().updateGrid(grid);
+        logger.log(Level.FINE,"Grid retrieved and set");
     }
 
     private void setGridSelectionInProxy() throws IOException, GameInProgressException {
@@ -309,14 +336,17 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         String logUnexpectedResponse= "Unexpected response: {0}";
         try{
             do {
+                logger.log(Level.FINE,"sent a grid request to server");
                 outputStream.writeUTF(REQUEST_GRID);
                 serverResponse=readRemoteInput();
                 if(serverResponse.equals(NOT_OK_MESSAGE)) logger.log(Level.SEVERE, "Invalid request from this client to server");
                 else if(!serverResponse.equals(OK_MESSAGE))logger.log(Level.SEVERE, logUnexpectedResponse, serverResponse);
+                else logger.log(Level.FINE,"Grid request accepted by server");
             }while (serverResponse.equals(NOT_OK_MESSAGE));
             serverResponse=readRemoteInput();
             switch (serverResponse){
                 case OK_MESSAGE:
+                    logger.log(Level.FINE,"Server will send grids within the next stream");
                     ArrayList<Grid> grids;
                     TypeToken<ArrayList<Grid>> typeToken= new TypeToken<ArrayList<Grid>>(){};
                     Gson gson= getGsonForGrid();
@@ -326,6 +356,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
                     MainClient.getInstance().notifyGridsAreInProxy();
                     break;
                 case GRID_ALREADY_SELECTED:
+                    logger.log(Level.FINE,"Server notified you already selected grids in a session before this one");
                     MainClient.getInstance().setGridsAlreadySelected(true);
                     throw new GameInProgressException();
                 default:
@@ -343,9 +374,11 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
             serverResponse=readRemoteInput();
             switch (serverResponse){
                 case LAUNCHING_GAME:
+                    logger.log(Level.FINE, "Game countdown restarted: {0} ",serverResponse);
                     MainClient.getInstance().notifyGameStarting();
                     break;
                 case GAME_STARTED:
+                    logger.log(Level.FINE, "Received game started from server: {0}",serverResponse);
                     MainClient.getInstance().notifyGameStarted();
                     ok=true;
                     break;
@@ -357,12 +390,19 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
 
     private void handleWaitForGame() throws IOException {
         String serverResponse;
+        boolean ok=false;
         do{
             sleepALittle();
             lock.lock();
-            serverResponse=inputStream.readUTF();
+            serverResponse=readRemoteInput();
+            if(serverResponse.equals(LAUNCHING_GAME)){
+                ok=true;
+                logger.log(Level.FINE, "Received game starting from server");
+            }else {
+                logger.log(Level.SEVERE, "Unexpected message from server");
+            }
             lock.unlock();
-        }while (!serverResponse.equals(LAUNCHING_GAME));
+        }while (!ok);
         MainClient.getInstance().notifyGameStarting();
     }
 
@@ -377,12 +417,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
 
     public void setUpConnection() throws ServerIsDownException {
         try {
-            try {
-                serverPort = ConfigHandler.getInstance().getSocketPort();
-                serverAddress = ConfigHandler.getInstance().getServerIp();
-            } catch (NotValidConfigPathException e) {
-                logger.log(Level.WARNING,"Wrong configuration file, using defaults.");
-            }
+            getParametersFromConfigurations();
             socket= new Socket(serverAddress, serverPort);
             inputStream = new DataInputStream(socket.getInputStream());
             outputStream= new DataOutputStream(socket.getOutputStream());
@@ -392,14 +427,21 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         }
     }
 
+    private void getParametersFromConfigurations() {
+        try {
+            serverPort = ConfigHandler.getInstance().getSocketPort();
+            serverAddress = ConfigHandler.getInstance().getServerIp();
+        } catch (NotValidConfigPathException e) {
+            logger.log(Level.WARNING,"Wrong configuration file, using defaults.");
+        }
+    }
+
     public void login(String username) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException, ReconnectionException {
         String loginResponse;
         try {
-            do {
-                loginResponse = inputStream.readUTF();
-            }
-            while (!loginResponse.equals(LOGIN_MESSAGE_FROM_SERVER));
+            waitForLoginMessageFromServer();
             outputStream.writeUTF(username);
+            logger.log(Level.FINE,"sent username to server: {0}", username);
             boolean ok=false;
             while (!ok) {
                 loginResponse=readRemoteInput();
@@ -431,10 +473,26 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         }
     }
 
+    private void waitForLoginMessageFromServer() throws IOException {
+        String loginResponse;
+        boolean ok=false;
+        do {
+            loginResponse = inputStream.readUTF();
+            if(loginResponse.equals(LOGIN_MESSAGE_FROM_SERVER)) {
+                logger.log(Level.FINE, "Received a login request from server");
+                ok=true;
+            } else {
+                logger.log(Level.SEVERE, "Server did not send a login request: {0}",loginResponse);
+            }
+        }
+        while (!ok);
+    }
+
     @Override
     public void insertDie(int position, int column, int row) throws ServerIsDownException, InvalidMoveException, DieNotExistException, AlreadyDoneOperationException, DisconnectionException {
         try {
             outputStream.writeUTF(INSERT_DIE);
+            logger.log(Level.FINE,"sent Insert_die to server");
             outputStream.writeInt(position);
             outputStream.writeInt(column);
             outputStream.writeInt(row);
@@ -472,6 +530,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     public void endTurn() throws ServerIsDownException, DisconnectionException {
         try {
             outputStream.writeUTF(END_TURN);
+            logger.log(Level.FINE,"sent an END_TURN request");
             String response= readRemoteInput();
             if(!response.equals(OK_MESSAGE)){
                 if(response.equals(DISCONNECTION)) {
@@ -536,6 +595,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
 
     public void selectGrid(int gridIndex) throws ServerIsDownException, DisconnectionException {
         try {
+            logger.log(Level.FINE,"sent CHOOSE_GRID to server. Parameter: {0}",gridIndex);
             outputStream.writeUTF(CHOOSE_GRID);
             String response= readRemoteInput();
             if(response.equals(DISCONNECTION)){
@@ -551,7 +611,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
             if(response.equals(NOT_OK_MESSAGE))
                 logger.log(Level.SEVERE,"Unexpected response from server -> {0}", response);
             lock.lock();
-            myGridSetted=true;
+            myGridSet =true;
             condition.signal();
             lock.unlock();
         } catch (IOException e) {

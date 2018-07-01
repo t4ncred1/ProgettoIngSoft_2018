@@ -106,7 +106,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         actualConnectionNumber =connectionNumber++;
         try {
             logger = Logger.getLogger(SocketUserAgent.class.getName()+actualConnectionNumber);
-            handler = new FileHandler("src/main/resources/log_files/clientLog_"+ actualConnectionNumber+".log");
+            handler = new FileHandler("src/main/resources/log_files/SocketUserAg_"+ actualConnectionNumber+".log");
             SimpleFormatter formatter = new SimpleFormatter();
             handler.setFormatter(formatter);
             logger.setLevel(Level.FINER);
