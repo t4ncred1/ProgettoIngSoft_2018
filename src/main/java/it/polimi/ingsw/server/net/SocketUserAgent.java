@@ -37,9 +37,11 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private boolean gameFinished;
     private boolean retrievingData;
     private boolean statusChanged;
+    private boolean readyToReceiveGridsRequest;
     private Lock lock;
     private Lock syncLock;
     private Condition conditionLock;
+    private Condition conditionSyncLock;
 
     private String username;
 
@@ -120,6 +122,8 @@ public class SocketUserAgent extends Thread implements UserInterface {
             syncLock = new ReentrantLock();
             lock = new ReentrantLock();
             conditionLock = lock.newCondition();
+            conditionSyncLock= syncLock.newCondition();
+
         } catch (IOException e) {
             logger.log(Level.SEVERE, "FileHandler not found",e);
         }
@@ -312,6 +316,10 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     private void handleGridsRequest() throws IOException, InvalidOperationException, IllegalRequestException {
         String request;
+        lock.lock();
+        readyToReceiveGridsRequest=true;
+        conditionLock.signal();
+        lock.unlock();
         do{
             request = inputStream.readUTF();
             if(!request.equals(REQUEST_GRID)) {
@@ -500,6 +508,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
     public void notifyStart() throws DisconnectionException {
         try {
             lock.lock();
+            waitReadyToReceiveGridRequest();
             outputStream.writeUTF(GAME_STARTED);
             logger.log(Level.FINE,"{0} notified about game start", username);
         } catch (IOException e) {
@@ -509,6 +518,16 @@ public class SocketUserAgent extends Thread implements UserInterface {
             lock.unlock();
         }
 
+    }
+
+    private void waitReadyToReceiveGridRequest() {
+        while(!readyToReceiveGridsRequest){
+            try {
+                conditionLock.await();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
     @Override
@@ -531,6 +550,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         this.inGame=true;
         this.statusChanged=true;
         conditionLock.signal();
+        logger.log(Level.FINER,"Set controller for socketUA");
         lock.unlock();
     }
 
@@ -649,7 +669,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
         while(retrievingData){
             try {
-                conditionLock.await();
+                conditionSyncLock.await();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
