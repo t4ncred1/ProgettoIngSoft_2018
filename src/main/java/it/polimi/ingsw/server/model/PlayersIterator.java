@@ -30,6 +30,7 @@ public class PlayersIterator implements Iterator<Player> {
 
     @Override
     public Player next() {
+        if (this.currentTurn>=playerList.size()) currentTurn=playerList.size()-1;   // this if statement is put here because disconnection might violate currentTurn's validity.
         if (this.hasNext()){
             if(leftToRight){
                 if(justChanged) {  //Se il verso di percorrenza è appena stato modificato currentTurn non deve cambiare.
