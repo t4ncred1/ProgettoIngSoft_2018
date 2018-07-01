@@ -316,7 +316,7 @@ public class Grid implements Serializable {
      * @param y Ordinate of the box where to get the die to remove.
      * @return The die removed.
      * @throws NotValidParameterException Thrown when 'x' or 'y' is out of bounds (x not between 0 and 3, y not between 0 and 4) or when there's not a box in x,y.
-     * @throws InvalidOperationException
+     * @throws InvalidOperationException Thrown when the die to remove is null.
      */
     public Die removeDieFromXY(int x, int y) throws NotValidParameterException, InvalidOperationException {
         final String indexOutOfBound = "coordinates should be: 0<=x<"+COLUMN_NUMBER +" and 0<=y<"+ROW_NUMBER;
