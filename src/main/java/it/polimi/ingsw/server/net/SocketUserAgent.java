@@ -36,9 +36,10 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private boolean retrieveringData;
     private boolean gameFinished;
     private boolean retrievingData;
+    private boolean statusChanged;
     private Lock lock;
     private Lock syncLock;
-    private Condition condition;
+    private Condition conditionLock;
 
     private String username;
 
@@ -115,9 +116,10 @@ public class SocketUserAgent extends Thread implements UserInterface {
             reconnecting=false;
             gameFinished=false;
             retrieveringData=false;
+            statusChanged=false;
             syncLock = new ReentrantLock();
-            condition= syncLock.newCondition();
             lock = new ReentrantLock();
+            conditionLock = lock.newCondition();
         } catch (IOException e) {
             logger.log(Level.SEVERE, "FileHandler not found",e);
         }
@@ -144,7 +146,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
             handleLogin();
             lock.unlock();
             handleLogoutRequestBeforeStart();
-
             handleGameInitialization();
             handleGameLogic();
         } catch (IOException e) {
@@ -333,24 +334,66 @@ public class SocketUserAgent extends Thread implements UserInterface {
     }
 
     private void handleLogoutRequestBeforeStart() throws IOException, DisconnectionException {
+        lock.lock();
+        new Thread(this::checkForRequestFromClient).start();
         while(!inGame&&connected){
-            if(inputStream.available()>0) {
-                String read = inputStream.readUTF();
-                if (read.equals(TRY_LOGOUT)) {
-                    logger.log(Level.FINE,"Logout request received from {0}",username);
-                    try {
-                        MatchHandler.getInstance().logOut(this);
-                        outputStream.writeUTF(SUCCESSFULLY_LOGGED_OUT);
-                        logger.log(Level.FINE,"{0} logged out",username);
-                        connected=false;
-                        throw new DisconnectionException();
-                    } catch (InvalidOperationException e) {
-                        outputStream.writeUTF(LAUNCHING_GAME);
-                        logger.log(Level.WARNING,"{0} could not log out cause the game is starting",username);
-                    }
+            while (!statusChanged){
+                try {
+                    conditionLock.await();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
             }
+            statusChanged=false;
+            handleLogoutRequest();
         }
+        lock.unlock();
+    }
+
+    private void handleLogoutRequest() throws IOException, DisconnectionException {
+        if(inputStream.available()>0) {
+            String read = inputStream.readUTF();
+            if (read.equals(TRY_LOGOUT)) {
+                logger.log(Level.FINE, "Logout request received from {0}", username);
+                try {
+                    MatchHandler.getInstance().logOut(this);
+                    outputStream.writeUTF(SUCCESSFULLY_LOGGED_OUT);
+                    logger.log(Level.FINE, "{0} logged out", username);
+                    connected = false;
+                    throw new DisconnectionException();
+                } catch (InvalidOperationException e) {
+                    outputStream.writeUTF(LAUNCHING_GAME);
+                    logger.log(Level.WARNING, "{0} could not log out cause the game is starting", username);
+                }
+            } else {
+                logger.log(Level.FINE, "Unexpected request from {0}: {1}", new Object[]{username, read});
+            }
+        }
+    }
+
+    private void checkForRequestFromClient() {
+        lock.lock();
+        while (!inGame&&connected){
+            lock.unlock();
+            try {
+                if(inputStream.available()>0){
+                    lock.lock();
+                    statusChanged=true;
+                    conditionLock.signal();
+                    lock.unlock();
+                }
+            } catch (IOException e) {
+                logger.severe("Something went wrong");
+                Thread.currentThread().interrupt();
+            }
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            lock.lock();
+        }
+        lock.unlock();
     }
 
     private void handleLogin() throws IOException {
@@ -483,8 +526,12 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     @Override
     public void setController(MatchController matchController) {
+        lock.lock();
         this.gameHandling =matchController;
         this.inGame=true;
+        this.statusChanged=true;
+        conditionLock.signal();
+        lock.unlock();
     }
 
     @Override
@@ -602,7 +649,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
         while(retrievingData){
             try {
-                condition.await();
+                conditionLock.await();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
