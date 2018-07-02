@@ -9,6 +9,12 @@ public class PrivateObjective extends Objective {
     private String color;
     private final static String TYPE = "private";
 
+    /**
+     * Constructor for PrivateObjective.
+     *
+     * @param color The color of the private objective card.
+     * @throws NotValidParameterException Thrown when 'color' is not one of the 5 admitted ones.
+     */
     public PrivateObjective(String color)throws NotValidParameterException {
         final String expectedColorType= "Color: red, yellow, green, blue, purple";
         if(color.equals("red")||color.equals("green")||color.equals("yellow")||color.equals("blue")||color.equals("purple"))
@@ -16,11 +22,18 @@ public class PrivateObjective extends Objective {
         else throw new NotValidParameterException(color,expectedColorType);
     }
 
+    /**
+     *
+     * @return The type of the private objective.
+     */
     public String getType(){
         return TYPE;
     }
 
-
+    /**
+     *
+     * @return Color of the private objective.
+     */
     public String showPrivateObjective(){
         return this.color;
     }
