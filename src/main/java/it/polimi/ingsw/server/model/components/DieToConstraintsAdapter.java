@@ -38,28 +38,19 @@ public class DieToConstraintsAdapter implements DieConstraints, Serializable {
     }
 
 
-    /**
-     *
-     * @inheritDoc
-     */
+
     @Override
     public int getColorRestriction(){
         return this.colorRestriction;
     }
 
-    /**
-     *
-     * @inheritDoc
-     */
+
     @Override
     public int getValueRestriction(){
         return this.valueRestriction;
     }
 
-    /**
-     *
-     * @inheritDoc
-     */
+
     @Override
     public Die getDie() {
         return this.die;

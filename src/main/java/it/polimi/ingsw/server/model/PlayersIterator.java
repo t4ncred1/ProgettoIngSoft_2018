@@ -15,6 +15,11 @@ public class PlayersIterator implements Iterator<Player> {
     private int currentTurn;
     private List<Player> playerList;
 
+    /**
+     * Constructor for PlayerIterator.
+     *
+     * @param pList The list of players.
+     */
     PlayersIterator(List<Player> pList){
         this.playerList = pList;
         leftToRight = true;
@@ -23,11 +28,19 @@ public class PlayersIterator implements Iterator<Player> {
         currentTurn = 0;
     }
 
+    /**
+     *
+     * @return True if the iteration has more elements.
+     */
     @Override
     public boolean hasNext() {  //shall return false when turn ends
         return(!turnEnded);
     }
 
+    /**
+     *
+     * @return The next element in the iteration.
+     */
     @Override
     public Player next() {
         if (this.currentTurn>=playerList.size()) currentTurn=playerList.size()-1;   // this if statement is put here because disconnection might violate currentTurn's validity.
