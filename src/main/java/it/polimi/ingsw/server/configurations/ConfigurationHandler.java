@@ -32,6 +32,11 @@ public class ConfigurationHandler {
     private static final int NUMBER_OF_PUBLIC_OBJECTIVES = 10;
     //TODO do this for timers too.
 
+    /**
+     * Constructor for ConfigurationHandler.
+     *
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     private ConfigurationHandler() throws NotValidConfigPathException {
         boolean succeed=false;
         File jarPath=new File(App.class.getProtectionDomain().getCodeSource().getLocation().getPath());
@@ -54,11 +59,23 @@ public class ConfigurationHandler {
 
     }
 
+    /**
+     * Getter for ConfigurationHandler.
+     *
+     * @return ConfigurationHandler.
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     public static synchronized ConfigurationHandler getInstance() throws NotValidConfigPathException {
         if (instance==null) instance=new ConfigurationHandler();
         return instance;
     }
 
+    /**
+     * Getter for 'grids'.
+     *
+     * @return The list of grids.
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     public List<Grid> getGrids() throws NotValidConfigPathException {
         Gson gson = new Gson();
         TypeToken<List<Grid>> listType = new TypeToken<List<Grid>>(){};
@@ -80,6 +97,12 @@ public class ConfigurationHandler {
         }
     }
 
+    /**
+     * Getter for 'publicObjectives'.
+     *
+     * @return The list of public objective cards.
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     public List<PublicObjective> getPublicObjectives() throws NotValidConfigPathException {
         Gson gson = new Gson();
         TypeToken<List<PublicObjective>> listType = new TypeToken<List<PublicObjective>>(){};
@@ -92,37 +115,72 @@ public class ConfigurationHandler {
         }
     }
 
+    /**
+     * Getter for 'minPlayersNumber'.
+     *
+     * @return An integer containing the minimum number of players per match.
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     public int getMinPlayersNumber() throws NotValidConfigPathException{
         if (config.getMinPlayersNumber()!=0)
             return config.getMinPlayersNumber();
         else throw new NotValidConfigPathException("Incorrect config.json file: MinPlayersNumber needs to be instanced");
     }
 
+    /**
+     * Getter for 'publicObjectivesDistributed'.
+     *
+     * @return An integer containing the number of public objective cards per match.
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     public int getPublicObjectivesDistributed() throws NotValidConfigPathException{
         if (config.getPublicObjectivesDistributed()>0 && config.getPublicObjectivesDistributed()<=NUMBER_OF_PUBLIC_OBJECTIVES)
             return config.getPublicObjectivesDistributed();
         else throw new NotValidConfigPathException("Incorrect config.json file: PublicObjectivesDistributed needs to be instanced");
     }
 
+    /**
+     * Getter for 'maxPlayersNumber'.
+     *
+     * @return An integer containing the maximum number of players in a match.
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     public int getMaxPlayersNumber() throws NotValidConfigPathException{
         if (config.getMaxPlayersNumber()!=0)
             return config.getMaxPlayersNumber();
         else throw new NotValidConfigPathException("Incorrect config.json file: MaxPlayersNumber needs to be instanced");
     }
 
+    /**
+     * Getter for 'timerBeforeMatch'.
+     *
+     * @return An integer containing the timer before a match starts.
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     public int getTimerBeforeMatch() throws NotValidConfigPathException{
         if (config.getTimerBeforeMatch()!=0)
             return config.getTimerBeforeMatch();
         else throw new NotValidConfigPathException("Incorrect config.json file: TimerBeforeMatch needs to be instanced");
     }
 
+    /**
+     * Getter for 'timerToChooseGrids'.
+     *
+     * @return An integer containing the timer to choose a grid.
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     public int getTimerToChooseGrids() throws NotValidConfigPathException{
         if (config.getTimerToChooseGrid()!=0)
             return config.getTimerToChooseGrid();
         else throw new NotValidConfigPathException("Incorrect config.json file: TimerToChooseGrids needs to be instanced");
     }
 
-
+    /**
+     * Getter for 'rmiPort'.
+     *
+     * @return An integer containing the rmi port.
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     public int getRmiPort() throws NotValidConfigPathException{
         if (config.getRmiPort()!=0){
             return config.getRmiPort();
@@ -130,12 +188,24 @@ public class ConfigurationHandler {
         else throw new NotValidConfigPathException("Incorrect config.json file: rmiPort needs to be instanced");
     }
 
+    /**
+     * Getter for 'socketPort'.
+     *
+     * @return An integer containing the socket port.
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     public int getSocketPort() throws NotValidConfigPathException {
         if (config.getSocketPort() != 0) {
             return config.getSocketPort();
         } else throw new NotValidConfigPathException("Incorrect config.json file: socketPort needs to be instanced");
     }
 
+    /**
+     * Getter for 'toolCards'.
+     *
+     * @return The list of the tool cards.
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     public List<ToolCard> getToolCards() throws NotValidConfigPathException {
         Gson gson = getGsonForToolCards();
         TypeToken<List<ToolCard>> listTypeToken = new TypeToken<List<ToolCard>>(){};
@@ -149,12 +219,22 @@ public class ConfigurationHandler {
         }
     }
 
+    /**
+     * Getter for 'toolCardsDistributed'.
+     *
+     * @return An integer containing the number of tool cards per match.
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     public int getToolCardsDistributed() throws NotValidConfigPathException{
         if (config.getToolCardsDistributed()>0 && config.getToolCardsDistributed()<=NUMBER_OF_TOOL_CARDS)
             return config.getToolCardsDistributed();
         else throw new NotValidConfigPathException("Incorrect config.json file: ToolCardsDistributed needs to be instanced");
     }
 
+    /**
+     *
+     * @return A Gson containing the tool cards.
+     */
     private Gson getGsonForToolCards() {
         GsonBuilder builder= new GsonBuilder();
         //Create a RuntimeTypeAdapterFactory for Effect interface
@@ -177,11 +257,22 @@ public class ConfigurationHandler {
         return builder.create();
     }
 
+    /**
+     * Getter for 'timerForOperation'.
+     *
+     * @return An integer containing the timer for an operation.
+     * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
+     */
     public int getTimerForOperation() throws NotValidConfigPathException {
         if (config.getTimerForOperation()>0) return config.getTimerForOperation();
         else throw new NotValidConfigPathException("Incorrect config.json file: timerForOperation needs to be instanced");
     }
 
+    /**
+     * Getter for 'numberOfMatchHandled'.
+     *
+     * @return An integer containing the number of match handled.
+     */
     public int getNumberOfMatchHandled() {
         return config.getNumberOfMatchHandled();
     }
