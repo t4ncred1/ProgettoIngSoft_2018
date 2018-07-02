@@ -68,6 +68,7 @@
                                     <mainClass>it.polimi.ingsw.server.App</mainClass>
                                 </manifest>
                             </archive>
+                            <outputDirectory>deliverables\</outputDirectory>
                         </configuration>
                         <phase>package</phase>
                         <goals>
@@ -86,6 +87,7 @@
                                     <mainClass>it.polimi.ingsw.client.MainClient</mainClass>
                                 </manifest>
                             </archive>
+                            <outputDirectory>deliverables\</outputDirectory>
                         </configuration>
                         <phase>package</phase>
                         <goals>
