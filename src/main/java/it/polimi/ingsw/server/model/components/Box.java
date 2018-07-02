@@ -277,10 +277,7 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
             this.opened--;
     }
 
-    /**
-     *
-     * @inheritDoc
-     */
+
     @Override
     public void update(boolean remove, DieConstraints nearDie, int x, int y) throws NotValidParameterException {
         if (x!=this.getCoordX()-1 && x!=this.getCoordX()+1 && y!=this.getCoordY()+1 && y!=this.getCoordY()-1) throw new NotValidParameterException("Position of the near box: "+ Integer.toString(x) +", "+Integer.toString(y), "this box should not be between the observers of the box which called the update.");
@@ -293,19 +290,13 @@ public class Box implements BoxObserver, BoxSubject, Serializable {
         this.updateOpened(remove);
     }
 
-    /**
-     *
-     * @inheritDoc
-     */
+
     @Override
     public void register(BoxObserver observer){
         this.observerList.add(observer);
     }
 
-    /**
-     *
-     * @inheritDoc
-     */
+
     @Override
     public void notifyAllObservers(boolean remove){     //for now, it just prints an error
         for(BoxObserver e: observerList)
