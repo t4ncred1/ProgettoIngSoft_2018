@@ -105,29 +105,47 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     private static final String PLAYERS_POINTS="points";
 
+    private static final String DEFAULT_LOG_DIR="src/main/resources/log_files/SocketUserAg_%u.log";
+
     SocketUserAgent(Socket client) {
+        boolean succeeded =true;
         connected=true;
         actualConnectionNumber =connectionNumber++;
+        String LOG_DIR = new File(App.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getAbsolutePath()+"/resources/client_log/ClientLog_%u.log";
+
         try {
             logger = Logger.getLogger(SocketUserAgent.class.getName()+actualConnectionNumber);
-            handler = new FileHandler(new File(App.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getAbsolutePath()+"/resources/log_files/SocketUserAg_"+ actualConnectionNumber+".log");
+            handler = new FileHandler(LOG_DIR);
             SimpleFormatter formatter = new SimpleFormatter();
             handler.setFormatter(formatter);
             logger.setLevel(Level.FINER);
             logger.addHandler(handler);
-            retrieveringData=false;
-            reconnecting=false;
-            gameFinished=false;
-            retrieveringData=false;
-            statusChanged=false;
-            syncLock = new ReentrantLock();
-            lock = new ReentrantLock();
-            conditionLock = lock.newCondition();
-            conditionSyncLock= syncLock.newCondition();
-
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "FileHandler not found",e);
+            logger.log(Level.WARNING, "Unable to get log directory: "+ LOG_DIR+", trying default directory "+ DEFAULT_LOG_DIR);
+            succeeded = false;
         }
+        if (!succeeded){
+            try {
+                logger = Logger.getLogger(SocketUserAgent.class.getName()+actualConnectionNumber);
+                handler = new FileHandler(DEFAULT_LOG_DIR);
+                SimpleFormatter formatter = new SimpleFormatter();
+                handler.setFormatter(formatter);
+                logger.setLevel(Level.FINER);
+                logger.addHandler(handler);
+            } catch (IOException e) {
+                logger.log(Level.WARNING, "Unable to get log directory: "+ DEFAULT_LOG_DIR,e);
+            }
+            logger.log(Level.INFO,"correctly got loggers at "+DEFAULT_LOG_DIR);
+        }
+        retrieveringData=false;
+        reconnecting=false;
+        gameFinished=false;
+        retrieveringData=false;
+        statusChanged=false;
+        syncLock = new ReentrantLock();
+        lock = new ReentrantLock();
+        conditionLock = lock.newCondition();
+        conditionSyncLock= syncLock.newCondition();
         try{
             this.inputStream= new DataInputStream(client.getInputStream());
             this.outputStream= new DataOutputStream(client.getOutputStream());

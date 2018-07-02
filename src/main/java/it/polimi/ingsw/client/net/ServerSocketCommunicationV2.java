@@ -104,20 +104,38 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     private boolean dataRetrieved;
     private boolean reconnecting;
 
+    private static final String DEFAULT_LOG_DIR = "src/main/resources/client_log/ClientLog_%u.log";
+
     private Handler handler;
 
     public ServerSocketCommunicationV2(){
         this.lock = new ReentrantLock();
         this.condition= lock.newCondition();
         logger = Logger.getLogger(ServerSocketCommunicationV2.class.getName());
+        boolean succeeded=true;
+        String LOG_DIR = new File(MainClient.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getAbsolutePath()+"/resources/client_log/ClientLog_%u.log";
         try {
-            handler = new FileHandler(new File(MainClient.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getAbsolutePath()+"/resources/client_log/ClientLog_%u.log");
+            handler = new FileHandler(LOG_DIR);
             SimpleFormatter formatter = new SimpleFormatter();
             handler.setFormatter(formatter);
             logger.setLevel(Level.FINER);
             logger.addHandler(handler);
+
         } catch (IOException e) {
-            logger.log(Level.WARNING, "{0}", e);
+            logger.log(Level.WARNING, "Unable to get log directory: "+ LOG_DIR+", trying default directory "+ DEFAULT_LOG_DIR);
+            succeeded=false;
+        }
+        if(!succeeded){
+            try {
+                handler = new FileHandler(DEFAULT_LOG_DIR);
+                SimpleFormatter formatter = new SimpleFormatter();
+                handler.setFormatter(formatter);
+                logger.setLevel(Level.FINER);
+                logger.addHandler(handler);
+            } catch (IOException e) {
+                logger.log(Level.WARNING, "No log file found in "+DEFAULT_LOG_DIR,e);
+            }
+            logger.log(Level.INFO,"correctly got loggers at "+DEFAULT_LOG_DIR);
         }
         myGridSet =false;
         gameFinished=false;
