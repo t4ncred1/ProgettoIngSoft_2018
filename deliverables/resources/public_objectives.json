@@ -1,0 +1,51 @@
+[{
+  "value": 5,
+  "cardNumber": 1,
+  "title": "Colori Diversi - Riga",
+  "description": "Righe senza colori ripetuti"
+}, {
+  "value": 6,
+  "cardNumber": 2,
+  "title": "Colori Diversi - Colonna",
+  "description": "Colonne senza colori ripetuti"
+}, {
+  "value": 5,
+  "cardNumber": 3,
+  "title": "Sfumature Diverse - Riga",
+  "description": "Righe senza sfumature ripetute"
+}, {
+  "value": 4,
+  "cardNumber": 4,
+  "title": "Sfumature Diverse - Colonna",
+  "description": "Colonne senza sfumature ripetute"
+}, {
+  "value": 0,
+  "cardNumber": 5,
+  "title": "Diagonali Colorate",
+  "description": "Numero di dadi dello stesso colore diagonalmente adiacenti"
+}, {
+  "value": 2,
+  "cardNumber": 6,
+  "title": "Sfumature Chiare",
+  "description": "Set di 1 \u0026 2 ovunque"
+}, {
+  "value": 2,
+  "cardNumber": 7,
+  "title": "Sfumature Medie",
+  "description": "Set di 3 \u0026 4 ovunque"
+}, {
+  "value": 2,
+  "cardNumber": 8,
+  "title": "Sfumature Scure",
+  "description": "Set di 5 \u0026 6 ovunque"
+}, {
+  "value": 5,
+  "cardNumber": 9,
+  "title": "Sfumature Diverse",
+  "description": "Set di dadi di ogni  valore ovunque"
+}, {
+  "value": 5,
+  "cardNumber": 10,
+  "title": "Varietà di Colore",
+  "description": "Set di dadi di ogni colore ovunque"
+}]

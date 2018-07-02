@@ -7,14 +7,14 @@
     <version>1.0-SNAPSHOT</version>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-compiler-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<source>1.8</source>-->
+                    <!--<target>1.8</target>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19</version>
@@ -51,8 +51,56 @@
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.4.0.905</version>
             </plugin>
+
+            <!-- Jar Creation -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>build-server</id>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <finalName>server</finalName>
+                            <archive>
+                                <manifest>
+                                    <mainClass>it.polimi.ingsw.server.App</mainClass>
+                                </manifest>
+                            </archive>
+                            <outputDirectory>deliverables\</outputDirectory>
+                        </configuration>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>buid-client</id>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <finalName>client</finalName>
+                            <archive>
+                                <manifest>
+                                    <mainClass>it.polimi.ingsw.client.MainClient</mainClass>
+                                </manifest>
+                            </archive>
+                            <outputDirectory>deliverables\</outputDirectory>
+                        </configuration>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
+
     </build>
+
     <packaging>jar</packaging>
 
     <name>LM56</name>

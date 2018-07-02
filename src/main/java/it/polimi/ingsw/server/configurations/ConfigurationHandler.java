@@ -3,12 +3,14 @@ package it.polimi.ingsw.server.configurations;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import it.polimi.ingsw.server.App;
 import it.polimi.ingsw.server.model.cards.effects.*;
 import it.polimi.ingsw.server.model.cards.PublicObjective;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.NotValidConfigPathException;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
@@ -19,7 +21,7 @@ public class ConfigurationHandler {
     private static ConfigurationHandler instance;
     private Configurations config;
 
-    private static final String CONFIG_PATH="src/main/resources/config.json";
+    private static String CONFIG_PATH;
     private static final Object toolCardsGuard= new Object();
     private static final Object gridsGuard=new Object();
     private static final Object publicObjectivesGuard=new Object();
@@ -33,6 +35,8 @@ public class ConfigurationHandler {
      * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
      */
     private ConfigurationHandler() throws NotValidConfigPathException {
+        File jarPath=new File(App.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        CONFIG_PATH=jarPath.getParentFile().getAbsolutePath()+"/resources/config.json";
         Gson gson = new Gson();
         try {
             config = gson.fromJson(new FileReader(CONFIG_PATH), Configurations.class);

@@ -1,0 +1,15 @@
+{
+  "gridsPath": "src/main/resources/grids.json",
+  "publicObjectivesPath": "src/main/resources/public_objectives.json",
+  "toolCardsPath": "src/main/resources/tool_cards.json",
+  "maxPlayersNumber": "4",
+  "minPlayersNumber": "2",
+  "timerBeforeMatch": "20",
+  "timerToChooseGrid": "30",
+  "rmiPort": "11001",
+  "socketPort": "11000",
+  "publicObjectivesDistributed" : "3",
+  "toolCardsDistributed" : "3",
+  "timerForOperation" : "60",
+  "numberOfMatchHandled": 1
+}

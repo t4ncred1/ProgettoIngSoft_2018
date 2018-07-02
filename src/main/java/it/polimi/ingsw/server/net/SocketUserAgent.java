@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.net;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import it.polimi.ingsw.server.App;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
@@ -109,7 +110,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         actualConnectionNumber =connectionNumber++;
         try {
             logger = Logger.getLogger(SocketUserAgent.class.getName()+actualConnectionNumber);
-            handler = new FileHandler("src/main/resources/log_files/SocketUserAg_"+ actualConnectionNumber+".log");
+            handler = new FileHandler(new File(App.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getAbsolutePath()+"/resources/log_files/SocketUserAg_"+ actualConnectionNumber+".log");
             SimpleFormatter formatter = new SimpleFormatter();
             handler.setFormatter(formatter);
             logger.setLevel(Level.FINER);
