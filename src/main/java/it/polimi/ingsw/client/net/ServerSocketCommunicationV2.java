@@ -22,6 +22,7 @@ import it.polimi.ingsw.server.model.components.Grid;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -110,7 +111,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         this.condition= lock.newCondition();
         logger = Logger.getLogger(ServerSocketCommunicationV2.class.getName());
         try {
-            handler = new FileHandler("src/main/resources/client_log/ClientLog_%u.log");
+            handler = new FileHandler(new File(MainClient.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile().getAbsolutePath()+"/resources/client_log/ClientLog_%u.log");
             SimpleFormatter formatter = new SimpleFormatter();
             handler.setFormatter(formatter);
             logger.setLevel(Level.FINER);

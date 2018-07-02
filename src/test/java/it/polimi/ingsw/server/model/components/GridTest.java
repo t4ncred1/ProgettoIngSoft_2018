@@ -482,16 +482,11 @@ public class GridTest {
         } catch (NotValidParameterException e) {
             fail("test failed");
         }
-        assertEquals("|\t \t|\t \t|\t \t|\t \t|\n" +
-                "|\t-\t|\t-\t|\t-\t|\t-\t|\n" +
-                "|\t \t|\t \t|\t \t|\t \t|\n" +
-                "|\t-\t|\t-\t|\t-\t|\t-\t|\n" +
-                "|\t \t|\t \t|\t \t|\t \t|\n" +
-                "|\t-\t|\t-\t|\t-\t|\t-\t|\n" +
-                "|\t \t|\t \t|\t \t|\t \t|\n" +
-                "|\t-\t|\t-\t|\t-\t|\t-\t|\n" +
-                "|\t \t|\t \t|\t \t|\t \t|\n" +
-                "|\t-\t|\t-\t|\t-\t|\t-\t|\n", toTest.getStructure());
+        for(String[] strings : toTest.getStructure()){
+            for(String s : strings){
+                assertEquals(s," ");
+            }
+        }
     }
 
     @Test
