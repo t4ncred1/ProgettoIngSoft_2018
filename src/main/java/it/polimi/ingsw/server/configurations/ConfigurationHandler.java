@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConfigurationHandler {
 
@@ -21,6 +23,7 @@ public class ConfigurationHandler {
     private static ConfigurationHandler instance;
     private Configurations config;
 
+    private static final String DEFAULT_CONFIG_PATH = "src/main/resources/config.json";
     private static String CONFIG_PATH;
     private static final Object toolCardsGuard= new Object();
     private static final Object gridsGuard=new Object();
@@ -35,14 +38,25 @@ public class ConfigurationHandler {
      * @throws NotValidConfigPathException Thrown when no config.json file is found in the given path.
      */
     private ConfigurationHandler() throws NotValidConfigPathException {
+        boolean succeed=false;
         File jarPath=new File(App.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         CONFIG_PATH=jarPath.getParentFile().getAbsolutePath()+"/resources/config.json";
         Gson gson = new Gson();
         try {
             config = gson.fromJson(new FileReader(CONFIG_PATH), Configurations.class);
         } catch (FileNotFoundException e) {
-            throw new NotValidConfigPathException("No config.json found in "+CONFIG_PATH);
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"File not found "+CONFIG_PATH+", trying default: "+DEFAULT_CONFIG_PATH);
+            succeed = true;
         }
+        if(succeed) {
+            try {
+                config = gson.fromJson(new FileReader(DEFAULT_CONFIG_PATH),Configurations.class);
+            } catch (FileNotFoundException e) {
+                throw new NotValidConfigPathException("No config.json found in "+DEFAULT_CONFIG_PATH);
+            }
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO,"correctly loaded configurations at "+DEFAULT_CONFIG_PATH);
+        }
+
     }
 
     /**
