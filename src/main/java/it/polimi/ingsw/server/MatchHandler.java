@@ -48,6 +48,11 @@ public class MatchHandler extends Thread {
     private static final String ANSI_PURPLE = "\u001B[35m";
     private static final String ANSI_CYAN = "\u001B[36m";
 
+    /**
+     * Getter for MatchHandler.
+     *
+     * @return MatchHandler.
+     */
     public static MatchHandler getInstance(){
         if(instance==null) {
             instance = new MatchHandler();
@@ -62,6 +67,12 @@ public class MatchHandler extends Thread {
         return instance;
     }
 
+    /**
+     * Puts a client in the game queue.
+     *
+     * @param username Client's username.
+     * @param game Game controller.
+     */
     public void setPlayerInGame(String username, MatchController game) {
         synchronized (connectedPlayersGuard){
             connectedPlayers.put(username, game);
@@ -70,13 +81,21 @@ public class MatchHandler extends Thread {
 
 
     //Observer
+
+    /**
+     *
+     * @return An integer containing the number of players in the match.
+     */
     public int connectedPlayers(){
         synchronized (connectedPlayersGuard) {
             return connectedPlayers.size();
         }
     }
 
-
+    /**
+     *
+     * @return An integer containing the maximum number of matches handled.
+     */
     public int getMaximumMatchNumber(){
         return maximumMatchNumber;
     }
@@ -84,6 +103,9 @@ public class MatchHandler extends Thread {
 
     //
 
+    /**
+     * Wake up a thread after a timeout event.
+     */
     public void notifyTimeout() {
         instance.timeout=true;
         lock.lock();
@@ -91,6 +113,9 @@ public class MatchHandler extends Thread {
         lock.unlock();
     }
 
+    /**
+     * Wake up a thread after a notification of starting match.
+     */
     public void notifyMatchCanStart() {
         lock.lock();
         condition.signal();
@@ -130,12 +155,19 @@ public class MatchHandler extends Thread {
         }
     }
 
+    /**
+     * Load a new game.
+     */
     public static void loadNewGame(){
         System.out.println(ANSI_GREEN +"A new match is ready to be handled." +ANSI_RESET);
         startingMatch = new MatchController();
         startingMatch.start();
     }
 
+    /**
+     *
+     * @return True if setUpPhase has ended.
+     */
     public boolean setUpPhase(){
         boolean result;
         try {
@@ -153,6 +185,10 @@ public class MatchHandler extends Thread {
         return result;
     }
 
+    /**
+     *
+     * @return True if match is starting.
+     */
     //@requires timeout=true (*at first execution*);
     private boolean startGameCountdown() {
         lock.lock();
@@ -202,7 +238,14 @@ public class MatchHandler extends Thread {
         return false;
     }
 
-
+    /**
+     *
+     * @param client Client trying to log in.
+     * @throws InvalidOperationException See requestUsername method.
+     * @throws DisconnectionException See arrangeForUsername doc in UserInterface class.
+     * @throws InvalidUsernameException See requestUsername method.
+     * @throws ReconnectionException See requestUsername method.
+     */
     public static void login(UserInterface client) throws InvalidOperationException, DisconnectionException, InvalidUsernameException, ReconnectionException {
         client.chooseUsername();
         try {
@@ -229,6 +272,14 @@ public class MatchHandler extends Thread {
         }
     }
 
+    /**
+     * Checks username chosen by client.
+     *
+     * @param username Username chosen by client.
+     * @throws InvalidOperationException Thrown when match is not starting.
+     * @throws ReconnectionException Thrown when this client is trying to reconnect after a disconnection.
+     * @throws InvalidUsernameException Thrown when this username is already used.
+     */
     public void requestUsername(String username) throws InvalidOperationException, ReconnectionException, InvalidUsernameException {
         if(username.equals("")) throw new InvalidUsernameException();
         synchronized (startingMatchGuard) {
@@ -255,7 +306,10 @@ public class MatchHandler extends Thread {
 
     }
 
-
+    /**
+     *
+     * @param username Player disconnected.
+     */
     public void notifyAboutDisconnection(String username) {
         MatchController gameHandlingPlayer;
         synchronized (connectedPlayersGuard) {
@@ -271,6 +325,11 @@ public class MatchHandler extends Thread {
 
     }
 
+    /**
+     *
+     * @param client Client trying to logout.
+     * @throws InvalidOperationException See remove doc in MatchController class.
+     */
     public void logOut(UserInterface client) throws InvalidOperationException {
         String username= client.getUsername();
         MatchController gameHandlingClient;

@@ -28,6 +28,11 @@ public class GameTimer {
 
     private Timer timer = new Timer();
 
+    /**
+     * Constructor for GameTimer.
+     *
+     * @param message Type of the timer (game start).
+     */
     public GameTimer(String message){
         try {
             timerToStart=ConfigurationHandler.getInstance().getTimerBeforeMatch();
@@ -59,6 +64,12 @@ public class GameTimer {
         timer.scheduleAtFixedRate(handlerTimerTask,1,1000);
     }
 
+    /**
+     * Constructor for GameTimer.
+     *
+     * @param matchController Match controller.
+     * @param message Type of the timer (operation, grid choose).
+     */
     public GameTimer(MatchController matchController, String message){
         this.gameTimeout=false;
         this.stopped=false;
@@ -98,15 +109,26 @@ public class GameTimer {
         timer.scheduleAtFixedRate(gameTimerTask,1,1000);
     }
 
+    /**
+     * Terminates the timer.
+     */
     public void stop() {
         timer.cancel();
         this.stopped=true;
     }
 
+    /**
+     *
+     * @return True if a timeout event occurred.
+     */
     public boolean getTimeoutEvent() {
         return this.gameTimeout;
     }
 
+    /**
+     *
+     * @return True if timer has been terminated.
+     */
     public boolean isStopped() {
         return this.stopped;
     }
