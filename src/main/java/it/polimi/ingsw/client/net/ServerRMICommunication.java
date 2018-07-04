@@ -21,7 +21,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ServerRMICommunicationV2 implements ServerCommunicatingInterfaceV2 {
+public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     private Logger logger;
     private ClientRMI thisClient;
@@ -40,8 +40,8 @@ public class ServerRMICommunicationV2 implements ServerCommunicatingInterfaceV2 
     private transient MatchController controller;
     private boolean dataRetrieved;
 
-    public ServerRMICommunicationV2(){
-        logger= Logger.getLogger(ServerRMICommunicationV2.class.getName());
+    public ServerRMICommunication(){
+        logger= Logger.getLogger(ServerRMICommunication.class.getName());
         lock= new ReentrantLock();
         condition= lock.newCondition();
         try {

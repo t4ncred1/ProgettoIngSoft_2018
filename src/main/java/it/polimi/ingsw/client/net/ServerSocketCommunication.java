@@ -34,7 +34,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.*;
 
-public class ServerSocketCommunication extends Thread implements ServerCommunicatingInterfaceV2{
+public class ServerSocketCommunication extends Thread implements ServerCommunicatingInterface {
 
 
     private transient Socket socket;
