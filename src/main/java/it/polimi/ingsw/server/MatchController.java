@@ -2,6 +2,8 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
 import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.cards.ToolCard;
+import it.polimi.ingsw.server.model.cards.effects.Effect;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.*;
@@ -23,6 +25,7 @@ public class MatchController extends Thread{
     private boolean gameStartingSoon;
     private MatchModel model;
     private final Object modelGuard = new Object();
+    private List<Effect> effectsToDo;
 
     private static final int MAX_ROUND =10;
     private UserInterface turnPlayer;
@@ -230,7 +233,7 @@ public class MatchController extends Thread{
             handleEventualTimeout(timer,username);
             lock.unlock();
         }
-        timer.stop();
+        if(timer!= null) timer.stop();
         synchronized (playersInMatchGuard){
             playersInMatch.forEach(this::updateEndTurn);
         }
@@ -294,7 +297,18 @@ public class MatchController extends Thread{
         sendDicePool();
         sendRoundTrack();
         sendGrids();
+        sendToolCards();
         notifyGameInitialized();
+    }
+
+    private void sendToolCards() {
+        List<ToolCard> toolCards;
+        synchronized (modelGuard){
+            toolCards = model.getToolCards();
+        }
+        synchronized (playersInMatchGuard){
+            playersInMatch.forEach((username,player)->player.sendToolCards(toolCards));
+        }
     }
 
     private void sendRoundTrack() {
@@ -629,6 +643,43 @@ public class MatchController extends Thread{
     public int toolCardLetPlayerChoose(String color){
         //todo this will be the method called by toolcard 11 to get the value for the newly extracted die from client.
         return 6;
+    }
+
+    public void tryToUseToolCard(UserInterface player, int toolCardIndex) throws OperationAlreadyDoneException, NotValidParameterException, IllegalRequestException {
+        securityControl(player);
+        if(toolCardUsed) throw new OperationAlreadyDoneException();
+        else {
+            synchronized (modelGuard){
+                effectsToDo=model.getToolCard(toolCardIndex).getEffects();
+            }
+        }
+    }
+
+    public void setEffectParameters(UserInterface player,String effectName, List<String> parameters) throws IllegalRequestException, InvalidOperationException, NotValidParameterException {
+        final int REMOVING_INDEX=0;
+        securityControl(player);
+        synchronized (modelGuard){
+            Effect effect= effectsToDo.get(REMOVING_INDEX);
+            if(effectName.equals(effect.getName())){
+                effect.setToolCardParams(parameters);
+                effectsToDo.remove(effect);
+            }else{
+                throw new InvalidOperationException();
+            }
+        }
+    }
+
+    public void executeToolCard(UserInterface player, int index) throws IllegalRequestException {
+        securityControl(player);
+        synchronized (modelGuard){
+            try {
+                model.getToolCard(index).useToolCard();
+            } catch (NotValidParameterException e) {
+                logger.log(Level.SEVERE, "Something went wrong when TryToUseToolCard was executed", e);
+            } catch (Exception e) {
+                //fixme need to differentiate exception launched by useToolCard
+            }
+        }
     }
 }
 
