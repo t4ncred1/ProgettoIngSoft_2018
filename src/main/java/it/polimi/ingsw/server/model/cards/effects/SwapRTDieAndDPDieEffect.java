@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SwapRTDieAndDPDieEffect implements Effect{
     private transient MatchModel model;
@@ -32,6 +33,11 @@ public class SwapRTDieAndDPDieEffect implements Effect{
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public void setToolCardParams(List<String> params) throws NotValidParameterException {
+        if(!params.isEmpty()) throw new NotValidParameterException(params.toString(),"expected a void list");
     }
 
     @Override

@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,6 +59,27 @@ public class RemoveDieFromGridEffect implements Effect {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public void setToolCardParams(List<String> params) throws NotValidParameterException {
+        final String NOT_READ= "not read";
+        final int REMOVING_INDEX=0;
+        if(params.isEmpty()) throw new NotValidParameterException("An empty list","A not empty list");
+        String temp1=NOT_READ;
+        String temp2=NOT_READ;
+        try{
+            temp1 = params.remove(REMOVING_INDEX);
+            temp2= params.remove(REMOVING_INDEX);
+            int column=Integer.parseInt(temp1);
+            int row=Integer.parseInt(temp2);
+            // TODO: 04/07/2018 call toolCard's proper method (launch exceptions column and row are not in grid)
+        } catch (NumberFormatException e){
+            throw new NotValidParameterException("Value 1: "+temp1+", value 2: "+temp2, "Numeric parameters");
+        } catch (NullPointerException e){
+            throw new NotValidParameterException("List is now empty", "Not enough parameters");
+        }
+        if(!params.isEmpty()) throw new NotValidParameterException(params.toString(),"Too many parameters");
     }
 
     @Override

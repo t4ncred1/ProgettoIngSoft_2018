@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,6 +78,11 @@ public class SwapDieEffect implements Effect {
 
     @Override
     public String getName() {
-        return null;
+        return NAME;
+    }
+
+    @Override
+    public void setToolCardParams(List<String> params) throws NotValidParameterException {
+        if(!params.isEmpty()) throw new NotValidParameterException(params.toString(),"expected a void list");
     }
 }

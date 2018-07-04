@@ -50,6 +50,25 @@ public class RemoveDieFromPoolEffect implements Effect {
     }
 
     @Override
+    public void setToolCardParams(List<String> params) throws NotValidParameterException {
+        if(toolCard.getRemoveAllDiceFromDicePool()){
+            if(!params.isEmpty()) throw new NotValidParameterException(params.toString(),"expected a void list");
+        }else {
+            final String NOT_READ="not read";
+            final int REMOVING_INDEX=0;
+            if(params.isEmpty()) throw new NotValidParameterException("An empty list","A not empty list");
+            String temp1=NOT_READ;
+            try{
+                temp1 = params.remove(REMOVING_INDEX);
+                int dicePoolIndex=Integer.parseInt(temp1);
+                // TODO: 04/07/2018 call toolCard's proper method (launch exceptions column and row are not in pool)
+            } catch (NumberFormatException e){
+                throw new NotValidParameterException("Value 1: "+temp1, "Numeric parameters");
+            }
+        }
+    }
+
+    @Override
     public void execute(){
         boolean removeAllDiceFromDicePool= toolCard.getRemoveAllDiceFromDicePool();
         List<Die> diceRemoved = new ArrayList<>();

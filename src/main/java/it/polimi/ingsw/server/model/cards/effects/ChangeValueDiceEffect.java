@@ -43,6 +43,11 @@ public class ChangeValueDiceEffect implements Effect {
     }
 
     @Override
+    public void setToolCardParams(List<String> params) throws NotValidParameterException {
+        if(!params.isEmpty()) throw new NotValidParameterException(params.toString(),"expected a void list");
+    }
+
+    @Override
     public void execute() {
         List<Die> dice = toolCard.getDiceRemoved();
         for(int i=0; i<dice.size();i++){
