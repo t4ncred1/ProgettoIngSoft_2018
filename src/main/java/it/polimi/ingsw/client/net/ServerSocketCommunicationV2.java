@@ -7,10 +7,7 @@ import it.polimi.ingsw.client.MainClient;
 import it.polimi.ingsw.client.Proxy;
 import it.polimi.ingsw.client.configurations.ConfigHandler;
 import it.polimi.ingsw.client.custom_exception.*;
-import it.polimi.ingsw.client.custom_exception.invalid_operations.AlreadyDoneOperationException;
-import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
-import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
-import it.polimi.ingsw.client.custom_exception.invalid_operations.ToolCardNotExistException;
+import it.polimi.ingsw.client.custom_exception.invalid_operations.*;
 import it.polimi.ingsw.server.configurations.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
@@ -190,14 +187,14 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
                     logger.log(Level.FINE, "{0}",serverResponse);
                     logger.log(Level.FINE, "turn player received from player: {0}",serverResponse);
                     Proxy.getInstance().setGameToFinished();
-                    handleGameEnd();
+                    gameFinished=true;
                     MainClient.getInstance().notifyTurnUpdated();
                     break;
                 default:
                     logger.log(Level.SEVERE,"Unexpected game status from server: {0}", serverResponse);
             }
         }while(!gameFinished);
-
+        handleGameEnd();
     }
 
     private void handleGameEnd() throws IOException {
@@ -210,6 +207,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         LinkedHashMap<String,String> playerPoints= gson.fromJson(serverMessage,typeToken.getType());
         Proxy.getInstance().setPoints(playerPoints);
         logger.log(Level.FINE,"Points received and set");
+        MainClient.getInstance().notifyEndDataInProxy();
     }
 
     private void handleTurn(boolean myTurn) throws IOException {
@@ -471,7 +469,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
             serverPort = ConfigHandler.getInstance().getSocketPort();
             serverAddress = ConfigHandler.getInstance().getServerIp();
         } catch (NotValidConfigPathException e) {
-            logger.log(Level.WARNING,"Wrong configuration file, using defaults.");
+            logger.log(Level.CONFIG,"Wrong configuration file, using defaults.");
         }
     }
 
@@ -693,7 +691,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         return read;
     }
 
-    public void selectGrid(int gridIndex) throws ServerIsDownException, DisconnectionException {
+    public void selectGrid(int gridIndex) throws ServerIsDownException, DisconnectionException, InvalidIndexException {
         try {
             logger.log(Level.FINE,"sent CHOOSE_GRID to server. Parameter: {0}",gridIndex);
             outputStream.writeUTF(CHOOSE_GRID);
@@ -709,7 +707,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
             outputStream.writeInt(gridIndex);
             response=readRemoteInput();
             if(response.equals(NOT_OK_MESSAGE))
-                logger.log(Level.SEVERE,"Unexpected response from server -> {0}", response);
+                throw new InvalidIndexException();
             lock.lock();
             myGridSet =true;
             condition.signal();

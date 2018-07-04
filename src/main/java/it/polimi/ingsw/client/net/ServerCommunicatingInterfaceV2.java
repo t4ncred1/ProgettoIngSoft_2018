@@ -1,10 +1,7 @@
 package it.polimi.ingsw.client.net;
 
 import it.polimi.ingsw.client.custom_exception.*;
-import it.polimi.ingsw.client.custom_exception.invalid_operations.AlreadyDoneOperationException;
-import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
-import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
-import it.polimi.ingsw.client.custom_exception.invalid_operations.ToolCardNotExistException;
+import it.polimi.ingsw.client.custom_exception.invalid_operations.*;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.ReconnectionException;
 
@@ -12,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface ServerCommunicatingInterfaceV2 {
-    void selectGrid(int i) throws ServerIsDownException, DisconnectionException;
+    void selectGrid(int i) throws ServerIsDownException, DisconnectionException, InvalidIndexException;
 
     void askForLogout() throws ServerIsDownException, GameStartingException, LoggedOutException;
 

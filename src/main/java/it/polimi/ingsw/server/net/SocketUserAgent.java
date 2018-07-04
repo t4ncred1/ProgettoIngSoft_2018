@@ -213,7 +213,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
                 case END_TURN:
                     outputStream.writeUTF(OK_REQUEST);
                     logger.log(Level.FINE,"{0} requested to end turn",username);
-                    gameHandling.notifyEnd();
+                    gameHandling.notifyEnd(this);
                     break;
                 default:
                     logger.log(Level.SEVERE, "Unexpected command while handling game logic: {0}", command);
@@ -308,7 +308,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     /**
      *
-     * @return A Gson containing all grids.
+     * @return A Gson to parse grids.
      */
     private Gson getGsonForGrid() {
         GsonBuilder builder= new GsonBuilder();
@@ -588,7 +588,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
             return true;
         }
         catch (IOException e){
-            connected=false;
             return false;
         }
     }
@@ -708,16 +707,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     }
 
-    @Override
-    public void notifyEndTurn() {
-        try {
-            outputStream.writeUTF(TURN_FINISHED);
-            logger.log(Level.FINE,"{0} notified of the end of the turn. ",username);
-        } catch (IOException e) {
-            connected=false;
-        }
-
-    }
 
     @Override
     public void sendGrids(Map<String, Grid> playersGrids) {
@@ -729,7 +718,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             outputStream.writeUTF(mapToJson);
             logger.log(Level.FINE, "Sent grids to {0}", username);
         } catch (IOException e) {
-            connected=false;
+            logger.fine("Disconnected");
         }
     }
 
@@ -738,7 +727,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         try {
             outputStream.writeUTF(END_DATA);
         } catch (IOException e) {
-            connected=false;
+            logger.fine("Disconnected");
         }
     }
 
@@ -768,8 +757,8 @@ public class SocketUserAgent extends Thread implements UserInterface {
     }
 
     @Override
-    public void synchronize(boolean disconnected, Grid grid, List<Die> dicePool) {
-        //this method is launched at the end of the turn to synchronize with eventual reconnecting players
+    public void synchronizeEndTurn(boolean disconnected, Grid grid, List<Die> dicePool) {
+        //this method is launched at the end of the turn to synchronizeEndTurn with eventual reconnecting players
         try {
             syncLock.lock();
             waitDataRetrieve();
@@ -778,18 +767,18 @@ public class SocketUserAgent extends Thread implements UserInterface {
             sendDicePool(dicePool);
             outputStream.writeUTF(END_TURN);
         } catch (IOException e) {
-            connected=false;
+            logger.fine("Disconnected");
         } finally {
             syncLock.unlock();
         }
     }
 
     @Override
-    public void notifyEnd() {
+    public void notifyEndGame() {
         try {
             outputStream.writeUTF(GAME_FINISHED);
         } catch (IOException e) {
-            connected=false;
+            logger.fine("Disconnected");
         }
     }
 
@@ -844,7 +833,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             outputStream.writeUTF(dataType);
             outputStream.writeUTF(dataToSend);
         } catch (IOException e) {
-            connected=false;
+            logger.fine("Disconnected");
         } finally {
             lock.unlock();
         }
@@ -856,7 +845,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             outputStream.writeUTF(DISCONNECTION);
             logger.log(Level.FINE,"{0} notified about disconnection due to timeout", username);
         } catch (IOException e) {
-            connected=false;
+            logger.fine("Disconnected");
         }
     }
 

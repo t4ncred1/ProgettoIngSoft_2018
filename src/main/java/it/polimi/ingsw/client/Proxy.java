@@ -24,7 +24,7 @@ public class Proxy {
     private Map<String,GridInterface> connectedPlayers;
     private Map<String,GridInterface> disconnectedPlayers;
     private Map<String,String> playersRanking;
-    private ArrayList<ToolCardAdapter> toolCards;
+    private List<ToolCardAdapter> toolCards;
     private DicePoolInterface dicePool;
     private RoundTrackInterface roundTrack;
     private boolean gameFinished;
@@ -190,10 +190,12 @@ public class Proxy {
     }
 
     public synchronized void setToolCards(List<ToolCard> toolCards) {
-        ArrayList<ToolCard> temp= (ArrayList<ToolCard>) toolCards;
+        List<ToolCard> temp= toolCards;
+        List<ToolCardAdapter> toSet= new ArrayList<>();
         for(ToolCard toolCard: temp){
-            this.toolCards.add(newToolCardAdapter(toolCard));
+            toSet.add(newToolCardAdapter(toolCard));
         }
+        this.toolCards=toSet;
     }
 
     private ToolCardAdapter newToolCardAdapter(ToolCard toolCard){

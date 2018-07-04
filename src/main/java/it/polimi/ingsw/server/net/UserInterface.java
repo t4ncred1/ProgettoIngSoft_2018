@@ -80,8 +80,6 @@ public interface UserInterface {
 
     void notifyToolUsed();
 
-    void notifyEndTurn();
-
     /**
      * Sends all players' grids to a player.
      *
@@ -117,9 +115,9 @@ public interface UserInterface {
      */
     void sendGrid(Grid grid);
 
-    void synchronize(boolean disconnected, Grid grid, List<Die> dicePool);
+    void synchronizeEndTurn(boolean disconnected, Grid grid, List<Die> dicePool);
 
-    void notifyEnd();
+    void notifyEndGame();
 
     void sendPoints(Map<String, String> playersPoints);
 

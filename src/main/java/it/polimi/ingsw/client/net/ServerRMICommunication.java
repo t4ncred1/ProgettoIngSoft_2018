@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.net;
 
 import it.polimi.ingsw.client.Proxy;
-import it.polimi.ingsw.client.configurations.ConfigHandler;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
@@ -12,8 +11,6 @@ import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.net.ServerRemoteInterface;
 
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.List;
 
 public class ServerRMICommunication implements ServerCommunicatingInterface {
@@ -40,34 +37,34 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     }
     @Override
     public void setUpConnection() throws ServerIsDownException{
-        try {
-            try {
-                serverPort = ConfigHandler.getInstance().getRmiPort();
-                serverAddress = ConfigHandler.getInstance().getServerIp();
-                registerName = ConfigHandler.getInstance().getRegisterName();
-            } catch (NotValidConfigPathException e) {
-                System.out.println("Wrong configuration file, using defaults.");
-            }
-            Registry registry = LocateRegistry.getRegistry(serverAddress,serverPort);
-            stub = (ServerRemoteInterface) registry.lookup(registerName);
-            thisClient.setRMICommunication(this);
-        } catch (Exception e) {
-            throw new ServerIsDownException();
-        }
+//        try {
+//            try {
+//                serverPort = ConfigHandler.getInstance().getRmiPort();
+//                serverAddress = ConfigHandler.getInstance().getServerIp();
+//                registerName = ConfigHandler.getInstance().getRegisterName();
+//            } catch (NotValidConfigPathException e) {
+//                System.out.println("Wrong configuration file, using defaults.");
+//            }
+//            Registry registry = LocateRegistry.getRegistry(serverAddress,serverPort);
+//            stub = (ServerRemoteInterface) registry.lookup(registerName);
+//            thisClient.setRMICommunication(this);
+//        } catch (Exception e) {
+//            throw new ServerIsDownException();
+//        }
     }
 
     @Override
     public void login(String username) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException {
-        try {
-            thisClient.setUsername(username);
-            stub.login(thisClient);
-        } catch (RemoteException e) {
-            throw new ServerIsDownException();
-        } catch (InvalidOperationException e) {
-            throw new ServerIsFullException();
-        } catch (it.polimi.ingsw.server.custom_exception.InvalidUsernameException e) {
-            throw new InvalidUsernameException();
-        }
+//        try {
+//            thisClient.setUsername(username);
+//            stub.login(thisClient);
+//        } catch (RemoteException e) {
+//            throw new ServerIsDownException();
+//        } catch (InvalidOperationException e) {
+//            throw new ServerIsFullException();
+//        } catch (it.polimi.ingsw.server.custom_exception.InvalidUsernameException e) {
+//            throw new InvalidUsernameException();
+//        }
 
     }
 
@@ -120,7 +117,6 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
         } catch (InvalidOperationException e) {
             throw new GameInProgressException();
         } catch (RemoteException e) {
-            e.printStackTrace();
             throw new ServerIsDownException();
         } catch (NotValidParameterException e) {
             e.printStackTrace();    //should not happen if this client is correctly registered.
@@ -187,7 +183,7 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     @Override
     public void getUpdatedDicePool() throws ServerIsDownException {
         try {
-            stub.getUpdatedDicepool(thisClient);    //fixme see method in ServerSocketCommunication.
+            stub.getUpdatedDicePool(thisClient);    //fixme see method in ServerSocketCommunication.
         } catch (NotValidParameterException e) {
             e.printStackTrace();    //should only happen if current client isn't registered to the game.
         } catch (RemoteException e) {

@@ -4,15 +4,12 @@ import it.polimi.ingsw.client.configurations.adapters.EffectAdapter;
 import it.polimi.ingsw.client.configurations.adapters.GridInterface;
 import it.polimi.ingsw.client.configurations.adapters.ToolCardAdapter;
 import it.polimi.ingsw.client.custom_exception.*;
-import it.polimi.ingsw.client.custom_exception.invalid_operations.AlreadyDoneOperationException;
-import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
-import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
-import it.polimi.ingsw.client.custom_exception.invalid_operations.ToolCardNotExistException;
+import it.polimi.ingsw.client.custom_exception.invalid_operations.*;
 import it.polimi.ingsw.client.net.ServerCommunicatingInterfaceV2;
+import it.polimi.ingsw.client.net.ServerRMICommunicationV2;
 import it.polimi.ingsw.client.net.ServerSocketCommunicationV2;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.ReconnectionException;
-import it.polimi.ingsw.server.model.cards.effects.Effect;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -38,6 +35,7 @@ public class MainClient {
     private boolean somethingChanged; //fixme
     private boolean gameFinished;
     private boolean turnEnded;
+    private boolean gameEndDataInProxy;
 
     private ArrayList<String> toPrint;
 
@@ -66,6 +64,7 @@ public class MainClient {
         gridsAlreadySelected=false;
         turnUpdated=false;
         turnEnded=false;
+        gameEndDataInProxy =false;
         toPrint=new ArrayList<>();
         logger= Logger.getLogger(MainClient.class.getName());
     }
@@ -110,7 +109,17 @@ public class MainClient {
     }
 
     private void handleGameEnd() {
-        LinkedHashMap<String,String> ranks= (LinkedHashMap<String, String>) Proxy.getInstance().getPlayerRanking();
+        while(!gameEndDataInProxy){
+            try {
+                lock.lock();
+                condition.await();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }finally {
+                lock.unlock();
+            }
+        }
+        Map<String,String> ranks= Proxy.getInstance().getPlayerRanking();
         ranks.forEach(this::printRanks);
         if(ranks.entrySet().iterator().hasNext()){
            String winner= ranks.entrySet().iterator().next().getKey();
@@ -141,7 +150,6 @@ public class MainClient {
         }
         turnEnded=false;
         printOtherPlayerTurnThings(turnPlayer);
-
     }
 
     private void printOtherPlayerTurnThings(String turnPlayer) {
@@ -343,12 +351,16 @@ public class MainClient {
             try {
                 value = Integer.parseInt(request);
                 if(value<1||value>Proxy.getInstance().getGridsSelectionDimension()) System.err.println("Inserire un numero valido. "+value+" non è in range");
+                server.selectGrid(value-1);
             }catch (NumberFormatException e){
                 value=-1;
-                logger.log(Level.INFO,"{0} non è un numero. Inserire un numero valido",request);
+                System.err.println(request+"non è un numero. Inserire un numero valido");
+            } catch (InvalidIndexException e) {
+                value=-1;
+                logger.log(Level.INFO,"Il server notifica che l{0}indice non è disponibile: {1} (è stato rimosso il controllo locale?)",new Object[]{'\'',request});
             }
         }while(value<1||value>Proxy.getInstance().getGridsSelectionDimension());
-        server.selectGrid(value-1);
+
     }
 
     private void waitForGridsFromServer() throws GameInProgressException {
@@ -441,7 +453,7 @@ public class MainClient {
                     instance.server = new ServerSocketCommunicationV2();
                     break;
                 case USE_RMI:
-                    //instance.server = new ServerRMICommunication(); //fixme
+                    instance.server = new ServerRMICommunicationV2();
                     break;
                 default:
                     System.err.println("Input invalido: scegli tra Socket e RMI");
@@ -549,5 +561,12 @@ public class MainClient {
 
     public void setPrint(List<String> strings) {
         toPrint.addAll(strings);
+    }
+
+    public void notifyEndDataInProxy() {
+        lock.lock();
+        gameEndDataInProxy =true;
+        condition.signal();
+        lock.unlock();
     }
 }
