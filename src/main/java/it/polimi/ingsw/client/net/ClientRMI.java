@@ -2,8 +2,10 @@ package it.polimi.ingsw.client.net;
 
 import it.polimi.ingsw.client.MainClient;
 import it.polimi.ingsw.client.Proxy;
+
 import it.polimi.ingsw.client.custom_exception.GameFinishedException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
+
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
@@ -18,7 +20,7 @@ import java.util.logging.Logger;
 
 public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterface {
 
-    private transient ServerRMICommunicationV2 serverRemoteInterfaceAdapter;
+    private transient ServerRMICommunication serverRemoteInterfaceAdapter;
 
     private String username;
     private Logger logger;
@@ -155,7 +157,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
     }
 
 
-    public void setRMICommunication(ServerRMICommunicationV2 serverRemoteInterfaceAdapter) {
+    public void setRMICommunication(ServerRMICommunication serverRemoteInterfaceAdapter) {
         this.serverRemoteInterfaceAdapter=serverRemoteInterfaceAdapter;
     }
 
