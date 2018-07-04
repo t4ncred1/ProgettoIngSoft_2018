@@ -17,6 +17,9 @@ public class SocketHandler extends Thread{
     private ServerSocket serverSock;
     private int port =11000;
 
+    /**
+     * Constructor for SocketHandler.
+     */
     private SocketHandler(){
         try {
             port=ConfigurationHandler.getInstance().getSocketPort();
@@ -31,6 +34,11 @@ public class SocketHandler extends Thread{
         shutdown=false;
     }
 
+    /**
+     * Getter for SocketHandler.
+     *
+     * @return SocketHandler.
+     */
     public static SocketHandler getInstance(){
         if(instance==null){
             instance= new SocketHandler();
@@ -58,10 +66,5 @@ public class SocketHandler extends Thread{
             e.printStackTrace();
         }
         System.out.println("SocketHandlerShutDown");
-    }
-
-    public void shutdown(){
-        shutdown=true;
-        instance= null;
     }
 }
