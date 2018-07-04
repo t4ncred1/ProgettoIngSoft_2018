@@ -112,6 +112,7 @@ public class ServerRMICommunicationV2 implements ServerCommunicatingInterfaceV2 
     public void insertDie(int position, int column, int row) throws ServerIsDownException, InvalidMoveException, DieNotExistException, AlreadyDoneOperationException, DisconnectionException {
         try {
             stub.insertDie(thisClient,position,column,row);
+            thisClient.setRetrieving();
             lock.lock();
             if(disconnected){
                 lock.unlock();
@@ -119,7 +120,6 @@ public class ServerRMICommunicationV2 implements ServerCommunicatingInterfaceV2 
             }
             lock.unlock();
             waitForDataRetrieve();
-
         } catch (RemoteException e) {
             throw new ServerIsDownException();
         } catch (OperationAlreadyDoneException e) {
@@ -148,12 +148,14 @@ public class ServerRMICommunicationV2 implements ServerCommunicatingInterfaceV2 
     public void endTurn() throws ServerIsDownException, DisconnectionException {
         try {
             stub.endTurn(thisClient);
+            thisClient.setRetrieving();
             lock.lock();
             if(disconnected){
                 lock.unlock();
                 throw new DisconnectionException();
             }
             lock.unlock();
+            waitForDataRetrieve();
         } catch (RemoteException e) {
             throw new ServerIsDownException();
         }

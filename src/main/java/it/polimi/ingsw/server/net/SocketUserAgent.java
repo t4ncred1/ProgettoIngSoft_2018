@@ -810,6 +810,15 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }
     }
 
+    @Override
+    public void notifyGameInitialized() {
+        try {
+            outputStream.writeUTF(END_DATA);
+        } catch (IOException e) {
+            logger.fine("Disconnected");
+        }
+    }
+
     private void waitDataRetrieve() {
 
         while(retrievingData){

@@ -46,4 +46,6 @@ public interface ClientRemoteInterface extends Remote {
     void notifyDisconnection() throws RemoteException;
 
     void setTurnPlayerToDisconnected() throws RemoteException;
+
+    void notifyGameInitialized() throws RemoteException;
 }

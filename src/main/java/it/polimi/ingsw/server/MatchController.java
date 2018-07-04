@@ -117,7 +117,7 @@ public class MatchController extends Thread{
 
     private void notifyGameInitialized() {
         synchronized (playersInMatchGuard) {
-            playersInMatch.forEach((username, player) -> player.notifyTurnInitialized());
+            playersInMatch.forEach((username, player) -> player.notifyGameInitialized());
         }
     }
 

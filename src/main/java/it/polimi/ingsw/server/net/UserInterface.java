@@ -124,4 +124,6 @@ public interface UserInterface {
     void sendRoundTrack(List<Die> roundTrack);
 
     void sendToolCards(List<ToolCard> toolCards);
+
+    void notifyGameInitialized();
 }

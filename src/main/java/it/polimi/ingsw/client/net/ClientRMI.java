@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.net;
 
 import it.polimi.ingsw.client.MainClient;
 import it.polimi.ingsw.client.Proxy;
+import it.polimi.ingsw.client.custom_exception.GameFinishedException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
@@ -24,12 +25,14 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
     private Lock lock;
     private boolean endTurn;
     private boolean firstInitialization;
+    private boolean retrievingData;
 
     protected ClientRMI()  throws RemoteException{
         logger= Logger.getLogger(ClientRMI.class.getName());
         lock= new ReentrantLock();
         firstInitialization=true;
         endTurn=false;
+        retrievingData=false;
     }
 
     @Override
@@ -107,17 +110,28 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
 
     @Override
     public void notifyTurnInitialized() {
-        if(firstInitialization){
-            firstInitialization=false;
-            MainClient.getInstance().setGameToInitialized();
-        }else if(endTurn) {
+        if(endTurn) {
+            checkDataRetrieve();
             endTurn=false;
             MainClient.getInstance().notifyTurnUpdated();
         }else {
+            checkDataRetrieve();
             MainClient.getInstance().notifySomethingChanged();
         }
 
     }
+
+    private void checkDataRetrieve() {
+        lock.lock();
+        if(retrievingData){
+            retrievingData=false;
+            lock.unlock();
+            serverRemoteInterfaceAdapter.notifyDataRetrieved();
+            lock.lock();
+        }
+        lock.unlock();
+    }
+
 
     @Override
     public void notifyTurnOf(String username) {
@@ -135,6 +149,11 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
         Proxy.getInstance().setPlayerToDisconnected();
     }
 
+    @Override
+    public void notifyGameInitialized(){
+        MainClient.getInstance().setGameToInitialized();
+    }
+
 
     public void setRMICommunication(ServerRMICommunicationV2 serverRemoteInterfaceAdapter) {
         this.serverRemoteInterfaceAdapter=serverRemoteInterfaceAdapter;
@@ -142,5 +161,11 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
 
     public void setUsername(String username) {
         this.username=username;
+    }
+
+    public void setRetrieving() {
+        lock.lock();
+        retrievingData=true;
+        lock.unlock();
     }
 }

@@ -226,6 +226,15 @@ public class RMIUserAgent implements UserInterface {
     }
 
     @Override
+    public void notifyGameInitialized() {
+        try {
+            clientHandled.notifyGameInitialized();
+        } catch (RemoteException e) {
+            logger.fine(DISCONNECTED_LOG);
+        }
+    }
+
+    @Override
     public void notifyDisconnection() {
         try{
             clientHandled.notifyDisconnection();
