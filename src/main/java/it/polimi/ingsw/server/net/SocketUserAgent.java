@@ -113,6 +113,11 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     private static final String DEFAULT_LOG_DIR="src/main/resources/log_files/SocketUserAg_%u.log";
 
+    /**
+     * Constructor for SocketUserAgent.
+     *
+     * @param client Client connecting.
+     */
     SocketUserAgent(Socket client) {
         boolean succeeded =true;
         connected=true;
@@ -193,7 +198,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
             handler.close();
         }
     }
-
     private void handleGameLogic() throws IOException, IllegalRequestException {
         do{
             String command=inputStream.readUTF();
@@ -217,6 +221,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }while (!gameFinished);
     }
 
+
     private void handleToolCardLogic() throws IOException, IllegalRequestException {
         int toolCardIndex= inputStream.readInt();
         try {
@@ -228,7 +233,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             logger.log(Level.FINE, "{0} notified about tool card already used", username);
             outputStream.writeUTF(NOT_OK_REQUEST);
         } catch (NotValidParameterException e) {
-            logger.log(Level.FINE, "{0} notified that doesn't exist a tool card at that index", username);
+            logger.log(Level.FINE, "{0} notified that does not exist a tool card at that index", username);
             outputStream.writeUTF(INVALID_POSITION);
         }
     }
@@ -266,6 +271,14 @@ public class SocketUserAgent extends Thread implements UserInterface {
     }
 
 
+
+    /**
+     * Handles die insertion operation.
+     *
+     * @throws IOException Thrown when an I/O error occurs.
+     * @throws IllegalRequestException See securityControl doc in MatchController class.
+     */
+
     private void handleDieInsertion() throws IOException, IllegalRequestException {
         int position=inputStream.readInt();
         int x = inputStream.readInt();
@@ -293,6 +306,10 @@ public class SocketUserAgent extends Thread implements UserInterface {
         outputStream.writeUTF(toSend);
     }
 
+    /**
+     *
+     * @return A Gson containing all grids.
+     */
     private Gson getGsonForGrid() {
         GsonBuilder builder= new GsonBuilder();
         RuntimeTypeAdapterFactory<DieConstraints> adapterFactory= RuntimeTypeAdapterFactory.of(DieConstraints.class)
@@ -346,6 +363,12 @@ public class SocketUserAgent extends Thread implements UserInterface {
         while (!request.equals(GET_TURN_PLAYER));
     }
 
+    /**
+     * Handles game initialization (grids request, grid choice).
+     *
+     * @throws IOException Thrown when an I/O error occurs.
+     * @throws IllegalRequestException See securityControl doc in MatchController class.
+     */
     private void handleGameInitialization() throws IOException, IllegalRequestException {
         try {
             handleGridsRequest();
@@ -360,6 +383,13 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }
     }
 
+    /**
+     * Handles grid choice.
+     *
+     * @return True if grid choice is fine.
+     * @throws IOException Thrown when an I/O error occurs.
+     * @throws IllegalRequestException See securityControl doc in MatchController class.
+     */
     private boolean handleGridSet() throws IOException, IllegalRequestException {
         String request;
         do {
@@ -387,6 +417,13 @@ public class SocketUserAgent extends Thread implements UserInterface {
         return true;
     }
 
+    /**
+     * Handles grids request.
+     *
+     * @throws IOException Thrown when an I/O error occurs.
+     * @throws InvalidOperationException See getGridsForPlayer doc in MatchModel class.
+     * @throws IllegalRequestException See securityControl doc in MatchController class.
+     */
     private void handleGridsRequest() throws IOException, InvalidOperationException, IllegalRequestException {
         String request;
         lock.lock();
@@ -414,6 +451,12 @@ public class SocketUserAgent extends Thread implements UserInterface {
         logger.log(Level.FINE, "send grid selection to {0}", username);
     }
 
+    /**
+     * Handles a logout request before match starts.
+     *
+     * @throws IOException Thrown when an I/O error occurs.
+     * @throws DisconnectionException Thrown when the client is disconnecting.
+     */
     private void handleLogoutRequestBeforeStart() throws IOException, DisconnectionException {
         lock.lock();
         new Thread(this::checkForRequestFromClient).start();
@@ -431,6 +474,12 @@ public class SocketUserAgent extends Thread implements UserInterface {
         lock.unlock();
     }
 
+    /**
+     * Handles a logout request.
+     *
+     * @throws IOException Thrown when an I/O error occurs.
+     * @throws DisconnectionException Thrown when the client is disconnecting.
+     */
     private void handleLogoutRequest() throws IOException, DisconnectionException {
         if(inputStream.available()>0) {
             String read = inputStream.readUTF();
@@ -452,6 +501,9 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }
     }
 
+    /**
+     * Checks for client requests.
+     */
     private void checkForRequestFromClient() {
         lock.lock();
         while (!inGame&&connected){
@@ -477,6 +529,11 @@ public class SocketUserAgent extends Thread implements UserInterface {
         lock.unlock();
     }
 
+    /**
+     * Handles login.
+     *
+     * @throws IOException Thrown when an I/O error occurs.
+     */
     private void handleLogin() throws IOException {
         boolean logged =false;
         do {
@@ -504,6 +561,11 @@ public class SocketUserAgent extends Thread implements UserInterface {
         while(!logged);
     }
 
+    /**
+     * Handles connection establishment.
+     *
+     * @throws IOException Thrown when an I/O error occurs.
+     */
     private void handleConnection() throws IOException {
         String hello;
         boolean ok=false;
@@ -532,6 +594,12 @@ public class SocketUserAgent extends Thread implements UserInterface {
     }
 
     //Observer
+
+    /**
+     * Getter for client's username.
+     *
+     * @return A string containing the username.
+     */
     public String getUsername(){
         return this.username;
     }
@@ -593,6 +661,9 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     }
 
+    /**
+     * Waits until all grids to sends are set.
+     */
     private void waitReadyToReceiveGridRequest() {
         while(!readyToReceiveGridsRequest){
             try {
@@ -761,6 +832,12 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }
     }
 
+    /**
+     * Sends data.
+     *
+     * @param dataType Type of the data to send.
+     * @param dataToSend String representation of the json to send.
+     */
     private void sendData(String dataType, String dataToSend) {
         try {
             lock.lock();
