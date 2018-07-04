@@ -1,14 +1,18 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.configurations.adapters.EffectAdapter;
 import it.polimi.ingsw.client.configurations.adapters.GridInterface;
+import it.polimi.ingsw.client.configurations.adapters.ToolCardAdapter;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.AlreadyDoneOperationException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
+import it.polimi.ingsw.client.custom_exception.invalid_operations.ToolCardNotExistException;
 import it.polimi.ingsw.client.net.ServerCommunicatingInterfaceV2;
 import it.polimi.ingsw.client.net.ServerSocketCommunicationV2;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.ReconnectionException;
+import it.polimi.ingsw.server.model.cards.effects.Effect;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -34,7 +38,8 @@ public class MainClient {
     private boolean somethingChanged; //fixme
     private boolean gameFinished;
     private boolean turnEnded;
-    
+
+    private ArrayList<String> toPrint;
 
     private Lock lock;
     private Condition condition;
@@ -61,6 +66,7 @@ public class MainClient {
         gridsAlreadySelected=false;
         turnUpdated=false;
         turnEnded=false;
+        toPrint=new ArrayList<>();
         logger= Logger.getLogger(MainClient.class.getName());
     }
 
@@ -140,6 +146,8 @@ public class MainClient {
 
     private void printOtherPlayerTurnThings(String turnPlayer) {
         try {
+            System.out.println("Le tool cards:");
+            Proxy.getInstance().getToolCards().forEach(toolCard->System.out.println(toolCard.getToolCardInterface()));
             System.out.println("La dice pool:");
             System.out.println(Proxy.getInstance().getDicePool().getDicePoolInterface());
             System.out.println("La round track:");
@@ -163,7 +171,7 @@ public class MainClient {
                     handleDieInsertion();
                     break;
                 case USE_TOOL_CARD:
-                    hadleToolCard();
+                    handleToolCard();
                     break;
                 case END_TURN:
                     myTurnFinished=true;
@@ -176,6 +184,8 @@ public class MainClient {
     }
 
     private void printThingsOnMyTurn() {
+        System.out.println("Le tool cards:");
+        Proxy.getInstance().getToolCards().forEach(toolCard->System.out.println(toolCard.getToolCardInterface()));
         System.out.println("La round track:");
         System.out.println(Proxy.getInstance().getRoundTrack().getRoundTrackInterface());
         System.out.println("La dice pool:");
@@ -188,9 +198,65 @@ public class MainClient {
         System.out.println("Puoi usare i comandi "+INSERT_DIE+", "+USE_TOOL_CARD+" e "+END_TURN);
     }
 
-    private void hadleToolCard() {
-        // TODO: 27/06/2018
+    private void handleToolCard() throws ServerIsDownException, DisconnectionException {
+        System.out.println("Scegliere l'indice della tool card:");
+        Scanner scanner= new Scanner(System.in);
+        boolean ok=false;
+        int value;
+        ToolCardAdapter toolCard;
+        do{
+            try{
+                value = Integer.parseInt(scanner.nextLine());
+                toolCard=Proxy.getInstance().getToolCard(value-1);
+                server.useToolCard(value-1);
+                handleToolCardEffects(toolCard);
+                ok=true;
+            }catch (NumberFormatException e){
+                System.err.println("Il parametro inserito è invalido, inserire un numero");
+            } catch (ToolCardNotExistException e) {
+                System.err.println("Non esite alcuna carta strumento nella posizione indicata");
+            } catch (AlreadyDoneOperationException e) {
+                System.err.println("L'operazione è già stata eseguita, non può essere eseguita nuovamente");
+            }
+        }while (!ok);
+
+
     }
+
+    private void handleToolCardEffects(ToolCardAdapter toolCard) throws ServerIsDownException, DisconnectionException {
+        Scanner scanner= new Scanner(System.in);
+        ArrayList<EffectAdapter> effects= (ArrayList<EffectAdapter>) toolCard.getEffects();
+        ArrayList<String> params=new ArrayList<>();
+        for(EffectAdapter effect: effects){
+            boolean ok;
+            do{
+                effect.getEffectInterface();
+                Iterator<String> text= toPrint.iterator();
+                while (text.hasNext()){
+                    System.out.println(text.next());
+                    text.remove();
+                    String s1= scanner.nextLine();
+                    params.add(s1);
+                }
+                try {
+                    server.doEffect(effect.getName(), params);
+                    ok=true;
+                } catch (InvalidMoveException e) {
+                    System.err.println("Invalid parameters passed, please reinsert them:");
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e1) {
+                        Thread.currentThread().interrupt();
+                    }
+                    params=new ArrayList<>();
+                    ok=false;
+                }
+            }while (!ok);
+        }
+        server.launchToolCards();
+    }
+
+
 
     private void handleDieInsertion() throws ServerIsDownException, DisconnectionException {
         Scanner scanner= new Scanner(System.in);
@@ -479,5 +545,9 @@ public class MainClient {
         turnEnded=true;
         condition.signal();
         lock.unlock();
+    }
+
+    public void setPrint(List<String> strings) {
+        toPrint.addAll(strings);
     }
 }
