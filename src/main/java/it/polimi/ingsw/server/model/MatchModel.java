@@ -48,11 +48,53 @@ public class MatchModel{
      *
      * @param playersUserNames Players in a match.
      * @throws NotValidParameterException Thrown when the number of players is not between 2 and 4 (minimum and maximum number of players).
-     * @throws NotValidConfigPathException Thrown when the method can't get minimum and maximum number of players because of an invalid configuration path.
+     *                                      or when colors of private objectives is not one of the admitted ones
+     * @throws NotValidConfigPathException Thrown when configurations can't get the configurations from a file
      */
     public MatchModel(Set<String> playersUserNames) throws NotValidParameterException, NotValidConfigPathException{
 
         if (playersUserNames==null) throw new NullPointerException();
+        //initialize game parameters
+        getGameParametersFromConfig();
+        if (playersUserNames.size()< MIN_PLAYERS_NUMBER ||playersUserNames.size()> MAX_PLAYERS_NUMBER) throw new NotValidParameterException("Number of players in game: "+Integer.toString(playersUserNames.size()),"Between 2 and "+Integer.toString(MAX_PLAYERS_NUMBER));
+        //components initialization
+        initializeGameComponents();
+        //player initialization:
+        playersInGame= new ArrayList<>();
+        playersUserNames.forEach(this::createPlayerData);
+        playersNotInGame=new Player[playersInGame.size()];
+        //initializing round
+        initializeRound();
+    }
+
+    /**
+     * This method is used to initialize game components and cards
+     *
+     * @throws NotValidConfigPathException Thrown when configurations can't get the configurations from a file
+     * @throws NotValidParameterException Thrown when colors of private objectives is not one of the admitted ones
+     */
+    private void initializeGameComponents() throws NotValidConfigPathException, NotValidParameterException {
+        //initialize round track
+        roundTrack=new ArrayList<>();
+        //initialize grids
+        grids=ConfigurationHandler.getInstance().getGrids();
+        //initialize public objectives
+        publicObjectives= selectPublicObjectives();
+        //selecting 3 tool cards
+        toolCards= selectToolCards();
+        //setting model in tool cards
+        toolCards.forEach(toolCard -> toolCard.setModel(this));
+        //initialize private objectives
+        initializePrivateObjective();
+        //dice pool initialization
+        matchDicePool = new DicePool();
+    }
+
+    /**
+     * Used to get match configurations parameters
+     */
+    //fixme add proper javadoc (why the exception is catch here?)
+    private void getGameParametersFromConfig() {
         try {
             MAX_PLAYERS_NUMBER =ConfigurationHandler.getInstance().getMaxPlayersNumber();
         } catch (NotValidConfigPathException e) {
@@ -63,15 +105,14 @@ public class MatchModel{
         } catch (NotValidConfigPathException e) {
             e.printStackTrace();
         }
+    }
 
-        roundTrack=new ArrayList<>();
-        if (playersUserNames.size()< MIN_PLAYERS_NUMBER ||playersUserNames.size()> MAX_PLAYERS_NUMBER) throw new NotValidParameterException("Number of players in game: "+Integer.toString(playersUserNames.size()),"Between 2 and "+Integer.toString(MAX_PLAYERS_NUMBER));
-
-        grids=ConfigurationHandler.getInstance().getGrids();
-
-        publicObjectives= selectPublicObjectives();
-        toolCards= selectToolCards();
-
+    /**
+     * Used to initialize private objectives
+     *
+     * @throws NotValidParameterException when colors of private objectives is not one of the admitted ones
+     */
+    private void initializePrivateObjective() throws NotValidParameterException {
         privateObjectives = new ArrayList<>();
         privateObjectives.add(new PrivateObjective(GREEN_OBJ));
         privateObjectives.add(new PrivateObjective(RED_OBJ));
@@ -79,24 +120,23 @@ public class MatchModel{
         privateObjectives.add(new PrivateObjective(YELLOW_OBJ));
         privateObjectives.add(new PrivateObjective(BLUE_OBJ));
 
+    }
 
-
-        //player initialization:
-        playersInGame= new ArrayList<>();
-        for (String username: playersUserNames){
-            Player playerToAdd = new Player(username);
-            try {
-                playerToAdd.setObjective(selectPrivateObjective());
-                playerToAdd.setGridsSelection(selectGridsForPlayer());
-            } catch (InvalidOperationException e) {
-                Logger logger = Logger.getLogger(this.getClass().getName());
-                logger.log(Level.WARNING, "Error while creating a new player.", e);
-            }
-            playersInGame.add(playerToAdd);
+    /**
+     * Given a player's username create the relative data structure
+     *
+     * @param username of a player in this match
+     */
+    private void createPlayerData(String username) {
+        Player playerToAdd = new Player(username);
+        try {
+            playerToAdd.setObjective(selectPrivateObjective());
+            playerToAdd.setGridsSelection(selectGridsForPlayer());
+        } catch (InvalidOperationException e) {
+            Logger logger = Logger.getLogger(this.getClass().getName());
+            logger.log(Level.WARNING, "Error while creating a new player.", e);
         }
-        playersNotInGame=new Player[playersInGame.size()];
-        matchDicePool = new DicePool();
-        initializeRound();
+        playersInGame.add(playerToAdd);
     }
 
     /**
@@ -246,9 +286,9 @@ public class MatchModel{
         matchDicePool.removeDieFromPool(dpIndex);
     }
 
-    public boolean useToolCardOperation() {
-        //TODO implement me. Should this be implemented under controller?
-        return false;
+    public ToolCard getToolCard(int i) throws NotValidParameterException {
+        if(i<0||i>=toolCards.size()) throw new NotValidParameterException("Invalid tool card index: "+i, "A value between 0 and "+ (toolCards.size()-1));
+        return toolCards.get(i);
     }
 
     /**
