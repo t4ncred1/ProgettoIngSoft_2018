@@ -198,4 +198,52 @@ class MatchModelTest {
         MatchController matchController=new MatchController();
         MatchModel matchModel=new MatchModel(playerUserNames,matchController);
     }
+
+    @Test
+    void checkDisconnection(){
+        Set<String> playerUserNames = new CopyOnWriteArraySet<String>();
+        playerUserNames.add("Andrea");
+        playerUserNames.add("Giuseppe");
+        playerUserNames.add("Tancredi");
+        playerUserNames.add("Egregio Professor Mottola");
+        MatchModel matchModel = null;
+        try {
+            matchModel=new MatchModel(playerUserNames);
+        } catch (NotValidConfigPathException | NotValidParameterException e) {
+            fail("test failed.");
+        }
+
+        try {
+            matchModel.updateTurn(10);
+            assertEquals("Andrea", matchModel.getCurrentPlayer().getUsername());
+            matchModel.updateTurn(10);
+            assertEquals("Giuseppe", matchModel.getCurrentPlayer().getUsername());
+            matchModel.updateTurn(10);
+            assertEquals("Tancredi", matchModel.getCurrentPlayer().getUsername());
+            matchModel.updateTurn(10);
+            assertEquals("Egregio Professor Mottola", matchModel.getCurrentPlayer().getUsername());
+            matchModel.setPlayerToDisconnect("Andrea");
+            matchModel.updateTurn(10);
+            assertEquals("Egregio Professor Mottola", matchModel.getCurrentPlayer().getUsername());
+            matchModel.updateTurn(10);
+            assertEquals("Tancredi", matchModel.getCurrentPlayer().getUsername());
+            matchModel.updateTurn(10);
+            assertEquals("Giuseppe", matchModel.getCurrentPlayer().getUsername());
+            matchModel.updateTurn(10);
+            assertEquals("Giuseppe", matchModel.getCurrentPlayer().getUsername());
+            matchModel.setPlayerToConnect("Andrea");
+            matchModel.updateTurn(10);
+            assertEquals("Tancredi", matchModel.getCurrentPlayer().getUsername());
+            matchModel.updateTurn(10);
+            assertEquals("Egregio Professor Mottola", matchModel.getCurrentPlayer().getUsername());
+            matchModel.updateTurn(10);
+            assertEquals("Andrea", matchModel.getCurrentPlayer().getUsername());
+            matchModel.updateTurn(10);
+            assertEquals("Andrea", matchModel.getCurrentPlayer().getUsername());
+        } catch (TooManyRoundsException | NotEnoughPlayersException | InvalidUsernameException e) {
+            fail("test failed due to an error while updating turn.");
+        }
+
+
+    }
 }
