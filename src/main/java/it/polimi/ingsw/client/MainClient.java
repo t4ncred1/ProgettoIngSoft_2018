@@ -7,7 +7,7 @@ import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.*;
 import it.polimi.ingsw.client.net.ServerCommunicatingInterfaceV2;
 import it.polimi.ingsw.client.net.ServerRMICommunicationV2;
-import it.polimi.ingsw.client.net.ServerSocketCommunicationV2;
+import it.polimi.ingsw.client.net.ServerSocketCommunication;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.ReconnectionException;
 
@@ -450,7 +450,7 @@ public class MainClient {
             written = written.toLowerCase();
             switch (written){
                 case USE_SOCKET:
-                    instance.server = new ServerSocketCommunicationV2();
+                    instance.server = new ServerSocketCommunication();
                     break;
                 case USE_RMI:
                     instance.server = new ServerRMICommunicationV2();
