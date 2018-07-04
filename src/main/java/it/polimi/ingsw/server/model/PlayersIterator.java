@@ -27,9 +27,10 @@ public class PlayersIterator implements Iterator<Player> {
     }
 
     /**
-     * @return True if the iteration has more elements.
+     * similar to hasNext, but modifies some parameters to keep track of the current turn.
+     * @return True if iteration has more elements.
+     *
      */
-
     private boolean hasSuccessor() {  //shall return false when turn ends
         if (leftToRight) {
             int index = currentTurn + 1;
@@ -54,6 +55,10 @@ public class PlayersIterator implements Iterator<Player> {
             return true;
         }
     }
+
+    /**
+     * @return True if the iteration has more elements.
+     */
 
     public boolean hasNext(){
         if (leftToRight){
