@@ -61,7 +61,6 @@ public class MatchModel{
         //player initialization:
         playersInGame= new ArrayList<>();
         playersUserNames.forEach(this::createPlayerData);
-        playersNotInGame=new Player[playersInGame.size()];
         //initializing round
         initializeRound();
     }
@@ -121,7 +120,6 @@ public class MatchModel{
 
     }
 
-<<<<<<< HEAD
     /**
      * Given a player's username create the relative data structure
      *
@@ -137,26 +135,6 @@ public class MatchModel{
             logger.log(Level.WARNING, "Error while creating a new player.", e);
         }
         playersInGame.add(playerToAdd);
-=======
-
-        iterator = null;
-        //player initialization:
-        playersInGame= new ArrayList<>();
-        for (String username: playersUserNames){
-            Player playerToAdd = new Player(username);
-            try {
-                playerToAdd.setObjective(selectPrivateObjective());
-                playerToAdd.setGridsSelection(selectGridsForPlayer());
-            } catch (InvalidOperationException e) {
-                Logger logger = Logger.getLogger(this.getClass().getName());
-                logger.log(Level.WARNING, "Error while creating a new player.", e);
-            }
-            playersInGame.add(playerToAdd);
-        }
-
-        matchDicePool = new DicePool();
-        initializeRound();
->>>>>>> 32908512877e68ce454c06c9cec95be03809267f
     }
 
     /**
