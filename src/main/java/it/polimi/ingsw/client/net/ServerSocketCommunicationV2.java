@@ -10,11 +10,14 @@ import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.AlreadyDoneOperationException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
+import it.polimi.ingsw.client.custom_exception.invalid_operations.ToolCardNotExistException;
 import it.polimi.ingsw.server.configurations.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidConfigPathException;
 import it.polimi.ingsw.server.custom_exception.ReconnectionException;
+import it.polimi.ingsw.server.model.cards.ToolCard;
+import it.polimi.ingsw.server.model.cards.effects.*;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.DieConstraints;
 import it.polimi.ingsw.server.model.components.DieToConstraintsAdapter;
@@ -28,6 +31,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -82,6 +86,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
     private static final String LISTEN_STATE = "listen";
     private static final String END_LISTEN="listen_end";
     private static final String INSERT_DIE = "insert_die";
+    private static final String USE_TOOL_CARD= "tool_card";
     private static final String INVALID_POSITION = "invalid_index";
     private static final String ALREADY_DONE_OPERATION = "already_done";
     private static final String END_TURN ="end_turn";
@@ -122,7 +127,7 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
             logger.addHandler(handler);
 
         } catch (IOException e) {
-            logger.log(Level.WARNING, "Unable to get log directory: "+ LOG_DIR+", trying default directory "+ DEFAULT_LOG_DIR);
+            logger.log(Level.CONFIG, "Unable to get log directory: "+ LOG_DIR+", trying default directory "+ DEFAULT_LOG_DIR);
             succeeded=false;
         }
         if(!succeeded){
@@ -133,9 +138,9 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
                 logger.setLevel(Level.FINER);
                 logger.addHandler(handler);
             } catch (IOException e) {
-                logger.log(Level.WARNING, "No log file found in "+DEFAULT_LOG_DIR,e);
+                logger.log(Level.CONFIG, "No log file found in "+DEFAULT_LOG_DIR,e);
             }
-            logger.log(Level.INFO,"correctly got loggers at "+DEFAULT_LOG_DIR);
+            logger.log(Level.FINEST,"correctly got loggers at "+DEFAULT_LOG_DIR);
         }
         myGridSet =false;
         gameFinished=false;
@@ -307,6 +312,9 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
                 case ROUND_TRACK_DATA:
                     retrieveRoundTrackFromServer();
                     break;
+                case TOOL_DATA:
+                    retrieveToolCardsFromServer();
+                    break;
                 case END_DATA:
                     logger.log(Level.FINE,"End data notified by server");
                     ok=true;
@@ -316,6 +324,16 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
             }
         }while (!ok);
         MainClient.getInstance().setGameToInitialized();
+    }
+
+    private void retrieveToolCardsFromServer() throws IOException {
+        logger.log(Level.FINE,"Retrieving tool cards from server");
+        ArrayList<ToolCard> toolCards;
+        TypeToken<ArrayList<ToolCard>> typeToken= new TypeToken<ArrayList<ToolCard>>(){};
+        Gson gson= getGsonForToolCards();
+        toolCards=gson.fromJson(readRemoteInput(), typeToken.getType());
+        Proxy.getInstance().setToolCards(toolCards);
+        logger.log(Level.FINE,"Tool Cards retrieved and set");
     }
 
     private void retrieveDicePoolFromServer() throws IOException {
@@ -573,6 +591,66 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         }
     }
 
+    @Override
+    public void doEffect(String effectName, List<String> params) throws ServerIsDownException, DisconnectionException, InvalidMoveException {
+        try {
+            outputStream.writeUTF(effectName);
+            ArrayList<String> temp= (ArrayList<String>) params;
+            Gson gson = new Gson();
+            outputStream.writeUTF(gson.toJson(temp));
+            String response= readRemoteInput();
+            switch (response){
+                case DISCONNECTION:
+                    logger.log(Level.FINE, "disconnected for inactivity");
+                    throw new DisconnectionException();
+                case OK_MESSAGE:
+                    logger.log(Level.FINE,"Effect executed correctly");
+                    break;
+                case NOT_OK_MESSAGE:
+                    logger.log(Level.FINE, "Invalid parameter passed");
+                    throw new InvalidMoveException();
+                default:
+                    logger.log(Level.FINE,"Unexpected response during effect params setting: {0}",response);
+            }
+        } catch (IOException e) {
+            throw new ServerIsDownException();
+        }
+
+    }
+
+    @Override
+    public void useToolCard(int i) throws ServerIsDownException, DisconnectionException, ToolCardNotExistException, AlreadyDoneOperationException {
+        try {
+            outputStream.writeUTF(USE_TOOL_CARD);
+            outputStream.writeInt(i);
+            logger.log(Level.FINE,"Sent use tool card request");
+            String response = readRemoteInput();
+            switch (response){
+                case DISCONNECTION:
+                    logger.log(Level.FINE, "disconnected for inactivity");
+                    throw new DisconnectionException();
+                case OK_MESSAGE:
+                    logger.log(Level.FINE,"Server is ready to handle tool card logic");
+                    break;
+                case NOT_OK_MESSAGE:
+                    logger.log(Level.FINE, "Server notified that a tool card have been already used");
+                    throw new AlreadyDoneOperationException();
+                case INVALID_POSITION:
+                    logger.log(Level.FINE, "Server notified a tool card doesn't exist at that index");
+                    throw new ToolCardNotExistException();
+                default:
+                    logger.log(Level.SEVERE,"Unexpected response during use tool card request: {0}",response);
+            }
+        } catch (IOException e) {
+            throw new ServerIsDownException();
+        }
+    }
+
+    @Override
+    public void launchToolCards() throws ServerIsDownException, DisconnectionException {
+
+    }
+
     private void waitDataRetrieving() {
         while(!dataRetrieved) {
             try {
@@ -646,6 +724,27 @@ public class ServerSocketCommunicationV2 extends Thread implements ServerCommuni
         RuntimeTypeAdapterFactory<DieConstraints> adapterFactory= RuntimeTypeAdapterFactory.of(DieConstraints.class)
                 .registerSubtype(DieToConstraintsAdapter.class, DieToConstraintsAdapter.class.getName());
 
+        builder.registerTypeAdapterFactory(adapterFactory);
+        return builder.create();
+    }
+
+    public Gson getGsonForToolCards() {
+        GsonBuilder builder= new GsonBuilder();
+        //Create a RuntimeTypeAdapterFactory for Effect interface
+        RuntimeTypeAdapterFactory<Effect> adapterFactory= RuntimeTypeAdapterFactory.of(Effect.class)
+                .registerSubtype(ChangeValueDiceEffect.class,ChangeValueDiceEffect.class.getName())
+                .registerSubtype(IncrementDiceEffect.class, IncrementDiceEffect.class.getName())
+                .registerSubtype(InsertDieInGridEffect.class,InsertDieInGridEffect.class.getName())
+                .registerSubtype(InsertDieInPoolEffect.class, InsertDieInPoolEffect.class.getName())
+                .registerSubtype(InsertDieInRoundTrackEffect.class,InsertDieInRoundTrackEffect.class.getName())
+                .registerSubtype(InverseDieValueEffect.class,InverseDieValueEffect.class.getName())
+                .registerSubtype(RemoveDieFromRoundTrackEffect.class,RemoveDieFromRoundTrackEffect.class.getName())
+                .registerSubtype(RemoveDieFromPoolEffect.class, RemoveDieFromPoolEffect.class.getName())
+                .registerSubtype(RemoveDieFromGridEffect.class, RemoveDieFromGridEffect.class.getName())
+                .registerSubtype(SwapRTDieAndDPDieEffect.class, SwapRTDieAndDPDieEffect.class.getName())
+                .registerSubtype(SwapDieEffect.class, SwapDieEffect.class.getName());
+
+        //associate the factory and the builder
         builder.registerTypeAdapterFactory(adapterFactory);
         return builder.create();
     }
