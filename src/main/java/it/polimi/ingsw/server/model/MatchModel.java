@@ -29,7 +29,6 @@ public class MatchModel{
     private DicePool matchDicePool;
     private Player currentPlayer;
     private ArrayList<Player> playersInGame;
-    private Player[] playersNotInGame;
 
     private PlayersIterator iterator;
 
@@ -81,6 +80,7 @@ public class MatchModel{
 
 
 
+        iterator = null;
         //player initialization:
         playersInGame= new ArrayList<>();
         for (String username: playersUserNames){
@@ -94,7 +94,7 @@ public class MatchModel{
             }
             playersInGame.add(playerToAdd);
         }
-        playersNotInGame=new Player[playersInGame.size()];
+
         matchDicePool = new DicePool();
         initializeRound();
     }
@@ -366,16 +366,20 @@ public class MatchModel{
         for (i=0; i<playersInGame.size();i++){
             if (playersInGame.get(i).getUsername().equals(username)) {
                 System.err.println("Removing player "+username);
-                playersNotInGame[i]=playersInGame.remove(i);
+                playersInGame.get(i).setDisconnected();
                 flag=true;
             }
         }
         if (!flag) throw new InvalidUsernameException();
     }
 
-    public void setPlayerToConnect(String username) throws NotValidParameterException{
-        //todo if a player is already connected exception shouldn't be thrown.
-        // This happen when player reconnect before the timeout event of his turn
+    public void setPlayerToConnect(String username) throws InvalidUsernameException{
+        boolean flag = false;
+        for(Player player : playersInGame){
+            if (player.getUsername().equals(username)) player.setConnected();
+            flag = true;
+        }
+        if (!flag) throw new InvalidUsernameException();
     }
 
     /**
@@ -434,9 +438,6 @@ public class MatchModel{
     public Grid getPlayerCurrentGrid(String username) {
         for(Player player: playersInGame){
             if(player.getUsername().equals(username)) return player.getSelectedGrid();
-        }
-        for(Player player: playersNotInGame){
-            if(player!=null&&player.getUsername().equals(username)) return player.getSelectedGrid();
         }
         return null; //throw an exception? I think we shall not, it's ok like this.
     }
@@ -516,9 +517,6 @@ public class MatchModel{
             Map.Entry<String,Integer> entry= ((TreeMap<String, Integer>) temp).lastEntry();
             temp.remove(entry.getKey());
             map.put(entry.getKey(), Integer.toString(entry.getValue()));
-        }
-        for(Player player : this.playersNotInGame){
-            if(player!=null)map.put(player.getUsername(), DISCONNECTED_STATUS);
         }
         return map;
     }

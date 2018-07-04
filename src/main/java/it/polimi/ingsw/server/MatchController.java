@@ -462,7 +462,7 @@ public class MatchController extends Thread{
         synchronized (modelGuard){
             try {
                 model.setPlayerToConnect(username);
-            } catch (NotValidParameterException e) {
+            } catch (InvalidUsernameException e) {
                 logger.log(Level.SEVERE,"Invalid operation",e);
             }
         }
