@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.custom_exception.*;
+import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
 
@@ -169,6 +170,11 @@ public class RMIUserAgent implements UserInterface {
     @Override
     public void sendRoundTrack(List<Die> roundTrack) {
         // TODO: 30/06/2018  
+    }
+
+    @Override
+    public void sendToolCards(List<ToolCard> toolCards) {
+        // TODO: 03/07/2018
     }
 
     //TODO from here.

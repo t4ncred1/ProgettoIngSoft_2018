@@ -235,7 +235,7 @@ public class ConfigurationHandler {
      *
      * @return A Gson containing the tool cards.
      */
-    private Gson getGsonForToolCards() {
+    public Gson getGsonForToolCards() {
         GsonBuilder builder= new GsonBuilder();
         //Create a RuntimeTypeAdapterFactory for Effect interface
         RuntimeTypeAdapterFactory<Effect> adapterFactory= RuntimeTypeAdapterFactory.of(Effect.class);

@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.net;
 
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.custom_exception.*;
+import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
 
@@ -55,4 +56,6 @@ public interface UserInterface {
     void sendPoints(Map<String, String> playersPoints);
 
     void sendRoundTrack(List<Die> roundTrack);
+
+    void sendToolCards(List<ToolCard> toolCards);
 }
