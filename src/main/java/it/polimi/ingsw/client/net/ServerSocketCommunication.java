@@ -602,7 +602,7 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
                     logger.log(Level.FINE, "Invalid parameter passed");
                     throw new InvalidMoveException();
                 default:
-                    logger.log(Level.FINE,"Unexpected response during effect params setting: {0}",response);
+                    logger.log(Level.WARNING,"Unexpected response during effect params setting: {0}",response);
             }
         } catch (IOException e) {
             throw new ServerIsDownException();
