@@ -2,10 +2,13 @@ package it.polimi.ingsw.server.net;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.server.App;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
+import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
+import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.DieConstraints;
 import it.polimi.ingsw.server.model.components.DieToConstraintsAdapter;
@@ -19,6 +22,7 @@ import it.polimi.ingsw.server.custom_exception.ReconnectionException;
 
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.locks.Condition;
@@ -90,9 +94,11 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private static final String END_LISTEN="listen_end";
     private static final String OPERATION_MESSAGE= "operation";
     private static final String INSERT_DIE = "insert_die";
-    private static final String USE_TOOL_CARD="use_tool_card";
+    private static final String USE_TOOL_CARD="tool_card";
+    private static final String EXECUTE_TOOL_CARD = "execute_tool";
     private static final String INVALID_POSITION = "invalid_index";
     private static final String ALREADY_DONE_OPERATION = "already_done";
+    private static final String NOT_VALID_REQUEST = "not_valid_request";
     private static final String END_TURN ="end_turn";
     private static final String GRID_DATA= "grid";
     private static final String ALL_GRIDS_DATA= "all_grid";
@@ -190,7 +196,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
         } finally {
             logger.log(Level.FINE, "Logger file closed. SocketUserAgent {0} shut down",actualConnectionNumber);
             handler.close();
-            lock.unlock();
         }
     }
     private void handleGameLogic() throws IOException, IllegalRequestException {
@@ -198,16 +203,17 @@ public class SocketUserAgent extends Thread implements UserInterface {
             String command=inputStream.readUTF();
             switch (command){
                 case INSERT_DIE:
-                    logger.log(Level.FINE,"{0} requested to end turn",username);
+                    logger.log(Level.FINE,"{0} requested to insert die",username);
                     handleDieInsertion();
                     break;
                 case USE_TOOL_CARD:
-                    // TODO: 27/06/2018
+                    logger.log(Level.FINE,"{0} requested to use tool card",username);
+                    handleToolCardLogic();
                     break;
                 case END_TURN:
                     outputStream.writeUTF(OK_REQUEST);
                     logger.log(Level.FINE,"{0} requested to end turn",username);
-                    gameHandling.notifyEnd();
+                    gameHandling.notifyEnd(this);
                     break;
                 default:
                     logger.log(Level.SEVERE, "Unexpected command while handling game logic: {0}", command);
@@ -215,12 +221,64 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }while (!gameFinished);
     }
 
+
+    private void handleToolCardLogic() throws IOException, IllegalRequestException {
+        int toolCardIndex= inputStream.readInt();
+        try {
+            gameHandling.tryToUseToolCard(this,toolCardIndex);
+            logger.log(Level.FINE, "{0} notified about OK REQUEST", username);
+            outputStream.writeUTF(OK_REQUEST);
+            handleEffects(toolCardIndex);
+        } catch (OperationAlreadyDoneException e) {
+            logger.log(Level.FINE, "{0} notified about tool card already used", username);
+            outputStream.writeUTF(NOT_OK_REQUEST);
+        } catch (NotValidParameterException e) {
+            logger.log(Level.FINE, "{0} notified that does not exist a tool card at that index", username);
+            outputStream.writeUTF(INVALID_POSITION);
+        }
+    }
+
+    private void handleEffects(int toolCardIndex) throws IOException, IllegalRequestException {
+        boolean ok=false;
+        while (!ok){
+            String request= inputStream.readUTF();
+            if(request.equals(EXECUTE_TOOL_CARD)){
+                logger.log(Level.FINE, "Received execute tool card request");
+                gameHandling.executeToolCard(this, toolCardIndex);
+                ok=true;
+            } else{
+                handleEffectsParamsSetting(request);
+            }
+        }
+    }
+
+    private void handleEffectsParamsSetting(String request) throws IOException, IllegalRequestException {
+        logger.log(Level.FINE, "Received set effect parameters request. Effect: {0}", request);
+        String read=inputStream.readUTF();
+        Gson gson= new Gson();
+        TypeToken<ArrayList<String>> typeToken= new TypeToken<ArrayList<String>>(){};
+        ArrayList<String> params=gson.fromJson(read, typeToken.getType());
+        try {
+            gameHandling.setEffectParameters(this, request, params);
+        } catch (InvalidOperationException e) {
+            logger.log(Level.SEVERE,"Not proper effect requested" , e);
+            outputStream.writeUTF(NOT_VALID_REQUEST);
+            throw new IllegalRequestException();
+        } catch (NotValidParameterException e) {
+            logger.log(Level.SEVERE,"Invalid parameter passed" , e);
+            outputStream.writeUTF(NOT_OK_REQUEST);
+        }
+    }
+
+
+
     /**
      * Handles die insertion operation.
      *
      * @throws IOException Thrown when an I/O error occurs.
      * @throws IllegalRequestException See securityControl doc in MatchController class.
      */
+
     private void handleDieInsertion() throws IOException, IllegalRequestException {
         int position=inputStream.readInt();
         int x = inputStream.readInt();
@@ -250,7 +308,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     /**
      *
-     * @return A Gson containing all grids.
+     * @return A Gson to parse grids.
      */
     private Gson getGsonForGrid() {
         GsonBuilder builder= new GsonBuilder();
@@ -530,7 +588,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
             return true;
         }
         catch (IOException e){
-            connected=false;
             return false;
         }
     }
@@ -650,16 +707,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
     }
 
-    @Override
-    public void notifyEndTurn() {
-        try {
-            outputStream.writeUTF(TURN_FINISHED);
-            logger.log(Level.FINE,"{0} notified of the end of the turn. ",username);
-        } catch (IOException e) {
-            connected=false;
-        }
-
-    }
 
     @Override
     public void sendGrids(Map<String, Grid> playersGrids) {
@@ -671,7 +718,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             outputStream.writeUTF(mapToJson);
             logger.log(Level.FINE, "Sent grids to {0}", username);
         } catch (IOException e) {
-            connected=false;
+            logger.fine("Disconnected");
         }
     }
 
@@ -680,7 +727,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         try {
             outputStream.writeUTF(END_DATA);
         } catch (IOException e) {
-            connected=false;
+            logger.fine("Disconnected");
         }
     }
 
@@ -710,8 +757,8 @@ public class SocketUserAgent extends Thread implements UserInterface {
     }
 
     @Override
-    public void synchronize(boolean disconnected, Grid grid, List<Die> dicePool) {
-        //this method is launched at the end of the turn to synchronize with eventual reconnecting players
+    public void synchronizeEndTurn(boolean disconnected, Grid grid, List<Die> dicePool) {
+        //this method is launched at the end of the turn to synchronizeEndTurn with eventual reconnecting players
         try {
             syncLock.lock();
             waitDataRetrieve();
@@ -720,18 +767,18 @@ public class SocketUserAgent extends Thread implements UserInterface {
             sendDicePool(dicePool);
             outputStream.writeUTF(END_TURN);
         } catch (IOException e) {
-            connected=false;
+            logger.fine("Disconnected");
         } finally {
             syncLock.unlock();
         }
     }
 
     @Override
-    public void notifyEnd() {
+    public void notifyEndGame() {
         try {
             outputStream.writeUTF(GAME_FINISHED);
         } catch (IOException e) {
-            connected=false;
+            logger.fine("Disconnected");
         }
     }
 
@@ -749,6 +796,18 @@ public class SocketUserAgent extends Thread implements UserInterface {
         Gson gson = new Gson();
         String dataToSend = gson.toJson(dieList);
         sendData(ROUND_TRACK_DATA,dataToSend);
+    }
+
+    @Override
+    public void sendToolCards(List<ToolCard> toolCards) {
+        ArrayList<ToolCard> toolCardArrayList= (ArrayList<ToolCard>) toolCards;
+        try {
+            Gson gson = ConfigurationHandler.getInstance().getGsonForToolCards();
+            String dataToSend = gson.toJson(toolCardArrayList);
+            sendData(TOOL_DATA,dataToSend);
+        } catch (NotValidConfigPathException e) {
+            logger.severe("Configurations error");
+        }
     }
 
     private void waitDataRetrieve() {
@@ -774,7 +833,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             outputStream.writeUTF(dataType);
             outputStream.writeUTF(dataToSend);
         } catch (IOException e) {
-            connected=false;
+            logger.fine("Disconnected");
         } finally {
             lock.unlock();
         }
@@ -786,7 +845,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             outputStream.writeUTF(DISCONNECTION);
             logger.log(Level.FINE,"{0} notified about disconnection due to timeout", username);
         } catch (IOException e) {
-            connected=false;
+            logger.fine("Disconnected");
         }
     }
 

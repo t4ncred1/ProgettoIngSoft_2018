@@ -25,7 +25,7 @@ public class ConfigHandler {
         try {
             config = gson.fromJson(new FileReader(CONFIG_PATH), Configurations.class);
         } catch (FileNotFoundException e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"File not found "+CONFIG_PATH+", trying default: "+DEFAULT_CONFIG_PATH);
+            Logger.getLogger(this.getClass().getName()).log(Level.CONFIG,"File not found "+CONFIG_PATH+", trying default: "+DEFAULT_CONFIG_PATH);
             succeed = false;
         }
         if(!succeed){
@@ -35,7 +35,7 @@ public class ConfigHandler {
             } catch (FileNotFoundException e) {
                 throw new NotValidConfigPathException("No config.json found in "+DEFAULT_CONFIG_PATH);
             }
-            Logger.getLogger(this.getClass().getName()).log(Level.INFO,"correctly loaded configurations at "+DEFAULT_CONFIG_PATH);
+            Logger.getLogger(this.getClass().getName()).log(Level.CONFIG,"correctly loaded configurations at "+DEFAULT_CONFIG_PATH);
         }
     }
 

@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.model.MatchModel;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface Effect extends Serializable {
     /**
@@ -32,4 +33,13 @@ public interface Effect extends Serializable {
      * @return Effect's name.
      */
     String getName();
+
+
+    /**
+     *  Used to set effect parameters in the tool card which is using it.
+     *
+     * @param params is a List containing all parameters to set.
+     *
+     */
+    void setToolCardParams(List<String> params) throws NotValidParameterException;
 }

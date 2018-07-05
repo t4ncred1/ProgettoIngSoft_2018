@@ -1,12 +1,12 @@
 package it.polimi.ingsw.client.net;
 
+import it.polimi.ingsw.client.MainClient;
 import it.polimi.ingsw.client.Proxy;
 import it.polimi.ingsw.client.configurations.ConfigHandler;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.custom_exception.InvalidUsernameException;
-import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
+import it.polimi.ingsw.client.custom_exception.invalid_operations.*;
 import it.polimi.ingsw.server.MatchController;
-import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
 import it.polimi.ingsw.server.custom_exception.*;
 import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.net.ServerRemoteInterface;
@@ -15,12 +15,20 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServerRMICommunication implements ServerCommunicatingInterface {
 
-    private transient ServerRemoteInterface stub;
-    private transient ClientRMI thisClient;
-
+    private Logger logger;
+    private ClientRMI thisClient;
+    private ServerRemoteInterface stub;
+    private boolean disconnected;
+    private Lock lock;
+    private Condition condition;
 
     private String registerName = "MatchHandler";
     private int serverPort = 11001;
@@ -30,16 +38,44 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     private transient boolean gameStarted;
     private transient boolean reconnection;
     private transient MatchController controller;
+    private boolean dataRetrieved;
 
     public ServerRMICommunication(){
+        logger= Logger.getLogger(ServerRMICommunication.class.getName());
+        lock= new ReentrantLock();
+        condition= lock.newCondition();
         try {
             thisClient=new ClientRMI();
+            disconnected=false;
         } catch (RemoteException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE,"Can't initialize ClientRMI" , e);
         }
+        dataRetrieved=false;
     }
     @Override
-    public void setUpConnection() throws ServerIsDownException{
+    public void selectGrid(int gridIndex) throws ServerIsDownException, DisconnectionException, InvalidIndexException {
+        try {
+            stub.selectGrid(thisClient,gridIndex);
+            lock.lock();
+            if(disconnected){
+                lock.unlock();
+                throw new DisconnectionException();
+            }
+            lock.unlock();
+        } catch (RemoteException e) {
+            throw new ServerIsDownException();
+        } catch (InvalidOperationException e) {
+            throw new InvalidIndexException();
+        }
+    }
+
+    @Override
+    public void askForLogout() throws ServerIsDownException, GameStartingException, LoggedOutException {
+        // TODO: 04/07/2018  
+    }
+
+    @Override
+    public void setUpConnection() throws ServerIsDownException {
         try {
             try {
                 serverPort = ConfigHandler.getInstance().getRmiPort();
@@ -57,10 +93,11 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     }
 
     @Override
-    public void login(String username) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException {
+    public void login(String username) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException, ReconnectionException {
         try {
             thisClient.setUsername(username);
             stub.login(thisClient);
+            Proxy.getInstance().setMyUsername(username);
         } catch (RemoteException e) {
             throw new ServerIsDownException();
         } catch (InvalidOperationException e) {
@@ -68,159 +105,101 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
         } catch (it.polimi.ingsw.server.custom_exception.InvalidUsernameException e) {
             throw new InvalidUsernameException();
         }
-
+        // TODO: 04/07/2018 handle reconnection
     }
 
     @Override
-    public void waitForGame(boolean starting) throws GameStartingException, GameStartedException, TimerRestartedException, GameInProgressException {
-
-        if (gameStarted) throw new GameStartedException();
-        if (reconnection) throw new GameInProgressException();
-        if (!starting) {
-            if (startingGame) {
-                startingGame = false;
-                throw new GameStartingException();
-            }
-        } else {
-            if (startingGame) {
-                startingGame = false;
-                throw new TimerRestartedException();
-            }
-        }
-    }
-
-    @Override
-    public void logout() throws ServerIsDownException, GameStartingException {
-        try{
-            stub.logout(thisClient);
-        } catch (InvalidOperationException e) {
-            throw new GameStartingException();    //should print "You can't logout" in caller method.
-        }
-        catch (RemoteException e) {
-            throw new ServerIsDownException();  //Only thrown if server is not reachable. (Remote Exception in RMI)
-        }
-
-    }
-
-    @Override
-    public void getGrids() throws ServerIsDownException, GameInProgressException {
-        List<Grid> grids=null;
-//        try {
-//            stub.setControllerForClient(thisClient, controller);    //controller is set here because it's the first request to controller.
-//        } catch (RemoteException e) {
-//            throw new ServerIsDownException();
-//        } catch (InvalidOperationException e) {
-//            e.printStackTrace(); //should only happen if get grids was already called.
-//        } catch (NotValidParameterException e) {
-//            e.printStackTrace(); //should not be thrown ad parameters passed are not null.
-//
-//        }
+    public void insertDie(int position, int column, int row) throws ServerIsDownException, InvalidMoveException, DieNotExistException, AlreadyDoneOperationException, DisconnectionException {
         try {
-            grids = stub.getGrids(thisClient);
-        } catch (InvalidOperationException e) {
-            throw new GameInProgressException();
+            stub.insertDie(thisClient,position,column,row);
+            lock.lock();
+            if(disconnected){
+                lock.unlock();
+                throw new DisconnectionException();
+            }
+            lock.unlock();
+            waitForDataRetrieve();
+
         } catch (RemoteException e) {
-            e.printStackTrace();
             throw new ServerIsDownException();
-        } catch (NotValidParameterException e) {
-            e.printStackTrace();    //should not happen if this client is correctly registered.
-        } catch (IllegalRequestException e) {
-            //fixme
-        }
-        try {
-            Proxy.getInstance().setGridsSelection(grids);
-        } catch (InvalidOperationException e) {
-            e.printStackTrace();    //thrown if passed grids are null. Can only happen if the above NotValidParameterException occurs.
-        }
-    }
-
-    @Override
-    public void setGrid(int gridIndex) throws ServerIsDownException, InvalidMoveException {
-        try {
-            stub.setGrid(thisClient,gridIndex);
+        } catch (OperationAlreadyDoneException e) {
+            throw new AlreadyDoneOperationException();
+        } catch (NotInPoolException e) {
+            throw new DieNotExistException();
         } catch (InvalidOperationException e) {
             throw new InvalidMoveException();
-        } catch (RemoteException e){
-            throw new ServerIsDownException();
-        } catch (NotValidParameterException e) {
-            e.printStackTrace(); //only thrown if parameter thisClient is invalid, should not happen.
-        } catch (IllegalRequestException e) {
-            //fixme
         }
     }
 
-    @Override
-    public void getPrivateObjective() throws ServerIsDownException {
-        try{
-            stub.getPrivateObjective(thisClient);
-        } catch (RemoteException e){
-            throw new ServerIsDownException();
-        } catch (NotValidParameterException e) {
-            e.printStackTrace();//Shall happen if this client is not registered to the match. Should not be the case.
-        } catch (IllegalRequestException e) {
-            //fixme
+    private void waitForDataRetrieve() {
+        lock.lock();
+        while (!dataRetrieved){
+            try {
+                condition.await();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
+        dataRetrieved=false;
+        lock.unlock();
     }
 
     @Override
-    public String askTurn() throws GameFinishedException, ServerIsDownException, ServerNotReadyException {
-        String username=null;
+    public void endTurn() throws ServerIsDownException, DisconnectionException {
         try {
-             username=stub.askTurn(thisClient);
-        } catch (NotValidParameterException e) {
-            e.printStackTrace();    //shall be thrown only if this client is not in the associated match.
-        } catch (InvalidOperationException e) {
-            throw new ServerNotReadyException();
-        } catch (TooManyRoundsException e) {
-            throw new GameFinishedException();
-        } catch (RemoteException e){
-            throw new ServerIsDownException();
-        }
-        return username;    //it shall return null only if NotValidParameterException is thrown.
-    }
-
-    @Override
-    public void listen(String username) throws ServerIsDownException, TurnFinishedException, DisconnectionException {
-        //TODO
-    }
-
-    @Override
-    public void getUpdatedDicePool() throws ServerIsDownException {
-        try {
-            stub.getUpdatedDicepool(thisClient);    //fixme see method in ServerSocketCommunication.
-        } catch (NotValidParameterException e) {
-            e.printStackTrace();    //should only happen if current client isn't registered to the game.
+            stub.endTurn(thisClient);
+            lock.lock();
+            if(disconnected){
+                lock.unlock();
+                throw new DisconnectionException();
+            }
+            lock.unlock();
         } catch (RemoteException e) {
             throw new ServerIsDownException();
         }
     }
 
     @Override
-    public void insertDie(int position, int x, int y) throws ServerIsDownException, InvalidMoveException {
+    public void doEffect(String effectName, List<String> params) throws ServerIsDownException, DisconnectionException, InvalidMoveException {
 
     }
 
     @Override
-    public void endTurn() throws ServerIsDownException {
+    public void useToolCard(int i) throws ServerIsDownException, DisconnectionException, ToolCardNotExistException, AlreadyDoneOperationException {
 
     }
 
     @Override
-    public void getSelectedGrid() throws ServerIsDownException {
-        // TODO: 05/06/2018  
+    public void launchToolCards() throws ServerIsDownException, DisconnectionException {
+
     }
 
-
-    public void notifyStarting() {
-        this.startingGame=true;
+    public void getGridSelectionFromServer(){
+        new Thread(this::retrieveGridSelection).start();
     }
 
-    public void notifyStarted() {
-        this.gameStarted=true;
-        this.startingGame=false;
+    private void retrieveGridSelection() {
+        try {
+            List<Grid> gridSelection=stub.getGridSelection(thisClient);;
+            Proxy.getInstance().setGridsSelection(gridSelection);
+            MainClient.getInstance().notifyGridsAreInProxy();
+        } catch (InvalidOperationException e) {
+            MainClient.getInstance().setGridsAlreadySelected(true);
+        } catch (RemoteException e) {
+            logger.severe("Grave error");
+        }
     }
 
-    public void notifyReconnection() {
-        this.reconnection=true;
+    public void setToDisconnected() {
+        lock.lock();
+        disconnected=true;
+        lock.unlock();
+    }
+
+    protected void notifyDataRetrieved(){
+        lock.lock();
+        dataRetrieved=true;
+        condition.signal();
+        lock.unlock();
     }
 }

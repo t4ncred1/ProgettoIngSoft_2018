@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.net;
 
 import it.polimi.ingsw.client.configurations.ConfigHandler;
+import it.polimi.ingsw.client.net.ClientRMI;
 import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
@@ -50,7 +51,6 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                e.printStackTrace();
             }
             synchronized (clientsHandledGuard) {
                 Iterator<Map.Entry<ClientRemoteInterface,RMIUserAgent>> iterator =clientsHandled.entrySet().iterator();
@@ -148,11 +148,55 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
     }
 
     @Override
-    public List<Die> getUpdatedDicepool(ClientRemoteInterface thisClient) throws NotValidParameterException {
+    public List<Die> getUpdatedDicePool(ClientRemoteInterface thisClient) throws NotValidParameterException {
         synchronized (clientsHandledGuard){
             if(!(clientsHandled.containsKey(thisClient)))
                 throw new NotValidParameterException("Client thisClient is not in any Match.", "Should be in a match to ask for dicepool to be shown.");
         }
         return clientsMatch.get(thisClient).getDicePool();
+    }
+
+    @Override
+    public List<Grid> getGridSelection(ClientRemoteInterface clientCalling) throws InvalidOperationException {
+        List<Grid> gridSelection= new ArrayList<>();
+        synchronized (clientsHandledGuard){
+            try {
+                gridSelection = clientsMatch.get(clientCalling).getPlayerGrids(clientsHandled.get(clientCalling));
+            } catch (IllegalRequestException e){
+                clientsHandled.remove(clientCalling);
+            }
+        }
+        return gridSelection;
+    }
+
+    @Override
+    public void selectGrid(ClientRemoteInterface clientCalling,int gridIndex) throws InvalidOperationException {
+        try {
+            clientsMatch.get(clientCalling).setGrid(clientsHandled.get(clientCalling), gridIndex);
+        } catch (IllegalRequestException e) {
+            clientsHandled.remove(clientCalling);
+        }
+    }
+
+    @Override
+    public void insertDie(ClientRemoteInterface clientCalling,int position, int column, int row) throws OperationAlreadyDoneException, NotInPoolException, InvalidOperationException {
+        synchronized (clientsHandledGuard){
+            try {
+                clientsMatch.get(clientCalling).insertDie(clientsHandled.get(clientCalling), position, column, row);
+            } catch (IllegalRequestException e){
+                clientsHandled.remove(clientCalling);
+            }
+        }
+    }
+
+    @Override
+    public void endTurn(ClientRemoteInterface clientCalling) throws RemoteException {
+        synchronized (clientsHandledGuard){
+            try {
+                clientsMatch.get(clientCalling).notifyEnd(clientsHandled.get(clientCalling));
+            } catch (IllegalRequestException e){
+                clientsHandled.remove(clientCalling);
+            }
+        }
     }
 }

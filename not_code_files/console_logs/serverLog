@@ -1,0 +1,45 @@
+lug 03, 2018 12:21:00 AM it.polimi.ingsw.server.configurations.ConfigurationHandler <init>
+AVVERTENZA: File not found C:\Users\Tancredi\Desktop\ProgettoIngSoft_2018\target/resources/config.json, trying default: src/main/resources/config.json
+lug 03, 2018 12:21:00 AM it.polimi.ingsw.server.configurations.ConfigurationHandler <init>
+INFORMAZIONI: correctly loaded configurations at src/main/resources/config.json
+lug 03, 2018 12:21:00 AM it.polimi.ingsw.server.MatchHandler run
+INFORMAZIONI: MatchHandlerStarted
+java.net.BindException: Address already in use: JVM_Bind
+	at java.net.DualStackPlainSocketImpl.bind0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketBind(DualStackPlainSocketImpl.java:106)
+	at java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:387)
+	at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:190)
+	at java.net.ServerSocket.bind(ServerSocket.java:375)
+	at java.net.ServerSocket.<init>(ServerSocket.java:237)
+	at java.net.ServerSocket.<init>(ServerSocket.java:128)
+	at it.polimi.ingsw.server.net.SocketHandler.<init>(SocketHandler.java:27)
+	at it.polimi.ingsw.server.net.SocketHandler.getInstance(SocketHandler.java:36)
+	at it.polimi.ingsw.server.App.main(App.java:32)
+A new match is ready to be handled.
+SocketHandlerStarted
+Exception in thread "Thread-3" java.lang.NullPointerException
+RMIHandler started
+	at it.polimi.ingsw.server.net.SocketHandler.run(SocketHandler.java:47)
+java.rmi.server.ExportException: Port already in use: 11001; nested exception is: 
+	java.net.BindException: Address already in use: JVM_Bind
+	at sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:346)
+	at sun.rmi.transport.tcp.TCPTransport.exportObject(TCPTransport.java:254)
+	at sun.rmi.transport.tcp.TCPEndpoint.exportObject(TCPEndpoint.java:411)
+	at sun.rmi.transport.LiveRef.exportObject(LiveRef.java:147)
+	at sun.rmi.server.UnicastServerRef.exportObject(UnicastServerRef.java:236)
+	at java.rmi.server.UnicastRemoteObject.exportObject(UnicastRemoteObject.java:383)
+	at java.rmi.server.UnicastRemoteObject.exportObject(UnicastRemoteObject.java:320)
+	at it.polimi.ingsw.server.App.main(App.java:35)
+Caused by: java.net.BindException: Address already in use: JVM_Bind
+	at java.net.DualStackPlainSocketImpl.bind0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketBind(DualStackPlainSocketImpl.java:106)
+	at java.net.AbstractPlainSocketImpl.bind(AbstractPlainSocketImpl.java:387)
+	at java.net.PlainSocketImpl.bind(PlainSocketImpl.java:190)
+	at java.net.ServerSocket.bind(ServerSocket.java:375)
+	at java.net.ServerSocket.<init>(ServerSocket.java:237)
+	at java.net.ServerSocket.<init>(ServerSocket.java:128)
+	at sun.rmi.transport.proxy.RMIDirectSocketFactory.createServerSocket(RMIDirectSocketFactory.java:45)
+	at sun.rmi.transport.proxy.RMIMasterSocketFactory.createServerSocket(RMIMasterSocketFactory.java:345)
+	at sun.rmi.transport.tcp.TCPEndpoint.newServerSocket(TCPEndpoint.java:666)
+	at sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:335)
+	... 7 more

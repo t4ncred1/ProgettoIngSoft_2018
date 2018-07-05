@@ -15,6 +15,7 @@ public class Player {
         private int favorTokens;
         private boolean firstTurn = true;
         private boolean jumpSecondTurn = false;
+        private boolean disconnected;
 
     /**
      * Constructor for player.
@@ -27,7 +28,20 @@ public class Player {
             objective=null;
             favorTokens = 0;
             this.username=username;
-        }
+            this.disconnected=false;
+    }
+
+    public void setDisconnected(){
+        disconnected=true;
+    }
+
+    public boolean isDisconnected() {
+        return disconnected;
+    }
+
+    public void setConnected(){
+        disconnected=false;
+    }
 
     /**
      *

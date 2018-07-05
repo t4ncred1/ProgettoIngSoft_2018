@@ -2,6 +2,8 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
 import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.cards.ToolCard;
+import it.polimi.ingsw.server.model.cards.effects.Effect;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.*;
@@ -23,6 +25,7 @@ public class MatchController extends Thread{
     private boolean gameStartingSoon;
     private MatchModel model;
     private final Object modelGuard = new Object();
+    private List<Effect> effectsToDo;
 
     private static final int MAX_ROUND =10;
     private UserInterface turnPlayer;
@@ -90,7 +93,7 @@ public class MatchController extends Thread{
             playersPoints = model.calculatePoints();
         }
         synchronized (playersInMatchGuard){
-            playersInMatch.forEach((username,player)->player.notifyEnd());
+            playersInMatch.forEach((username,player)->player.notifyEndGame());
             playersInMatch.forEach((username,player)->player.sendPoints(playersPoints));
         }
 
@@ -266,7 +269,7 @@ public class MatchController extends Thread{
             handleEventualTimeout(timer,username);
             lock.unlock();
         }
-        timer.stop();
+        if(timer!= null) timer.stop();
         synchronized (playersInMatchGuard){
             playersInMatch.forEach(this::updateEndTurn);
         }
@@ -282,7 +285,7 @@ public class MatchController extends Thread{
             grid=model.getPlayerCurrentGrid(turnPlayer.getUsername());
             //todo pass toolcards, roundtrack
         }
-        player.synchronize(disconnected,grid,dicePool);
+        player.synchronizeEndTurn(disconnected,grid,dicePool);
     }
 
     /**
@@ -332,7 +335,18 @@ public class MatchController extends Thread{
         sendDicePool();
         sendRoundTrack();
         sendGrids();
+        sendToolCards();
         notifyGameInitialized();
+    }
+
+    private void sendToolCards() {
+        List<ToolCard> toolCards;
+        synchronized (modelGuard){
+            toolCards = model.getToolCards();
+        }
+        synchronized (playersInMatchGuard){
+            playersInMatch.forEach((username,player)->player.sendToolCards(toolCards));
+        }
     }
 
     /**
@@ -559,7 +573,7 @@ public class MatchController extends Thread{
         synchronized (modelGuard){
             try {
                 model.setPlayerToConnect(username);
-            } catch (NotValidParameterException e) {
+            } catch (InvalidUsernameException e) {
                 logger.log(Level.SEVERE,"Invalid operation",e);
             }
         }
@@ -675,6 +689,7 @@ public class MatchController extends Thread{
      */
     public void insertDie(UserInterface player, int position, int x, int y) throws InvalidOperationException, NotInPoolException, IllegalRequestException, OperationAlreadyDoneException {
         securityControl(player);
+        if(!player.equals(turnPlayer)) throw new IllegalRequestException();
         if(dieInserted) throw new OperationAlreadyDoneException();
         try {
             model.insertDieOperation(x, y, position);
@@ -698,7 +713,6 @@ public class MatchController extends Thread{
      * @param userInterface Player's interface.
      */
     private void sendDataForDieInsertion(String username, UserInterface userInterface) {
-
         List<Die> dicePool;
         Grid grid;
         synchronized (modelGuard){
@@ -729,17 +743,15 @@ public class MatchController extends Thread{
      */
     private void securityControl(UserInterface player) throws  IllegalRequestException {
         String username= player.getUsername();
-        //fixme create 2 different exceptions?
         synchronized (playersInMatchGuard) {
             if (!playersInMatch.containsKey(username)) throw new IllegalRequestException();
             if (!playersInMatch.get(username).equals(player)) throw new IllegalRequestException();
         }
     }
 
-    /**
-     * Sends a notification about turn end.
-     */
-    public void notifyEnd() {
+    public void notifyEnd(UserInterface player) throws IllegalRequestException {
+        securityControl(player);
+        if(!player.equals(turnPlayer)) throw new IllegalRequestException();
         lock.lock();
         turnFinished=true;
         condition.signal();
@@ -793,6 +805,48 @@ public class MatchController extends Thread{
     public int toolCardLetPlayerChoose(String color){
         //todo this will be the method called by toolcard 11 to get the value for the newly extracted die from client.
         return 6;
+    }
+
+    public void tryToUseToolCard(UserInterface player, int toolCardIndex) throws OperationAlreadyDoneException, NotValidParameterException, IllegalRequestException {
+        securityControl(player);
+        if(!player.equals(turnPlayer)) throw new IllegalRequestException();
+        if(toolCardUsed) {
+            throw new OperationAlreadyDoneException();
+        }
+        else {
+            synchronized (modelGuard){
+                effectsToDo=model.getToolCard(toolCardIndex).getEffects();
+            }
+        }
+    }
+
+    public void setEffectParameters(UserInterface player,String effectName, List<String> parameters) throws IllegalRequestException, InvalidOperationException, NotValidParameterException {
+        final int REMOVING_INDEX=0;
+        securityControl(player);
+        if(!player.equals(turnPlayer)) throw new IllegalRequestException();
+        synchronized (modelGuard){
+            Effect effect= effectsToDo.get(REMOVING_INDEX);
+            if(effectName.equals(effect.getName())){
+                effect.setToolCardParams(parameters);
+                effectsToDo.remove(effect);
+            }else{
+                throw new InvalidOperationException();
+            }
+        }
+    }
+
+    public void executeToolCard(UserInterface player, int index) throws IllegalRequestException {
+        securityControl(player);
+        if(!player.equals(turnPlayer)) throw new IllegalRequestException();
+        synchronized (modelGuard){
+            try {
+                model.getToolCard(index).useToolCard();
+            } catch (NotValidParameterException e) {
+                logger.log(Level.SEVERE, "Something went wrong when TryToUseToolCard was executed", e);
+            } catch (Exception e) {
+                //fixme need to differentiate exception launched by useToolCard
+            }
+        }
     }
 }
 

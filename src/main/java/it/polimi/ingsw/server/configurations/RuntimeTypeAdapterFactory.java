@@ -34,7 +34,7 @@ import com.google.gson.stream.JsonWriter;
 
 
 /**
- * Here i inserted a class found on git to handle interfaces serialization.
+ * This is a class found on git to handle interfaces serialization.
  * This package isn't imported from maven for two reasons:
  *  1. in the original class a bug isn't solved yet. (See line 123)
  *  2. only this particular class is needed. A custom Serializer/Deserializer wasn't enough.

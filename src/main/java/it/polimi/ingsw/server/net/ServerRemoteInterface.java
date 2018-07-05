@@ -1,15 +1,13 @@
 package it.polimi.ingsw.server.net;
 
+import it.polimi.ingsw.client.net.ClientRMI;
 import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
+import it.polimi.ingsw.server.custom_exception.*;
 import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
 import it.polimi.ingsw.server.model.cards.PrivateObjective;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
-import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
-import it.polimi.ingsw.server.custom_exception.InvalidUsernameException;
-import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
-import it.polimi.ingsw.server.custom_exception.TooManyRoundsException;
 
 import java.rmi.*;
 import java.util.List;
@@ -29,5 +27,13 @@ public interface ServerRemoteInterface extends Remote {
 
     String askTurn(ClientRemoteInterface thisClient) throws RemoteException, NotValidParameterException, InvalidOperationException, TooManyRoundsException;
 
-    List<Die> getUpdatedDicepool(ClientRemoteInterface thisClient) throws NotValidParameterException, RemoteException;
+    List<Die> getUpdatedDicePool(ClientRemoteInterface thisClient) throws NotValidParameterException, RemoteException;
+
+    List<Grid> getGridSelection(ClientRemoteInterface clientCalling) throws RemoteException, InvalidOperationException;
+
+    void selectGrid(ClientRemoteInterface clientCalling,int gridIndex) throws RemoteException,InvalidOperationException;
+
+    void insertDie(ClientRemoteInterface clientCalling,int position, int column, int row)throws RemoteException, OperationAlreadyDoneException, NotInPoolException, InvalidOperationException;
+
+    void endTurn(ClientRemoteInterface thisClient)throws RemoteException;
 }

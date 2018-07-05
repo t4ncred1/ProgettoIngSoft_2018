@@ -1,0 +1,49 @@
+Scegli tra 'socket' e 'rmi' come modalità di connessione: 
+Per loggare usa il comando login, altrimenti usa chiudi per chiudere
+Benvenuto nel server di Sagrada. Per favore scegli uno username:
+Ti sei connesso. Sei stato inserito nella lobby.
+Usa 'Logout' per uscire dalla coda. Non puoi uscire una volta che la partita sta incominciando
+Una partita inizierà presto
+Inizia la partita
+Server response 1: ok
+Nome: Kaleidoscopic Dream	 Difficoltà: 4
+|	Y	|	B	|	 	|	 	|	1	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+|	G	|	 	|	5	|	 	|	4	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+|	3	|	 	|	R	|	 	|	G	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+|	2	|	 	|	 	|	B	|	Y	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+
+Nome: Lux Astram	 Difficoltà: 5
+|	 	|	1	|	G	|	P	|	4	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+|	6	|	P	|	2	|	5	|	G	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+|	1	|	G	|	5	|	3	|	P	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+|	 	|	 	|	 	|	 	|	 	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+
+Nome: Fractal Drops	 Difficoltà: 3
+|	 	|	4	|	 	|	Y	|	6	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+|	R	|	 	|	2	|	 	|	 	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+|	 	|	 	|	R	|	P	|	1	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+|	B	|	Y	|	 	|	 	|	 	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+
+Nome: Fulgor del Cielo	 Difficoltà: 5
+|	 	|	B	|	R	|	 	|	 	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+|	 	|	4	|	5	|	 	|	B	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+|	B	|	2	|	 	|	R	|	5	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+|	6	|	R	|	3	|	1	|	 	|		|	 	|	 	|	 	|	 	|	 	|
+|	-	|	-	|	-	|	-	|	-	|		|	-	|	-	|	-	|	-	|	-	|
+
+Scegli una mappa tra le seguenti (scegli un numero da 1 a 4):

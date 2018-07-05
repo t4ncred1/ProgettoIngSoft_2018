@@ -213,7 +213,6 @@ public class MatchHandler extends Thread {
                         timer.stop();
                         return true;
                     } else if (instance.timeout && startingMatch.playerInGame() >= MIN_PLAYERS_IN_GAME) {
-                        System.out.println("Here MatchHandler");
                         startingMatch.setGameToStarted();
                         instance.timeout = false;
                         startedMatches.add(startingMatch);
@@ -227,9 +226,7 @@ public class MatchHandler extends Thread {
                     }
                 }
             }
-
         } catch (InterruptedException e) {
-            e.printStackTrace();
             Thread.currentThread().interrupt();
 
         } finally {

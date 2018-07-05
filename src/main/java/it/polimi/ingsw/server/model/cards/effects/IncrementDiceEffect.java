@@ -42,6 +42,17 @@ public class IncrementDiceEffect implements Effect {
     }
 
     @Override
+    public void setToolCardParams(List<String> params) throws NotValidParameterException {
+        final int REMOVING_INDEX=0;
+        if(params.isEmpty()) throw new NotValidParameterException("An empty list","A not empty list");
+        boolean increment= Boolean.getBoolean(params.remove(REMOVING_INDEX));
+        if(!increment&&!params.get(REMOVING_INDEX).equalsIgnoreCase("false")) //fixme
+            throw new NotValidParameterException(params.get(REMOVING_INDEX), "expected true or false");
+        if(!params.isEmpty()) throw new NotValidParameterException(params.toString(),"Too many parameters");
+        toolCard.setIncrement(increment);
+    }
+
+    @Override
     public void execute() {
         List<Die> dice = toolCard.getDiceRemoved();
         for (int i=0; i<dice.size(); i++){

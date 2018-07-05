@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.net;
 
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.custom_exception.*;
+import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
 
@@ -79,8 +80,6 @@ public interface UserInterface {
 
     void notifyToolUsed();
 
-    void notifyEndTurn();
-
     /**
      * Sends all players' grids to a player.
      *
@@ -116,11 +115,13 @@ public interface UserInterface {
      */
     void sendGrid(Grid grid);
 
-    void synchronize(boolean disconnected, Grid grid, List<Die> dicePool);
+    void synchronizeEndTurn(boolean disconnected, Grid grid, List<Die> dicePool);
 
-    void notifyEnd();
+    void notifyEndGame();
 
     void sendPoints(Map<String, String> playersPoints);
 
     void sendRoundTrack(List<Die> roundTrack);
+
+    void sendToolCards(List<ToolCard> toolCards);
 }

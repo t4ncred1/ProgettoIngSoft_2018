@@ -4,12 +4,16 @@ import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.custom_exception.*;
+import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
 
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Logger;
 
 public class RMIUserAgent implements UserInterface {
 
@@ -17,24 +21,27 @@ public class RMIUserAgent implements UserInterface {
     private String username;
     private RmiHandler myHandler;
     private int gameCode;
+    private Lock lock;
+    private Logger logger;
 
+    private static final String DISCONNECTED_LOG= "Disconnected";
 
     public RMIUserAgent(ClientRemoteInterface clientToHandle, RmiHandler handler){
         this.myHandler=handler;
         clientHandled=clientToHandle;
+        lock= new ReentrantLock();
+        logger=Logger.getLogger(RMIUserAgent.class.getName()+"_%u");
     }
 
     @Override
     public boolean isConnected() {
-        boolean ok;
         try{
             clientHandled.isConnected();
-            ok=true;
+            return true;
         }
         catch (RemoteException e){
-            ok=false;
+            return false;
         }
-        return ok;
     }
 
     @Override
@@ -42,7 +49,6 @@ public class RMIUserAgent implements UserInterface {
         try {
             clientHandled.chooseUsername();
         } catch (RemoteException e) {
-            e.printStackTrace();
             throw new DisconnectionException();
         }
 
@@ -70,7 +76,6 @@ public class RMIUserAgent implements UserInterface {
         try {
             clientHandled.notifyGameStarting();
         } catch (RemoteException e) {
-            e.printStackTrace();
             throw new DisconnectionException();
         }
     }
@@ -80,7 +85,6 @@ public class RMIUserAgent implements UserInterface {
         try {
             clientHandled.notifyStartedGame();
         } catch (RemoteException e) {
-            e.printStackTrace();
             throw new DisconnectionException();
         }
     }
@@ -90,7 +94,6 @@ public class RMIUserAgent implements UserInterface {
         try {
             clientHandled.notifyReconnection();
         } catch (RemoteException e) {
-            e.printStackTrace();
             throw new DisconnectionException();
         }
     }
@@ -117,23 +120,30 @@ public class RMIUserAgent implements UserInterface {
     }
 
     @Override
-    public void notifyEndTurn() {
-        // TODO: 05/06/2018  
-    }
-
-    @Override
     public void sendGrids(Map<String, Grid> playersGrids) {
-        // TODO: 26/06/2018
+        try {
+            clientHandled.setGrids(playersGrids);
+        } catch (RemoteException e) {
+            logger.fine(DISCONNECTED_LOG);
+        }
     }
 
     @Override
     public void notifyTurnInitialized() {
-        // TODO: 26/06/2018
+        try{
+            clientHandled.notifyTurnInitialized();
+        } catch (RemoteException e) {
+            logger.fine(DISCONNECTED_LOG);
+        }
     }
 
     @Override
     public void notifyTurnOf(String username) {
-        // TODO: 26/06/2018
+        try{
+            clientHandled.notifyTurnOf(username);
+        } catch (RemoteException e) {
+            logger.fine(DISCONNECTED_LOG);
+        }
     }
 
     @Override
@@ -143,38 +153,84 @@ public class RMIUserAgent implements UserInterface {
 
     @Override
     public void sendDicePool(List<Die> dicePool) {
-        // TODO: 27/06/2018  
+        try {
+            clientHandled.setDicePool(dicePool);
+        } catch (RemoteException e) {
+            logger.fine(DISCONNECTED_LOG);
+        }
     }
 
     @Override
     public void sendGrid(Grid grid) {
-        // TODO: 27/06/2018  
+        try {
+            clientHandled.setSingleGrid(grid);
+        } catch (RemoteException e) {
+            logger.fine(DISCONNECTED_LOG);
+        }
     }
 
     @Override
-    public void synchronize(boolean disconnected, Grid grid, List<Die> dicePool) {
-        // TODO: 28/06/2018  
+    public void synchronizeEndTurn(boolean disconnected, Grid grid, List<Die> dicePool) {
+        try {
+            clientHandled.setTurnPlayerToDisconnected();
+            sendDicePool(dicePool);
+            sendGrid(grid);
+            clientHandled.notifyEndTurn();
+        } catch (RemoteException e) {
+            logger.fine(DISCONNECTED_LOG);
+        }
+//        try {
+//            syncLock.lock();
+//            waitDataRetrieve();
+//        } catch (IOException e) {
+//            logger.fine("Disconnected");
+//        } finally {
+//            syncLock.unlock();
+//        }
     }
 
     @Override
-    public void notifyEnd() {
-        // TODO: 28/06/2018
+    public void notifyEndGame() {
+        try {
+            clientHandled.notifyEndGame();
+        } catch (RemoteException e) {
+            logger.fine(DISCONNECTED_LOG);
+        }
     }
 
     @Override
     public void sendPoints(Map<String, String> playersPoints) {
-        // TODO: 29/06/2018  
+        try {
+            clientHandled.setPoints(playersPoints);
+        } catch (RemoteException e) {
+            logger.fine(DISCONNECTED_LOG);
+        }
     }
 
     @Override
     public void sendRoundTrack(List<Die> roundTrack) {
-        // TODO: 30/06/2018  
+        try {
+            clientHandled.setRoundTrack(roundTrack);
+        } catch (RemoteException e) {
+            logger.fine(DISCONNECTED_LOG);
+        }
     }
 
-    //TODO from here.
+    @Override
+    public void sendToolCards(List<ToolCard> toolCards) {
+        try{
+            clientHandled.setToolCards(toolCards);
+        } catch (RemoteException e) {
+            logger.fine(DISCONNECTED_LOG);
+        }
+    }
 
     @Override
     public void notifyDisconnection() {
-
+        try{
+            clientHandled.notifyDisconnection();
+        } catch (RemoteException e) {
+            logger.fine(DISCONNECTED_LOG);
+        }
     }
 }

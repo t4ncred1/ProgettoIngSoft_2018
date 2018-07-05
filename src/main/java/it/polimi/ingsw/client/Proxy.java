@@ -6,6 +6,7 @@ import it.polimi.ingsw.client.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
+import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
@@ -23,6 +24,7 @@ public class Proxy {
     private Map<String,GridInterface> connectedPlayers;
     private Map<String,GridInterface> disconnectedPlayers;
     private Map<String,String> playersRanking;
+    private List<ToolCardAdapter> toolCards;
     private DicePoolInterface dicePool;
     private RoundTrackInterface roundTrack;
     private boolean gameFinished;
@@ -33,6 +35,7 @@ public class Proxy {
         connectedPlayers = new LinkedHashMap<>();
         disconnectedPlayers = new LinkedHashMap<>();
         playersRanking = new LinkedHashMap<>();
+        toolCards= new ArrayList<>();
         useGUI=false;
     }
 
@@ -165,7 +168,7 @@ public class Proxy {
         playersRanking= playerPoints;
     }
 
-    public Map<String,String> getPlayerRanking() {
+    public synchronized Map<String,String> getPlayerRanking() {
         return this.playersRanking;
     }
 
@@ -182,7 +185,33 @@ public class Proxy {
         }
     }
 
-    public RoundTrackInterface getRoundTrack() {
+    public synchronized RoundTrackInterface getRoundTrack() {
         return this.roundTrack;
+    }
+
+    public synchronized void setToolCards(List<ToolCard> toolCards) {
+        List<ToolCard> temp= toolCards;
+        List<ToolCardAdapter> toSet= new ArrayList<>();
+        for(ToolCard toolCard: temp){
+            toSet.add(newToolCardAdapter(toolCard));
+        }
+        this.toolCards=toSet;
+    }
+
+    private ToolCardAdapter newToolCardAdapter(ToolCard toolCard){
+        if(useGUI){
+            // TODO: 03/07/2018
+            return null;
+        }else {
+            return new ToolCardAdapterCLI(toolCard);
+        }
+    }
+
+    public synchronized List<ToolCardAdapter> getToolCards(){
+        return this.toolCards;
+    }
+
+    public synchronized ToolCardAdapter getToolCard(int index) {
+        return toolCards.get(index);
     }
 }
