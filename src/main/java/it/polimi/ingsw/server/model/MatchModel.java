@@ -161,7 +161,11 @@ public class MatchModel{
      * @throws NotEnoughPlayersException Thrown when the number of players in a match is less than the minimum number of players admitted in a match.
      */
     public void updateTurn(int maxRounds) throws TooManyRoundsException, NotEnoughPlayersException {
-        if (playersInGame.size()<MIN_PLAYERS_NUMBER) throw new NotEnoughPlayersException();
+        int onlinePlayers = 0;
+        for(Player player : playersInGame){
+            if (player.isDisconnected()) onlinePlayers++;
+        }
+        if (onlinePlayers<MIN_PLAYERS_NUMBER) throw new NotEnoughPlayersException();
         if (iterator == null) iterator = new PlayersIterator(playersInGame);
         if(iterator.hasNext()) {
            currentPlayer = iterator.next();
