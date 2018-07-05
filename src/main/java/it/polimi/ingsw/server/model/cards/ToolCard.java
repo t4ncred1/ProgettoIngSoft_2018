@@ -79,8 +79,8 @@ public class ToolCard implements Serializable {
         return used;
     }
 
-    private void used(boolean used) {
-        this.used = used;
+    private void use() {
+        this.used = true;
     }
 
     public void setModel(MatchModel model){
@@ -94,7 +94,7 @@ public class ToolCard implements Serializable {
     }
 
     public void useToolCard() throws Exception{
-        //TODO remember, before doing the executeTest on all effects in cascade I need to copy the original values of all parameters.
+
         // save all parameters in local variables
         List<Die> dRemovedFromDicePool = new ArrayList<>();
             for(Die d : this.dieRemovedFromDicePool){
@@ -103,10 +103,8 @@ public class ToolCard implements Serializable {
         List<Integer> dCoordinatesX = new ArrayList<>(this.dieCoordinatesX);
         List<Integer> dCoordinatesY = new ArrayList<>(this.dieCoordinatesY);
         //Grid pGrid = new Grid(this.playerGrid);   this is commented out because it needs to be a link to original player grid.
-        String rTrackColor = this.roundTrackColor;
         List<Integer>dDestinationCoordinatesX = new ArrayList<>(this.dieDestinationCoordinatesX);
         List<Integer>dDestinationCoordinatesY = new ArrayList<>(this.dieDestinationCoordinatesX);
-        int iOfRoundTrackDie = this.indexOfRoundTrackDie;
         Die rDieFromRoundTrack = new Die(this.removedDieFromRoundTrack);
 
 
@@ -130,11 +128,9 @@ public class ToolCard implements Serializable {
         this.dieCoordinatesX = new ArrayList<>(dCoordinatesX);
         this.dieCoordinatesY = new ArrayList<>(dCoordinatesY);
         //Grid pGrid = new Grid(this.playerGrid);   this is commented out because it needs to be a link to original player grid.
-        this.roundTrackColor = rTrackColor;
         this.dieDestinationCoordinatesX = new ArrayList<>(dDestinationCoordinatesX);
         this.dieDestinationCoordinatesY = new ArrayList<>(dDestinationCoordinatesY);
         this.roundTrack = new ArrayList<>();
-        this.indexOfRoundTrackDie = iOfRoundTrackDie;
         this.removedDieFromRoundTrack = new Die(rDieFromRoundTrack);
 
         for (Effect e : effects){
@@ -147,7 +143,7 @@ public class ToolCard implements Serializable {
         this.increment = false;
         this.dieCoordinatesX = null;
         this.dieCoordinatesY = null;
-        //Grid pGrid = new Grid(this.playerGrid);   this is commented out because it needs to be a link to original player grid.
+        this.playerGrid=null;
         this.roundTrackColor = null;
         this.dieDestinationCoordinatesX = null;
         this.dieDestinationCoordinatesY = null;
@@ -156,14 +152,14 @@ public class ToolCard implements Serializable {
         this.removedDieFromRoundTrack = null;
 
 
-        this.used(true);
+        this.use();
     }
 
 
 ////////////////////////SETTERS & GETTERS
     public void setIndexToBeRemoved(int index){
         indexOfDieToBeRemoved=index;
-    }                           //todo va fatta chiamare al client
+    }
 
     public boolean getRemoveAllDiceFromDicePool() {
         return this.removeAllDiceFromDicePool;
@@ -190,13 +186,13 @@ public class ToolCard implements Serializable {
 
     public void setIncrement(boolean increment) {
         this.increment = increment;
-    }                         //todo va fatta chiamare al client
+    }
 
     public List<Integer> getDieCoordinatesX() {
         return dieCoordinatesX;
     }
 
-    public void addDieCoordinatesX(int dieCoordinatesX) {                                               //todo va fatta chiamare al client
+    public void addDieCoordinatesX(int dieCoordinatesX) {
         this.dieCoordinatesX.add(dieCoordinatesX);
     }
 
@@ -206,7 +202,7 @@ public class ToolCard implements Serializable {
 
     public void addDieCoordinatesY(int dieCoordinatesY) {
         this.dieCoordinatesY.add(dieCoordinatesY);
-    }       //todo va fatta chiamare al client
+    }
 
     public Grid getPlayerGrid() {
         return playerGrid;
@@ -220,7 +216,7 @@ public class ToolCard implements Serializable {
         return dieDestinationCoordinatesX;
     }
 
-    public void addDieDestinationCoordinatesX(int dieDestinationCoordinatesX) {                         //todo va fatta chiamare al client
+    public void addDieDestinationCoordinatesX(int dieDestinationCoordinatesX) {
         this.dieDestinationCoordinatesX.add(dieDestinationCoordinatesX);
     }
 
@@ -228,7 +224,7 @@ public class ToolCard implements Serializable {
         return this.dieDestinationCoordinatesY;
     }
 
-    public void addDieDestinationCoordinatesY(int dieDestinationCoordinatesY) {                 //todo va fatta chiamare al client
+    public void addDieDestinationCoordinatesY(int dieDestinationCoordinatesY) {
         this.dieDestinationCoordinatesY.add(dieDestinationCoordinatesY);
     }
 
@@ -306,7 +302,7 @@ public class ToolCard implements Serializable {
 
     public void setIndexOfRoundTrackDie(int indexOfRoundTrackDie) {
         this.indexOfRoundTrackDie = indexOfRoundTrackDie;
-    }   //todo used by client
+    }
 
     public List<Die> getRoundTrack() {
         return roundTrack;
