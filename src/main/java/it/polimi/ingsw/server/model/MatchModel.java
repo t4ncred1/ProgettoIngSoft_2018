@@ -163,7 +163,7 @@ public class MatchModel{
     public void updateTurn(int maxRounds) throws TooManyRoundsException, NotEnoughPlayersException {
         int onlinePlayers = 0;
         for(Player player : playersInGame){
-            if (player.isDisconnected()) onlinePlayers++;
+            if (!player.isDisconnected()) onlinePlayers++;
         }
         if (onlinePlayers<MIN_PLAYERS_NUMBER) throw new NotEnoughPlayersException();
         if (iterator == null) iterator = new PlayersIterator(playersInGame);
