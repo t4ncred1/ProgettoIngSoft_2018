@@ -45,10 +45,10 @@ public class IncrementDiceEffect implements Effect {
     public void setToolCardParams(List<String> params) throws NotValidParameterException {
         final int REMOVING_INDEX=0;
         if(params.isEmpty()) throw new NotValidParameterException("An empty list","A not empty list");
-        boolean increment= Boolean.getBoolean(params.remove(REMOVING_INDEX));
-        if(!increment&&!params.get(REMOVING_INDEX).equalsIgnoreCase("false")) //fixme
+        if(params.size()!=1) throw new NotValidParameterException(params.toString(),"Too many parameters");
+        boolean increment= Boolean.parseBoolean(params.get(REMOVING_INDEX));
+        if(!increment&&!params.get(REMOVING_INDEX).equalsIgnoreCase("false"))
             throw new NotValidParameterException(params.get(REMOVING_INDEX), "expected true or false");
-        if(!params.isEmpty()) throw new NotValidParameterException(params.toString(),"Too many parameters");
         toolCard.setIncrement(increment);
     }
 
