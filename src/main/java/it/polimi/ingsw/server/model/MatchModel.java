@@ -521,6 +521,17 @@ public class MatchModel{
     }
 
     /**
+     * Getter for a copy of the roundTrack.
+     *
+     * @return A list of dice.
+     */
+    public List<Die> getRoundTrackCopy() {
+        List<Die> roundTrackCopy= new ArrayList<>();
+        roundTrack.forEach(die -> roundTrackCopy.add(new Die(die)));
+        return roundTrackCopy;
+    }
+
+    /**
      * Getter for controller.
      *
      * @return A matchController.
@@ -536,7 +547,7 @@ public class MatchModel{
     public Map<String,Grid> getAllGrids() {
         Map<String, Grid> toReturn = new HashMap<>();
         for (Player player : playersInGame) {
-            toReturn.put(player.getUsername(), player.getSelectedGrid());
+            toReturn.put(player.getUsername(), new Grid(player.getSelectedGrid()));
         }
         return toReturn;
     }

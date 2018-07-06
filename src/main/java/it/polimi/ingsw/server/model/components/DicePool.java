@@ -89,6 +89,16 @@ public class DicePool {
 
     /**
      *
+     * @return A copy of the pool to be shown.
+     */
+    public List<Die> getDicePoolCopy(){
+        List<Die> dicePoolCopy= new ArrayList<>();
+        pool.forEach(die -> dicePoolCopy.add(new Die(die)));
+        return pool;
+    }
+
+    /**
+     *
      * @param index The index of the pool where to get the die.
      * @return The die chosen.
      * @throws NotInPoolException Thrown when 'index' is out of bounds.

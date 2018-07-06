@@ -212,10 +212,7 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
             }
             turnFinished= handleDataRetrieving();
             if(myTurn){
-                lock.lock();
-                dataRetrieved=true;
-                condition.signal();
-                lock.unlock();
+                MainClient.getInstance().notifyDataRetrieved();
             } else{
                 if(!turnFinished) MainClient.getInstance().notifySomethingChanged();
                 else MainClient.getInstance().notifyEndTurn();
@@ -382,6 +379,7 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
                     serverResponse=readRemoteInput();
                     grids= gson.fromJson(serverResponse, typeToken.getType());
                     Proxy.getInstance().setGridsSelection(grids);
+                    logger.log(Level.FINE,"Grid retrieved and set in proxy");
                     MainClient.getInstance().notifyGridsAreInProxy();
                     break;
                 case GRID_ALREADY_SELECTED:
@@ -534,7 +532,6 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
                     lock.lock();
                     doneOperation=true;
                     condition.signal();
-                    waitDataRetrieving();
                     lock.unlock();
                     break;
                 case NOT_OK_MESSAGE:
@@ -576,7 +573,6 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
             lock.lock();
             doneOperation=true;
             condition.signal();
-            waitDataRetrieving();
             lock.unlock();
         } catch (IOException e) {
             throw new ServerIsDownException();
@@ -643,16 +639,6 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
 
     }
 
-    private void waitDataRetrieving() {
-        while(!dataRetrieved) {
-            try {
-                condition.await();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-        dataRetrieved=false;
-    }
 
     public void askForLogout() throws ServerIsDownException, GameStartingException, LoggedOutException {
         try{
@@ -680,6 +666,11 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
     private String readRemoteInput() throws IOException {
         String read;
         do{
+            try {
+                Thread.sleep(30);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
             read=inputStream.readUTF();
         }while (read.equals(PING_MESSAGE));
         return read;

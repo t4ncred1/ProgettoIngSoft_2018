@@ -25,8 +25,6 @@ public interface ServerRemoteInterface extends Remote {
 
     PrivateObjective getPrivateObjective(ClientRemoteInterface thisClient) throws RemoteException, NotValidParameterException, IllegalRequestException;
 
-    String askTurn(ClientRemoteInterface thisClient) throws RemoteException, NotValidParameterException, InvalidOperationException, TooManyRoundsException;
-
     List<Die> getUpdatedDicePool(ClientRemoteInterface thisClient) throws NotValidParameterException, RemoteException;
 
     List<Grid> getGridSelection(ClientRemoteInterface clientCalling) throws RemoteException, InvalidOperationException;

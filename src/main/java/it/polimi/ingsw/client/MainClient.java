@@ -53,6 +53,7 @@ public class MainClient {
     private static final String INSERT_DIE="inserisci dado";
     private static final String USE_TOOL_CARD= "usa carta strumento";
     private static final String END_TURN="finisci turno";
+    private boolean dataRetrieved;
 
 
     private MainClient(){
@@ -67,6 +68,7 @@ public class MainClient {
         gameEndDataInProxy =false;
         toPrint=new ArrayList<>();
         logger= Logger.getLogger(MainClient.class.getName());
+        dataRetrieved=false;
     }
 
 
@@ -171,24 +173,44 @@ public class MainClient {
     private void handleMyTurn() throws ServerIsDownException, DisconnectionException {
         Scanner scanner = new Scanner(System.in);
         boolean myTurnFinished=false;
+        boolean doneSomething=false;
         do {
             printThingsOnMyTurn();
             String command = scanner.nextLine().toLowerCase();
             switch (command){
                 case INSERT_DIE:
-                    handleDieInsertion();
+                    doneSomething=handleDieInsertion();
                     break;
                 case USE_TOOL_CARD:
                     handleToolCard();
+                    doneSomething=true; //fixme
                     break;
                 case END_TURN:
                     myTurnFinished=true;
                     server.endTurn();
+                    doneSomething=true;
                     break;
                 default:
                     System.err.println("Nessun comando corrisponde a quello inserito ("+command+"). Reinserire un comando valido");
             }
+            if(doneSomething){
+                waitDataRetrieving();
+                doneSomething=false;
+            }
         }while (!myTurnFinished);
+    }
+
+    private void waitDataRetrieving() {
+        lock.lock();
+        while(!dataRetrieved) {
+            try {
+                condition.await();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        dataRetrieved=false;
+        lock.unlock();
     }
 
     private void printThingsOnMyTurn() {
@@ -266,7 +288,7 @@ public class MainClient {
 
 
 
-    private void handleDieInsertion() throws ServerIsDownException, DisconnectionException {
+    private boolean handleDieInsertion() throws ServerIsDownException, DisconnectionException {
         Scanner scanner= new Scanner(System.in);
         System.out.println("Inserisci la posizione del dado nella dice pool");
         int position= scanner.nextInt()-1;
@@ -277,6 +299,7 @@ public class MainClient {
         try {
             Proxy.getInstance().tryToInsertDieInXY(position, row, column);
             server.insertDie(position,column,row);
+            return true;
         } catch (InvalidMoveException e) {
             System.err.println("Non è possibile inserire un dado alle coordinate indicate");
         } catch (DieNotExistException e) {
@@ -284,6 +307,7 @@ public class MainClient {
         } catch (AlreadyDoneOperationException e) {
             System.err.println("L'operazione è già stata eseguita, non può essere eseguita nuovamente");
         }
+        return false;
     }
 
     private boolean askProxyIfItsMyTurn() throws GameFinishedException {
@@ -313,8 +337,9 @@ public class MainClient {
             System.out.println("Aspettando gli altri giocatori...");
         } catch (GameInProgressException e) {
             System.out.println("La tua partita è gia in corso, sei stato reinserito correttamente.");
+            System.out.println("In attesa dei dati da parte del server...");
         }
-        waitForOtherPlayers();
+        waitForServerToUpdateProxy();
         if(!gameFinished) printGridsDicePoolAndObjectives();
     }
 
@@ -323,7 +348,7 @@ public class MainClient {
         System.out.println(Proxy.getInstance().getGridSelected().getGridInterface());
     }
 
-    private void waitForOtherPlayers() {
+    private void waitForServerToUpdateProxy() {
         lock.lock();
         while (!gameInitialized&&!gameFinished) {
             try {
@@ -364,16 +389,16 @@ public class MainClient {
     }
 
     private void waitForGridsFromServer() throws GameInProgressException {
+        lock.lock();
         while (!gridsInProxy) {
-            lock.lock();
+            if (gridsAlreadySelected) throw new GameInProgressException();
             try {
                 condition.await();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            lock.unlock();
-            if (gridsAlreadySelected) throw new GameInProgressException();
         }
+        lock.unlock();
     }
 
     private void handleWaitForGameCLI() throws ServerIsDownException, LoggedOutException {
@@ -489,6 +514,7 @@ public class MainClient {
                             logger.log(Level.INFO,"Questo username non è valido o è gia esistente. Per favore scegline un altro:");
                         } catch (ReconnectionException e) {
                             System.out.println("Ti sei riconnesso a una partita precedente.");
+                            ok=true;
                         }
                     }
                     while (!ok);
@@ -534,7 +560,10 @@ public class MainClient {
     }
 
     public void setGridsAlreadySelected(boolean state){
+        lock.lock();
         this.gridsAlreadySelected=state;
+        condition.signal();
+        lock.unlock();
     }
 
     public void notifyTurnUpdated() {
@@ -566,6 +595,13 @@ public class MainClient {
     public void notifyEndDataInProxy() {
         lock.lock();
         gameEndDataInProxy =true;
+        condition.signal();
+        lock.unlock();
+    }
+
+    public void notifyDataRetrieved(){
+        lock.lock();
+        dataRetrieved =true;
         condition.signal();
         lock.unlock();
     }

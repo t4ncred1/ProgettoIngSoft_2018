@@ -99,7 +99,7 @@ public interface UserInterface {
      */
     void notifyTurnOf(String username);
 
-    void setToReconnecting();
+    void syncWithReconnectingUserAgent();
 
     /**
      * Sends the dice pool.

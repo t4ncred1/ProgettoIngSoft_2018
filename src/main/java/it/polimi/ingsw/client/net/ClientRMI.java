@@ -23,18 +23,18 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
     private transient ServerRMICommunication serverRemoteInterfaceAdapter;
 
     private String username;
+    private boolean myTurn;
     private Logger logger;
     private Lock lock;
     private boolean endTurn;
-    private boolean firstInitialization;
     private boolean retrievingData;
 
     protected ClientRMI()  throws RemoteException{
         logger= Logger.getLogger(ClientRMI.class.getName());
         lock= new ReentrantLock();
-        firstInitialization=true;
         endTurn=false;
         retrievingData=false;
+        myTurn=false;
     }
 
     @Override
@@ -113,12 +113,12 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
     @Override
     public void notifyTurnInitialized() {
         if(endTurn) {
-            checkDataRetrieve();
+            if(myTurn) MainClient.getInstance().notifyDataRetrieved();
             endTurn=false;
             MainClient.getInstance().notifyTurnUpdated();
         }else {
-            checkDataRetrieve();
-            MainClient.getInstance().notifySomethingChanged();
+            if(myTurn)MainClient.getInstance().notifyDataRetrieved();
+            else MainClient.getInstance().notifySomethingChanged();
         }
 
     }
@@ -138,6 +138,7 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
     @Override
     public void notifyTurnOf(String username) {
         Proxy.getInstance().setTurnPlayer(username);
+        myTurn=username.equals(Proxy.getInstance().getMyUsername());
         MainClient.getInstance().notifyTurnUpdated();
     }
 

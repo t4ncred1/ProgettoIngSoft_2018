@@ -147,7 +147,7 @@ public class RMIUserAgent implements UserInterface {
     }
 
     @Override
-    public void setToReconnecting() {
+    public void syncWithReconnectingUserAgent() {
         // TODO: 27/06/2018  
     }
 
