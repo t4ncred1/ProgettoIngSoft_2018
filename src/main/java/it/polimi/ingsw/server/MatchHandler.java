@@ -7,7 +7,6 @@ import it.polimi.ingsw.server.net.UserInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -19,23 +18,23 @@ public class MatchHandler extends Thread {
 
     private static MatchHandler instance;
 
-    private static Map<String, MatchController> connectedPlayers;
+    private Map<String, MatchController> connectedPlayers;
     private static final Object connectedPlayersGuard= new Object();
-    private static Map<String, MatchController> disconnectedInGamePlayers;
+    private Map<String, MatchController> disconnectedInGamePlayers;
     private static final Object disconnectedInGamePlayersGuard = new Object();
     private static MatchController startingMatch;
     private static final Object startingMatchGuard= new Object();
-    private static ArrayList<MatchController> startedMatches; //to handle multi-game.
-    private static Lock startedMatchesGuard;
-    private static Condition startedMatchesCondition;
-    private static Lock lock;
-    private static Condition condition;
+    private ArrayList<MatchController> startedMatches; //to handle multi-game.
+    private Lock startedMatchesGuard;
+    private Condition startedMatchesCondition;
+    private Lock lock;
+    private Condition condition;
 
 
     private boolean timeout;
     private int maximumMatchNumber =2;
-    private static final int MAX_PLAYERS_IN_GAME =4;
-    private static final int MIN_PLAYERS_IN_GAME =2;
+    private int maxPlayersInGame =4;
+    private int minPlayersInGame =2;
     private GameTimer timer;
     private boolean shutdown;
 
@@ -52,6 +51,16 @@ public class MatchHandler extends Thread {
 
 
     private MatchHandler(){
+        try {
+            maxPlayersInGame =ConfigurationHandler.getInstance().getMaxPlayersNumber();
+        } catch (NotValidConfigPathException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.CONFIG,"Failed retrieving Max Players Number");
+        }
+        try {
+            minPlayersInGame =ConfigurationHandler.getInstance().getMinPlayersNumber();
+        } catch (NotValidConfigPathException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.CONFIG,"Failed retrieving Min Players Number");
+        }
         connectedPlayers= new HashMap<>();
         lock= new ReentrantLock();
         condition= lock.newCondition();
@@ -188,7 +197,7 @@ public class MatchHandler extends Thread {
             lock.unlock();
         }
         synchronized (startingMatchGuard){
-            result =(startingMatch.playerInGame()>= MIN_PLAYERS_IN_GAME);
+            result =(startingMatch.playerInGame()>= minPlayersInGame);
         }
         return result;
     }
@@ -211,7 +220,7 @@ public class MatchHandler extends Thread {
             }
             condition.await();
             synchronized (startingMatchGuard) {
-                if (startingMatch.playerInGame() == MAX_PLAYERS_IN_GAME) {
+                if (startingMatch.playerInGame() == maxPlayersInGame) {
                     startingMatch.setGameToStarted();
                     startedMatchesGuard.lock();
                     startedMatches.add(startingMatch);
@@ -219,7 +228,7 @@ public class MatchHandler extends Thread {
                     startingMatch = null;
                     timer.stop();
                     return true;
-                } else if (instance.timeout && startingMatch.playerInGame() >= MIN_PLAYERS_IN_GAME) {
+                } else if (instance.timeout && startingMatch.playerInGame() >= minPlayersInGame) {
                     startingMatch.setGameToStarted();
                     instance.timeout = false;
                     startedMatchesGuard.lock();
@@ -230,7 +239,7 @@ public class MatchHandler extends Thread {
                     return true;
 
                 }
-                else if (instance.timeout && startingMatch.playerInGame() < MIN_PLAYERS_IN_GAME){
+                else if (instance.timeout && startingMatch.playerInGame() < minPlayersInGame){
                     timer.stop();
                 }
             }
@@ -251,7 +260,7 @@ public class MatchHandler extends Thread {
      * @throws InvalidUsernameException See requestUsername method.
      * @throws ReconnectionException See requestUsername method.
      */
-    public static void login(UserInterface client) throws InvalidOperationException, DisconnectionException, InvalidUsernameException, ReconnectionException {
+    public void login(UserInterface client) throws InvalidOperationException, DisconnectionException, InvalidUsernameException, ReconnectionException {
         client.chooseUsername();
         try {
             client.arrangeForUsername();
