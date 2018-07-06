@@ -50,19 +50,21 @@ public class InsertDieInGridEffect implements Effect {
         if(params.isEmpty()) throw new NotValidParameterException("An empty list","A not empty list");
         String temp1=NOT_READ;
         String temp2=NOT_READ;
+        int column;
+        int row;
         try{
             temp1 = params.remove(REMOVING_INDEX);
-            int column=Integer.parseInt(temp1);
+            column=Integer.parseInt(temp1);
             temp2= params.remove(REMOVING_INDEX);
-            int row=Integer.parseInt(temp2);
-            // TODO: 04/07/2018 call toolCard's proper method (launch exceptions column and row are not in grid)
+            row=Integer.parseInt(temp2);
         } catch (NumberFormatException e){
             throw new NotValidParameterException("Value 1: "+temp1+", value 2: "+temp2, "Numeric parameters");
         } catch (NullPointerException e){
             throw new NotValidParameterException("List is now empty", "Not enough parameters");
         }
         if(!params.isEmpty()) throw new NotValidParameterException(params.toString(),"Too many parameters");
-
+        toolCard.addDieDestinationCoordinatesX(column);
+        toolCard.addDieDestinationCoordinatesY(row);
     }
 
     @Override

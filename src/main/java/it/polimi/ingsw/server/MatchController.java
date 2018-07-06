@@ -56,7 +56,9 @@ public class MatchController extends Thread{
     private int reconnectingPlayers;
     private boolean turnLogicStarted;
 
-
+    /**
+     * Constructor for MatchController.
+     */
     public MatchController(){
         this.lock = new ReentrantLock();
         this.condition= lock.newCondition();
@@ -83,7 +85,9 @@ public class MatchController extends Thread{
         MatchHandler.getInstance().notifyEndGame(this);
     }
 
-
+    /**
+     * Game handler (round-turn logic, final results).
+     */
     private void handleGame() {
         //round-turn logic.
         do{
@@ -115,10 +119,17 @@ public class MatchController extends Thread{
     *       Methods to handle initialization
     * --------------------------------------------------
     */
+
+    /**
+     * Game initialization.
+     */
     private void initializeGame() {
         initializeGrids();
     }
 
+    /**
+     * Sends the dice pool to every player.
+     */
     private void sendDicePool() {
         List<Die> dicePool;
         synchronized (modelGuard){
@@ -129,12 +140,18 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     * Sends a notification of game initialized to every player.
+     */
     private void notifyGameInitialized() {
         synchronized (playersInMatchGuard) {
             playersInMatch.forEach((username, player) -> player.notifyGameInitialized());
         }
     }
 
+    /**
+     * Sends the grids to every player.
+     */
     private void sendGrids() {
         Map<String,Grid> playersGrids;
         synchronized (playersInMatchGuard) {
@@ -145,6 +162,9 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     * Waits until all players have chosen a grid (in case someone doesn't choose a grid, he will be disconnected when the timeout event occurs).
+     */
     private void initializeGrids() {
         GameTimer timer = new GameTimer(this, GRID_CHOOSE_TIMER);
         boolean timeout;
@@ -165,6 +185,12 @@ public class MatchController extends Thread{
         logger.log(Level.INFO, "Ready to handle game logic");
     }
 
+    /**
+     * In case someone doesn't choose a grid and the timeout event occurs, he will be disconnected here.
+     *
+     * @param timeout True if a timeout event occurred.
+     * @return True if all players have chosen a grid.
+     */
     private boolean haveAllPlayersChosenAGrid(boolean timeout) {
         //At the end of this part, if all players chose a grid then game could start (ok remains true).
         boolean ok = true;
@@ -202,6 +228,12 @@ public class MatchController extends Thread{
     --------------------------------------------------
      */
 
+    /**
+     * Turn handler (turn update, turn initialization).
+     *
+     * @throws TooManyRoundsException See updateTurn doc in MatchModel class.
+     * @throws NotEnoughPlayersException See updateTurn doc in MatchModel class.
+     */
     private void handleTurn() throws TooManyRoundsException, NotEnoughPlayersException {
 
         lock.lock();
@@ -218,6 +250,10 @@ public class MatchController extends Thread{
         executeTurn(username);
     }
 
+    /**
+     * Turn executor.
+     * @param username Current player's username.
+     */
     private void executeTurn(String username){
         boolean updatedDie=false;
         boolean updatedTool=false;
@@ -284,7 +320,12 @@ public class MatchController extends Thread{
         player.synchronizeEndTurn(disconnected,grid,dicePool);
     }
 
-
+    /**
+     * Disconnects a player if a timeout event occurs.
+     *
+     * @param timer Timer.
+     * @param username Player to be disconnected.
+     */
     private void handleEventualTimeout(GameTimer timer, String username) {
         if (timer.getTimeoutEvent()) {
             ready=false;
@@ -302,6 +343,11 @@ public class MatchController extends Thread{
     }
 
 
+    /**
+     * Turn initialization (sends all match elements).
+     *
+     * @param username Current player's username.
+     */
     private void initializeTurn(String username){
         dieInserted= false;
         toolCardUsed=false;
@@ -333,6 +379,9 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     * Sends the roundtrack to every player.
+     */
     private void sendRoundTrack() {
         List<Die> roundTrack;
         synchronized (modelGuard){
@@ -343,6 +392,10 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     *
+     * @return The number of players in queue.
+     */
     int playerInGame() {
         int playerInQueue;
         synchronized (playersInMatchGuard) {
@@ -352,6 +405,9 @@ public class MatchController extends Thread{
         return playerInQueue;
     }
 
+    /**
+     * Checks if someone is disconnecting. Checks if match can start.
+     */
     void updateQueue(){
         boolean notify=false;
         synchronized (playersInMatchGuard){
@@ -367,6 +423,11 @@ public class MatchController extends Thread{
         if(notify)MatchHandler.getInstance().notifyMatchCanStart();
     }
 
+    /**
+     * Insert a client in a match queue.
+     *
+     * @param client Client logged.
+     */
     void insert(UserInterface client) {
         synchronized (playersInMatchGuard) {
             flagNotifyStatPlayer.put(client.getUsername(), false);
@@ -375,6 +436,12 @@ public class MatchController extends Thread{
     }
 
     //state modifier
+
+    /**
+     * Sets gameStartingSoon.
+     *
+     * @param timeout True if a timeout event occurred.
+     */
     void setGameToStartingSoon(boolean timeout) {
         final boolean startingSoonState =true;
         if(!gameStartingSoon||timeout) {
@@ -390,6 +457,10 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     * Notify the players not notified in setGameToStartingSoon.
+     * (e.g. someone logged between 'match starting' message and 'match started' message)
+     */
     private void notifyAllPlayersNotNotified() {
         Iterator<Map.Entry<String,Boolean>> iterator = flagNotifyStatPlayer.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -409,6 +480,12 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     * Remove a client.
+     *
+     * @param client Client to remove.
+     * @throws InvalidOperationException Thrown when game is starting or it's already started.
+     */
     public void remove(UserInterface client) throws InvalidOperationException {
         if(gameStartingSoon||gameStarted) {
             throw new InvalidOperationException();
@@ -421,7 +498,9 @@ public class MatchController extends Thread{
         }
     }
 
-
+    /**
+     * Notify the players about match starting.
+     */
     private void notifyStartingSoonToPlayers() {
         synchronized (playersInMatchGuard){
             Iterator<Map.Entry<String, UserInterface>> iterator=playersInMatch.entrySet().iterator();
@@ -438,12 +517,21 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     * Notify the players about match started.
+     */
     private void notifyStartToPlayers() {
         synchronized (playersInMatchGuard){
             playersInMatch.forEach(this::notifyStartToPlayerX);
         }
     }
 
+    /**
+     * Notify a player about match started.
+     *
+     * @param username Player's username.
+     * @param player Player to be notified.
+     */
     private void notifyStartToPlayerX(String username, UserInterface player){
         player.setController(this);
         MatchHandler.getInstance().setPlayerInGame(username,this);
@@ -454,6 +542,9 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     * Sets game to started.
+     */
     void setGameToStarted() {
         this.gameStartingSoon= false; //game is not starting anymore: in fact it's started
         this.gameStarted=true; //game is started
@@ -471,6 +562,12 @@ public class MatchController extends Thread{
         this.notifyStartToPlayers();
     }
 
+    /**
+     * Notify a player still not notified about game starting.
+     *
+     * @param username Player to be notified.
+     * @param notified True if player wasn't notified.
+     */
     private void notifyPlayerStillNotNotified(String username, Boolean notified) {
         if(!notified){
             try {
@@ -481,12 +578,20 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     * Wakes up the controller.
+     */
     void wakeUpController(){
         lock.lock();
         condition.signal();
         lock.unlock();
     }
 
+    /**
+     * Handles a reconnection event.
+     *
+     * @param player Player trying to reconnect.
+     */
     void handleReconnection(UserInterface player) {
         player.setController(this);
         synchronized (reconnectingUsersGuard){
@@ -589,6 +694,13 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     *
+     * @param userInterface Player's interface.
+     * @return A list containing the 4 grids chosen for a player or, in case of an invalid username, an empty arraylist.
+     * @throws InvalidOperationException See setGridsForPlayer doc in MatchModel class.
+     * @throws IllegalRequestException See securityControl doc.
+     */
     public List<Grid> getPlayerGrids(UserInterface userInterface) throws InvalidOperationException, IllegalRequestException {
         String username = userInterface.getUsername();
         securityControl(userInterface);
@@ -604,6 +716,14 @@ public class MatchController extends Thread{
 
     }
 
+    /**
+     * Sets the grid for a player.
+     *
+     * @param userInterface Player's interface.
+     * @param gridChosen Index of the grid chosen by the player.
+     * @throws InvalidOperationException See setPlayerGrid doc in MatchModel class.
+     * @throws IllegalRequestException See securityControl doc.
+     */
     public void setGrid(UserInterface userInterface, int gridChosen) throws InvalidOperationException, IllegalRequestException {
         String username = userInterface.getUsername();
         securityControl(userInterface);
@@ -621,12 +741,22 @@ public class MatchController extends Thread{
         lock.unlock();
     }
 
+    /**
+     *
+     * @return A list representing the dice pool to be shown.
+     */
     public List<Die> getDicePool() {
         synchronized (modelGuard) {
             return model.getDicePool().showDiceInPool();
         }
     }
 
+    /**
+     *
+     * @param clientCalling Player.
+     * @return Player's private objective.
+     * @throws IllegalRequestException See securityControl doc.
+     */
     public PrivateObjective getPrivateObject(UserInterface clientCalling) throws IllegalRequestException {
         securityControl(clientCalling);
 
@@ -638,6 +768,17 @@ public class MatchController extends Thread{
         return null;
     }
 
+    /**
+     *
+     * @param player Player trying to insert a die.
+     * @param position The index of the pool where to get the die.
+     * @param x Abscissa of the box.
+     * @param y Ordinate of the box.
+     * @throws InvalidOperationException See insertDieInXY doc in Grid class.
+     * @throws NotInPoolException See getDieFromPool doc in DicePool class.
+     * @throws IllegalRequestException See securityControl doc.
+     * @throws OperationAlreadyDoneException Thrown when this operation was already done in this turn.
+     */
     public void insertDie(UserInterface player, int position, int x, int y) throws InvalidOperationException, NotInPoolException, IllegalRequestException, OperationAlreadyDoneException {
         securityControl(player);
         turnPlayerGuard.lock();
@@ -658,7 +799,11 @@ public class MatchController extends Thread{
         lock.unlock();
     }
 
-
+    /**
+     * Sends the elements for a die insertion.
+     *
+     * @param userInterface Player's interface.
+     */
 
     private void sendDataForDieInsertion(UserInterface userInterface) {
         List<Die> dicePool;
@@ -676,12 +821,23 @@ public class MatchController extends Thread{
         userInterface.notifyTurnInitialized();
     }
 
-
+    /**
+     *
+     * @param player Player.
+     * @return Current player's grid.
+     * @throws IllegalRequestException See securityControl doc.
+     */
     public Grid getPlayerGrid(UserInterface player) throws IllegalRequestException {
         securityControl(player);
         return model.getPlayerCurrentGrid(player.getUsername());
     }
 
+    /**
+     * Checks if the player requested exists.
+     *
+     * @param player Player's interface.
+     * @throws IllegalRequestException Thrown when 'player' does not exists.
+     */
     private void securityControl(UserInterface player) throws  IllegalRequestException {
         String username= player.getUsername();
         if(!reconnectingUsers.contains(player)){
@@ -692,6 +848,12 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     * Sends a notification about turn end.
+     *
+     * @param player Player to be notified.
+     * @throws IllegalRequestException See securityControl doc.
+     */
     public void notifyEnd(UserInterface player) throws IllegalRequestException {
         securityControl(player);
         turnPlayerGuard.lock();
@@ -703,6 +865,9 @@ public class MatchController extends Thread{
         lock.unlock();
     }
 
+    /**
+     * Checks for disconnections before match start.
+     */
     private void checkForDisconnectionUntilStart() {
         while(!gameStarted){
             updateQueue();
@@ -715,6 +880,9 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     * Checks if someone is disconnecting.
+     */
     private void checkForDisconnections() {
         ArrayList<String> stopCheck = new ArrayList<>();
         //this arrayList is used to avoid continuous print of "playerX disconnected"
@@ -746,6 +914,14 @@ public class MatchController extends Thread{
         return 6;
     }
 
+    /**
+     *
+     * @param player Player trying to use a tool card.
+     * @param toolCardIndex Tool card index.
+     * @throws OperationAlreadyDoneException Thrown when this operation was already done in the same turn.
+     * @throws NotValidParameterException See getToolCard doc in MatchModel class.
+     * @throws IllegalRequestException Thrown when 'player' is not valid.
+     */
     public void tryToUseToolCard(UserInterface player, int toolCardIndex) throws OperationAlreadyDoneException, NotValidParameterException, IllegalRequestException {
         securityControl(player);
         turnPlayerGuard.lock();
@@ -761,6 +937,15 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     *
+     * @param player Player trying to use a tool card.
+     * @param effectName Effect name.
+     * @param parameters Effect's parameters.
+     * @throws IllegalRequestException Thrown when 'player' is not valid.
+     * @throws InvalidOperationException Thrown when 'effectName' is not valid.
+     * @throws NotValidParameterException See setToolCardParams doc in Effect class.
+     */
     public void setEffectParameters(UserInterface player,String effectName, List<String> parameters) throws IllegalRequestException, InvalidOperationException, NotValidParameterException {
         final int REMOVING_INDEX=0;
         securityControl(player);
@@ -778,6 +963,12 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     *
+     * @param player Player trying to use a tool card.
+     * @param index Tool card index.
+     * @throws IllegalRequestException Thrown when 'player' is not valid.
+     */
     public void executeToolCard(UserInterface player, int index) throws IllegalRequestException {
         securityControl(player);
         turnPlayerGuard.lock();
@@ -789,7 +980,8 @@ public class MatchController extends Thread{
             } catch (NotValidParameterException e) {
                 logger.log(Level.SEVERE, "Something went wrong when TryToUseToolCard was executed", e);
             } catch (Exception e) {
-                //fixme need to differentiate exception launched by useToolCard
+                //note: whatever excepion is thrown, a InvalidOperationException should be thrown, and the stacktrace should be
+                //logged.
             }
         }
     }

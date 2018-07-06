@@ -161,7 +161,11 @@ public class MatchModel{
      * @throws NotEnoughPlayersException Thrown when the number of players in a match is less than the minimum number of players admitted in a match.
      */
     public void updateTurn(int maxRounds) throws TooManyRoundsException, NotEnoughPlayersException {
-        if (playersInGame.size()<MIN_PLAYERS_NUMBER) throw new NotEnoughPlayersException();
+        int onlinePlayers = 0;
+        for(Player player : playersInGame){
+            if (!player.isDisconnected()) onlinePlayers++;
+        }
+        if (onlinePlayers<MIN_PLAYERS_NUMBER) throw new NotEnoughPlayersException();
         if (iterator == null) iterator = new PlayersIterator(playersInGame);
         if(iterator.hasNext()) {
            currentPlayer = iterator.next();
@@ -284,6 +288,12 @@ public class MatchModel{
         matchDicePool.removeDieFromPool(dpIndex);
     }
 
+    /**
+     *
+     * @param i Tool card index.
+     * @return A tool card.
+     * @throws NotValidParameterException Thrown when the index is not valid.
+     */
     public ToolCard getToolCard(int i) throws NotValidParameterException {
         if(i<0||i>=toolCards.size()) throw new NotValidParameterException("Invalid tool card index: "+i, "A value between 0 and "+ (toolCards.size()-1));
         return toolCards.get(i);
