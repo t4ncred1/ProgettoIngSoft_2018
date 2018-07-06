@@ -71,7 +71,7 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
 
     @Override
     public void askForLogout() throws ServerIsDownException, GameStartingException, LoggedOutException {
-        // TODO: 04/07/2018  
+        // TODO: 04/07/2018
     }
 
     @Override
@@ -112,6 +112,7 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     public void insertDie(int position, int column, int row) throws ServerIsDownException, InvalidMoveException, DieNotExistException, AlreadyDoneOperationException, DisconnectionException {
         try {
             stub.insertDie(thisClient,position,column,row);
+            thisClient.setRetrieving();
             lock.lock();
             if(disconnected){
                 lock.unlock();
@@ -119,7 +120,6 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
             }
             lock.unlock();
             waitForDataRetrieve();
-
         } catch (RemoteException e) {
             throw new ServerIsDownException();
         } catch (OperationAlreadyDoneException e) {
@@ -148,12 +148,14 @@ public class ServerRMICommunication implements ServerCommunicatingInterface {
     public void endTurn() throws ServerIsDownException, DisconnectionException {
         try {
             stub.endTurn(thisClient);
+            thisClient.setRetrieving();
             lock.lock();
             if(disconnected){
                 lock.unlock();
                 throw new DisconnectionException();
             }
             lock.unlock();
+            waitForDataRetrieve();
         } catch (RemoteException e) {
             throw new ServerIsDownException();
         }

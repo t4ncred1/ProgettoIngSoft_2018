@@ -84,8 +84,9 @@ public interface UserInterface {
      * Sends all players' grids to a player.
      *
      * @param playersGrids Players' grids.
+     * @param connectedPlayers
      */
-    void sendGrids(Map<String,Grid> playersGrids);
+    void sendGrids(Map<String, Grid> playersGrids, List<String> connectedPlayers);
 
     /**
      * Sends a notify about initialization end.
@@ -99,7 +100,7 @@ public interface UserInterface {
      */
     void notifyTurnOf(String username);
 
-    void setToReconnecting();
+    void syncWithReconnectingUserAgent();
 
     /**
      * Sends the dice pool.
@@ -124,4 +125,6 @@ public interface UserInterface {
     void sendRoundTrack(List<Die> roundTrack);
 
     void sendToolCards(List<ToolCard> toolCards);
+
+    void notifyGameInitialized();
 }

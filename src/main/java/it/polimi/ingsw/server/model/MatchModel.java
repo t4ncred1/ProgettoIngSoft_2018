@@ -288,6 +288,12 @@ public class MatchModel{
         matchDicePool.removeDieFromPool(dpIndex);
     }
 
+    /**
+     *
+     * @param i Tool card index.
+     * @return A tool card.
+     * @throws NotValidParameterException Thrown when the index is not valid.
+     */
     public ToolCard getToolCard(int i) throws NotValidParameterException {
         if(i<0||i>=toolCards.size()) throw new NotValidParameterException("Invalid tool card index: "+i, "A value between 0 and "+ (toolCards.size()-1));
         return toolCards.get(i);
@@ -461,6 +467,12 @@ public class MatchModel{
             throw new NotInPoolException();
     }
 
+    public List<String> getConnectedPlayers(){
+        List<String> connectedPlayers= new ArrayList<>();
+        playersInGame.forEach(player -> {if(!currentPlayer.isDisconnected())connectedPlayers.add(player.getUsername());});
+        return connectedPlayers;
+    }
+
     /**
      *
      * @param index Die position in round track.
@@ -525,6 +537,17 @@ public class MatchModel{
     }
 
     /**
+     * Getter for a copy of the roundTrack.
+     *
+     * @return A list of dice.
+     */
+    public List<Die> getRoundTrackCopy() {
+        List<Die> roundTrackCopy= new ArrayList<>();
+        roundTrack.forEach(die -> roundTrackCopy.add(new Die(die)));
+        return roundTrackCopy;
+    }
+
+    /**
      * Getter for controller.
      *
      * @return A matchController.
@@ -540,7 +563,7 @@ public class MatchModel{
     public Map<String,Grid> getAllGrids() {
         Map<String, Grid> toReturn = new HashMap<>();
         for (Player player : playersInGame) {
-            toReturn.put(player.getUsername(), player.getSelectedGrid());
+            toReturn.put(player.getUsername(), new Grid(player.getSelectedGrid()));
         }
         return toReturn;
     }

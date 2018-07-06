@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.configurations.adapters.*;
 import it.polimi.ingsw.client.custom_exception.GameFinishedException;
 import it.polimi.ingsw.client.custom_exception.InvalidUsernameException;
+import it.polimi.ingsw.client.custom_exception.NoDisconnectionException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
@@ -20,6 +21,7 @@ public class Proxy {
     private String myUsername;
     private String turnPlayer;
     private ArrayList<GridInterface> gridsSelection;
+    private List<String> playersJustReconnected;
     private GridInterface gridSelected;
     private Map<String,GridInterface> connectedPlayers;
     private Map<String,GridInterface> disconnectedPlayers;
@@ -29,6 +31,8 @@ public class Proxy {
     private RoundTrackInterface roundTrack;
     private boolean gameFinished;
     private boolean useGUI;
+    private String turnPlayerDisconnected;
+    private boolean isTurnPlayerDisconnected;
 
     private Proxy(){
         gridsSelection= new ArrayList<>();
@@ -91,12 +95,16 @@ public class Proxy {
         this.dicePool=newDicePoolAdapter(dicePool);
     }
 
-    public synchronized void setGridsForEachPlayer(Map<String,Grid> gridsOfEachPlayer) {
+    public synchronized void setGridsForEachPlayer(Map<String, Grid> gridsOfEachPlayer, List<String> connectedPlayersList) {
+        connectedPlayersList.stream()
+                .filter(username -> !connectedPlayers.isEmpty() && !myUsername.equals(username) && !connectedPlayers.containsKey(username))
+                .forEach(username -> playersJustReconnected.add(username));
         Map<String,GridInterface> gridInterfaces= new LinkedHashMap<>();
         gridsOfEachPlayer.forEach((username,grid)-> gridInterfaces.put(username, newGridAdapter(grid)));
         gridSelected = gridInterfaces.remove(myUsername);
-        connectedPlayers = gridInterfaces;
-        //todo, if there's a void grid put player into disconnected
+        connectedPlayers.entrySet().removeIf(entry->!connectedPlayersList.contains(entry.getKey()));
+        gridsOfEachPlayer.forEach(this::setDisconnectedPlayers);
+        this.connectedPlayers = gridInterfaces;
     }
 
     public synchronized void setTurnPlayer(String serverResponse) {
@@ -156,7 +164,14 @@ public class Proxy {
     }
 
     public synchronized void setPlayerToDisconnected() {
-        disconnectedPlayers.put(turnPlayer, connectedPlayers.remove(turnPlayer));
+        if(!turnPlayer.equals(myUsername))disconnectedPlayers.put(turnPlayer, connectedPlayers.remove(turnPlayer));
+        turnPlayerDisconnected=turnPlayer;
+        isTurnPlayerDisconnected=true;
+    }
+
+    public synchronized String getDisconnection() throws NoDisconnectionException {
+        if(isTurnPlayerDisconnected) return turnPlayerDisconnected;
+        else throw new NoDisconnectionException();
     }
 
     public synchronized boolean isGameFinished() {
@@ -213,5 +228,11 @@ public class Proxy {
 
     public synchronized ToolCardAdapter getToolCard(int index) {
         return toolCards.get(index);
+    }
+
+
+    private void setDisconnectedPlayers(String username, Grid grid) {
+        if (!username.equals(myUsername) && !connectedPlayers.containsKey(username))
+            disconnectedPlayers.put(username, newGridAdapter(grid));
     }
 }
