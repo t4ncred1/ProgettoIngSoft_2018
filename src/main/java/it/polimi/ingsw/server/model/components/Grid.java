@@ -8,21 +8,20 @@ import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import java.io.Serializable;
 
 public class Grid implements Serializable {
-    public Box[][] getGameGrid() {
-        return gameGrid;
-    }
-
     private static final int COLUMN_NUMBER =5;
-
-    public boolean isFirstInsertion() {
-        return wasFirstDieInserted;
-    }
-
     private static final int ROW_NUMBER =4;
     private String name;
     private int difficulty;
     private Box[][] gameGrid;
     private transient boolean wasFirstDieInserted=false;
+
+    public Box[][] getGameGrid() {
+        return gameGrid;
+    }
+
+    public boolean isFirstInsertion() {
+        return wasFirstDieInserted;
+    }
 
     /**
      * Constructor for grid (clone).
