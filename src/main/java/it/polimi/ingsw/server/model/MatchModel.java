@@ -288,6 +288,12 @@ public class MatchModel{
         matchDicePool.removeDieFromPool(dpIndex);
     }
 
+    /**
+     *
+     * @param i Tool card index.
+     * @return A tool card.
+     * @throws NotValidParameterException Thrown when the index is not valid.
+     */
     public ToolCard getToolCard(int i) throws NotValidParameterException {
         if(i<0||i>=toolCards.size()) throw new NotValidParameterException("Invalid tool card index: "+i, "A value between 0 and "+ (toolCards.size()-1));
         return toolCards.get(i);

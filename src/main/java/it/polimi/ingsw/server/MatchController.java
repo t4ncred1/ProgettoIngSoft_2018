@@ -749,6 +749,12 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     * Sends a notification about turn end.
+     *
+     * @param player Player to be notified.
+     * @throws IllegalRequestException See securityControl doc.
+     */
     public void notifyEnd(UserInterface player) throws IllegalRequestException {
         securityControl(player);
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
@@ -807,6 +813,14 @@ public class MatchController extends Thread{
         return 6;
     }
 
+    /**
+     *
+     * @param player Player trying to use a tool card.
+     * @param toolCardIndex Tool card index.
+     * @throws OperationAlreadyDoneException Thrown when this operation was already done in the same turn.
+     * @throws NotValidParameterException See getToolCard doc in MatchModel class.
+     * @throws IllegalRequestException Thrown when 'player' is not valid.
+     */
     public void tryToUseToolCard(UserInterface player, int toolCardIndex) throws OperationAlreadyDoneException, NotValidParameterException, IllegalRequestException {
         securityControl(player);
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
@@ -820,6 +834,15 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     *
+     * @param player Player trying to use a tool card.
+     * @param effectName Effect name.
+     * @param parameters Effect's parameters.
+     * @throws IllegalRequestException Thrown when 'player' is not valid.
+     * @throws InvalidOperationException Thrown when 'effectName' is not valid.
+     * @throws NotValidParameterException See setToolCardParams doc in Effect class.
+     */
     public void setEffectParameters(UserInterface player,String effectName, List<String> parameters) throws IllegalRequestException, InvalidOperationException, NotValidParameterException {
         final int REMOVING_INDEX=0;
         securityControl(player);
@@ -835,6 +858,12 @@ public class MatchController extends Thread{
         }
     }
 
+    /**
+     *
+     * @param player Player trying to use a tool card.
+     * @param index Tool card index.
+     * @throws IllegalRequestException Thrown when 'player' is not valid.
+     */
     public void executeToolCard(UserInterface player, int index) throws IllegalRequestException {
         securityControl(player);
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
@@ -844,7 +873,8 @@ public class MatchController extends Thread{
             } catch (NotValidParameterException e) {
                 logger.log(Level.SEVERE, "Something went wrong when TryToUseToolCard was executed", e);
             } catch (Exception e) {
-                //fixme need to differentiate exception launched by useToolCard
+                //note: whatever excepion is thrown, a InvalidOperationException should be thrown, and the stacktrace should be
+                //logged.
             }
         }
     }
