@@ -39,7 +39,7 @@ public interface Effect extends Serializable {
      *  Used to set effect parameters in the tool card which is using it.
      *
      * @param params is a List containing all parameters to set.
-     *
+     * @throws NotValidParameterException Thrown when the list is not valid.
      */
     void setToolCardParams(List<String> params) throws NotValidParameterException;
 }
