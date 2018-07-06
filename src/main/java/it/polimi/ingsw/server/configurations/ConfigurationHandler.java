@@ -30,7 +30,6 @@ public class ConfigurationHandler {
     private static final Object publicObjectivesGuard=new Object();
 
     private static final int NUMBER_OF_PUBLIC_OBJECTIVES = 10;
-    //TODO do this for timers too.
 
     /**
      * Constructor for ConfigurationHandler.
