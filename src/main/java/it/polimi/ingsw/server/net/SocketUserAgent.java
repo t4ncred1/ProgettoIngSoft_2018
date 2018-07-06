@@ -22,7 +22,6 @@ import it.polimi.ingsw.server.custom_exception.ReconnectionException;
 
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.locks.Condition;
@@ -37,16 +36,15 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private MatchController gameHandling;
     private boolean inGame;
     private boolean connected;
-    private boolean reconnecting;
-    private boolean retrieveringData;
+    private boolean gridSet;
     private boolean gameFinished;
-    private boolean retrievingData;
     private boolean statusChanged;
     private boolean readyToReceiveGridsRequest;
     private Lock lock;
     private Lock syncLock;
     private Condition conditionLock;
     private Condition conditionSyncLock;
+    private static final String DISCONNECTED_LOG="Disconnected";
 
     private String username;
 
@@ -85,14 +83,9 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private static final String CHOOSE_GRID="set_grid";
 
     private static final String TURN_PLAYER = "turn_player";
-    private static final String GET_TURN_PLAYER = "get_turn_player";
-    private static final String GET_DICE_POOL = "get_dice_pool";
-    private static final String GET_SELECTED_GRID = "get_my_grid";
     private static final String GAME_FINISHED= "finished";
 
-    private static final String LISTEN_STATE = "listen";
-    private static final String END_LISTEN="listen_end";
-    private static final String OPERATION_MESSAGE= "operation";
+    private static final String CONNECTED_PLAYERS = "connected_players";
     private static final String INSERT_DIE = "insert_die";
     private static final String USE_TOOL_CARD="tool_card";
     private static final String EXECUTE_TOOL_CARD = "execute_tool";
@@ -148,10 +141,8 @@ public class SocketUserAgent extends Thread implements UserInterface {
             }
             logger.log(Level.INFO,"correctly got loggers at "+DEFAULT_LOG_DIR);
         }
-        retrieveringData=false;
-        reconnecting=false;
+        gridSet=false;
         gameFinished=false;
-        retrieveringData=false;
         statusChanged=false;
         syncLock = new ReentrantLock();
         lock = new ReentrantLock();
@@ -319,50 +310,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
         return builder.create();
     }
 
-    private void sendDicePool() throws IOException {
-        String request;
-        do {
-            request = inputStream.readUTF();
-        }
-        while (!request.equals(GET_DICE_POOL));
-        outputStream.writeUTF(DICE_POOL_DATA);
-        List<Die> dieList= gameHandling.getDicePool();
-        Gson gson= new Gson();
-        outputStream.writeUTF(gson.toJson(dieList));
-    }
-
-    private void handleTurnPlayerRequest() throws IOException, TooManyRoundsException {
-        String player;
-        boolean turnSent=false;
-        do {
-            waitForTurnPlayerRequest();
-            logger.log(Level.FINE,"{0} started turn player request.",username);
-            try {
-                player = gameHandling.requestTurnPlayer();
-                outputStream.writeUTF(player);
-                logger.log(Level.FINE,"Sent: turnPlayer ({0}) to {1}",new Object[]{player,username});
-                turnSent = true;
-            } catch (InvalidOperationException e) {
-                outputStream.writeUTF(NOT_OK_REQUEST);
-            }
-        } while (!turnSent);
-    }
-
-    private void waitForTurnPlayerRequest() throws IOException {
-        String request;
-        do {
-            request = inputStream.readUTF();
-            //This sleep is used to avoid continuous request from clients
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                logger.log(Level.SEVERE, "Interrupted!");
-            }
-        }
-        while (!request.equals(GET_TURN_PLAYER));
-    }
-
     /**
      * Handles game initialization (grids request, grid choice).
      *
@@ -372,15 +319,19 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private void handleGameInitialization() throws IOException, IllegalRequestException {
         try {
             handleGridsRequest();
-            boolean gridSet;
+            boolean localGridSet;
             do {
-                gridSet = handleGridSet();
+                localGridSet = handleGridSet();
             }
-            while (!gridSet);
+            while (!localGridSet);
         } catch (InvalidOperationException e) {
             outputStream.writeUTF(GRID_ALREADY_SELECTED);
             logger.log(Level.CONFIG, "Player already selected a grid", e);
         }
+        lock.lock();
+        gridSet=true;
+        conditionLock.signal();
+        lock.unlock();
     }
 
     /**
@@ -554,6 +505,8 @@ public class SocketUserAgent extends Thread implements UserInterface {
                 logger.log(Level.INFO, "Username not available", e);
             } catch (ReconnectionException e) {
                 outputStream.writeUTF(RECONNECTED);
+                outputStream.writeUTF(LAUNCHING_GAME);
+                outputStream.writeUTF(GAME_STARTED);
                 logger.log(Level.INFO,"Connection protocol ended. Client joined the game left before",e);
                 logged=true;
             }
@@ -709,13 +662,15 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
 
     @Override
-    public void sendGrids(Map<String, Grid> playersGrids) {
+    public void sendGrids(Map<String, Grid> playersGrids, List<String> connectedPlayers) {
         HashMap toSent= (HashMap) playersGrids;
+        ArrayList<String> playersToSend= (ArrayList<String>) connectedPlayers;
         Gson gson = getGsonForGrid();
         String mapToJson= gson.toJson(toSent);
         try {
             outputStream.writeUTF(ALL_GRIDS_DATA);
             outputStream.writeUTF(mapToJson);
+            outputStream.writeUTF(gson.toJson(playersToSend));
             logger.log(Level.FINE, "Sent grids to {0}", username);
         } catch (IOException e) {
             logger.fine("Disconnected");
@@ -737,8 +692,16 @@ public class SocketUserAgent extends Thread implements UserInterface {
     }
 
     @Override
-    public void setToReconnecting() {
-        this.reconnecting=true;
+    public void syncWithReconnectingUserAgent() {
+        lock.lock();
+        while(!gridSet){
+            try {
+                conditionLock.await();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        lock.unlock();
     }
 
     @Override
@@ -760,16 +723,13 @@ public class SocketUserAgent extends Thread implements UserInterface {
     public void synchronizeEndTurn(boolean disconnected, Grid grid, List<Die> dicePool) {
         //this method is launched at the end of the turn to synchronizeEndTurn with eventual reconnecting players
         try {
-            syncLock.lock();
-            waitDataRetrieve();
             if(disconnected)outputStream.writeUTF(DISCONNECTION);
             sendGrid(grid);
             sendDicePool(dicePool);
+            // TODO: 05/07/2018 send other data
             outputStream.writeUTF(END_TURN);
         } catch (IOException e) {
             logger.fine("Disconnected");
-        } finally {
-            syncLock.unlock();
         }
     }
 
@@ -810,16 +770,15 @@ public class SocketUserAgent extends Thread implements UserInterface {
         }
     }
 
-    private void waitDataRetrieve() {
-
-        while(retrievingData){
-            try {
-                conditionSyncLock.await();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+    @Override
+    public void notifyGameInitialized() {
+        try {
+            outputStream.writeUTF(END_DATA);
+        } catch (IOException e) {
+            logger.fine(DISCONNECTED_LOG);
         }
     }
+
 
     /**
      * Sends data.
@@ -833,7 +792,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             outputStream.writeUTF(dataType);
             outputStream.writeUTF(dataToSend);
         } catch (IOException e) {
-            logger.fine("Disconnected");
+            logger.fine(DISCONNECTED_LOG);
         } finally {
             lock.unlock();
         }
@@ -845,7 +804,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             outputStream.writeUTF(DISCONNECTION);
             logger.log(Level.FINE,"{0} notified about disconnection due to timeout", username);
         } catch (IOException e) {
-            logger.fine("Disconnected");
+            logger.fine(DISCONNECTED_LOG);
         }
     }
 

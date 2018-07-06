@@ -138,16 +138,6 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
     }
 
     @Override
-    public String askTurn(ClientRemoteInterface thisClient) throws NotValidParameterException, InvalidOperationException, TooManyRoundsException {
-        
-        synchronized (clientsHandledGuard) {
-            if (!(clientsHandled.containsKey(thisClient)))
-                throw new NotValidParameterException("Client thisClient is not in any Match.", "Should be in a match to ask for a private objective.");
-        }
-        return clientsMatch.get(thisClient).requestTurnPlayer();
-    }
-
-    @Override
     public List<Die> getUpdatedDicePool(ClientRemoteInterface thisClient) throws NotValidParameterException {
         synchronized (clientsHandledGuard){
             if(!(clientsHandled.containsKey(thisClient)))

@@ -5,11 +5,11 @@
   "maxPlayersNumber": "4",
   "minPlayersNumber": "2",
   "timerBeforeMatch": "5",
-  "timerToChooseGrid": "30",
+  "timerToChooseGrid": "60",
   "rmiPort": "11001",
   "socketPort": "11000",
   "publicObjectivesDistributed" : "3",
   "toolCardsDistributed" : "3",
-  "timerForOperation" : "60",
+  "timerForOperation" : "5",
   "numberOfMatchHandled": 1
 }

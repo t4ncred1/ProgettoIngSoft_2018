@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.net;
 
 import it.polimi.ingsw.client.MainClient;
 import it.polimi.ingsw.client.Proxy;
+
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
@@ -19,16 +20,18 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
     private transient ServerRMICommunication serverRemoteInterfaceAdapter;
 
     private String username;
+    private boolean myTurn;
     private Logger logger;
     private Lock lock;
     private boolean endTurn;
-    private boolean firstInitialization;
+    private boolean retrievingData;
 
     protected ClientRMI()  throws RemoteException{
         logger= Logger.getLogger(ClientRMI.class.getName());
         lock= new ReentrantLock();
-        firstInitialization=true;
         endTurn=false;
+        retrievingData=false;
+        myTurn=false;
     }
 
     @Override
@@ -63,8 +66,8 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
     }
 
     @Override
-    public void setGrids(Map<String, Grid> playersGrids) {
-        Proxy.getInstance().setGridsForEachPlayer(playersGrids);
+    public void setGrids(Map<String, Grid> playersGrids, List<String> connectedPlayers) {
+        Proxy.getInstance().setGridsForEachPlayer(playersGrids, connectedPlayers);
     }
 
     @Override
@@ -106,21 +109,33 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
 
     @Override
     public void notifyTurnInitialized() {
-        if(firstInitialization){
-            firstInitialization=false;
-            MainClient.getInstance().setGameToInitialized();
-        }else if(endTurn) {
+        if(endTurn) {
+            if(myTurn) MainClient.getInstance().notifyDataRetrieved();
             endTurn=false;
             MainClient.getInstance().notifyTurnUpdated();
         }else {
-            MainClient.getInstance().notifySomethingChanged();
+            if(myTurn)MainClient.getInstance().notifyDataRetrieved();
+            else MainClient.getInstance().notifySomethingChanged();
         }
 
     }
 
+    private void checkDataRetrieve() {
+        lock.lock();
+        if(retrievingData){
+            retrievingData=false;
+            lock.unlock();
+            serverRemoteInterfaceAdapter.notifyDataRetrieved();
+            lock.lock();
+        }
+        lock.unlock();
+    }
+
+
     @Override
     public void notifyTurnOf(String username) {
         Proxy.getInstance().setTurnPlayer(username);
+        myTurn=username.equals(Proxy.getInstance().getMyUsername());
         MainClient.getInstance().notifyTurnUpdated();
     }
 
@@ -134,6 +149,11 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
         Proxy.getInstance().setPlayerToDisconnected();
     }
 
+    @Override
+    public void notifyGameInitialized(){
+        MainClient.getInstance().setGameToInitialized();
+    }
+
 
     public void setRMICommunication(ServerRMICommunication serverRemoteInterfaceAdapter) {
         this.serverRemoteInterfaceAdapter=serverRemoteInterfaceAdapter;
@@ -141,5 +161,11 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
 
     public void setUsername(String username) {
         this.username=username;
+    }
+
+    public void setRetrieving() {
+        lock.lock();
+        retrievingData=true;
+        lock.unlock();
     }
 }

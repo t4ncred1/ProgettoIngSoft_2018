@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.net.UserInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -25,7 +26,8 @@ public class MatchHandler extends Thread {
     private static MatchController startingMatch;
     private static final Object startingMatchGuard= new Object();
     private static ArrayList<MatchController> startedMatches; //to handle multi-game.
-    private static final Object startedMatchesGuard= new Object();
+    private static Lock startedMatchesGuard;
+    private static Condition startedMatchesCondition;
     private static Lock lock;
     private static Condition condition;
 
@@ -48,6 +50,18 @@ public class MatchHandler extends Thread {
     private static final String ANSI_PURPLE = "\u001B[35m";
     private static final String ANSI_CYAN = "\u001B[36m";
 
+
+    private MatchHandler(){
+        connectedPlayers= new HashMap<>();
+        lock= new ReentrantLock();
+        condition= lock.newCondition();
+        startedMatches= new ArrayList<>();
+        disconnectedInGamePlayers= new HashMap<>();
+        timeout=true;
+        shutdown= false;
+        startedMatchesGuard = new ReentrantLock();
+        startedMatchesCondition= startedMatchesGuard.newCondition();
+    }
     /**
      * Getter for MatchHandler.
      *
@@ -56,13 +70,6 @@ public class MatchHandler extends Thread {
     public static MatchHandler getInstance(){
         if(instance==null) {
             instance = new MatchHandler();
-            connectedPlayers= new HashMap<>();
-            lock= new ReentrantLock();
-            condition= lock.newCondition();
-            startedMatches= new ArrayList<>();
-            disconnectedInGamePlayers= new HashMap<>();
-            instance.timeout=true;
-            instance.shutdown= false;
         }
         return instance;
     }
@@ -142,16 +149,17 @@ public class MatchHandler extends Thread {
                 ok=startGameCountdown();
             }
             while (!ok);
-            logger.log(Level.INFO,"Game started");
-            lock.lock();
+            startedMatchesGuard.lock();
+            logger.log(Level.INFO,"Game started, actually handling "+ startedMatches.size()+ "game(s)");
             while(startedMatches.size()>=maximumMatchNumber){
                 try {
-                    condition.await();
+                    startedMatchesCondition.await();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
             }
-            lock.unlock();
+            startedMatchesGuard.unlock();
+
         }
     }
 
@@ -202,28 +210,28 @@ public class MatchHandler extends Thread {
                 startingMatch.setGameToStartingSoon(timeout);
             }
             condition.await();
-
-            System.out.println("Resumed. Timeout: "+instance.timeout);
             synchronized (startingMatchGuard) {
-                synchronized (startedMatchesGuard) {
-                    if (startingMatch.playerInGame() == MAX_PLAYERS_IN_GAME) {
-                        startingMatch.setGameToStarted();
-                        startedMatches.add(startingMatch);
-                        startingMatch = null;
-                        timer.stop();
-                        return true;
-                    } else if (instance.timeout && startingMatch.playerInGame() >= MIN_PLAYERS_IN_GAME) {
-                        startingMatch.setGameToStarted();
-                        instance.timeout = false;
-                        startedMatches.add(startingMatch);
-                        startingMatch = null;
-                        timer.stop();
-                        return true;
+                if (startingMatch.playerInGame() == MAX_PLAYERS_IN_GAME) {
+                    startingMatch.setGameToStarted();
+                    startedMatchesGuard.lock();
+                    startedMatches.add(startingMatch);
+                    startedMatchesGuard.unlock();
+                    startingMatch = null;
+                    timer.stop();
+                    return true;
+                } else if (instance.timeout && startingMatch.playerInGame() >= MIN_PLAYERS_IN_GAME) {
+                    startingMatch.setGameToStarted();
+                    instance.timeout = false;
+                    startedMatchesGuard.lock();
+                    startedMatches.add(startingMatch);
+                    startedMatchesGuard.unlock();
+                    startingMatch = null;
+                    timer.stop();
+                    return true;
 
-                    }
-                    else if (instance.timeout && startingMatch.playerInGame() < MIN_PLAYERS_IN_GAME){
-                        timer.stop();
-                    }
+                }
+                else if (instance.timeout && startingMatch.playerInGame() < MIN_PLAYERS_IN_GAME){
+                    timer.stop();
                 }
             }
         } catch (InterruptedException e) {
@@ -334,19 +342,30 @@ public class MatchHandler extends Thread {
             gameHandlingClient = connectedPlayers.remove(username);
         }
         synchronized (startingMatchGuard) {
-            synchronized (startedMatchesGuard) {
-                if (gameHandlingClient!=null) {
-                    synchronized (disconnectedInGamePlayersGuard) {
-                        disconnectedInGamePlayers.put(username, gameHandlingClient);
+            if (gameHandlingClient!=null) {
+                synchronized (disconnectedInGamePlayersGuard) {
+                    disconnectedInGamePlayers.put(username, gameHandlingClient);
 
-                        //FIXME if necessary.
-                    }
+                    //FIXME if necessary.
                 }
-                else
-                    startingMatch.remove(client);
             }
+            else
+                startingMatch.remove(client);
         }
         System.out.println(ANSI_PURPLE+ username + " logged out."+ ANSI_RESET);
 
+    }
+
+    public void notifyEndGame(MatchController matchController) {
+        startedMatchesGuard.lock();
+        startedMatches.remove(matchController);
+        startedMatchesCondition.signal();
+        startedMatchesGuard.unlock();
+        synchronized (connectedPlayersGuard){
+            connectedPlayers.entrySet().removeIf(player -> player.getValue().equals(matchController));
+        }
+        synchronized (disconnectedInGamePlayersGuard){
+            disconnectedInGamePlayers.entrySet().removeIf(player -> player.getValue().equals(matchController));
+        }
     }
 }

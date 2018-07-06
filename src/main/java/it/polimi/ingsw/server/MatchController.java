@@ -19,6 +19,8 @@ import java.util.logging.Logger;
 
 public class MatchController extends Thread{
     private Map<String,UserInterface> playersInMatch;
+    private List<UserInterface> reconnectingUsers;
+    private static final Object reconnectingUsersGuard= new Object();
     private Map<String,Boolean> flagNotifyStatPlayer;
     private static final Object playersInMatchGuard = new Object();
     private boolean gameStarted;
@@ -43,11 +45,16 @@ public class MatchController extends Thread{
 
     private Lock lock;
     private Condition condition;
+    private Lock endLock;
+    private Condition endCondition;
+    private Lock turnPlayerGuard;
 
     private Logger logger;
     private static long matchNumber = 0L;
     private long thisMatchNumber;
     private boolean disconnected;
+    private int reconnectingPlayers;
+    private boolean turnLogicStarted;
 
     /**
      * Constructor for MatchController.
@@ -55,8 +62,14 @@ public class MatchController extends Thread{
     public MatchController(){
         this.lock = new ReentrantLock();
         this.condition= lock.newCondition();
+        this.endLock= new ReentrantLock();
+        this.endCondition= endLock.newCondition();
         this.playersInMatch= new LinkedHashMap<>();
+        this.reconnectingUsers= new ArrayList<>();
+        this.reconnectingPlayers=0;
+        this.turnLogicStarted =false;
         this.flagNotifyStatPlayer=new LinkedHashMap<>();
+        this.turnPlayerGuard= new ReentrantLock();
         logger= Logger.getLogger(this.getClass().getName()+"_"+matchNumber);
         thisMatchNumber=matchNumber++;
     }
@@ -69,6 +82,7 @@ public class MatchController extends Thread{
         new Thread(this::checkForDisconnections).start(); //this will let player to reconnect
         initializeGame();
         handleGame();
+        MatchHandler.getInstance().notifyEndGame(this);
     }
 
     /**
@@ -131,7 +145,7 @@ public class MatchController extends Thread{
      */
     private void notifyGameInitialized() {
         synchronized (playersInMatchGuard) {
-            playersInMatch.forEach((username, player) -> player.notifyTurnInitialized());
+            playersInMatch.forEach((username, player) -> player.notifyGameInitialized());
         }
     }
 
@@ -140,11 +154,13 @@ public class MatchController extends Thread{
      */
     private void sendGrids() {
         Map<String,Grid> playersGrids;
+        List<String> connectedPlayers;
+        synchronized (modelGuard) {
+            playersGrids= model.getAllGrids();
+            connectedPlayers=model.getConnectedPlayers();
+        }
         synchronized (playersInMatchGuard) {
-            synchronized (modelGuard) {
-                playersGrids= model.getAllGrids();
-            }
-            playersInMatch.forEach((username, player) -> player.sendGrids(playersGrids));
+            playersInMatch.forEach((username, player) -> player.sendGrids(playersGrids,connectedPlayers));
         }
     }
 
@@ -224,6 +240,7 @@ public class MatchController extends Thread{
 
         lock.lock();
         String username;
+        turnLogicStarted=false;
         synchronized (modelGuard) {
             model.updateTurn(MAX_ROUND);
             username = model.askTurn();
@@ -256,7 +273,7 @@ public class MatchController extends Thread{
                 updatedDie=true;
                 timer.stop();
                 synchronized (playersInMatchGuard){
-                    playersInMatch.forEach(this::sendDataForDieInsertion);
+                    playersInMatch.forEach((username1, userInterface) -> sendDataForDieInsertion(userInterface));
                 }
             }
 
@@ -270,6 +287,7 @@ public class MatchController extends Thread{
             lock.unlock();
         }
         if(timer!= null) timer.stop();
+        waitForReConnections();
         synchronized (playersInMatchGuard){
             playersInMatch.forEach(this::updateEndTurn);
         }
@@ -277,12 +295,28 @@ public class MatchController extends Thread{
         turnFinished=false;
     }
 
+    private void waitForReConnections() {
+        endLock.lock();
+        while (reconnectingPlayers>0){
+            try {
+                endCondition.await();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        endLock.unlock();
+    }
+
     private void updateEndTurn(String username, UserInterface player) {
         List<Die> dicePool;
         Grid grid;
+        String turnPlayerUsername;
+        turnPlayerGuard.lock();
+        turnPlayerUsername = turnPlayer.getUsername();
+        turnPlayerGuard.unlock();
         synchronized (modelGuard){
             dicePool= model.getDicePool().showDiceInPool();
-            grid=model.getPlayerCurrentGrid(turnPlayer.getUsername());
+            grid=model.getPlayerCurrentGrid(turnPlayerUsername);
             //todo pass toolcards, roundtrack
         }
         player.synchronizeEndTurn(disconnected,grid,dicePool);
@@ -311,14 +345,6 @@ public class MatchController extends Thread{
     }
 
 
-    private void notifyToolCardUsedBy(String username) {
-        synchronized (playersInMatchGuard) {
-            for (Map.Entry<String, UserInterface> players : playersInMatch.entrySet())
-                if (!players.getKey().equals(username))
-                    players.getValue().notifyToolUsed(); //FIXME
-        }
-    }
-
     /**
      * Turn initialization (sends all match elements).
      *
@@ -329,7 +355,9 @@ public class MatchController extends Thread{
         toolCardUsed=false;
         turnFinished=false;
         synchronized (playersInMatchGuard){
+            turnPlayerGuard.lock();
             turnPlayer= playersInMatch.get(username);
+            turnPlayerGuard.unlock();
             playersInMatch.forEach((playerName,player)-> player.notifyTurnOf(username));
         }
         sendDicePool();
@@ -337,6 +365,10 @@ public class MatchController extends Thread{
         sendGrids();
         sendToolCards();
         notifyGameInitialized();
+        lock.lock();
+        turnLogicStarted = true;
+        condition.signal();
+        lock.unlock();
     }
 
     private void sendToolCards() {
@@ -350,7 +382,7 @@ public class MatchController extends Thread{
     }
 
     /**
-     * Sends the roundtrack to every player.
+     * Sends the round track to every player.
      */
     private void sendRoundTrack() {
         List<Die> roundTrack;
@@ -563,11 +595,98 @@ public class MatchController extends Thread{
      * @param player Player trying to reconnect.
      */
     void handleReconnection(UserInterface player) {
+        player.setController(this);
+        synchronized (reconnectingUsersGuard){
+            reconnectingUsers.add(player);
+        }
+        new Thread(()->setUpReconnectingPlayer(player)).start();
+    }
+
+    private void setUpReconnectingPlayer(UserInterface player) {
+        player.syncWithReconnectingUserAgent();
+        endLock.lock();
+        reconnectingPlayers++;
+        endLock.unlock();
+        waitIfGameLogicIsNotReady();
+        boolean gameFinish;
         lock.lock();
-        String username = player.getUsername();
-        player.setToReconnecting();
+        gameFinish=gameFinished;
+        lock.unlock();
+        if(!gameFinish){
+            handleReconnectionDuringGame(player);
+        }else {
+            handleReconnectionEndGame(player);
+        }
+        synchronized (reconnectingUsersGuard){
+            reconnectingUsers.remove(player);
+        }
+        endLock.lock();
+        reconnectingPlayers--;
+        endCondition.signal();
+        endLock.unlock();
+    }
+
+    private void handleReconnectionEndGame(UserInterface player) {
+        player.notifyEndGame();
+        Map<String,String> playersPoints;
+        synchronized (modelGuard){
+            playersPoints = model.calculatePoints();
+        }
+        player.sendPoints(playersPoints);
+    }
+
+    private void handleReconnectionDuringGame(UserInterface player) {
+        String turnPlayerUsername;
+        turnPlayerGuard.lock();
+        turnPlayerUsername = turnPlayer.getUsername();
+        turnPlayerGuard.unlock();
+        sendTurnDataToPlayer(player,turnPlayerUsername);
+        if(player.getUsername().equals(turnPlayerUsername)) {
+            reinsertPlayerInReconnected(player);
+            turnPlayerGuard.lock();
+            turnPlayer=player;
+            turnPlayerGuard.unlock();
+            player.notifyTurnInitialized();
+        }else {
+            player.notifyTurnInitialized();
+            reinsertPlayerInReconnected(player);
+        }
+    }
+
+    private void waitIfGameLogicIsNotReady() {
+        lock.lock();
+        while (!turnLogicStarted){
+            try {
+                condition.await();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        lock.unlock();
+    }
+
+
+    private void sendTurnDataToPlayer(UserInterface player,String turnPlayerUsername) {
+        player.notifyTurnOf(turnPlayerUsername);
+        Map<String,Grid> playersAndGrids;
+        List<Die> dicePool;
+        List<Die> roundTrack;
+        List<String> connectedPlayers;
+        synchronized (modelGuard){
+            playersAndGrids = model.getAllGrids();
+            dicePool=model.getDicePool().getDicePoolCopy();
+            roundTrack= model.getRoundTrackCopy();
+            connectedPlayers=model.getConnectedPlayers();
+            player.sendToolCards(model.getToolCards());
+        }
+        player.sendDicePool(dicePool);
+        player.sendRoundTrack(roundTrack);
+        player.sendGrids(playersAndGrids, connectedPlayers);
+    }
+
+    private void reinsertPlayerInReconnected(UserInterface player) {
+        String username=player.getUsername();
         synchronized (playersInMatchGuard) {
-            flagNotifyStatPlayer.put(username, false);
             playersInMatch.put(username, player);
         }
         synchronized (modelGuard){
@@ -577,13 +696,6 @@ public class MatchController extends Thread{
                 logger.log(Level.SEVERE,"Invalid operation",e);
             }
         }
-        player.setController(this);
-        try {
-            player.notifyReconnection();
-        } catch (DisconnectionException e) {
-            logger.log(Level.INFO, "{0} disconnected during reconnection", player.getUsername());
-        }
-        lock.unlock();
     }
 
     /**
@@ -635,22 +747,6 @@ public class MatchController extends Thread{
 
     /**
      *
-     * @return Current player's username.
-     * @throws InvalidOperationException Thrown when the player is not available (ready=false).
-     * @throws TooManyRoundsException Thrown when the match is already over.
-     */
-    public String requestTurnPlayer() throws InvalidOperationException, TooManyRoundsException {
-        String username;
-        synchronized (modelGuard) {
-            if (!ready) throw new InvalidOperationException();
-            if (gameFinished) throw new TooManyRoundsException();
-            username= model.askTurn();
-        }
-        return username;
-    }
-
-    /**
-     *
      * @return A list representing the dice pool to be shown.
      */
     public List<Die> getDicePool() {
@@ -689,7 +785,9 @@ public class MatchController extends Thread{
      */
     public void insertDie(UserInterface player, int position, int x, int y) throws InvalidOperationException, NotInPoolException, IllegalRequestException, OperationAlreadyDoneException {
         securityControl(player);
+        turnPlayerGuard.lock();
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
+        turnPlayerGuard.unlock();
         if(dieInserted) throw new OperationAlreadyDoneException();
         try {
             model.insertDieOperation(x, y, position);
@@ -705,19 +803,22 @@ public class MatchController extends Thread{
         lock.unlock();
     }
 
-
     /**
      * Sends the elements for a die insertion.
      *
-     * @param username Player's username.
      * @param userInterface Player's interface.
      */
-    private void sendDataForDieInsertion(String username, UserInterface userInterface) {
+
+    private void sendDataForDieInsertion(UserInterface userInterface) {
         List<Die> dicePool;
         Grid grid;
+        String turnPlayerUsername;
+        turnPlayerGuard.lock();
+        turnPlayerUsername = turnPlayer.getUsername();
+        turnPlayerGuard.unlock();
         synchronized (modelGuard){
             dicePool= model.getDicePool().showDiceInPool();
-            grid=model.getPlayerCurrentGrid(turnPlayer.getUsername());
+            grid=model.getPlayerCurrentGrid(turnPlayerUsername);
         }
         userInterface.sendGrid(grid);
         userInterface.sendDicePool(dicePool);
@@ -743,9 +844,11 @@ public class MatchController extends Thread{
      */
     private void securityControl(UserInterface player) throws  IllegalRequestException {
         String username= player.getUsername();
-        synchronized (playersInMatchGuard) {
-            if (!playersInMatch.containsKey(username)) throw new IllegalRequestException();
-            if (!playersInMatch.get(username).equals(player)) throw new IllegalRequestException();
+        if(!reconnectingUsers.contains(player)){
+            synchronized (playersInMatchGuard) {
+                if (!playersInMatch.containsKey(username)) throw new IllegalRequestException();
+                if (!playersInMatch.get(username).equals(player)) throw new IllegalRequestException();
+            }
         }
     }
 
@@ -757,7 +860,9 @@ public class MatchController extends Thread{
      */
     public void notifyEnd(UserInterface player) throws IllegalRequestException {
         securityControl(player);
+        turnPlayerGuard.lock();
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
+        turnPlayerGuard.unlock();
         lock.lock();
         turnFinished=true;
         condition.signal();
@@ -823,7 +928,9 @@ public class MatchController extends Thread{
      */
     public void tryToUseToolCard(UserInterface player, int toolCardIndex) throws OperationAlreadyDoneException, NotValidParameterException, IllegalRequestException {
         securityControl(player);
+        turnPlayerGuard.lock();
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
+        turnPlayerGuard.unlock();
         if(toolCardUsed) {
             throw new OperationAlreadyDoneException();
         }
@@ -846,7 +953,9 @@ public class MatchController extends Thread{
     public void setEffectParameters(UserInterface player,String effectName, List<String> parameters) throws IllegalRequestException, InvalidOperationException, NotValidParameterException {
         final int REMOVING_INDEX=0;
         securityControl(player);
+        turnPlayerGuard.lock();
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
+        turnPlayerGuard.unlock();
         synchronized (modelGuard){
             Effect effect= effectsToDo.get(REMOVING_INDEX);
             if(effectName.equals(effect.getName())){
@@ -866,7 +975,9 @@ public class MatchController extends Thread{
      */
     public void executeToolCard(UserInterface player, int index) throws IllegalRequestException {
         securityControl(player);
+        turnPlayerGuard.lock();
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
+        turnPlayerGuard.unlock();
         synchronized (modelGuard){
             try {
                 model.getToolCard(index).useToolCard();
