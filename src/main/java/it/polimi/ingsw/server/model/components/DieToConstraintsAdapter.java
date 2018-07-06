@@ -1,12 +1,26 @@
 package it.polimi.ingsw.server.model.components;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DieToConstraintsAdapter implements DieConstraints, Serializable {
 
     private Die die;
     private int colorRestriction;
     private int valueRestriction;
+    private static final Map<String,Integer> COLOR_HASH;
+    static {
+        HashMap<String,Integer> tmp =
+            new HashMap<>();
+        tmp.put("green" ,0);
+        tmp.put("red"   ,1);
+        tmp.put("blue"  ,2);
+        tmp.put("yellow",3);
+        tmp.put("purple",4);
+        COLOR_HASH = Collections.unmodifiableMap(tmp);
+    }
 
     /**
      * Constructor for DieToConstraintsAdapter.
@@ -20,21 +34,7 @@ public class DieToConstraintsAdapter implements DieConstraints, Serializable {
         this.valueRestriction=this.die.getValue()-1;
 
         //assegno color
-        switch(this.die.getColor()){
-            case "green":
-                this.colorRestriction=0;
-                break;
-            case "red":
-                this.colorRestriction=1;
-                break;
-            case "blue":
-                this.colorRestriction=2;
-                break;
-            case "yellow":
-                this.colorRestriction=3;
-                break;
-            default : this.colorRestriction=4;
-        }
+        colorRestriction=COLOR_HASH.get(die.getColor());
     }
 
 
@@ -55,10 +55,5 @@ public class DieToConstraintsAdapter implements DieConstraints, Serializable {
     public Die getDie() {
         return this.die;
     }
-
-   /* @Override
-    public void modifyDie(){
-        //TODO modifier for die
-    }*/
 
 }
