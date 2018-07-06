@@ -91,17 +91,16 @@ public class MatchModel{
     /**
      * Used to get match configurations parameters
      */
-    //fixme add proper javadoc (why the exception is catch here?)
     private void getGameParametersFromConfig() {
         try {
             MAX_PLAYERS_NUMBER =ConfigurationHandler.getInstance().getMaxPlayersNumber();
         } catch (NotValidConfigPathException e) {
-            e.printStackTrace();
+            Logger.getLogger(this.getClass().getName()).log(Level.CONFIG,"Failed retrieving of Max Players Number");
         }
         try {
             MIN_PLAYERS_NUMBER =ConfigurationHandler.getInstance().getMinPlayersNumber();
         } catch (NotValidConfigPathException e) {
-            e.printStackTrace();
+            Logger.getLogger(this.getClass().getName()).log(Level.CONFIG,"Failed retrieving of Min Players Number");
         }
     }
 
