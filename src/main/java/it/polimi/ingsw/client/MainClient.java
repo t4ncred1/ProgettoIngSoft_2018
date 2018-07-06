@@ -53,6 +53,8 @@ public class MainClient {
     private static final String INSERT_DIE="inserisci dado";
     private static final String USE_TOOL_CARD= "usa carta strumento";
     private static final String END_TURN="finisci turno";
+    private static final String ANSI_RED="\033[0;31m";
+    private static final String ANSI_RESET="\u001B[0m";
     private boolean dataRetrieved;
 
 
@@ -152,6 +154,11 @@ public class MainClient {
         }
         turnEnded=false;
         printOtherPlayerTurnThings(turnPlayer);
+        try {
+            System.out.println(ANSI_RED+Proxy.getInstance().getDisconnection()+ " si è disconnesso"+ANSI_RESET);
+        } catch (NoDisconnectionException e) {
+            logger.log(Level.FINE,"No one disconnected");
+        }
     }
 
     private void printOtherPlayerTurnThings(String turnPlayer) {

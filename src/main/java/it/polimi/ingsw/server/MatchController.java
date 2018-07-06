@@ -154,11 +154,13 @@ public class MatchController extends Thread{
      */
     private void sendGrids() {
         Map<String,Grid> playersGrids;
+        List<String> connectedPlayers;
+        synchronized (modelGuard) {
+            playersGrids= model.getAllGrids();
+            connectedPlayers=model.getConnectedPlayers();
+        }
         synchronized (playersInMatchGuard) {
-            synchronized (modelGuard) {
-                playersGrids= model.getAllGrids();
-            }
-            playersInMatch.forEach((username, player) -> player.sendGrids(playersGrids));
+            playersInMatch.forEach((username, player) -> player.sendGrids(playersGrids,connectedPlayers));
         }
     }
 
@@ -380,7 +382,7 @@ public class MatchController extends Thread{
     }
 
     /**
-     * Sends the roundtrack to every player.
+     * Sends the round track to every player.
      */
     private void sendRoundTrack() {
         List<Die> roundTrack;
@@ -669,15 +671,17 @@ public class MatchController extends Thread{
         Map<String,Grid> playersAndGrids;
         List<Die> dicePool;
         List<Die> roundTrack;
+        List<String> connectedPlayers;
         synchronized (modelGuard){
             playersAndGrids = model.getAllGrids();
             dicePool=model.getDicePool().getDicePoolCopy();
             roundTrack= model.getRoundTrackCopy();
+            connectedPlayers=model.getConnectedPlayers();
             player.sendToolCards(model.getToolCards());
         }
         player.sendDicePool(dicePool);
         player.sendRoundTrack(roundTrack);
-        player.sendGrids(playersAndGrids);
+        player.sendGrids(playersAndGrids, connectedPlayers);
     }
 
     private void reinsertPlayerInReconnected(UserInterface player) {

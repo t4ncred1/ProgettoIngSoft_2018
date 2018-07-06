@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.net;
 
-import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
@@ -23,7 +22,7 @@ public interface ClientRemoteInterface extends Remote {
 
     void notifyReconnection() throws RemoteException;
 
-    void setGrids(Map<String,Grid> playersGrids)throws RemoteException;
+    void setGrids(Map<String, Grid> playersGrids, List<String> connectedPlayers)throws RemoteException;
 
     void setDicePool(List<Die> dicePool) throws RemoteException;
 

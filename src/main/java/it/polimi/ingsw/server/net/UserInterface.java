@@ -84,8 +84,9 @@ public interface UserInterface {
      * Sends all players' grids to a player.
      *
      * @param playersGrids Players' grids.
+     * @param connectedPlayers
      */
-    void sendGrids(Map<String,Grid> playersGrids);
+    void sendGrids(Map<String, Grid> playersGrids, List<String> connectedPlayers);
 
     /**
      * Sends a notify about initialization end.

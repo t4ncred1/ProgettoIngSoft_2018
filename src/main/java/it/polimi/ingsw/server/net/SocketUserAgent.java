@@ -22,7 +22,6 @@ import it.polimi.ingsw.server.custom_exception.ReconnectionException;
 
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.locks.Condition;
@@ -45,6 +44,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private Lock syncLock;
     private Condition conditionLock;
     private Condition conditionSyncLock;
+    private static final String DISCONNECTED_LOG="Disconnected";
 
     private String username;
 
@@ -83,14 +83,9 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private static final String CHOOSE_GRID="set_grid";
 
     private static final String TURN_PLAYER = "turn_player";
-    private static final String GET_TURN_PLAYER = "get_turn_player";
-    private static final String GET_DICE_POOL = "get_dice_pool";
-    private static final String GET_SELECTED_GRID = "get_my_grid";
     private static final String GAME_FINISHED= "finished";
 
-    private static final String LISTEN_STATE = "listen";
-    private static final String END_LISTEN="listen_end";
-    private static final String OPERATION_MESSAGE= "operation";
+    private static final String CONNECTED_PLAYERS = "connected_players";
     private static final String INSERT_DIE = "insert_die";
     private static final String USE_TOOL_CARD="tool_card";
     private static final String EXECUTE_TOOL_CARD = "execute_tool";
@@ -667,13 +662,15 @@ public class SocketUserAgent extends Thread implements UserInterface {
 
 
     @Override
-    public void sendGrids(Map<String, Grid> playersGrids) {
+    public void sendGrids(Map<String, Grid> playersGrids, List<String> connectedPlayers) {
         HashMap toSent= (HashMap) playersGrids;
+        ArrayList<String> playersToSend= (ArrayList<String>) connectedPlayers;
         Gson gson = getGsonForGrid();
         String mapToJson= gson.toJson(toSent);
         try {
             outputStream.writeUTF(ALL_GRIDS_DATA);
             outputStream.writeUTF(mapToJson);
+            outputStream.writeUTF(gson.toJson(playersToSend));
             logger.log(Level.FINE, "Sent grids to {0}", username);
         } catch (IOException e) {
             logger.fine("Disconnected");
@@ -778,9 +775,10 @@ public class SocketUserAgent extends Thread implements UserInterface {
         try {
             outputStream.writeUTF(END_DATA);
         } catch (IOException e) {
-            logger.fine("Disconnected");
+            logger.fine(DISCONNECTED_LOG);
         }
     }
+
 
     /**
      * Sends data.
@@ -794,7 +792,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             outputStream.writeUTF(dataType);
             outputStream.writeUTF(dataToSend);
         } catch (IOException e) {
-            logger.fine("Disconnected");
+            logger.fine(DISCONNECTED_LOG);
         } finally {
             lock.unlock();
         }
@@ -806,7 +804,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             outputStream.writeUTF(DISCONNECTION);
             logger.log(Level.FINE,"{0} notified about disconnection due to timeout", username);
         } catch (IOException e) {
-            logger.fine("Disconnected");
+            logger.fine(DISCONNECTED_LOG);
         }
     }
 

@@ -70,6 +70,7 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
     private static final String REQUEST_GRID = "get_grids";
     private static final String GRID_ALREADY_SELECTED= "grid_selected";
     private static final String CHOOSE_GRID="set_grid";
+    private static final String CONNECTED_PLAYERS = "connected_players";
 
 
     private static final String TURN_PLAYER = "turn_player";
@@ -343,7 +344,11 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         Gson gson= getGsonForGrid();
         serverResponse=readRemoteInput();
         playersGrids= gson.fromJson(serverResponse, typeToken.getType());
-        Proxy.getInstance().setGridsForEachPlayer(playersGrids);
+        List<String> connectedPlayers;
+        TypeToken<ArrayList<String>> typeToken2= new TypeToken<ArrayList<String>>(){};
+        serverResponse=readRemoteInput();
+        connectedPlayers=gson.fromJson(serverResponse, typeToken2.getType());
+        Proxy.getInstance().setGridsForEachPlayer(playersGrids,connectedPlayers);
         logger.log(Level.FINE,"Grids retrieved and set");
     }
 

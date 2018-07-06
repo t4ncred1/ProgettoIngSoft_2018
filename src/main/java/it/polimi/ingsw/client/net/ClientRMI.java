@@ -3,9 +3,6 @@ package it.polimi.ingsw.client.net;
 import it.polimi.ingsw.client.MainClient;
 import it.polimi.ingsw.client.Proxy;
 
-import it.polimi.ingsw.client.custom_exception.GameFinishedException;
-import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
-
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
@@ -69,8 +66,8 @@ public class ClientRMI extends UnicastRemoteObject implements ClientRemoteInterf
     }
 
     @Override
-    public void setGrids(Map<String, Grid> playersGrids) {
-        Proxy.getInstance().setGridsForEachPlayer(playersGrids);
+    public void setGrids(Map<String, Grid> playersGrids, List<String> connectedPlayers) {
+        Proxy.getInstance().setGridsForEachPlayer(playersGrids, connectedPlayers);
     }
 
     @Override

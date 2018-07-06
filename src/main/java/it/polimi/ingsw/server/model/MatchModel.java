@@ -467,6 +467,12 @@ public class MatchModel{
             throw new NotInPoolException();
     }
 
+    public List<String> getConnectedPlayers(){
+        List<String> connectedPlayers= new ArrayList<>();
+        playersInGame.forEach(player -> {if(!currentPlayer.isDisconnected())connectedPlayers.add(player.getUsername());});
+        return connectedPlayers;
+    }
+
     /**
      *
      * @param index Die position in round track.

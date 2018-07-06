@@ -120,9 +120,9 @@ public class RMIUserAgent implements UserInterface {
     }
 
     @Override
-    public void sendGrids(Map<String, Grid> playersGrids) {
+    public void sendGrids(Map<String, Grid> playersGrids, List<String> connectedPlayers) {
         try {
-            clientHandled.setGrids(playersGrids);
+            clientHandled.setGrids(playersGrids,connectedPlayers);
         } catch (RemoteException e) {
             logger.fine(DISCONNECTED_LOG);
         }
@@ -233,6 +233,7 @@ public class RMIUserAgent implements UserInterface {
             logger.fine(DISCONNECTED_LOG);
         }
     }
+
 
     @Override
     public void notifyDisconnection() {
