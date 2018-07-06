@@ -28,7 +28,7 @@ public class Die implements Serializable {
 
         color=color.toLowerCase(); //NB
 
-        if(!(color.equals("red")||color.equals("green")||color.equals("yellow")||color.equals("blue")||color.equals("purple")))
+        if(!DieToConstraintsAdapter.getColorMap().containsKey(color))
             throw new NotValidParameterException(color,expectedColor);
         else if(!(value>=1&&value<=6))
             throw new NotValidParameterException(""+value,expectedValue);
