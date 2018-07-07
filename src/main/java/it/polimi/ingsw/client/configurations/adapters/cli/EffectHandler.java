@@ -56,8 +56,7 @@ public final class EffectHandler {
         String read;
         do{
             read=scanner.nextLine().toLowerCase();
-            doIncrement = Boolean.getBoolean(read);
-            int dicePoolDimension=Proxy.getInstance().getDicePool().getDicePoolSize();
+            doIncrement = Boolean.valueOf(read);
             if(doIncrement){
                 ok=true;
                 toReturn.add(Boolean.toString(true));
@@ -67,7 +66,7 @@ public final class EffectHandler {
                     toReturn.add(Boolean.toString(false));
                 }else {
                     ok=false;
-                    System.out.println(ANSI_RED+"Errore: inserire true o false:"+dicePoolDimension+ANSI_RESET);
+                    System.out.println(ANSI_RED+"Errore: inserire true o false:"+read+ANSI_RESET);
                 }
             }
 

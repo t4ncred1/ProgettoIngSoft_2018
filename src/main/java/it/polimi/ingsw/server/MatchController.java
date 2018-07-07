@@ -280,6 +280,9 @@ public class MatchController extends Thread{
             if (toolCardUsed&&!updatedTool) {
                 updatedTool=true;
                 timer.stop();
+                synchronized (playersInMatchGuard){
+                    playersInMatch.forEach((username1, userInterface) -> sendDataForToolUse(userInterface));
+                }
             }
 
             lock.lock();
@@ -293,6 +296,28 @@ public class MatchController extends Thread{
         }
         disconnected=false;
         turnFinished=false;
+    }
+
+    private void sendDataForToolUse(UserInterface userInterface) {
+        List<Die> dicePool;
+        Grid grid;
+        List<ToolCard> toolCards;
+        List<Die> roundTrack;
+        String turnPlayerUsername;
+        turnPlayerGuard.lock();
+        turnPlayerUsername = turnPlayer.getUsername();
+        turnPlayerGuard.unlock();
+        synchronized (modelGuard){
+            dicePool= model.getDicePool().showDiceInPool();
+            grid=model.getPlayerCurrentGrid(turnPlayerUsername);
+            toolCards=model.getToolCards();
+            roundTrack=model.getRoundTrackCopy();
+        }
+        userInterface.sendGrid(grid);
+        userInterface.sendDicePool(dicePool);
+        userInterface.sendRoundTrack(roundTrack);
+        userInterface.sendToolCards(toolCards);
+        userInterface.notifyTurnInitialized();
     }
 
     private void waitForReConnections() {
@@ -953,11 +978,9 @@ public class MatchController extends Thread{
     public void setEffectParameters(UserInterface player,String effectName, List<String> parameters) throws IllegalRequestException, InvalidOperationException, NotValidParameterException {
         final int REMOVING_INDEX=0;
         securityControl(player);
-        System.err.println("here 1");
         turnPlayerGuard.lock();
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
         turnPlayerGuard.unlock();
-        System.err.println("here 2");
         synchronized (modelGuard){
             Effect effect= effectsToDo.get(REMOVING_INDEX);
             if(effectName.equals(effect.getName())){
@@ -975,7 +998,7 @@ public class MatchController extends Thread{
      * @param index Tool card index.
      * @throws IllegalRequestException Thrown when 'player' is not valid.
      */
-    public void executeToolCard(UserInterface player, int index) throws IllegalRequestException {
+    public void executeToolCard(UserInterface player, int index) throws IllegalRequestException, EffectException {
         securityControl(player);
         turnPlayerGuard.lock();
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
@@ -985,11 +1008,12 @@ public class MatchController extends Thread{
                 model.getToolCard(index).useToolCard();
             } catch (NotValidParameterException e) {
                 logger.log(Level.SEVERE, "Something went wrong when TryToUseToolCard was executed", e);
-            } catch (Exception e) {
-                //note: whatever excepion is thrown, a InvalidOperationException should be thrown, and the stacktrace should be
-                //logged.
             }
         }
+        toolCardUsed=true;
+        lock.lock();
+        condition.signal();
+        lock.unlock();
     }
 }
 
