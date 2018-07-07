@@ -25,7 +25,7 @@ public class ToolCard implements Serializable {
     //Generic Parameters
     private String title;
     private String description;
-    private transient boolean used = false;
+    private boolean used = false;
 
     //parameters for RemoveDieFromPoolEffect && InsertDieInPoolEffect
     private boolean removeAllDiceFromDicePool;

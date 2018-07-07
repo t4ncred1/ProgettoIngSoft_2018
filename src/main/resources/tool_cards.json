@@ -1,5 +1,5 @@
 [
-{"effects":[{"type":"it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"},{"type":"it.polimi.ingsw.server.model.cards.effects.IncrementDiceEffect"},{"type":"it.polimi.ingsw.server.model.cards.effects.InsertDieInPoolEffect"}],"title":"Pinza Sgrossatrice","description":"Dopo aver scelto un dado,\naumenta o dominuisci il valore\ndel dado scelto di 1\nNon puoi cambiare\nun 6 in 1 o un 1 in 6","removeAllDiceFromDicePool":false,"colourInRoundtrack":false,"colorCheck":true,"valueCheck":true,"openCheck":true,"jumpNextTurn":false,"mustBeSecondTurn":false},
+{"effects":[{"type":"it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"},{"type":"it.polimi.ingsw.server.model.cards.effects.IncrementDiceEffect"},{"type":"it.polimi.ingsw.server.model.cards.effects.InsertDieInPoolEffect"}],"title":"Pinza Sgrossatrice","description":"Dopo aver scelto un dado,\naumenta o dominuisci il valore\ndel dado scelto di 1\nNon puoi cambiare\nun 6 in 1 o un 1 in 6","removeAllDiceFromDicePool":false,"colourInRoundtrack":false,"colorCheck":true,"valueCheck":true,"openCheck":true,"jumpNextTurn":false,"used":false},
 {
 	"effects": [{
 		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromGridEffect"
@@ -14,8 +14,8 @@
 	"valueCheck": true,
 	"openCheck": true,
 	"jumpNextTurn": false,
-	"mustBeSecondTurn": false
-},
+	"mustBeSecondTurn": false,
+	"used": false},
 {
 	"effects": [{
 		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromGridEffect"
@@ -30,8 +30,8 @@
 	"valueCheck": false,
 	"openCheck": true,
 	"jumpNextTurn": false,
-	"mustBeSecondTurn": false
-},
+	"mustBeSecondTurn": false,
+	"used": false},
 {
 	"effects": [{
 		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromGridEffect"
@@ -50,8 +50,8 @@
 	"valueCheck": true,
 	"openCheck": true,
 	"jumpNextTurn": false,
-	"mustBeSecondTurn": false
-},
+	"mustBeSecondTurn": false,
+	"used": false},
 {
 	"effects": [{
 		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"
@@ -72,8 +72,8 @@
 	"valueCheck": true,
 	"openCheck": true,
 	"jumpNextTurn": false,
-	"mustBeSecondTurn": false
-},
+	"mustBeSecondTurn": false,
+	"used": false},
 {
 	"effects": [{
 		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"
@@ -90,8 +90,8 @@
 	"valueCheck": true,
 	"openCheck": true,
 	"jumpNextTurn": false,
-	"mustBeSecondTurn": false
-},
+	"mustBeSecondTurn": false,
+	"used": false},
 {
 	"effects": [{
 		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"
@@ -101,14 +101,15 @@
 		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInPoolEffect"
 	}],
 	"title": "Martelletto",
-	"description": "Tira nuovamente\ntutti i dadi della Riserva\nQuesta carta può essera usata\nsolo durante il tuo secondo turno",
+	"description": "Tira nuovamente\ntutti i dadi della Riserva\nQuesta carta puï¿½ essera usata\nsolo durante il tuo secondo turno",
 	"removeAllDiceFromDicePool": true,
 	"colourInRoundtrack": false,
 	"colorCheck": true,
 	"valueCheck": true,
 	"openCheck": true,
 	"jumpNextTurn": false,
-	"mustBeSecondTurn": true
+	"mustBeSecondTurn": true,
+	"used": false
 },
 {
 	"effects": [{
@@ -124,8 +125,8 @@
 	"valueCheck": true,
 	"openCheck": true,
 	"jumpNextTurn": true,
-	"mustBeSecondTurn": false
-},
+	"mustBeSecondTurn": false,
+	"used": false},
 {
 	"effects": [{
 		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"
@@ -140,8 +141,8 @@
 	"valueCheck": true,
 	"openCheck": false,
 	"jumpNextTurn": false,
-	"mustBeSecondTurn": false
-},
+	"mustBeSecondTurn": false,
+	"used": false},
 {
 	"effects": [{
 		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"
@@ -158,8 +159,8 @@
 	"valueCheck": true,
 	"openCheck": true,
 	"jumpNextTurn": false,
-	"mustBeSecondTurn": false
-},
+	"mustBeSecondTurn": false,
+	"used": false},
 {
 	"effects": [{
 		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromPoolEffect"
@@ -176,8 +177,8 @@
 	"valueCheck": true,
 	"openCheck": true,
 	"jumpNextTurn": false,
-	"mustBeSecondTurn": false
-},
+	"mustBeSecondTurn": false,
+	"used": false},
 {
 	"effects": [{
 		"type": "it.polimi.ingsw.server.model.cards.effects.RemoveDieFromGridEffect"
@@ -196,6 +197,6 @@
 	"valueCheck": true,
 	"openCheck": true,
 	"jumpNextTurn": false,
-	"mustBeSecondTurn": false
-}
+	"mustBeSecondTurn": false,
+	"used": false}
 ]
