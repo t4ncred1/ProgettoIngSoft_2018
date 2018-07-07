@@ -822,8 +822,8 @@ public class MatchController extends Thread{
             //FIXME this exception should go upper
             e.printStackTrace();
         }
-        dieInserted=true;
         lock.lock();
+        dieInserted=true;
         condition.signal();
         lock.unlock();
     }
@@ -1010,8 +1010,8 @@ public class MatchController extends Thread{
                 logger.log(Level.SEVERE, "Something went wrong when TryToUseToolCard was executed", e);
             }
         }
-        toolCardUsed=true;
         lock.lock();
+        toolCardUsed=true;
         condition.signal();
         lock.unlock();
     }

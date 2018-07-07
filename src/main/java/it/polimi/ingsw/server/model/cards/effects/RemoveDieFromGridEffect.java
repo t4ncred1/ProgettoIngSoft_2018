@@ -43,7 +43,7 @@ public class RemoveDieFromGridEffect implements Effect {
         } catch (InvalidOperationException | NotValidParameterException e) {
             throw new EffectException("Invalid operation");
         }
-        if (toolCard.isColourInRoundtrack()) {
+        if (toolCard.isColourInRoundTrack()) {
             if (toolCard.getRoundTrackColor()==null){
                 boolean ok = false;
                 for(Die d : model.getRoundTrack()){
@@ -105,7 +105,7 @@ public class RemoveDieFromGridEffect implements Effect {
         try{
             Die die = playerGrid.removeDieFromXY(toolCard.getDieCoordinatesX().remove(0), toolCard.getDieCoordinatesY().remove(0)); //note: this way, one of the coordinates was removed.
 
-            if (toolCard.isColourInRoundtrack()){
+            if (toolCard.isColourInRoundTrack()){
                 if (toolCard.getRoundTrackColor()==null) {
                     toolCard.setRoundTrackColor(die.getColor());
                 }
