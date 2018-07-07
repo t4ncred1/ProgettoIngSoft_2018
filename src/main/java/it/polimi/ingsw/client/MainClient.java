@@ -269,7 +269,11 @@ public class MainClient {
                 }
             }
         }
-        server.launchToolCards();
+        try {
+            server.launchToolCards();
+        } catch (InvalidMoveException e) {
+            System.out.println(ANSI_RED + "Il server notifica che non è possibile giocare la carta strumento coi dati inseriti" + ANSI_RESET);
+        }
     }
 
 

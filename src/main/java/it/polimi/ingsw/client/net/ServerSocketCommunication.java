@@ -529,7 +529,7 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
     }
 
     @Override
-    public void launchToolCards() throws ServerIsDownException, DisconnectionException {
+    public void launchToolCards() throws ServerIsDownException, DisconnectionException, InvalidMoveException {
         try {
             outputStream.writeUTF(EXECUTE_TOOL_CARD);
             String response= readRemoteInput();
@@ -543,7 +543,7 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
                     break;
                 case NOT_OK_MESSAGE:
                     logger.fine("Tool card can't be executed with these parameters");
-                    break;
+                    throw new InvalidMoveException();
                 case DISCONNECTION:
                     logger.log(Level.FINE, "disconnected for inactivity");
                     throw new DisconnectionException();

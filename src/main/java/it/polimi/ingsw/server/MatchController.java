@@ -28,6 +28,7 @@ public class MatchController extends Thread{
     private MatchModel model;
     private final Object modelGuard = new Object();
     private List<Effect> effectsToDo;
+    private int currentEffect;
 
     private static final int MAX_ROUND =10;
     private UserInterface turnPlayer;
@@ -962,6 +963,7 @@ public class MatchController extends Thread{
         else {
             synchronized (modelGuard){
                 effectsToDo=model.getToolCard(toolCardIndex).getEffects();
+                currentEffect=0;
             }
         }
     }
@@ -976,16 +978,15 @@ public class MatchController extends Thread{
      * @throws NotValidParameterException See setToolCardParams doc in Effect class.
      */
     public void setEffectParameters(UserInterface player,String effectName, List<String> parameters) throws IllegalRequestException, InvalidOperationException, NotValidParameterException {
-        final int REMOVING_INDEX=0;
         securityControl(player);
         turnPlayerGuard.lock();
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
         turnPlayerGuard.unlock();
         synchronized (modelGuard){
-            Effect effect= effectsToDo.get(REMOVING_INDEX);
+            Effect effect= effectsToDo.get(currentEffect);
             if(effectName.equals(effect.getName())){
                 effect.setToolCardParams(parameters);
-                effectsToDo.remove(effect);
+                currentEffect++;
             }else{
                 throw new InvalidOperationException();
             }
@@ -1002,6 +1003,7 @@ public class MatchController extends Thread{
         securityControl(player);
         turnPlayerGuard.lock();
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
+        // TODO: 07/07/2018 control currentEffect==size;
         turnPlayerGuard.unlock();
         synchronized (modelGuard){
             try {

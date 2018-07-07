@@ -25,5 +25,5 @@ public interface ServerCommunicatingInterface {
 
     void useToolCard(int i) throws ServerIsDownException, DisconnectionException, ToolCardNotExistException, AlreadyDoneOperationException;
 
-    void launchToolCards() throws ServerIsDownException, DisconnectionException;
+    void launchToolCards() throws ServerIsDownException, DisconnectionException, InvalidMoveException;
 }
