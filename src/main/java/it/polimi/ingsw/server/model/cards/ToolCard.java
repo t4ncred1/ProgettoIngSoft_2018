@@ -25,7 +25,7 @@ public class ToolCard implements Serializable {
     //Generic Parameters
     private String title;
     private String description;
-    private transient boolean used = false;
+    private boolean used = false;
 
     //parameters for RemoveDieFromPoolEffect && InsertDieInPoolEffect
     private boolean removeAllDiceFromDicePool;
@@ -62,6 +62,15 @@ public class ToolCard implements Serializable {
 
 
     ///////////////////////CONSTRUCTOR
+
+    /**
+     * Constructor for ToolCard.
+     *
+     * @param title Tool card's title.
+     * @param description Tool card's description.
+     * @param effects Tool card's effects.
+     * @param model Match model.
+     */
     public ToolCard(String title, String description, List<Effect> effects,MatchModel model) {
         this.title = title;
         this.description=description;
@@ -75,22 +84,43 @@ public class ToolCard implements Serializable {
 
 
     ////////////////////////STANDARD METHODS
+
+    /**
+     *
+     * @return Tool card's title.
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     *
+     * @return Tool card's description.
+     */
     public String getDescription(){
         return description;
     }
 
+    /**
+     *
+     * @return True if a tool card was used.
+     */
     public boolean isUsed() {
         return used;
     }
 
+    /**
+     * Set used=true.
+     */
     private void use() {
         this.used = true;
     }
 
+    /**
+     * Initialize the attributes.
+     *
+     * @param model Match model.
+     */
     public void setupData(MatchModel model){
         effects.forEach(effect -> effect.setParameters(model, this));
         this.dieCoordinatesX= new ArrayList<>();
@@ -100,10 +130,19 @@ public class ToolCard implements Serializable {
         this.dieRemovedFromDicePool=new ArrayList<>();
     }
 
+    /**
+     *
+     * @return The list of effects.
+     */
     public List<Effect> getEffects(){
         return this.effects;
     }
 
+    /**
+     * Tool card usage.
+     *
+     * @throws EffectException Thrown when effect's parameters are not valid.
+     */
     public void useToolCard() throws EffectException {
 
         // save all parameters in local variables
@@ -166,6 +205,9 @@ public class ToolCard implements Serializable {
 
     public List<Die> getDiceRemoved() { return this.dieRemovedFromDicePool;}
 
+    /**
+     * Save the dice removed in a list.
+     */
     public void saveDiceRemoved(List<Die> diceRemoved) {
         if (dieRemovedFromDicePool == null) dieRemovedFromDicePool = new ArrayList<>();
         dieRemovedFromDicePool.addAll(diceRemoved);
@@ -175,6 +217,10 @@ public class ToolCard implements Serializable {
         dieRemovedFromDicePool=dieList;
     }
 
+    /**
+     *
+     * @return True if die value was incremented.
+     */
     public boolean isIncrement() {
         return increment;
     }
@@ -187,6 +233,10 @@ public class ToolCard implements Serializable {
         return dieCoordinatesX;
     }
 
+    /**
+     *
+     * @param dieCoordinatesX Die X-Coordinates.
+     */
     public void addDieCoordinatesX(int dieCoordinatesX) {
         this.dieCoordinatesX.add(dieCoordinatesX);
     }
@@ -195,6 +245,10 @@ public class ToolCard implements Serializable {
         return dieCoordinatesY;
     }
 
+    /**
+     *
+     * @param dieCoordinatesY Die Y-Coordinates.
+     */
     public void addDieCoordinatesY(int dieCoordinatesY) {
         this.dieCoordinatesY.add(dieCoordinatesY);
     }
@@ -211,6 +265,10 @@ public class ToolCard implements Serializable {
         return dieDestinationCoordinatesX;
     }
 
+    /**
+     *
+     * @param dieDestinationCoordinatesX Die destination's X-Coordinates.
+     */
     public void addDieDestinationCoordinatesX(int dieDestinationCoordinatesX) {
         this.dieDestinationCoordinatesX.add(dieDestinationCoordinatesX);
     }
@@ -219,19 +277,36 @@ public class ToolCard implements Serializable {
         return this.dieDestinationCoordinatesY;
     }
 
+    /**
+     *
+     * @param dieDestinationCoordinatesY Die destination's Y-Coordinates.
+     */
     public void addDieDestinationCoordinatesY(int dieDestinationCoordinatesY) {
         this.dieDestinationCoordinatesY.add(dieDestinationCoordinatesY);
     }
 
+    /**
+     *
+     * @return True if a color check on the action is needed.
+     */
     public boolean isColorCheck() {
         return colorCheck;
     }
 
+    /**
+     *
+     * @return True if a value check on the action is needed.
+     */
     public boolean isValueCheck() {
         return valueCheck;
     }
 
-    public boolean isColourInRoundTrack() {
+
+    /**
+     *
+     * @return True if the colour is found in the roundtrack.
+     */
+    public boolean isColourInRoundtrack() {
         return colourInRoundtrack;
     }
 
@@ -259,6 +334,10 @@ public class ToolCard implements Serializable {
         this.removeAllDiceFromDicePool = removeAllDiceFromDicePool;
     }
 
+    /**
+     *
+     * @return True if a player has to skip next turn.
+     */
     public boolean isJumpNextTurn() {
         return jumpNextTurn;
     }
@@ -267,6 +346,10 @@ public class ToolCard implements Serializable {
         this.jumpNextTurn = jumpNextTurn;
     }
 
+    /**
+     *
+     * @return True if a player doesn't skip his second turn.
+     */
     public boolean isMustBeSecondTurn() {
         return mustBeSecondTurn;
     }
@@ -275,6 +358,10 @@ public class ToolCard implements Serializable {
         this.mustBeSecondTurn = mustBeSecondTurn;
     }
 
+    /**
+     *
+     * @return True if an open check is needed.
+     */
     public boolean isOpenCheck() {
         return openCheck;
     }

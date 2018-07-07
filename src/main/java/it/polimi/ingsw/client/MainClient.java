@@ -56,7 +56,9 @@ public class MainClient {
     private static final String ANSI_RESET="\u001B[0m";
     private boolean dataRetrieved;
 
-
+    /**
+     * Constructor for MainClient.
+     */
     private MainClient(){
         lock= new ReentrantLock();
         condition= lock.newCondition();
@@ -95,6 +97,12 @@ public class MainClient {
         System.exit(0);
     }
 
+    /**
+     * Handles game logic.
+     *
+     * @throws ServerIsDownException Thrown if the server is down.
+     * @throws DisconnectionException Thrown when someone is trying to disconnect.
+     */
     private void handleGameLogic() throws ServerIsDownException, DisconnectionException {
         do{
             try {
@@ -111,6 +119,9 @@ public class MainClient {
         handleGameEnd();
     }
 
+    /**
+     * Handles the end a match.
+     */
     private void handleGameEnd() {
         while(!gameEndDataInProxy){
             try {
@@ -130,6 +141,12 @@ public class MainClient {
         }
     }
 
+    /**
+     * Prints the final results.
+     *
+     * @param s Player's username.
+     * @param s1 Player's points.
+     */
     private void printRanks(String s, String s1) {
         try{
             int points=Integer.parseInt(s1);
@@ -139,6 +156,9 @@ public class MainClient {
         }
     }
 
+    /**
+     * Waits until his turn. Player is able to see all other players' stuff.
+     */
     private void waitEndOfOtherPlayerTurn() {
         String turnPlayer=Proxy.getInstance().getTurnPlayer();
         System.out.println("E' il turno di " + turnPlayer);
@@ -160,6 +180,10 @@ public class MainClient {
         }
     }
 
+    /**
+     * Sends to a player (who is waiting for his turn) all current player' stuff.
+     * @param turnPlayer Current player.
+     */
     private void printOtherPlayerTurnThings(String turnPlayer) {
         try {
             System.out.println("Le tool cards:");
@@ -175,7 +199,12 @@ public class MainClient {
         }
     }
 
-
+    /**
+     * Handles current player turn (operations and other stuff).
+     *
+     * @throws ServerIsDownException Thrown if the server is down.
+     * @throws DisconnectionException Thrown if someone is trying to disconnect.
+     */
     private void handleMyTurn() throws ServerIsDownException, DisconnectionException {
         Scanner scanner = new Scanner(System.in);
         boolean myTurnFinished=false;
@@ -218,6 +247,9 @@ public class MainClient {
         lock.unlock();
     }
 
+    /**
+     * Shows current player' stuff.
+     */
     private void printThingsOnMyTurn() {
         System.out.println("Le tool cards:");
         Proxy.getInstance().getToolCards().forEach(toolCard->System.out.println(toolCard.getToolCardInterface()));
@@ -232,7 +264,12 @@ public class MainClient {
         System.out.println("l'inserimento dei dati o l'uso della carta strumento");
         System.out.println("Puoi usare i comandi "+INSERT_DIE+", "+USE_TOOL_CARD+" e "+END_TURN);
     }
-
+    /**
+     * Handles tool card operation.
+     *
+     * @throws ServerIsDownException Thrown if the server is down.
+     * @throws DisconnectionException Thrown if someone is trying to disconnect.
+     */
     private boolean handleToolCard() throws ServerIsDownException, DisconnectionException {
         System.out.println("Scegliere l'indice della tool card:");
         Scanner scanner= new Scanner(System.in);
@@ -255,6 +292,13 @@ public class MainClient {
         }while (true);
     }
 
+    /**
+     *
+     * @param toolCard Tool card to use.
+     *
+     * @throws ServerIsDownException Thrown if the server is down.
+     * @throws DisconnectionException Thrown if someone is trying to disconnect.
+     */
     private void handleToolCardEffects(ToolCardAdapter toolCard) throws ServerIsDownException, DisconnectionException {
         List<EffectAdapter> effects= toolCard.getEffects();
         for(EffectAdapter effect: effects) {
@@ -277,7 +321,13 @@ public class MainClient {
     }
 
 
-
+    /**
+     *
+     * @return True if the die is correctly inserted.
+     *
+     * @throws ServerIsDownException Thrown if the server is down.
+     * @throws DisconnectionException Thrown if someone is trying to disconnect.
+     */
     private boolean handleDieInsertion() throws ServerIsDownException, DisconnectionException {
         Scanner scanner= new Scanner(System.in);
         System.out.println("Inserisci la posizione del dado nella dice pool");
@@ -300,6 +350,11 @@ public class MainClient {
         return false;
     }
 
+    /**
+     *
+     * @return True if this is player's turn.
+     * @throws GameFinishedException Thrown if the match is already finished.
+     */
     private boolean askProxyIfItsMyTurn() throws GameFinishedException {
         while (!turnUpdated){
             waitForServer();
@@ -320,6 +375,12 @@ public class MainClient {
         lock.unlock();
     }
 
+    /**
+     * Handles game initialization (receive grids, choose a grid).
+     *
+     * @throws ServerIsDownException Thrown if the server is down.
+     * @throws DisconnectionException Thrown if someone is trying to disconnect.
+     */
     private void handleGameInitializationLogic() throws ServerIsDownException, DisconnectionException {
         try {
             waitForGridsFromServer();
@@ -333,6 +394,9 @@ public class MainClient {
         if(!gameFinished) printGridsDicePoolAndObjectives();
     }
 
+    /**
+     * Show grids, dice pool and objectives card.
+     */
     private void printGridsDicePoolAndObjectives() {
         System.out.println("La tua mappa:");
         System.out.println(Proxy.getInstance().getGridSelected().getGridInterface());
@@ -351,6 +415,12 @@ public class MainClient {
         lock.unlock();
     }
 
+    /**
+     * Gets player's grid choice.
+     *
+     * @throws ServerIsDownException Thrown if the server is down.
+     * @throws DisconnectionException Thrown if someone is trying to disconnect.
+     */
     private void selectAGrid() throws ServerIsDownException, DisconnectionException {
         Scanner scanner= new Scanner(System.in);
         String request;
@@ -378,6 +448,10 @@ public class MainClient {
 
     }
 
+    /**
+     *
+     * @throws GameInProgressException Thrown if the game is already started.
+     */
     private void waitForGridsFromServer() throws GameInProgressException {
         lock.lock();
         while (!gridsInProxy) {
@@ -391,6 +465,11 @@ public class MainClient {
         lock.unlock();
     }
 
+    /**
+     * Handles "waitForGame" phase.
+     * @throws ServerIsDownException
+     * @throws LoggedOutException
+     */
     private void handleWaitForGameCLI() throws ServerIsDownException, LoggedOutException {
         System.out.println("Usa 'Logout' per uscire dalla coda. Non puoi uscire una volta che la partita sta incominciando");
         waitForGameStartingSoonMessage();
@@ -412,6 +491,11 @@ public class MainClient {
         lock.unlock();
     }
 
+    /**
+     *
+     * @throws ServerIsDownException Thrown if the server is down.
+     * @throws LoggedOutException Thrown if the player logged out.
+     */
     private void waitForGameStartingSoonMessage() throws ServerIsDownException, LoggedOutException {
         lock.lock();
         while (!gameStarting) {
@@ -442,6 +526,11 @@ public class MainClient {
         lock.unlock();
     }
 
+    /**
+     *
+     * @throws ServerIsDownException Thrown if the server is down.
+     * @throws LoggedOutException Thrown if the player just logged out.
+     */
     private void tryLogout() throws ServerIsDownException, LoggedOutException {
         try {
             server.askForLogout();
@@ -456,6 +545,9 @@ public class MainClient {
         return instance;
     }
 
+    /**
+     * Choice between Socket and Rmi.
+     */
     private void chooseConnectionSystemCLI() {
         Scanner scanner = new Scanner(System.in);
         String written;
@@ -477,6 +569,10 @@ public class MainClient {
         while (!(written.equals(USE_SOCKET) || written.equals(USE_RMI)));
     }
 
+    /**
+     * Handles game login (username choice, username check and other stuff).
+     * @throws ServerIsDownException Thrown if the server is down.
+     */
     private void handleLoginCLI() throws ServerIsDownException {
         String written;
         Scanner scanner= new Scanner(System.in);
