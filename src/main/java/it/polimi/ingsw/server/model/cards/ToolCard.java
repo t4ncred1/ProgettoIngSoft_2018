@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.model.cards;
 
+import it.polimi.ingsw.server.custom_exception.EffectException;
+import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.MatchModel;
 import it.polimi.ingsw.server.model.cards.effects.Effect;
 import it.polimi.ingsw.server.model.components.Die;
@@ -100,7 +103,7 @@ public class ToolCard implements Serializable {
         return this.effects;
     }
 
-    public void useToolCard() throws Exception{
+    public void useToolCard() throws EffectException {
 
         // save all parameters in local variables
         List<Die> dRemovedFromDicePool = dieRemovedFromDicePool.stream().map(Die::new).collect(Collectors.toList());
@@ -113,15 +116,9 @@ public class ToolCard implements Serializable {
 
 
     //EXECUTING EFFECTS
-        try {
             for (Effect e : effects) {
                 e.executeTest();
             }
-        } catch (Exception e){
-            Logger logger = Logger.getLogger(getClass().getName());
-            logger.log(Level.WARNING, " ", e);
-            throw e;
-        }
 
     //SETTING PARAMETERS TO ORIGINAL VALUE
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.cards.effects;
 
+import it.polimi.ingsw.server.custom_exception.EffectException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.MatchModel;
 import it.polimi.ingsw.server.model.cards.ToolCard;
@@ -21,12 +22,12 @@ public class InsertDieInRoundTrackEffect implements Effect {
     }
 
     @Override
-    public void executeTest() throws Exception {
+    public void executeTest() throws EffectException {
         ArrayList<Die> rt = new ArrayList<>();
         for (Die d :toolCard.getRoundTrack()){
                rt.add(new Die(d));
         }
-        if (toolCard.getRemovedDieFromRoundTrack()==null) throw new NotValidParameterException("Die removed from roundtrack is null when executing "+ NAME,"Should be a die removed from roundtrack.");
+        if (toolCard.getRemovedDieFromRoundTrack()==null) throw new EffectException("Die removed from roundtrack is null when executing "+ NAME);
         rt.add(toolCard.getIndexOfRoundTrackDie(),toolCard.getRemovedDieFromRoundTrack());
         toolCard.setRoundTrack(rt);
     }

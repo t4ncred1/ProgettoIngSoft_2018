@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.cards.effects;
 
+import it.polimi.ingsw.server.custom_exception.EffectException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.MatchModel;
@@ -25,17 +26,23 @@ public class RemoveDieFromGridEffect implements Effect {
     }
 
     @Override
-    public void executeTest() throws Exception {
+    public void executeTest() throws EffectException
+    {
         if (model.getPlayerCurrentGrid(model.askTurn()) == null){
             Logger logger = Logger.getLogger(getClass().getName());
             logger.log(Level.WARNING, "Something went wrong on server side during execution of \"" + NAME + "\" effect in toolcard " + toolCard.getTitle());
-            throw new InvalidOperationException();
+            throw new EffectException("Something went wrong with effect "+ getName());
         }
         Grid playerGrid;
         if (toolCard.getPlayerGrid() == null) playerGrid = new Grid(model.getPlayerCurrentGrid(model.askTurn()));
         else playerGrid = toolCard.getPlayerGrid();
         playerGrid.initializeAllObservers();
-        Die die = playerGrid.removeDieFromXY(toolCard.getDieCoordinatesX().remove(0), toolCard.getDieCoordinatesY().remove(0)); //this way, the parameter was modified.
+        Die die = null; //this way, the parameter was modified.
+        try {
+            die = playerGrid.removeDieFromXY(toolCard.getDieCoordinatesX().remove(0), toolCard.getDieCoordinatesY().remove(0));
+        } catch (InvalidOperationException | NotValidParameterException e) {
+            throw new EffectException("Invalid operation");
+        }
         if (toolCard.isColourInRoundtrack()) {
             if (toolCard.getRoundTrackColor()==null){
                 boolean ok = false;
@@ -45,9 +52,9 @@ public class RemoveDieFromGridEffect implements Effect {
                         ok=true;
                     }
                 }
-                if (!ok) throw new InvalidOperationException();
+                if (!ok) throw new EffectException("There is not a die in roundtrack with the same color.");
             }
-            if(!(die.getColor().equals(toolCard.getRoundTrackColor()))) throw new InvalidOperationException();
+            if(!(die.getColor().equals(toolCard.getRoundTrackColor()))) throw new EffectException("The two dice are different.");
         }
         ArrayList<Die> dieList = new ArrayList<>();
         dieList.add(die);
