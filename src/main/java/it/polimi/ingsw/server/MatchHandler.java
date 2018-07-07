@@ -50,6 +50,10 @@ public class MatchHandler extends Thread {
     private static final String ANSI_CYAN = "\u001B[36m";
 
 
+    /**
+     *Constructor of MatchHandler
+     *
+     */
     private MatchHandler(){
         try {
             maxPlayersInGame =ConfigurationHandler.getInstance().getMaxPlayersNumber();
@@ -149,7 +153,7 @@ public class MatchHandler extends Thread {
         logger.log(Level.INFO,"MatchHandlerStarted");
         while (!shutdown) {
             boolean ok;
-            MatchHandler.loadNewGame();
+            loadNewGame();
             do{
                 ok= setUpPhase();
             }while (!ok);
@@ -159,13 +163,14 @@ public class MatchHandler extends Thread {
             }
             while (!ok);
             startedMatchesGuard.lock();
-            logger.log(Level.INFO,"Game started, actually handling "+ startedMatches.size()+ "game(s)");
+            logger.log(Level.INFO,"Game started, actually handling {0} game(s)",startedMatches.size());
             while(startedMatches.size()>=maximumMatchNumber){
                 try {
                     startedMatchesCondition.await();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
+                logger.log(Level.INFO,"A game ended, actually handling {0} game(s)",startedMatches.size());
             }
             startedMatchesGuard.unlock();
 
@@ -175,8 +180,8 @@ public class MatchHandler extends Thread {
     /**
      * Load a new game.
      */
-    public static void loadNewGame(){
-        System.out.println(ANSI_GREEN +"A new match is ready to be handled." +ANSI_RESET);
+    private void loadNewGame(){
+        logger.log(Level.CONFIG, "A new game has been loaded");
         startingMatch = new MatchController();
         startingMatch.start();
     }
@@ -185,7 +190,7 @@ public class MatchHandler extends Thread {
      *
      * @return True if setUpPhase has ended.
      */
-    public boolean setUpPhase(){
+    private boolean setUpPhase(){
         boolean result;
         try {
             lock.lock();

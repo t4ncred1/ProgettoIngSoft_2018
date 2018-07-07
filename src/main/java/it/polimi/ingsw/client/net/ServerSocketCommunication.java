@@ -1,34 +1,24 @@
 package it.polimi.ingsw.client.net;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.client.MainClient;
 import it.polimi.ingsw.client.Proxy;
 import it.polimi.ingsw.client.configurations.ConfigHandler;
+import it.polimi.ingsw.client.configurations.DataRetriever;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.*;
-import it.polimi.ingsw.server.configurations.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.server.custom_exception.DisconnectionException;
-import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidConfigPathException;
 import it.polimi.ingsw.server.custom_exception.ReconnectionException;
-import it.polimi.ingsw.server.model.cards.ToolCard;
-import it.polimi.ingsw.server.model.cards.effects.*;
 import it.polimi.ingsw.server.model.components.Die;
-import it.polimi.ingsw.server.model.components.DieConstraints;
-import it.polimi.ingsw.server.model.components.DieToConstraintsAdapter;
-import it.polimi.ingsw.server.model.components.Grid;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -239,41 +229,22 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         do{
             String dataType=readRemoteInput();
             switch (dataType){
-                case GRID_DATA:
-                    retrieveAGridFromServer();
-                    break;
-                case END_TURN:
-                    logger.log(Level.FINE,"End turn notified by server");
-                    return true;
-                case DICE_POOL_DATA:
-                    retrieveDicePoolFromServer();
-                    break;
-                case ROUND_TRACK_DATA:
-                    retrieveRoundTrackFromServer();
-                    break;
                 case DISCONNECTION:
                     logger.log(Level.FINE,"Server notified about a disconnection");
                     Proxy.getInstance().setPlayerToDisconnected();
                     break;
+                case END_TURN:
+                    logger.fine("End turn notified by server");
+                    return true;
                 case END_DATA:
                     logger.log(Level.FINE,"End data notified by server");
                     endData=true;
                     break;
                 default:
-                    logger.log(Level.SEVERE, "Unexpected dataType from server: {0}", dataType);
+                    DataRetriever.retrieve(dataType, inputStream, logger);
             }
         }while (!endData);
         return false;
-    }
-
-    private void retrieveRoundTrackFromServer() throws IOException {
-        logger.log(Level.FINE,"Retrieving round track from server");
-        ArrayList<Die> roundTrack;
-        Gson gson = new Gson();
-        TypeToken<ArrayList<Die>> typeToken= new TypeToken<ArrayList<Die>>(){};
-        roundTrack=gson.fromJson(readRemoteInput(), typeToken.getType());
-        Proxy.getInstance().setRoundTrack(roundTrack);
-        logger.log(Level.FINE,"Round track retrieved and set");
     }
 
     private void waitForGridSelection() {
@@ -292,110 +263,34 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         boolean ok=false;
         do{
             String serverResponse= readRemoteInput();
-            switch (serverResponse){
-                case ALL_GRIDS_DATA:
-                    retrieveGridsFromServer();
-                    break;
-                case DICE_POOL_DATA:
-                    retrieveDicePoolFromServer();
-                    break;
-                case ROUND_TRACK_DATA:
-                    retrieveRoundTrackFromServer();
-                    break;
-                case TOOL_DATA:
-                    retrieveToolCardsFromServer();
-                    break;
-                case END_DATA:
-                    logger.log(Level.FINE,"End data notified by server");
-                    ok=true;
-                    break;
-                default:
-                    logger.log(Level.SEVERE,"Unexpected message from server: {0}", serverResponse);
+            if (END_DATA.equals(serverResponse)) {
+                logger.log(Level.FINE, "End data notified by server");
+                ok = true;
+            } else {
+                DataRetriever.retrieve(serverResponse, inputStream, logger);
             }
         }while (!ok);
         MainClient.getInstance().setGameToInitialized();
     }
 
-    private void retrieveToolCardsFromServer() throws IOException {
-        logger.log(Level.FINE,"Retrieving tool cards from server");
-        ArrayList<ToolCard> toolCards;
-        TypeToken<ArrayList<ToolCard>> typeToken= new TypeToken<ArrayList<ToolCard>>(){};
-        Gson gson= getGsonForToolCards();
-        toolCards=gson.fromJson(readRemoteInput(), typeToken.getType());
-        Proxy.getInstance().setToolCards(toolCards);
-        logger.log(Level.FINE,"Tool Cards retrieved and set");
-    }
-
-    private void retrieveDicePoolFromServer() throws IOException {
-        logger.log(Level.FINE,"Retrieving dice pool from server");
-        ArrayList<Die> dicePool;
-        TypeToken<ArrayList<Die>> typeToken= new TypeToken<ArrayList<Die>>(){};
-        Gson gson = new Gson();
-        dicePool=gson.fromJson(readRemoteInput(), typeToken.getType());
-        Proxy.getInstance().setDicePool(dicePool);
-        logger.log(Level.FINE,"Dice pool retrieved and set");
-    }
-
-    private void retrieveGridsFromServer() throws IOException {
-        logger.log(Level.FINE,"Retrieving all grids from server");
-        String serverResponse;
-        HashMap<String,Grid> playersGrids;
-        TypeToken<HashMap<String,Grid>> typeToken= new TypeToken<HashMap<String, Grid>>(){};
-        Gson gson= getGsonForGrid();
-        serverResponse=readRemoteInput();
-        playersGrids= gson.fromJson(serverResponse, typeToken.getType());
-        List<String> connectedPlayers;
-        TypeToken<ArrayList<String>> typeToken2= new TypeToken<ArrayList<String>>(){};
-        serverResponse=readRemoteInput();
-        connectedPlayers=gson.fromJson(serverResponse, typeToken2.getType());
-        Proxy.getInstance().setGridsForEachPlayer(playersGrids,connectedPlayers);
-        logger.log(Level.FINE,"Grids retrieved and set");
-    }
-
-    private void retrieveAGridFromServer() throws IOException {
-        logger.log(Level.FINE,"Retrieving a single grid from server");
-        String serverResponse;
-        Gson gson= getGsonForGrid();
-        serverResponse=readRemoteInput();
-        Grid grid = gson.fromJson(serverResponse, Grid.class);
-        Proxy.getInstance().updateGrid(grid);
-        logger.log(Level.FINE,"Grid retrieved and set");
-    }
-
     private void setGridSelectionInProxy() throws IOException, GameInProgressException {
         String serverResponse;
         String logUnexpectedResponse= "Unexpected response: {0}";
-        try{
-            do {
-                logger.log(Level.FINE,"sent a grid request to server");
-                outputStream.writeUTF(REQUEST_GRID);
-                serverResponse=readRemoteInput();
-                if(serverResponse.equals(NOT_OK_MESSAGE)) logger.log(Level.SEVERE, "Invalid request from this client to server");
-                else if(!serverResponse.equals(OK_MESSAGE))logger.log(Level.SEVERE, logUnexpectedResponse, serverResponse);
-                else logger.log(Level.FINE,"Grid request accepted by server");
-            }while (serverResponse.equals(NOT_OK_MESSAGE));
+        do {
+            logger.log(Level.FINE,"sent a grid request to server");
+            outputStream.writeUTF(REQUEST_GRID);
             serverResponse=readRemoteInput();
-            switch (serverResponse){
-                case OK_MESSAGE:
-                    logger.log(Level.FINE,"Server will send grids within the next stream");
-                    ArrayList<Grid> grids;
-                    TypeToken<ArrayList<Grid>> typeToken= new TypeToken<ArrayList<Grid>>(){};
-                    Gson gson= getGsonForGrid();
-                    serverResponse=readRemoteInput();
-                    grids= gson.fromJson(serverResponse, typeToken.getType());
-                    Proxy.getInstance().setGridsSelection(grids);
-                    logger.log(Level.FINE,"Grid retrieved and set in proxy");
-                    MainClient.getInstance().notifyGridsAreInProxy();
-                    break;
-                case GRID_ALREADY_SELECTED:
-                    logger.log(Level.FINE,"Server notified you already selected grids in a session before this one");
-                    MainClient.getInstance().setGridsAlreadySelected(true);
-                    throw new GameInProgressException();
-                default:
-                    logger.log(Level.SEVERE, logUnexpectedResponse, serverResponse);
-            }
-        } catch (InvalidOperationException e) {
-            logger.log(Level.SEVERE,"A null-pointer was passed instead of a list of grids");    //thrown by proxy if passed grid list is null (also, should it be thrown if the grids were already chosen?)
+            if(serverResponse.equals(NOT_OK_MESSAGE)) logger.log(Level.SEVERE, "Invalid request from this client to server");
+            else if(!serverResponse.equals(OK_MESSAGE))logger.log(Level.SEVERE, logUnexpectedResponse, serverResponse);
+            else logger.log(Level.FINE,"Grid request accepted by server");
+        }while (serverResponse.equals(NOT_OK_MESSAGE));
+        serverResponse=readRemoteInput();
+        if (GRID_ALREADY_SELECTED.equals(serverResponse)) {
+            logger.log(Level.FINE, "Server notified you already selected grids in a session before this one");
+            MainClient.getInstance().setGridsAlreadySelected(true);
+            throw new GameInProgressException();
+        } else {
+            DataRetriever.retrieve(serverResponse, inputStream, logger);
         }
     }
 
@@ -705,35 +600,5 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         } catch (IOException e) {
             throw new ServerIsDownException();
         }
-    }
-
-    private Gson getGsonForGrid() {
-        GsonBuilder builder= new GsonBuilder();
-        RuntimeTypeAdapterFactory<DieConstraints> adapterFactory= RuntimeTypeAdapterFactory.of(DieConstraints.class)
-                .registerSubtype(DieToConstraintsAdapter.class, DieToConstraintsAdapter.class.getName());
-
-        builder.registerTypeAdapterFactory(adapterFactory);
-        return builder.create();
-    }
-
-    public Gson getGsonForToolCards() {
-        GsonBuilder builder= new GsonBuilder();
-        //Create a RuntimeTypeAdapterFactory for Effect interface
-        RuntimeTypeAdapterFactory<Effect> adapterFactory= RuntimeTypeAdapterFactory.of(Effect.class)
-                .registerSubtype(ChangeValueDiceEffect.class,ChangeValueDiceEffect.class.getName())
-                .registerSubtype(IncrementDiceEffect.class, IncrementDiceEffect.class.getName())
-                .registerSubtype(InsertDieInGridEffect.class,InsertDieInGridEffect.class.getName())
-                .registerSubtype(InsertDieInPoolEffect.class, InsertDieInPoolEffect.class.getName())
-                .registerSubtype(InsertDieInRoundTrackEffect.class,InsertDieInRoundTrackEffect.class.getName())
-                .registerSubtype(InverseDieValueEffect.class,InverseDieValueEffect.class.getName())
-                .registerSubtype(RemoveDieFromRoundTrackEffect.class,RemoveDieFromRoundTrackEffect.class.getName())
-                .registerSubtype(RemoveDieFromPoolEffect.class, RemoveDieFromPoolEffect.class.getName())
-                .registerSubtype(RemoveDieFromGridEffect.class, RemoveDieFromGridEffect.class.getName())
-                .registerSubtype(SwapRTDieAndDPDieEffect.class, SwapRTDieAndDPDieEffect.class.getName())
-                .registerSubtype(SwapDieEffect.class, SwapDieEffect.class.getName());
-
-        //associate the factory and the builder
-        builder.registerTypeAdapterFactory(adapterFactory);
-        return builder.create();
     }
 }

@@ -1,15 +1,14 @@
-package it.polimi.ingsw.client.configurations.adapters;
+package it.polimi.ingsw.client.configurations.adapters.cli;
 
+import it.polimi.ingsw.client.configurations.adapters.DicePoolInterface;
+import it.polimi.ingsw.client.configurations.adapters.DieInterface;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.server.model.components.Die;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class DicePoolAdapterCLI extends DicePoolInterface{
+public class DicePoolAdapterCLI extends DicePoolInterface {
 
     public DicePoolAdapterCLI(List<Die> dicePool) {
         super(dicePool);
