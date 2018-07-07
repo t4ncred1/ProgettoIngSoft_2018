@@ -1,5 +1,8 @@
-package it.polimi.ingsw.client.configurations.adapters;
+package it.polimi.ingsw.client.configurations.adapters.cli;
 
+import it.polimi.ingsw.client.configurations.adapters.EffectAdapter;
+import it.polimi.ingsw.client.configurations.adapters.ToolCardAdapter;
+import it.polimi.ingsw.client.configurations.adapters.cli.EffectAdapterCLI;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.cards.effects.Effect;
 

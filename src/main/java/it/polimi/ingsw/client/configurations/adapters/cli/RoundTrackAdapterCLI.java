@@ -1,11 +1,14 @@
-package it.polimi.ingsw.client.configurations.adapters;
+package it.polimi.ingsw.client.configurations.adapters.cli;
 
+import it.polimi.ingsw.client.configurations.adapters.DieInterface;
+import it.polimi.ingsw.client.configurations.adapters.RoundTrackInterface;
+import it.polimi.ingsw.client.configurations.adapters.cli.DieAdapterCLI;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.server.model.components.Die;
 
 import java.util.List;
 
-public class RoundTrackAdapterCLI extends RoundTrackInterface{
+public class RoundTrackAdapterCLI extends RoundTrackInterface {
 
     public RoundTrackAdapterCLI(List<Die> roundTrack) {
         super(roundTrack);

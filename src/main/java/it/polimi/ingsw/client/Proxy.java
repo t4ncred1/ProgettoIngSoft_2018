@@ -1,6 +1,10 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.configurations.adapters.*;
+import it.polimi.ingsw.client.configurations.adapters.cli.DicePoolAdapterCLI;
+import it.polimi.ingsw.client.configurations.adapters.cli.GridAdapterCLI;
+import it.polimi.ingsw.client.configurations.adapters.cli.RoundTrackAdapterCLI;
+import it.polimi.ingsw.client.configurations.adapters.cli.ToolCardAdapterCLI;
 import it.polimi.ingsw.client.custom_exception.GameFinishedException;
 import it.polimi.ingsw.client.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.client.custom_exception.NoDisconnectionException;

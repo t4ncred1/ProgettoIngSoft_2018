@@ -1,5 +1,8 @@
-package it.polimi.ingsw.client.configurations.adapters;
+package it.polimi.ingsw.client.configurations.adapters.cli;
 
+import it.polimi.ingsw.client.configurations.adapters.DieInterface;
+import it.polimi.ingsw.client.configurations.adapters.GridInterface;
+import it.polimi.ingsw.client.configurations.adapters.cli.DieAdapterCLI;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
@@ -8,7 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GridAdapterCLI extends GridAdapter {
+public class GridAdapterCLI extends GridInterface {
 
     public GridAdapterCLI(Grid grid){
         super(grid);

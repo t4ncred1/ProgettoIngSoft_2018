@@ -85,7 +85,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private static final String TURN_PLAYER = "turn_player";
     private static final String GAME_FINISHED= "finished";
 
-    private static final String CONNECTED_PLAYERS = "connected_players";
     private static final String INSERT_DIE = "insert_die";
     private static final String USE_TOOL_CARD="tool_card";
     private static final String EXECUTE_TOOL_CARD = "execute_tool";
@@ -94,11 +93,11 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private static final String NOT_VALID_REQUEST = "not_valid_request";
     private static final String END_TURN ="end_turn";
     private static final String GRID_DATA= "grid";
+    private static final String GRID_SELECTION_DATA = "grid_selection";
     private static final String ALL_GRIDS_DATA= "all_grid";
     private static final String TOOL_DATA="tool";
     private static final String ROUND_TRACK_DATA= "round_track";
     private static final String END_DATA= "end_data";
-    private static final String TURN_FINISHED= "finish";
     private static final String DICE_POOL_DATA= "dice_pool";
     private static final String DISCONNECTION = "disconnected";
 
@@ -125,7 +124,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             logger.setLevel(Level.FINER);
             logger.addHandler(handler);
         } catch (IOException e) {
-            logger.log(Level.WARNING, "Unable to get log directory: "+ LOG_DIR+", trying default directory "+ DEFAULT_LOG_DIR);
+            logger.log(Level.CONFIG, "Unable to get log directory: "+ LOG_DIR+", trying default directory "+ DEFAULT_LOG_DIR);
             succeeded = false;
         }
         if (!succeeded){
@@ -137,9 +136,9 @@ public class SocketUserAgent extends Thread implements UserInterface {
                 logger.setLevel(Level.FINER);
                 logger.addHandler(handler);
             } catch (IOException e) {
-                logger.log(Level.WARNING, "Unable to get log directory: "+ DEFAULT_LOG_DIR,e);
+                logger.log(Level.CONFIG, "Unable to get log directory: "+ DEFAULT_LOG_DIR,e);
             }
-            logger.log(Level.INFO,"correctly got loggers at "+DEFAULT_LOG_DIR);
+            logger.log(Level.CONFIG,"correctly got loggers at "+DEFAULT_LOG_DIR);
         }
         gridSet=false;
         gameFinished=false;
@@ -174,7 +173,9 @@ public class SocketUserAgent extends Thread implements UserInterface {
             handleGameInitialization();
             handleGameLogic();
         } catch (IOException e) {
-            logger.log(Level.WARNING, "Client disconnected",e );
+            if(username==null)logger.log(Level.INFO, "A client disconnected during login");
+            else logger.log(Level.INFO, "{0} disconnected during login",username);
+            logger.log(Level.FINE, "",e);
         } catch (DisconnectionException e) {
             logger.log(Level.FINE, "Client logged out",e );
         } catch (IllegalRequestException e) {
@@ -396,7 +397,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             grids = (ArrayList<Grid>) gameHandling.getPlayerGrids(this);
         }
         while (grids == null);
-        outputStream.writeUTF(OK_REQUEST);
+        outputStream.writeUTF(GRID_SELECTION_DATA);
         Gson gson= new Gson();
         outputStream.writeUTF(gson.toJson(grids));
         logger.log(Level.FINE, "send grid selection to {0}", username);

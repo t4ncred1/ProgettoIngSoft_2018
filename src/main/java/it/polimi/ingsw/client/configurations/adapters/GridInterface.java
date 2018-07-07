@@ -5,12 +5,14 @@ import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
 
-public abstract class GridAdapter implements GridInterface {
+public abstract class GridInterface {
     private Grid grid;
     private String[][] constraints;
     private Die[][] diceInGrid;
 
-    protected GridAdapter(Grid grid){
+    public abstract String getGridInterface();
+
+    protected GridInterface(Grid grid){
         final int indexForDimension= 0;
 
         this.grid=grid;

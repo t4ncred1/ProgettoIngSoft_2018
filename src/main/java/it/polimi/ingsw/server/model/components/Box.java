@@ -7,28 +7,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * A box has its own constraints and other ones inherited from boxes around it during the game.
+ * To operate faster check we represent constraints as arrays of integer where, each position represent a rule:
+ *      example:
+ *      colorRestriction[0] can represent green.
+ *      colorRestriction[1] can represent red.
+ *      ecc.
+ *
+ * If a constraint is =0 we can put a Die with that color/value, otherwise we can't.
+ * +1 on a constraints means that a die with that color/value have been inserted near the Box.
+ * -1 means a removal of a die with that color/value
+ */
 public class Box implements BoxObserver, BoxSubject, Serializable {
-
-
-    /*
-    * problema:
-    * Esistono sia COSTRAINTS PROPRIE della CASELLA che EREDITATE dal posizionamento dei DADI nel corso della partita
-    * Per risolvere questo problema rappresentiamo le restrizioni come dei vettori di interi in cui ogni elemento
-    * rappresenta una specifica regola:
-    *       -esempio-
-    *           colorRestriction[0] potrebbe rappresentare il fatto che la casella non possa essere verde
-    *           colorRestriction[1] il rosso ecc.
-    *       -----------
-    * se l'elemento in posizione n-esima del vettore è 0 la regola non è presente, se è >=1 è presente.
-    *
-    * Ogni volta che inserisco un dado i costraints vengono aggiornati mediante degli observer sulle caselle vicine.
-    *
-    *
-    * Le caselle con costraints "innati" sono viste come caselle speciali e i loro vettori possono avere elementi con
-    * valore iniziale =1. Questo fa si che le regole "innate" della cella non vengano perse con gli aggiornamenti.
-    *
-    * Anche per le caselle "aperte" si usa lo stesso ragionamento ( attributo opened )
-    */
 
     private DieConstraints die = null;
     private int[] colorRestriction;
