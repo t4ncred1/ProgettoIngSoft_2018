@@ -125,7 +125,7 @@ public class ToolCard implements Serializable {
         this.dieRemovedFromDicePool = dRemovedFromDicePool.stream().map(Die::new).collect(Collectors.toList());
         this.dieCoordinatesX = new ArrayList<>(dCoordinatesX);
         this.dieCoordinatesY = new ArrayList<>(dCoordinatesY);
-        //Grid pGrid = new Grid(this.playerGrid);   this is commented out because it needs to be a link to original player grid.
+        this.playerGrid=null;
         this.dieDestinationCoordinatesX = new ArrayList<>(dDestinationCoordinatesX);
         this.dieDestinationCoordinatesY = new ArrayList<>(dDestinationCoordinatesY);
         this.roundTrack = new ArrayList<>();
