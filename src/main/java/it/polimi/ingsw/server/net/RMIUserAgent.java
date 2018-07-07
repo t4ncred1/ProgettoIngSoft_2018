@@ -110,16 +110,6 @@ public class RMIUserAgent implements UserInterface {
     }
 
     @Override
-    public void notifyDieInsertion() {
-
-    }
-
-    @Override
-    public void notifyToolUsed() {
-
-    }
-
-    @Override
     public void sendGrids(Map<String, Grid> playersGrids, List<String> connectedPlayers) {
         try {
             clientHandled.setGrids(playersGrids,connectedPlayers);

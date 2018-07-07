@@ -43,7 +43,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private Lock lock;
     private Lock syncLock;
     private Condition conditionLock;
-    private Condition conditionSyncLock;
     private static final String DISCONNECTED_LOG="Disconnected";
 
     private String username;
@@ -146,7 +145,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
         syncLock = new ReentrantLock();
         lock = new ReentrantLock();
         conditionLock = lock.newCondition();
-        conditionSyncLock= syncLock.newCondition();
         try{
             this.inputStream= new DataInputStream(client.getInputStream());
             this.outputStream= new DataOutputStream(client.getOutputStream());
@@ -292,13 +290,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
             lock.unlock();
         }
 
-    }
-
-    private void sendUpdatedGrid() throws IOException, IllegalRequestException {
-        Grid grid =gameHandling.getPlayerGrid(this);
-        Gson gson = getGsonForGrid();
-        String toSend= gson.toJson(grid);
-        outputStream.writeUTF(toSend);
     }
 
     /**
@@ -653,17 +644,6 @@ public class SocketUserAgent extends Thread implements UserInterface {
         logger.log(Level.FINER,"Set controller for socketUA");
         lock.unlock();
     }
-
-    @Override
-    public void notifyDieInsertion() {
-
-    }
-
-    @Override
-    public void notifyToolUsed() {
-
-    }
-
 
     @Override
     public void sendGrids(Map<String, Grid> playersGrids, List<String> connectedPlayers) {

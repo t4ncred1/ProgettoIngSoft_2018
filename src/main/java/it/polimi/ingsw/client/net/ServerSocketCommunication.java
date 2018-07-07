@@ -88,8 +88,6 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
     private boolean myGridSet;
     private boolean gameFinished;
     private boolean doneOperation;
-    private boolean dataRetrieved;
-    private boolean reconnecting;
 
     private static final String DEFAULT_LOG_DIR = "src/main/resources/client_log/ClientLog_%u.log";
 
@@ -127,7 +125,6 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         myGridSet =false;
         gameFinished=false;
         doneOperation=false;
-        dataRetrieved=false;
     }
 
     @Override
