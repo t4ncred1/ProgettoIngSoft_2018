@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.cards.effects;
 
+import it.polimi.ingsw.server.custom_exception.EffectException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.MatchModel;
 import it.polimi.ingsw.server.model.cards.ToolCard;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class ChangeValueDiceEffect implements Effect {
     private transient MatchModel model;
@@ -24,8 +26,8 @@ public class ChangeValueDiceEffect implements Effect {
     }
 
     @Override
-    public void executeTest() throws Exception {
-        if(toolCard.isMustBeSecondTurn() && model.getCurrentPlayer().isFirstTurn()) throw new NotValidParameterException("MustBeSecondTurn is set, but it's not current player's second turn.","Must be current player's second turn for this effect to be executed properly.");
+    public void executeTest() throws EffectException {
+        if(toolCard.isMustBeSecondTurn() && model.getCurrentPlayer().isFirstTurn()) throw new EffectException("Must be current player's second turn.");
         List<Die> dice = toolCard.getDiceRemoved()
                 .stream()
                 .map(Die::new)
