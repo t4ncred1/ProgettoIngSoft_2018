@@ -101,7 +101,7 @@
 		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInPoolEffect"
 	}],
 	"title": "Martelletto",
-	"description": "Tira nuovamente\ntutti i dadi della Riserva\nQuesta carta può essera usata\nsolo durante il tuo secondo turno",
+	"description": "Tira nuovamente\ntutti i dadi della Riserva\nQuesta carta puï¿½ essera usata\nsolo durante il tuo secondo turno",
 	"removeAllDiceFromDicePool": true,
 	"colourInRoundtrack": false,
 	"colorCheck": true,

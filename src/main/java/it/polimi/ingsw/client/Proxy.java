@@ -39,6 +39,9 @@ public class Proxy {
     private String turnPlayerDisconnected;
     private boolean isTurnPlayerDisconnected;
 
+    /**
+     * Constructor for proxy. All "new<Name>Adapter" methods are used for a GUI.
+     */
     private Proxy(){
         gridsSelection= new ArrayList<>();
         connectedPlayers = new LinkedHashMap<>();
@@ -73,6 +76,15 @@ public class Proxy {
         return gridsSelection.size();
     }
 
+    /**
+     * Inserts a die in X,Y.
+     *
+     * @param position Die position in dicePool.
+     * @param row Row coordinate.
+     * @param column Column coordinate.
+     * @throws InvalidMoveException Thrown if the insertion is not valid.
+     * @throws DieNotExistException Thrown if the die selected does not exist.
+     */
     public synchronized void tryToInsertDieInXY(int position, int row, int column) throws InvalidMoveException, DieNotExistException {
         final boolean checkColorConstraint= true;
         final boolean checkValueConstraint= true;
@@ -117,6 +129,10 @@ public class Proxy {
         gameFinished=true;
     }
 
+    /**
+     * @return True if this is "player"'s turn.
+     * @throws GameFinishedException Thrown if the game is already finished.
+     */
     public synchronized boolean askIfItsMyTurn() throws GameFinishedException {
         if(gameFinished) throw new GameFinishedException();
         return myUsername.equals(turnPlayer);
@@ -130,6 +146,11 @@ public class Proxy {
         return myUsername;
     }
 
+    /**
+     * Update current player's grid after an operation.
+     *
+     * @param grid Current player's grid.
+     */
     public synchronized void updateGrid(Grid grid) {
         if(turnPlayer.equals(myUsername)){
             gridSelected= newGridAdapter(grid);
@@ -174,6 +195,10 @@ public class Proxy {
         else throw new NoDisconnectionException();
     }
 
+    /**
+     *
+     * @return True if the game is finished.
+     */
     public synchronized boolean isGameFinished() {
         return gameFinished;
     }
