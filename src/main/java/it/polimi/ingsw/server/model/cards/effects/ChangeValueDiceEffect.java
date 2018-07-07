@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model.cards.effects;
 
-import it.polimi.ingsw.server.custom_exception.EffectException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.MatchModel;
 import it.polimi.ingsw.server.model.cards.ToolCard;
@@ -25,12 +24,12 @@ public class ChangeValueDiceEffect implements Effect {
     }
 
     @Override
-    public void executeTest() throws EffectException {
-        if(toolCard.isMustBeSecondTurn() && model.getCurrentPlayer().isFirstTurn()) throw new EffectException("Must be player's second turn to activate this toolcard.");
-        List<Die> dice = new ArrayList<>();
-        for (Die d : toolCard.getDiceRemoved()){
-            dice.add(new Die(d));
-        }
+    public void executeTest() throws Exception {
+        if(toolCard.isMustBeSecondTurn() && model.getCurrentPlayer().isFirstTurn()) throw new NotValidParameterException("MustBeSecondTurn is set, but it's not current player's second turn.","Must be current player's second turn for this effect to be executed properly.");
+        List<Die> dice = toolCard.getDiceRemoved()
+                .stream()
+                .map(Die::new)
+                .collect(Collectors.toList());
         for(int i=0; i<dice.size();i++){
             Die die = dice.remove(i);
             try {

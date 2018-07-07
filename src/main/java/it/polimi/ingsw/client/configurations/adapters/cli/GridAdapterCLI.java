@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 public class GridAdapterCLI extends GridInterface {
 
     public GridAdapterCLI(Grid grid){

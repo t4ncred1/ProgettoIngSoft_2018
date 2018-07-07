@@ -23,4 +23,8 @@ public abstract class DicePoolInterface {
         return new Die(dicePool.get(position));
     }
 
+    public int getDicePoolSize(){
+        return dicePool.size();
+    }
+
 }

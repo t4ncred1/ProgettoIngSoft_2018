@@ -88,8 +88,6 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
     private boolean myGridSet;
     private boolean gameFinished;
     private boolean doneOperation;
-    private boolean dataRetrieved;
-    private boolean reconnecting;
 
     private static final String DEFAULT_LOG_DIR = "src/main/resources/client_log/ClientLog_%u.log";
 
@@ -127,7 +125,6 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         myGridSet =false;
         gameFinished=false;
         doneOperation=false;
-        dataRetrieved=false;
     }
 
     @Override
@@ -482,10 +479,12 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
     @Override
     public void doEffect(String effectName, List<String> params) throws ServerIsDownException, DisconnectionException, InvalidMoveException {
         try {
+            logger.log(Level.FINE, "Sending effect data");
             outputStream.writeUTF(effectName);
             ArrayList<String> temp= (ArrayList<String>) params;
             Gson gson = new Gson();
             outputStream.writeUTF(gson.toJson(temp));
+            logger.log(Level.FINE, "Sent effect name and parameters");
             String response= readRemoteInput();
             switch (response){
                 case DISCONNECTION:

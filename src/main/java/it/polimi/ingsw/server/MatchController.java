@@ -953,9 +953,11 @@ public class MatchController extends Thread{
     public void setEffectParameters(UserInterface player,String effectName, List<String> parameters) throws IllegalRequestException, InvalidOperationException, NotValidParameterException {
         final int REMOVING_INDEX=0;
         securityControl(player);
+        System.err.println("here 1");
         turnPlayerGuard.lock();
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
         turnPlayerGuard.unlock();
+        System.err.println("here 2");
         synchronized (modelGuard){
             Effect effect= effectsToDo.get(REMOVING_INDEX);
             if(effectName.equals(effect.getName())){

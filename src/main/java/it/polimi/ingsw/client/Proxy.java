@@ -10,6 +10,7 @@ import it.polimi.ingsw.client.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.client.custom_exception.NoDisconnectionException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
+import it.polimi.ingsw.client.custom_exception.invalid_operations.ToolCardNotExistException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
@@ -223,8 +224,12 @@ public class Proxy {
         return this.toolCards;
     }
 
-    public synchronized ToolCardAdapter getToolCard(int index) {
-        return toolCards.get(index);
+    public synchronized ToolCardAdapter getToolCard(int index) throws ToolCardNotExistException {
+        try{
+            return toolCards.get(index);
+        }catch (IndexOutOfBoundsException e){
+            throw new ToolCardNotExistException();
+        }
     }
 
 
