@@ -263,33 +263,19 @@ public class MainClient {
     private void handleToolCardEffects(ToolCardAdapter toolCard) throws ServerIsDownException, DisconnectionException {
         Scanner scanner= new Scanner(System.in);
         ArrayList<EffectAdapter> effects= (ArrayList<EffectAdapter>) toolCard.getEffects();
-        ArrayList<String> params=new ArrayList<>();
         for(EffectAdapter effect: effects){
-            boolean ok;
-            do{
-                effect.getEffectInterface();
-                Iterator<String> text= toPrint.iterator();
-                while (text.hasNext()){
-                    System.out.println(text.next());
-                    text.remove();
-                    String s1= scanner.nextLine();
-                    params.add(s1);
-                }
+            boolean ok=false;
+            while (!ok){
                 try {
+                    List<String> params=effect.computeEffect();
                     server.doEffect(effect.getName(), params);
                     ok=true;
                 } catch (InvalidMoveException e) {
-                    System.err.println("Invalid parameters passed, please reinsert them:");
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e1) {
-                        Thread.currentThread().interrupt();
-                    }
-                    params=new ArrayList<>();
-                    ok=false;
+                    System.out.println(ANSI_RED+"Il server notifica che almeno un parametro inserito non è corretto, reinserirli"+ANSI_RESET);
                 }
-            }while (!ok);
+            }
         }
+        System.err.println("Tua madre"); // FIXME: 07/07/2018 
         server.launchToolCards();
     }
 
