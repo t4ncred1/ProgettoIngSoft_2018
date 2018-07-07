@@ -263,19 +263,18 @@ public class MainClient {
     private void handleToolCardEffects(ToolCardAdapter toolCard) throws ServerIsDownException, DisconnectionException {
         Scanner scanner= new Scanner(System.in);
         ArrayList<EffectAdapter> effects= (ArrayList<EffectAdapter>) toolCard.getEffects();
-        for(EffectAdapter effect: effects){
-            boolean ok=false;
-            while (!ok){
+        for(EffectAdapter effect: effects) {
+            boolean ok = false;
+            while (!ok) {
                 try {
-                    List<String> params=effect.computeEffect();
+                    List<String> params = effect.computeEffect();
                     server.doEffect(effect.getName(), params);
-                    ok=true;
+                    ok = true;
                 } catch (InvalidMoveException e) {
-                    System.out.println(ANSI_RED+"Il server notifica che almeno un parametro inserito non è corretto, reinserirli"+ANSI_RESET);
+                    System.out.println(ANSI_RED + "Il server notifica che almeno un parametro inserito non è corretto, reinserirli" + ANSI_RESET);
                 }
             }
         }
-        System.err.println("Tua madre"); // FIXME: 07/07/2018 
         server.launchToolCards();
     }
 

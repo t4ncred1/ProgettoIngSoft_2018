@@ -60,7 +60,6 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
     private static final String REQUEST_GRID = "get_grids";
     private static final String GRID_ALREADY_SELECTED= "grid_selected";
     private static final String CHOOSE_GRID="set_grid";
-    private static final String CONNECTED_PLAYERS = "connected_players";
 
 
     private static final String TURN_PLAYER = "turn_player";
@@ -69,17 +68,13 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
 
     private static final String INSERT_DIE = "insert_die";
     private static final String USE_TOOL_CARD= "tool_card";
+    private static final String EXECUTE_TOOL_CARD = "execute_tool";
     private static final String INVALID_POSITION = "invalid_index";
     private static final String ALREADY_DONE_OPERATION = "already_done";
     private static final String END_TURN ="end_turn";
 
 
-    private static final String GRID_DATA= "grid";
-    private static final String ALL_GRIDS_DATA= "all_grid";
-    private static final String TOOL_DATA="tool";
     private static final String END_DATA= "end_data";
-    private static final String DICE_POOL_DATA= "dice_pool";
-    private static final String ROUND_TRACK_DATA= "round_track";
     private static final String DISCONNECTION = "disconnected";
 
     private static final String PLAYERS_POINTS="points";
@@ -535,7 +530,22 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
 
     @Override
     public void launchToolCards() throws ServerIsDownException, DisconnectionException {
-
+        try {
+            outputStream.writeUTF(EXECUTE_TOOL_CARD);
+            String response= readRemoteInput();
+            switch (response){
+                case OK_MESSAGE:
+                    logger.fine("ToolCard executed without problem");
+                    break;
+                case DISCONNECTION:
+                    logger.log(Level.FINE, "disconnected for inactivity");
+                    throw new DisconnectionException();
+                default:
+                    logger.log(Level.SEVERE,"Unexpected message waiting for use tool response {0}" , response);
+            }
+        } catch (IOException e) {
+            throw new ServerIsDownException();
+        }
     }
 
 
