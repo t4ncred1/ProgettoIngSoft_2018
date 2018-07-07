@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.cards.effects;
 
+import it.polimi.ingsw.server.custom_exception.EffectException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.MatchModel;
 import it.polimi.ingsw.server.model.cards.ToolCard;
@@ -22,16 +23,21 @@ public class IncrementDiceEffect implements Effect {
     }
 
     @Override
-    public void executeTest() throws NotValidParameterException {
+    public void executeTest() throws EffectException {
         ArrayList<Die>dice = new ArrayList<>();
         for (Die d : toolCard.getDiceRemoved()){
             dice.add(new Die(d));
         }
         for (int i=0; i<dice.size(); i++){
-            if(toolCard.isIncrement() && dice.get(i).getValue()>=6) throw new NotValidParameterException("An increment effect was tried on a die that has already a value of 6 in toolcard "+toolCard.getTitle(), "the value of the chosen die should be less than six for it to be incremented.");
-            else if (!toolCard.isIncrement() && dice.get(i).getValue() <=1) throw new NotValidParameterException("A decrement effect was tried on a die that has already a value of 1 in toolcard "+toolCard.getTitle(), "the value of the chosen die should be more than one for it to be decremented.");
+            if(toolCard.isIncrement() && dice.get(i).getValue()>=6) throw new EffectException("An increment effect was tried on a die that has already a value of 6 in toolcard "+toolCard.getTitle());
+            else if (!toolCard.isIncrement() && dice.get(i).getValue() <=1) throw new EffectException("A decrement effect was tried on a die that has already a value of 1 in toolcard "+toolCard.getTitle());
             Die d = dice.remove(i);
-            dice.add(i,new Die(d.getColor(), (toolCard.isIncrement() ? d.getValue() +1 : d.getValue()-1)));
+            try {
+                dice.add(i,new Die(d.getColor(), (toolCard.isIncrement() ? d.getValue() +1 : d.getValue()-1)));
+            } catch (NotValidParameterException e) {
+                Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"Something went wrong in toolcard "+ toolCard.getTitle()+" with effect "+getName()+".");
+                throw new EffectException("something went wrong!");
+            }
         }
         toolCard.setDiceRemoved(dice);
     }

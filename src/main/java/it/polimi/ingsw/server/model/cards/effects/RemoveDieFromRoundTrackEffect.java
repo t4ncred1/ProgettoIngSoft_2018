@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.cards.effects;
 
+import it.polimi.ingsw.server.custom_exception.EffectException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.MatchModel;
 import it.polimi.ingsw.server.model.cards.ToolCard;
@@ -27,12 +28,12 @@ public class RemoveDieFromRoundTrackEffect implements Effect {
     }
 
     @Override
-    public void executeTest() throws Exception {
+    public void executeTest() throws EffectException {
         ArrayList<Die> rt = new ArrayList<>();
         for(Die d : model.getRoundTrack()){
             rt.add(new Die(d));
         }
-        if (toolCard.getIndexOfRoundTrackDie()>=rt.size() || toolCard.getIndexOfRoundTrackDie()<0)throw new NotValidParameterException("Index Of RoundTrack Die To Be Removed in toolcard: "+toolCard.getTitle()+" is out of bounds.","Should be a value between 0 and RT.size() -1");
+        if (toolCard.getIndexOfRoundTrackDie()>=rt.size() || toolCard.getIndexOfRoundTrackDie()<0)throw new EffectException("Index Of RoundTrack Die To Be Removed in toolcard: "+toolCard.getTitle()+" is out of bounds.");
         toolCard.setRemovedDieFromRoundTrack(rt.remove(toolCard.getIndexOfRoundTrackDie()));
         toolCard.setRoundTrack(rt);
     }

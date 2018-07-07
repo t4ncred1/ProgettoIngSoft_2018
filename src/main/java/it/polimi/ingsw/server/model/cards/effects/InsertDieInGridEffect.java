@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.cards.effects;
 
+import it.polimi.ingsw.server.custom_exception.EffectException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.MatchModel;
@@ -22,19 +23,25 @@ public class InsertDieInGridEffect implements Effect {
     }
 
     @Override
-    public void executeTest() throws Exception {
+    public void executeTest() throws EffectException {
         Grid playerGrid;
 
         if(toolCard.getPlayerGrid()==null) playerGrid = new Grid(model.getPlayerCurrentGrid(model.askTurn()));
         else playerGrid = new Grid(toolCard.getPlayerGrid());
 
         playerGrid.initializeAllObservers();    //necessary
-        playerGrid.insertDieInXY(toolCard.getDieDestinationCoordinatesX().remove(0),toolCard.getDieDestinationCoordinatesY().remove(0),toolCard.isColorCheck(),toolCard.isValueCheck(),toolCard.isOpenCheck(), toolCard.getDiceRemoved().remove(0));
+        try {
+            playerGrid.insertDieInXY(toolCard.getDieDestinationCoordinatesX().remove(0),toolCard.getDieDestinationCoordinatesY().remove(0),toolCard.isColorCheck(),toolCard.isValueCheck(),toolCard.isOpenCheck(), toolCard.getDiceRemoved().remove(0));
+        } catch (NotValidParameterException e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"Invalid parameters called in a toolcard.",e);
+        } catch (InvalidOperationException e) {
+            throw new EffectException("Can't insert the passed die.");
+        }
         toolCard.setPlayerGrid(playerGrid);
 
         //possibility to jump second turn (toolcard 8).
         if (toolCard.isJumpNextTurn() && !model.getCurrentPlayer().isFirstTurn()) {
-            throw new InvalidOperationException();
+            throw new EffectException("Must be player's second turn.");
         }
     }
 

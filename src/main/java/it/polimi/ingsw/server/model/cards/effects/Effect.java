@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model.cards.effects;
 
+import it.polimi.ingsw.server.custom_exception.EffectException;
+import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.MatchModel;
 import it.polimi.ingsw.server.model.cards.ToolCard;
@@ -26,7 +28,7 @@ public interface Effect extends Serializable {
      *
      * @throws Exception Thrown when execution fails.
      */
-    void executeTest() throws Exception;
+    void executeTest() throws EffectException;
 
     /**
      *

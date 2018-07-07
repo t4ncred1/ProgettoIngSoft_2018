@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.cards.effects;
 
+import it.polimi.ingsw.server.custom_exception.EffectException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.MatchModel;
 import it.polimi.ingsw.server.model.cards.ToolCard;
@@ -21,14 +22,14 @@ public class InsertDieInPoolEffect implements Effect {
     }
 
     @Override
-    public void executeTest() throws NotValidParameterException{
+    public void executeTest() throws EffectException {
         DicePool pool = new DicePool(model.getDicePool()) ;
         try {
             for(int i=0; i<toolCard.getDiceRemoved().size()-1; i++){
                 pool.insertDieInPool(toolCard.getDiceRemoved().remove(0), toolCard.getIndexOfDieToBeRemoved());
             }
         } catch (NotValidParameterException e){
-            throw new NotValidParameterException("Index of die to be inserted in toolcard "+toolCard.getTitle(),"should be a valid index to insert a die from dicepool.");
+            throw new EffectException("Index of die to be inserted in toolcard "+toolCard.getTitle()+" should be a valid index to insert a die from dicepool.");
         }
     }
 
