@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 public class ToolCard implements Serializable {
@@ -62,7 +63,11 @@ public class ToolCard implements Serializable {
         this.title = title;
         this.description=description;
         this.effects=new ArrayList<>(effects);
-        this.setModel(model);
+        this.dieCoordinatesX= new ArrayList<>();
+        this.dieCoordinatesY= new ArrayList<>();
+        this.dieDestinationCoordinatesX=new ArrayList<>();
+        this.dieDestinationCoordinatesY=new ArrayList<>();
+        this.setupData(model);
     }
 
 
@@ -83,10 +88,12 @@ public class ToolCard implements Serializable {
         this.used = true;
     }
 
-    public void setModel(MatchModel model){
-        for(Effect effect: effects){
-            effect.setParameters(model, this);
-        }
+    public void setupData(MatchModel model){
+        effects.forEach(effect -> effect.setParameters(model, this));
+        this.dieCoordinatesX= new ArrayList<>();
+        this.dieCoordinatesY= new ArrayList<>();
+        this.dieDestinationCoordinatesX=new ArrayList<>();
+        this.dieDestinationCoordinatesY=new ArrayList<>();
     }
 
     public List<Effect> getEffects(){
@@ -96,10 +103,7 @@ public class ToolCard implements Serializable {
     public void useToolCard() throws Exception{
 
         // save all parameters in local variables
-        List<Die> dRemovedFromDicePool = new ArrayList<>();
-            for(Die d : this.dieRemovedFromDicePool){
-                dRemovedFromDicePool.add(new Die(d));
-            }
+        List<Die> dRemovedFromDicePool = dieRemovedFromDicePool.stream().map(Die::new).collect(Collectors.toList());
         List<Integer> dCoordinatesX = new ArrayList<>(this.dieCoordinatesX);
         List<Integer> dCoordinatesY = new ArrayList<>(this.dieCoordinatesY);
         //Grid pGrid = new Grid(this.playerGrid);   this is commented out because it needs to be a link to original player grid.
@@ -121,10 +125,7 @@ public class ToolCard implements Serializable {
 
     //SETTING PARAMETERS TO ORIGINAL VALUE
 
-        this.dieRemovedFromDicePool = new ArrayList<>();
-        for(Die d :dRemovedFromDicePool){
-            dieRemovedFromDicePool.add(new Die(d));
-        }
+        this.dieRemovedFromDicePool = dRemovedFromDicePool.stream().map(Die::new).collect(Collectors.toList());
         this.dieCoordinatesX = new ArrayList<>(dCoordinatesX);
         this.dieCoordinatesY = new ArrayList<>(dCoordinatesY);
         //Grid pGrid = new Grid(this.playerGrid);   this is commented out because it needs to be a link to original player grid.
@@ -132,10 +133,7 @@ public class ToolCard implements Serializable {
         this.dieDestinationCoordinatesY = new ArrayList<>(dDestinationCoordinatesY);
         this.roundTrack = new ArrayList<>();
         this.removedDieFromRoundTrack = new Die(rDieFromRoundTrack);
-
-        for (Effect e : effects){
-            e.execute();
-        }
+        effects.forEach(Effect::execute);
 
     //should set parameters back to original values again.
         this.indexOfDieToBeRemoved = 0;

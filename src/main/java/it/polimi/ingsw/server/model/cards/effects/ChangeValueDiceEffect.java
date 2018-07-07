@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class ChangeValueDiceEffect implements Effect {
     private transient MatchModel model;
@@ -26,10 +27,10 @@ public class ChangeValueDiceEffect implements Effect {
     @Override
     public void executeTest() throws Exception {
         if(toolCard.isMustBeSecondTurn() && model.getCurrentPlayer().isFirstTurn()) throw new NotValidParameterException("MustBeSecondTurn is set, but it's not current player's second turn.","Must be current player's second turn for this effect to be executed properly.");
-        List<Die> dice = new ArrayList<>();
-        for (Die d : toolCard.getDiceRemoved()){
-            dice.add(new Die(d));
-        }
+        List<Die> dice = toolCard.getDiceRemoved()
+                .stream()
+                .map(Die::new)
+                .collect(Collectors.toList());
         for(int i=0; i<dice.size();i++){
             Die die = dice.remove(i);
             dice.add(i, new Die(die.getColor(),new Random().nextInt(6) + 1));
@@ -61,6 +62,24 @@ public class ChangeValueDiceEffect implements Effect {
         }
         toolCard.setDiceRemoved(dice); //set because is executed on all dice removed.
     }
+//    @Override
+//    public void execute() {
+//        List<Die> dice = toolCard.getDiceRemoved()
+//                .stream()
+//                .map(this::relaunchDie)
+//                .collect(Collectors.toList());
+//        toolCard.setDiceRemoved(dice); //set because is executed on all dice removed.
+//    }
+//
+//    private Die relaunchDie(Die die) {
+//        try {
+//            return new Die(die.getColor(),new Random().nextInt(6) + 1);
+//        } catch (NotValidParameterException e) {
+//            Logger logger = Logger.getLogger(getClass().getName());
+//            logger.log(Level.WARNING, "Failed execution of effect \""+ NAME + "\" in toolcard "+toolCard.getTitle(), e);
+//            return die;
+//        }
+//    }
 
 
 

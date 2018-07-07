@@ -19,6 +19,10 @@ public abstract class RoundTrackInterface {
 
     public abstract String getRoundTrackInterface();
 
+    public int getRoundTrackDimension(){
+        return ROUND_TRACK_DIMENSION;
+    }
+
     protected Die[] getRoundTrack(){
         return this.roundTrack;
     }

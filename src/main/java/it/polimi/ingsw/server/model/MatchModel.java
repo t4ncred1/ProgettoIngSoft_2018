@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class MatchModel{
 
@@ -81,7 +82,7 @@ public class MatchModel{
         //selecting 3 tool cards
         toolCards= selectToolCards();
         //setting model in tool cards
-        toolCards.forEach(toolCard -> toolCard.setModel(this));
+        toolCards.forEach(toolCard -> toolCard.setupData(this));
         //initialize private objectives
         initializePrivateObjective();
         //dice pool initialization
@@ -217,10 +218,10 @@ public class MatchModel{
      private List<ToolCard> selectToolCards() throws NotValidConfigPathException {
          List<ToolCard> tools;
          tools = ConfigurationHandler.getInstance().getToolCards();
-         List<ToolCard> tc = new ArrayList<>();
-         for (int i = 0; i<ConfigurationHandler.getInstance().getToolCardsDistributed();i++)
-             tc.add(tools.remove(new Random().nextInt(tools.size())));
-         return tc;
+         return IntStream.range(0,
+                 ConfigurationHandler.getInstance().getToolCardsDistributed())
+                 .mapToObj(i -> tools.remove(new Random()
+                         .nextInt(tools.size()))).collect(Collectors.toList());
      }
 
     /**
@@ -408,16 +409,11 @@ public class MatchModel{
      * @throws InvalidUsernameException Thrown when there isn't a player whose username matches 'username'.
      */
     public void setPlayerToDisconnect(String username) throws InvalidUsernameException{
-        boolean flag = false;
-        int i;
-        for (i=0; i<playersInGame.size();i++){
-            if (playersInGame.get(i).getUsername().equals(username)) {
-                System.err.println("Removing player "+username);
-                playersInGame.get(i).setDisconnected();
-                flag=true;
-            }
-        }
-        if (!flag) throw new InvalidUsernameException();
+        List<Player> playerToDisconnect=playersInGame.stream()
+                .filter(player -> player.getUsername().equals(username))
+                .collect(Collectors.toList());
+        if(playerToDisconnect.isEmpty()) throw new InvalidUsernameException();
+        playerToDisconnect.forEach(Player::setDisconnected);
     }
 
     public void setPlayerToConnect(String username) throws InvalidUsernameException{
@@ -448,7 +444,9 @@ public class MatchModel{
      * @throws InvalidUsernameException Thrown when there isn't a player whose username matches 'username'.
      */
     public PrivateObjective getPrivateObjective(String username) throws InvalidUsernameException {
-        List<PrivateObjective> stream=  playersInGame.stream().filter(i->i.getUsername().equals(username)).map(Player::getObjective).collect(Collectors.toList());
+        List<PrivateObjective> stream=  playersInGame.stream()
+                .filter(player->player.getUsername().equals(username))
+                .map(Player::getObjective).collect(Collectors.toList());
         if (stream.isEmpty()) throw new InvalidUsernameException();
         return stream.get(0);
     }
@@ -467,9 +465,9 @@ public class MatchModel{
     }
 
     public List<String> getConnectedPlayers(){
-        List<String> connectedPlayers= new ArrayList<>();
-        playersInGame.forEach(player -> {if(!currentPlayer.isDisconnected())connectedPlayers.add(player.getUsername());});
-        return connectedPlayers;
+        return playersInGame.stream()
+                .filter(player -> !currentPlayer.isDisconnected())
+                .map(Player::getUsername).collect(Collectors.toList());
     }
 
     /**

@@ -73,7 +73,7 @@ public final class DataHandler {
         return builder.create();
     }
 
-    public static void retrieveGrid(DataInputStream inputStream, Logger logger) throws IOException {
+    static void retrieveGrid(DataInputStream inputStream, Logger logger) throws IOException {
         logger.log(Level.FINE,"Retrieving a single grid from server");
         String serverResponse;
         Gson gson= getGsonForGrid();
@@ -83,7 +83,7 @@ public final class DataHandler {
         logger.log(Level.FINE,"Grid retrieved and set");
     }
 
-    public static void retrieveAllGrids(DataInputStream inputStream, Logger logger) throws IOException {
+    static void retrieveAllGrids(DataInputStream inputStream, Logger logger) throws IOException {
         logger.log(Level.FINE,"Retrieving all grids from server");
         String serverResponse;
         HashMap<String,Grid> playersGrids;
@@ -99,7 +99,7 @@ public final class DataHandler {
         logger.log(Level.FINE,"Grids retrieved and set");
     }
 
-    public static void retrieveDicePool(DataInputStream inputStream, Logger logger) throws IOException {
+    static void retrieveDicePool(DataInputStream inputStream, Logger logger) throws IOException {
         logger.log(Level.FINE,"Retrieving dice pool from server");
         ArrayList<Die> dicePool;
         TypeToken<ArrayList<Die>> typeToken= new TypeToken<ArrayList<Die>>(){};

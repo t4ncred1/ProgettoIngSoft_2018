@@ -482,10 +482,12 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
     @Override
     public void doEffect(String effectName, List<String> params) throws ServerIsDownException, DisconnectionException, InvalidMoveException {
         try {
+            logger.log(Level.FINE, "Sending effect data");
             outputStream.writeUTF(effectName);
             ArrayList<String> temp= (ArrayList<String>) params;
             Gson gson = new Gson();
             outputStream.writeUTF(gson.toJson(temp));
+            logger.log(Level.FINE, "Sent effect name and parameters");
             String response= readRemoteInput();
             switch (response){
                 case DISCONNECTION:

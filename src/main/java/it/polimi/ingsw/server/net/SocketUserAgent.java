@@ -250,8 +250,11 @@ public class SocketUserAgent extends Thread implements UserInterface {
         Gson gson= new Gson();
         TypeToken<ArrayList<String>> typeToken= new TypeToken<ArrayList<String>>(){};
         ArrayList<String> params=gson.fromJson(read, typeToken.getType());
+        logger.log(Level.FINE, "Received effect's parameters from client");
         try {
             gameHandling.setEffectParameters(this, request, params);
+            outputStream.writeUTF(OK_REQUEST);
+            logger.log(Level.FINE,"Set effect parameters");
         } catch (InvalidOperationException e) {
             logger.log(Level.SEVERE,"Not proper effect requested" , e);
             outputStream.writeUTF(NOT_VALID_REQUEST);
