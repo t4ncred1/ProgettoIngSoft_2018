@@ -97,6 +97,7 @@ public class ToolCard implements Serializable {
         this.dieCoordinatesY= new ArrayList<>();
         this.dieDestinationCoordinatesX=new ArrayList<>();
         this.dieDestinationCoordinatesY=new ArrayList<>();
+        this.dieRemovedFromDicePool=new ArrayList<>();
     }
 
     public List<Effect> getEffects(){
@@ -112,10 +113,8 @@ public class ToolCard implements Serializable {
         //Grid pGrid = new Grid(this.playerGrid);   this is commented out because it needs to be a link to original player grid.
         List<Integer>dDestinationCoordinatesX = new ArrayList<>(this.dieDestinationCoordinatesX);
         List<Integer>dDestinationCoordinatesY = new ArrayList<>(this.dieDestinationCoordinatesX);
-        Die rDieFromRoundTrack = new Die(this.removedDieFromRoundTrack);
 
-
-    //EXECUTING EFFECTS
+        //EXECUTING EFFECTS
             for (Effect e : effects) {
                 e.executeTest();
             }
@@ -129,7 +128,7 @@ public class ToolCard implements Serializable {
         this.dieDestinationCoordinatesX = new ArrayList<>(dDestinationCoordinatesX);
         this.dieDestinationCoordinatesY = new ArrayList<>(dDestinationCoordinatesY);
         this.roundTrack = new ArrayList<>();
-        this.removedDieFromRoundTrack = new Die(rDieFromRoundTrack);
+        this.removedDieFromRoundTrack = null;
         effects.forEach(Effect::execute);
 
     //should set parameters back to original values again.

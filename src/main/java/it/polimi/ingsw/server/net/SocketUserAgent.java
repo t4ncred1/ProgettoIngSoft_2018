@@ -235,16 +235,21 @@ public class SocketUserAgent extends Thread implements UserInterface {
             if(request.equals(EXECUTE_TOOL_CARD)){
                 handleToolExecution(toolCardIndex);
                 ok=true;
-                outputStream.writeUTF(OK_REQUEST);
             } else{
                 handleEffectsParamsSetting(request);
             }
         }
     }
 
-    private void handleToolExecution(int toolCardIndex) throws IllegalRequestException {
+    private void handleToolExecution(int toolCardIndex) throws IllegalRequestException, IOException {
         logger.log(Level.FINE, "Received execute tool card request");
-        gameHandling.executeToolCard(this, toolCardIndex);
+        try {
+            gameHandling.executeToolCard(this, toolCardIndex);
+            outputStream.writeUTF(OK_REQUEST);
+        } catch (EffectException e) {
+            outputStream.writeUTF(NOT_OK_REQUEST);
+        }
+
     }
 
     private void handleEffectsParamsSetting(String request) throws IOException, IllegalRequestException {

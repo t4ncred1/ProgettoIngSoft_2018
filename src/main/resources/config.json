@@ -10,6 +10,6 @@
   "socketPort": "11000",
   "publicObjectivesDistributed" : "3",
   "toolCardsDistributed" : "3",
-  "timerForOperation" : "60",
+  "timerForOperation" : "120",
   "numberOfMatchHandled": 1
 }

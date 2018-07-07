@@ -188,8 +188,7 @@ public class MainClient {
                     doneSomething=handleDieInsertion();
                     break;
                 case USE_TOOL_CARD:
-                    handleToolCard();
-                    doneSomething=true; //fixme
+                    doneSomething=handleToolCard();
                     break;
                 case END_TURN:
                     myTurnFinished=true;
@@ -234,10 +233,9 @@ public class MainClient {
         System.out.println("Puoi usare i comandi "+INSERT_DIE+", "+USE_TOOL_CARD+" e "+END_TURN);
     }
 
-    private void handleToolCard() throws ServerIsDownException, DisconnectionException {
+    private boolean handleToolCard() throws ServerIsDownException, DisconnectionException {
         System.out.println("Scegliere l'indice della tool card:");
         Scanner scanner= new Scanner(System.in);
-        boolean ok=false;
         int value;
         ToolCardAdapter toolCard;
         do{
@@ -246,7 +244,7 @@ public class MainClient {
                 toolCard=Proxy.getInstance().getToolCard(value-1);
                 server.useToolCard(value-1);
                 handleToolCardEffects(toolCard);
-                ok=true;
+                return true;
             }catch (NumberFormatException e){
                 System.err.println("Il parametro inserito è invalido, inserire un numero");
             } catch (ToolCardNotExistException e) {
@@ -254,14 +252,11 @@ public class MainClient {
             } catch (AlreadyDoneOperationException e) {
                 System.err.println("L'operazione è già stata eseguita, non può essere eseguita nuovamente");
             }
-        }while (!ok);
-
-
+        }while (true);
     }
 
     private void handleToolCardEffects(ToolCardAdapter toolCard) throws ServerIsDownException, DisconnectionException {
-        Scanner scanner= new Scanner(System.in);
-        ArrayList<EffectAdapter> effects= (ArrayList<EffectAdapter>) toolCard.getEffects();
+        List<EffectAdapter> effects= toolCard.getEffects();
         for(EffectAdapter effect: effects) {
             boolean ok = false;
             while (!ok) {

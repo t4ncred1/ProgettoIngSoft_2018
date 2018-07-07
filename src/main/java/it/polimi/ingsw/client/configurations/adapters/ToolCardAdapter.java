@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class ToolCardAdapter {
     ToolCard toolCard;
-    ArrayList<EffectAdapter> effects;
+    List<EffectAdapter> effects;
     private static final int NOT_USED_COST=1;
     private static final int USED_COST=2;
 
@@ -17,7 +17,7 @@ public abstract class ToolCardAdapter {
     }
 
     protected void setEffects(List<EffectAdapter> effects){
-        this.effects= (ArrayList<EffectAdapter>) effects;
+        this.effects= effects;
     }
 
     public String getTitle(){

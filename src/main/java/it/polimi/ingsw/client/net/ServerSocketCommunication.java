@@ -535,7 +535,14 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
             String response= readRemoteInput();
             switch (response){
                 case OK_MESSAGE:
-                    logger.fine("ToolCard executed without problem");
+                    logger.fine("ToolCard executed without problems");
+                    lock.lock();
+                    doneOperation=true;
+                    condition.signal();
+                    lock.unlock();
+                    break;
+                case NOT_OK_MESSAGE:
+                    logger.fine("Tool card can't be executed with these parameters");
                     break;
                 case DISCONNECTION:
                     logger.log(Level.FINE, "disconnected for inactivity");
