@@ -78,8 +78,8 @@ public final class EffectHandler {
         List<String> toReturn= new ArrayList<>();
         int row;
         int column;
-        row= choseRemoveRow();
-        column= choseRemoveColumn();
+        row= chooseRemoveRow();
+        column= chooseRemoveColumn();
         toReturn.add(Integer.toString(column));
         toReturn.add(Integer.toString(row));
         return toReturn;
@@ -89,35 +89,35 @@ public final class EffectHandler {
         List<String> toReturn= new ArrayList<>();
         int row;
         int column;
-        row= choseInsertRow();
-        column= choseInsertColumn();
+        row= chooseInsertRow();
+        column= chooseInsertColumn();
         toReturn.add(Integer.toString(column));
         toReturn.add(Integer.toString(row));
         return toReturn;
     }
 
-    private static int choseRemoveColumn() {
+    private static int chooseRemoveColumn() {
         final int MAX_COLUMN=5;
         System.out.println("Inserisci l'indice della colonna da cui rimuovere il dado");
         Scanner scanner= new Scanner(System.in);
         return getCoordinate(MAX_COLUMN, scanner);
     }
 
-    private static int choseInsertColumn() {
+    private static int chooseInsertColumn() {
         final int MAX_COLUMN=5;
         System.out.println("Inserisci l'indice della colonna in cui inserire il dado");
         Scanner scanner= new Scanner(System.in);
         return getCoordinate(MAX_COLUMN, scanner);
     }
 
-    private static int choseRemoveRow() {
+    private static int chooseRemoveRow() {
         final int MAX_ROW=4;
         System.out.println("Inserisci l'indice della riga da cui rimuovere il dado");
         Scanner scanner= new Scanner(System.in);
         return getCoordinate(MAX_ROW, scanner);
     }
 
-    private static int choseInsertRow() {
+    private static int chooseInsertRow() {
         final int MAX_ROW=4;
         System.out.println("Inserisci l'indice della riga da cui inserire il dado");
         Scanner scanner= new Scanner(System.in);

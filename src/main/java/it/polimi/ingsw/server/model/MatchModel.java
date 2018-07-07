@@ -571,14 +571,18 @@ public class MatchModel{
      */
     public Map<String,String> calculatePoints(){
         Map<String,String> map = new LinkedHashMap<>();
-        SortedMap<String,Integer> temp= new TreeMap<>();
+        TreeMap<String,Integer> temp= new TreeMap<>();
         for(Player player : this.playersInGame){
-            temp.put(player.getUsername(),getPointsForPlayer(player));
+            if(!player.isDisconnected())temp.put(player.getUsername(),getPointsForPlayer(player));
         }
+        //Player are ordered by match points.
         while (!temp.isEmpty()){
-            Map.Entry<String,Integer> entry= ((TreeMap<String, Integer>) temp).lastEntry();
+            Map.Entry<String,Integer> entry = temp.lastEntry();
             temp.remove(entry.getKey());
             map.put(entry.getKey(), Integer.toString(entry.getValue()));
+        }
+        for(Player player : this.playersInGame){
+            if(player.isDisconnected())map.put(player.getUsername(),DISCONNECTED_STATUS);
         }
         return map;
     }

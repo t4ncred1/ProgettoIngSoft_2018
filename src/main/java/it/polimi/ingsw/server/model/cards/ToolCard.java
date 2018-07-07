@@ -114,10 +114,11 @@ public class ToolCard implements Serializable {
         List<Integer>dDestinationCoordinatesX = new ArrayList<>(this.dieDestinationCoordinatesX);
         List<Integer>dDestinationCoordinatesY = new ArrayList<>(this.dieDestinationCoordinatesX);
 
+
         //EXECUTING EFFECTS
-            for (Effect e : effects) {
-                e.executeTest();
-            }
+        for (Effect e : effects) {
+            e.executeTest();
+        }
 
     //SETTING PARAMETERS TO ORIGINAL VALUE
 
