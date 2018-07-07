@@ -24,7 +24,6 @@ public class MainClient {
 
     private static MainClient instance;
 
-    private String username;
     private ServerCommunicatingInterface server;
     private boolean gameStarting;
     private boolean gameStarted;
@@ -32,7 +31,7 @@ public class MainClient {
     private boolean gridsAlreadySelected;
     private boolean gameInitialized;
     private Boolean turnUpdated;
-    private boolean somethingChanged; //fixme
+    private boolean somethingChanged;
     private boolean gameFinished;
     private boolean turnEnded;
     private boolean gameEndDataInProxy;
@@ -497,7 +496,6 @@ public class MainClient {
                             String usernameChosen=scanner.nextLine();
                             instance.server.login(usernameChosen);
                             ok=true;
-                            this.username=usernameChosen;
                             System.out.println("Ti sei connesso. Sei stato inserito nella lobby.");
                         } catch (ServerIsFullException e) {
                             logger.log(Level.INFO,"Il server è pieno, riprova più tardi");

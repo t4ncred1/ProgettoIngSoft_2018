@@ -46,6 +46,7 @@ public class Proxy {
         playersRanking = new LinkedHashMap<>();
         toolCards= new ArrayList<>();
         useGUI=false;
+        playersJustReconnected = new ArrayList<>();
     }
 
     public static synchronized Proxy getInstance(){
@@ -86,10 +87,6 @@ public class Proxy {
         } catch (InvalidOperationException | NotValidParameterException e) {
             throw new InvalidMoveException();
         }
-    }
-
-    public synchronized void updateGridSelected(Grid grid) {
-        this.gridSelected=newGridAdapter(grid);
     }
 
     public synchronized GridInterface getGridSelected() {
@@ -147,7 +144,6 @@ public class Proxy {
 
     private GridInterface newGridAdapter(Grid grid){
         if(useGUI){
-            // TODO: 27/06/2018
             return null;
         }else {
             return new GridAdapterCLI(grid);
@@ -156,7 +152,6 @@ public class Proxy {
 
     private DicePoolInterface newDicePoolAdapter(List<Die> dicePool){
         if(useGUI){
-            // TODO: 27/06/2018
             return null;
         }else {
             return new DicePoolAdapterCLI(dicePool);
@@ -210,9 +205,8 @@ public class Proxy {
     }
 
     public synchronized void setToolCards(List<ToolCard> toolCards) {
-        List<ToolCard> temp= toolCards;
         List<ToolCardAdapter> toSet= new ArrayList<>();
-        for(ToolCard toolCard: temp){
+        for(ToolCard toolCard: toolCards){
             toSet.add(newToolCardAdapter(toolCard));
         }
         this.toolCards=toSet;
@@ -220,7 +214,6 @@ public class Proxy {
 
     private ToolCardAdapter newToolCardAdapter(ToolCard toolCard){
         if(useGUI){
-            // TODO: 03/07/2018
             return null;
         }else {
             return new ToolCardAdapterCLI(toolCard);

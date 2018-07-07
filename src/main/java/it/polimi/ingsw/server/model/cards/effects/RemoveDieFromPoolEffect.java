@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.cards.effects;
 
+import it.polimi.ingsw.server.custom_exception.EffectException;
 import it.polimi.ingsw.server.custom_exception.NotInPoolException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.MatchModel;
@@ -23,7 +24,7 @@ public class RemoveDieFromPoolEffect implements Effect {
     }
 
     @Override
-    public void executeTest() throws NotValidParameterException{
+    public void executeTest() throws EffectException {
         boolean removeAllDiceFromDicePool= toolCard.getRemoveAllDiceFromDicePool();
         List<Die> diceRemoved = new ArrayList<>();
         if (!removeAllDiceFromDicePool){
@@ -31,7 +32,7 @@ public class RemoveDieFromPoolEffect implements Effect {
                 Die exDie = new Die(model.getDicePool().showDiceInPool().get(toolCard.getIndexOfDieToBeRemoved()));
                 diceRemoved.add(exDie);
             } catch (IndexOutOfBoundsException e){
-                throw new NotValidParameterException("Index of die to be removed in toolcard "+toolCard.getTitle(),"should be a valid index to remove a die from dicepool.");
+                throw new EffectException("Index of die to be removed in toolcard "+toolCard.getTitle() + " should be a valid index to remove a die from dicepool.");
             }
             toolCard.saveDiceRemoved(diceRemoved);
         }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.cards.effects;
 
+import it.polimi.ingsw.server.custom_exception.EffectException;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.MatchModel;
@@ -62,7 +63,7 @@ public class SwapDieEffect implements Effect {
     }
 
     @Override
-    public void executeTest() throws Exception {
+    public void executeTest() throws EffectException {
         ArrayList<Die> diceRemoved = new ArrayList<>();
         for (Die d : toolCard.getDiceRemoved()){
             diceRemoved.add(new Die(d));
@@ -72,7 +73,11 @@ public class SwapDieEffect implements Effect {
         valueChosen = -1;
         indexPicked = new Random().nextInt(model.getDicePool().getAvailableColors().size());
         valueChosen = model.getController().toolCardLetPlayerChoose(model.getDicePool().getAvailableColors().get(indexPicked));
-        diceRemoved.add(new Die(model.getDicePool().getAvailableColors().get(indexPicked), valueChosen));       //this will throw an exception if the value chosen by player is invalid.
+        try {
+            diceRemoved.add(new Die(model.getDicePool().getAvailableColors().get(indexPicked), valueChosen));       //this will throw an exception if the value chosen by player is invalid.
+        } catch (NotValidParameterException e) {
+            throw new EffectException("value chosen by player is invalid.");
+        }
         toolCard.setDiceRemoved(diceRemoved);
     }
 

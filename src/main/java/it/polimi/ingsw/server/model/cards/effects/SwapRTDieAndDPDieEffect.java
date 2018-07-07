@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.cards.effects;
 
+import it.polimi.ingsw.server.custom_exception.EffectException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.MatchModel;
 import it.polimi.ingsw.server.model.cards.ToolCard;
@@ -7,6 +8,8 @@ import it.polimi.ingsw.server.model.components.Die;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SwapRTDieAndDPDieEffect implements Effect{
     private transient MatchModel model;
@@ -20,9 +23,12 @@ public class SwapRTDieAndDPDieEffect implements Effect{
     }
 
     @Override
-    public void executeTest() throws Exception {
+    public void executeTest() throws EffectException {
         Die roundTrackDie = toolCard.getRemovedDieFromRoundTrack();
-        if ( toolCard.getDiceRemoved().isEmpty()) throw new NotValidParameterException("There is no die removed from dicepool in ","");
+        if ( toolCard.getDiceRemoved().isEmpty()){
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"Invalid toolcard "+toolCard.getTitle());
+            throw new EffectException("There is no die removed from dicepool!");
+        }
         Die dicePoolDie = toolCard.getDiceRemoved().remove(0);
         ArrayList<Die>removedDice = new ArrayList<>();
         removedDice.add(roundTrackDie);
