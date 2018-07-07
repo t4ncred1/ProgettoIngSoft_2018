@@ -76,10 +76,6 @@ public interface UserInterface {
      */
     void setController(MatchController matchController);
 
-    void notifyDieInsertion();
-
-    void notifyToolUsed();
-
     /**
      * Sends all players' grids to a player.
      *
