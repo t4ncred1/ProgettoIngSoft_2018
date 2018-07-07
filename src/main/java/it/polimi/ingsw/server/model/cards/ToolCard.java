@@ -301,6 +301,11 @@ public class ToolCard implements Serializable {
         return valueCheck;
     }
 
+    public boolean isColourInRoundTrack() {
+        return colourInRoundtrack;
+    }
+
+
 
     /**
      *
