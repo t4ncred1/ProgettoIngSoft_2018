@@ -71,7 +71,7 @@ public class RmiHandler extends Thread implements ServerRemoteInterface{
         System.out.println("Connection request received on RMI system");
         RMIUserAgent clientInterface= new RMIUserAgent(client,this);
         try {
-           MatchHandler.login(clientInterface);
+           MatchHandler.getInstance().login(clientInterface);
            synchronized (clientsHandledGuard) {
                clientsHandled.put(client, clientInterface);
            }

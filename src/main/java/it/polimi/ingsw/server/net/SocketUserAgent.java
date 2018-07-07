@@ -490,7 +490,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
         boolean logged =false;
         do {
             try {
-                MatchHandler.login(this);
+                MatchHandler.getInstance().login(this);
                 logger.log(Level.FINE,"Connection protocol ended. Connected");
                 outputStream.writeUTF(SUCCESSFULLY_LOGGED);
                 logged=true;

@@ -13,7 +13,7 @@ public class DieToConstraintsAdapter implements DieConstraints, Serializable {
     private static final Map<String,Integer> COLOR_HASH;
     static {
         HashMap<String,Integer> tmp =
-            new HashMap<>();
+                new HashMap<>();
         tmp.put("green" ,0);
         tmp.put("red"   ,1);
         tmp.put("blue"  ,2);
@@ -22,11 +22,15 @@ public class DieToConstraintsAdapter implements DieConstraints, Serializable {
         COLOR_HASH = Collections.unmodifiableMap(tmp);
     }
 
+    public static Map<String,Integer> getColorMap(){
+        return COLOR_HASH;
+    }
+
     /**
      * Constructor for DieToConstraintsAdapter.
      * @param die The die to be assigned.
      */
-    public DieToConstraintsAdapter(Die die){
+    DieToConstraintsAdapter(Die die){
         //assegno die
         this.die=die;
 
