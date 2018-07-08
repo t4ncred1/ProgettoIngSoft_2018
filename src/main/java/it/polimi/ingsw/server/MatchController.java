@@ -306,6 +306,7 @@ public class MatchController extends Thread{
         List<ToolCard> toolCards;
         List<Die> roundTrack;
         String turnPlayerUsername;
+        Integer token=-1;
         turnPlayerGuard.lock();
         turnPlayerUsername = turnPlayer.getUsername();
         turnPlayerGuard.unlock();
@@ -314,10 +315,16 @@ public class MatchController extends Thread{
             grid=model.getPlayerCurrentGrid(turnPlayerUsername);
             toolCards=model.getToolCards();
             roundTrack=model.getRoundTrackCopy();
+            try {
+                token=model.getToken(turnPlayerUsername);
+            } catch (InvalidUsernameException e) {
+                logger.log(Level.SEVERE,"Grave error" ,e);
+            }
         }
         userInterface.sendGrid(grid);
         userInterface.sendDicePool(dicePool);
         userInterface.sendRoundTrack(roundTrack);
+        userInterface.sendToken(token);
         userInterface.sendToolCards(toolCards);
         userInterface.notifyTurnInitialized();
     }
@@ -390,6 +397,7 @@ public class MatchController extends Thread{
         sendDicePool();
         sendRoundTrack();
         sendGrids();
+        sendFavourTokens();
         sendPublicObjectives();
         sendPrivateObjectives();
         sendToolCards();
@@ -400,13 +408,22 @@ public class MatchController extends Thread{
         lock.unlock();
     }
 
+    private void sendFavourTokens() {
+        Map<String,Integer> playersAndTokens;
+        synchronized (modelGuard){
+            playersAndTokens=model.getAllTokens();
+        }
+        synchronized (playersInMatchGuard){
+            playersInMatch.forEach((username,player)->player.sendAllTokens(playersAndTokens));
+        }
+    }
+
     private void sendPrivateObjectives() {
         Map<String,PrivateObjective> privateObjectives;
         synchronized (modelGuard){
             privateObjectives=model.getAllPrivateObjectives();
         }
         privateObjectives.forEach(this::sendPrivateObjective);
-
     }
 
     private void sendPrivateObjective(String username, PrivateObjective privateObjective) {
@@ -727,6 +744,7 @@ public class MatchController extends Thread{
     private void sendTurnDataToPlayer(UserInterface player,String turnPlayerUsername) {
         player.notifyTurnOf(turnPlayerUsername);
         Map<String,Grid> playersAndGrids;
+        Map<String,Integer> playersAndTokens;
         List<Die> dicePool;
         List<Die> roundTrack;
         List<PublicObjective> publicObjectives;
@@ -739,12 +757,14 @@ public class MatchController extends Thread{
             connectedPlayers=model.getConnectedPlayers();
             publicObjectives=model.getPublicObjectives();
             privateObjective=getPrivateObjectFromModel(player);
+            playersAndTokens=model.getAllTokens();
             player.sendToolCards(model.getToolCards());
         }
         player.sendDicePool(dicePool);
         player.sendRoundTrack(roundTrack);
         player.sendPublicObjectives(publicObjectives);
         player.sendPrivateObjective(privateObjective);
+        player.sendAllTokens(playersAndTokens);
         player.sendGrids(playersAndGrids, connectedPlayers);
     }
 
@@ -903,16 +923,6 @@ public class MatchController extends Thread{
         userInterface.notifyTurnInitialized();
     }
 
-    /**
-     *
-     * @param player Player.
-     * @return Current player's grid.
-     * @throws IllegalRequestException See securityControl doc.
-     */
-    public Grid getPlayerGrid(UserInterface player) throws IllegalRequestException {
-        securityControl(player);
-        return model.getPlayerCurrentGrid(player.getUsername());
-    }
 
     /**
      * Checks if the player requested exists.

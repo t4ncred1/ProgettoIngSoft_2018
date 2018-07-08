@@ -28,6 +28,7 @@ public class Proxy {
     private List<String> playersJustReconnected;
     private GridInterface gridSelected;
     private Map<String,GridInterface> connectedPlayers;
+    private Map<String,Integer> playersTokens;
     private Map<String,GridInterface> disconnectedPlayers;
     private Map<String,String> playersRanking;
     private List<ToolCardInterface> toolCards;
@@ -181,7 +182,7 @@ public class Proxy {
         }
     }
 
-    public synchronized GridInterface getGridsOf(String turnPlayer) throws InvalidUsernameException {
+    public synchronized GridInterface getGridOf(String turnPlayer) throws InvalidUsernameException {
         if(!connectedPlayers.containsKey(turnPlayer)) throw new InvalidUsernameException();
         return connectedPlayers.get(turnPlayer);
     }
@@ -266,7 +267,9 @@ public class Proxy {
     }
 
     public void setPublicObjectives(List<PublicObjective> publicObj) {
-        publicObj.forEach(objective -> publicObjectives.add(newPublicObjectiveAdapter(objective)));
+        List<PublicObjInterface> temp= new ArrayList<>();
+        publicObj.forEach(objective -> temp.add(newPublicObjectiveAdapter(objective)));
+        publicObjectives=temp;
     }
 
     private PublicObjInterface newPublicObjectiveAdapter(PublicObjective objective) {
@@ -297,4 +300,15 @@ public class Proxy {
         return privateObjective;
     }
 
+    public void setAllTokens(Map<String,Integer> playersAndTokens) {
+        playersTokens=playersAndTokens;
+    }
+
+    public int getToken(String username){
+        return playersTokens.get(username);
+    }
+
+    public void setAToken(Integer token) {
+        playersTokens.put(turnPlayer,token);
+    }
 }

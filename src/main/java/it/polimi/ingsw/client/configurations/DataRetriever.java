@@ -26,6 +26,8 @@ public final class DataRetriever {
     private static final String ROUND_TRACK_DATA= "round_track";
     private static final String PUBLIC_OBJ="public_objectives";
     private static final String PRIVATE_OBJ = "private_objective";
+    private static final String ALL_TOKENS="all_tokens";
+    private static final String TOKEN_DATA = "token";
 
     private static final Map<String, Function<DataInputStream,Logger>>
             DATA = new HashMap<>();
@@ -38,6 +40,8 @@ public final class DataRetriever {
         DATA.put(GRID_SELECTION_DATA, DataHandler::retrieveGridSelection);
         DATA.put(PUBLIC_OBJ,DataHandler::retrievePublicObjectives);
         DATA.put(PRIVATE_OBJ,DataHandler::retrievePrivateObjective);
+        DATA.put(ALL_TOKENS, DataHandler::retrieveAllTokens);
+        DATA.put(TOKEN_DATA, DataHandler::retrieveAToken);
     }
 
     /**
