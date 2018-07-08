@@ -1069,5 +1069,12 @@ public class MatchController extends Thread{
         condition.signal();
         lock.unlock();
     }
+
+
+    public void dieWasInserted(){
+        lock.lock();
+        dieInserted=true;
+        lock.unlock();
+    }
 }
 

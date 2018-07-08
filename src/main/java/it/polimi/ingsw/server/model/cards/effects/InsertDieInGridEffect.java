@@ -80,6 +80,7 @@ public class InsertDieInGridEffect implements Effect {
 
     @Override
     public void execute() {
+        if (toolCard.isDiceMustNotBeInserted()) model.getController().dieWasInserted();
         if (toolCard.getPlayerGrid()==null) toolCard.setPlayerGrid(model.getPlayerCurrentGrid(model.askTurn()));
         Grid playerGrid = toolCard.getPlayerGrid();
         try {
