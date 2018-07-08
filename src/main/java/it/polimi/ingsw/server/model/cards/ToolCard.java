@@ -59,6 +59,7 @@ public class ToolCard implements Serializable {
     private transient List<Die> roundTrack;
     private transient int indexOfRoundTrackDie;
     private transient Die removedDieFromRoundTrack;
+    private boolean diceMustNotBeInserted;
 
 
     ///////////////////////CONSTRUCTOR
@@ -152,7 +153,6 @@ public class ToolCard implements Serializable {
         //Grid pGrid = new Grid(this.playerGrid);   this is commented out because it needs to be a link to original player grid.
         List<Integer>dDestinationCoordinatesX = new ArrayList<>(this.dieDestinationCoordinatesX);
         List<Integer>dDestinationCoordinatesY = new ArrayList<>(this.dieDestinationCoordinatesX);
-
 
         //EXECUTING EFFECTS
         for (Effect e : effects) {
@@ -399,5 +399,13 @@ public class ToolCard implements Serializable {
 
     public void setDieCoordinatesY(List<Integer> dieCoordinatesY) {
         this.dieCoordinatesY = dieCoordinatesY;
+    }
+
+    public boolean isDiceMustNotBeInserted() {
+        return diceMustNotBeInserted;
+    }
+
+    public void setDiceMustNotBeInserted(boolean diceMustBeInserted) {
+        this.diceMustNotBeInserted = diceMustBeInserted;
     }
 }

@@ -746,6 +746,10 @@ public class MatchController extends Thread{
 
     }
 
+    public boolean wasDieInserted(){
+        return dieInserted;
+    }
+
     /**
      * Sets the grid for a player.
      *

@@ -26,6 +26,15 @@ public class InsertDieInGridEffect implements Effect {
     public void executeTest() throws EffectException {
         Grid playerGrid;
 
+        //possibility to jump second turn (toolcard 8).
+        if (toolCard.isJumpNextTurn() && !model.getCurrentPlayer().isFirstTurn()) {
+            throw new EffectException("Must be player's second turn.");
+        }
+
+        if (toolCard.isDiceMustNotBeInserted() && model.getController().wasDieInserted()){
+            throw new EffectException("Must have been inserted a die to do this action");
+        }
+
         if(toolCard.getPlayerGrid()==null) playerGrid = new Grid(model.getPlayerCurrentGrid(model.askTurn()));
         else playerGrid = new Grid(toolCard.getPlayerGrid());
 
@@ -38,11 +47,6 @@ public class InsertDieInGridEffect implements Effect {
             throw new EffectException("Can't insert the passed die.");
         }
         toolCard.setPlayerGrid(playerGrid);
-
-        //possibility to jump second turn (toolcard 8).
-        if (toolCard.isJumpNextTurn() && !model.getCurrentPlayer().isFirstTurn()) {
-            throw new EffectException("Must be player's second turn.");
-        }
     }
 
     @Override
