@@ -30,6 +30,12 @@ public class DieAdapterCLI extends DieInterface {
         colors = Collections.unmodifiableMap(temp);
     }
 
+    /**
+     * Constructor for DieAdapterCLI.
+     *
+     * @param die The die selected.
+     * @throws DieNotExistException Thrown if the die does not exist.
+     */
     public DieAdapterCLI(Die die) throws DieNotExistException {
         super(die);
     }

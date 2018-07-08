@@ -9,10 +9,13 @@ public abstract class DicePoolInterface implements AdapterInterface {
 
     private List<Die> dicePool;
 
+    /**
+     * Constructor for DicePoolInterface.
+     * @param dice The list of dice.
+     */
     public DicePoolInterface(List<Die> dice){
         dicePool= dice;
     }
-
 
     protected List<Die> getDicePool(){
         return this.dicePool;

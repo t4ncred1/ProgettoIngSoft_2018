@@ -20,6 +20,8 @@ public class PrivateObjective extends Objective {
         if(color.equals("red")||color.equals("green")||color.equals("yellow")||color.equals("blue")||color.equals("purple"))
         this.color=color.toLowerCase();
         else throw new NotValidParameterException(color,expectedColorType);
+        this.title="Obiettivo Privato";
+        this.description="Guadagni un punto in piú per ogni dado inserito di colore: ";
     }
 
     /**

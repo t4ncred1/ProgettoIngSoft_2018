@@ -11,6 +11,11 @@ public abstract class ToolCardInterface implements AdapterInterface {
     private static final int NOT_USED_COST=1;
     private static final int USED_COST=2;
 
+    /**
+     * Constructor for ToolCardInterface.
+     *
+     * @param toolCard The tool card selected.
+     */
     protected ToolCardInterface(ToolCard toolCard){
         this.toolCard=toolCard;
     }

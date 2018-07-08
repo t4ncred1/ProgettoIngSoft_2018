@@ -12,6 +12,11 @@ public abstract class GridInterface implements AdapterInterface {
     private Die[][] diceInGrid;
 
 
+    /**
+     * Constructor for GridInterface.
+     *
+     * @param grid The grid selected.
+     */
     protected GridInterface(Grid grid){
         final int indexForDimension= 0;
 
@@ -49,6 +54,16 @@ public abstract class GridInterface implements AdapterInterface {
         return grid.getDifficulty();
     }
 
+    /**
+     *
+     * @param row Box row.
+     * @param column Box column.
+     * @param colorCheck True if a color check is needed.
+     * @param valueCheck True if a value check is needed.
+     * @param die The die to be inserted.
+     * @throws InvalidOperationException Thrown if the operation is not valid.
+     * @throws NotValidParameterException Thrown if the parameters are not valid.
+     */
     public void insertDieInXY(int row, int column, boolean colorCheck, boolean valueCheck, Die die) throws InvalidOperationException, NotValidParameterException {
         grid.insertDieInXY(column, row, colorCheck, valueCheck, die);
     }

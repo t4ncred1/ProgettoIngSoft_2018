@@ -11,6 +11,11 @@ public abstract class RoundTrackInterface implements AdapterInterface {
 
     private static final int ROUND_TRACK_DIMENSION=10;
 
+    /**
+     * Constructor for RoundTrackInterface.
+     *
+     * @param roundTrack The round track selected.
+     */
     protected RoundTrackInterface(List<Die> roundTrack){
         this.roundTrack = new Die[ROUND_TRACK_DIMENSION];
         for(int i=0; i<roundTrack.size();i++){

@@ -8,7 +8,11 @@ import it.polimi.ingsw.server.model.components.Die;
 import java.util.List;
 
 public class RoundTrackAdapterCLI extends RoundTrackInterface {
-
+    /**
+     * Constructor for RoundTrackAdapterCLI.
+     *
+     * @param roundTrack The roundTrack selected.
+     */
     public RoundTrackAdapterCLI(List<Die> roundTrack) {
         super(roundTrack);
     }

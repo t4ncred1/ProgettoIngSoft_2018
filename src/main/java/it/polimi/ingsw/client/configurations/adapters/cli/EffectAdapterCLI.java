@@ -8,12 +8,22 @@ import java.util.List;
 
 @FunctionalInterface
 interface Function<R>{
+    /**
+     * Define a model for getParameters method.
+     */
     R getParameters();
 }
 
 public class EffectAdapterCLI extends EffectInterface {
 
     private static HashMap<String,Function<List<String>>> parameters;
+
+    /**
+     * Constructor for EffectAdapterCLI.
+     *
+     * @param effect The effect selected.
+     * @param removeAllDice True if all the dice have to be removed from the dice pool.
+     */
     public EffectAdapterCLI(Effect effect, boolean removeAllDice) {
         super(effect);
         parameters=new HashMap<>();
