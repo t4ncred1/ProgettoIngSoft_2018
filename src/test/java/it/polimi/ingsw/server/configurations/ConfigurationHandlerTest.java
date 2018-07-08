@@ -69,7 +69,7 @@ class ConfigurationHandlerTest {
             fail("Test Failed.");
         }
         assertEquals(
-                "{\"effects\":[],\"title\":\"Title\",\"description\":\"Description\",\"removeAllDiceFromDicePool\":false,\"colourInRoundtrack\":false,\"colorCheck\":false,\"valueCheck\":false,\"openCheck\":false,\"jumpNextTurn\":false,\"mustBeSecondTurn\":false}"
-                ,gson.toJson(new ToolCard("Title","Description",new ArrayList<>(),null)));
+                "{\"effects\":[],\"title\":\"Title\",\"description\":\"Description\",\"used\":false,\"removeAllDiceFromDicePool\":false,\"colourInRoundtrack\":false,\"colorCheck\":false,\"valueCheck\":false,\"openCheck\":false,\"jumpNextTurn\":false,\"mustBeSecondTurn\":false,\"diceMustNotBeInserted\":false}"
+                                ,gson.toJson(new ToolCard("Title","Description",new ArrayList<>(),null)));
     }
 }
