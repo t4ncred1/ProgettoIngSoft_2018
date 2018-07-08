@@ -38,11 +38,7 @@ public class GridAdapterCLI extends GridInterface {
     }
 
     @Override
-    public Display<Void> getAdapterInterface(){
-        return this::displayGrid;
-    }
-
-    private Void displayGrid() {
+    public void displayInterface(){
         StringBuilder structure= new StringBuilder();
         System.out.print("Nome: ");
         System.out.print(super.getName());
@@ -61,15 +57,15 @@ public class GridAdapterCLI extends GridInterface {
             System.out.print("\n");
         }
         System.out.println(structure.toString());
-        return null;
     }
+
 
     private void appendDiceRow( int i, String[][] constraints, Die[][] diceInGrid) {
         for(int j=0;j<constraints[i].length&&j<diceInGrid[i].length;j++){
             System.out.print("\t");
             try {
                 DieInterface die = new DieAdapterCLI(diceInGrid[i][j]);
-                die.getAdapterInterface().display();
+                die.displayInterface();
             } catch (DieNotExistException e) {
                 System.out.print(" ");
             }

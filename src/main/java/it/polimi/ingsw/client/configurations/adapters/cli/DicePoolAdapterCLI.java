@@ -15,11 +15,7 @@ public class DicePoolAdapterCLI extends DicePoolInterface {
     }
 
     @Override
-    public Display<Void> getAdapterInterface(){
-        return this::displayDicePool;
-    }
-
-    private Void displayDicePool() {
+    public void displayInterface(){
         List<Die> dicePool= super.getDicePool();
         int i=1;
         System.out.println("La riserva: ");
@@ -28,15 +24,15 @@ public class DicePoolAdapterCLI extends DicePoolInterface {
             System.out.print(".");
             try {
                 DieInterface temp= new DieAdapterCLI(die);
-                temp.getAdapterInterface().display();
+                temp.displayInterface();
             } catch (DieNotExistException e) {
                 System.out.print(" ");
             }
             System.out.print("\t\t");
         }
         System.out.println();
-        return null;
     }
+
 
 
 }
