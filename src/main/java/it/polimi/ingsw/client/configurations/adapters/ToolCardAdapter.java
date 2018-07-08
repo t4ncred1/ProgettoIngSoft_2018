@@ -1,12 +1,12 @@
 package it.polimi.ingsw.client.configurations.adapters;
 
+import it.polimi.ingsw.client.configurations.AdapterInterface;
+import it.polimi.ingsw.client.configurations.Display;
 import it.polimi.ingsw.server.model.cards.ToolCard;
-import it.polimi.ingsw.server.model.cards.effects.Effect;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ToolCardAdapter {
+public abstract class ToolCardAdapter implements AdapterInterface {
     ToolCard toolCard;
     List<EffectAdapter> effects;
     private static final int NOT_USED_COST=1;
@@ -40,7 +40,8 @@ public abstract class ToolCardAdapter {
         return this.effects;
     }
 
-    public abstract String getToolCardInterface();
+    @Override
+    public abstract Display<Void> getAdapterInterface();
 
     protected boolean getRemoveAllDice(){
         return toolCard.getRemoveAllDiceFromDicePool();

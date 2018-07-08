@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.configurations.adapters.EffectAdapter;
 import it.polimi.ingsw.client.configurations.adapters.GridInterface;
 import it.polimi.ingsw.client.configurations.adapters.ToolCardAdapter;
+import it.polimi.ingsw.client.configurations.Display;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.*;
 import it.polimi.ingsw.client.net.ServerCommunicatingInterface;
@@ -187,13 +188,11 @@ public class MainClient {
     private void printOtherPlayerTurnThings(String turnPlayer) {
         try {
             System.out.println("Le tool cards:");
-            Proxy.getInstance().getToolCards().forEach(toolCard->System.out.println(toolCard.getToolCardInterface()));
-            System.out.println("La dice pool:");
-            System.out.println(Proxy.getInstance().getDicePool().getDicePoolInterface());
-            System.out.println("La round track:");
-            System.out.println(Proxy.getInstance().getRoundTrack().getRoundTrackInterface());
+            Proxy.getInstance().getToolCards().stream().map(ToolCardAdapter::getAdapterInterface).forEach(Display::display);
+            Proxy.getInstance().getDicePool().getAdapterInterface().display();
+            Proxy.getInstance().getRoundTrack().getAdapterInterface().display();
             System.out.println("La mappa di " + turnPlayer);
-            System.out.println(Proxy.getInstance().getGridsOf(turnPlayer).getGridInterface());
+            Proxy.getInstance().getGridsOf(turnPlayer).getAdapterInterface().display();
         } catch (InvalidUsernameException e) {
             e.printStackTrace();
         }
@@ -252,13 +251,11 @@ public class MainClient {
      */
     private void printThingsOnMyTurn() {
         System.out.println("Le tool cards:");
-        Proxy.getInstance().getToolCards().forEach(toolCard->System.out.println(toolCard.getToolCardInterface()));
-        System.out.println("La round track:");
-        System.out.println(Proxy.getInstance().getRoundTrack().getRoundTrackInterface());
-        System.out.println("La dice pool:");
-        System.out.println(Proxy.getInstance().getDicePool().getDicePoolInterface());
+        Proxy.getInstance().getToolCards().stream().map(ToolCardAdapter::getAdapterInterface).forEach(Display::display);
+        Proxy.getInstance().getRoundTrack().getAdapterInterface().display();
+        Proxy.getInstance().getDicePool().getAdapterInterface().display();
         System.out.println("La tua mappa:");
-        System.out.println(Proxy.getInstance().getGridSelected().getGridInterface());
+        Proxy.getInstance().getGridSelected().getAdapterInterface().display();
         System.out.println("E' il tuo turno");
         System.out.println("Ricorda, puoi eseguire solo una volta nel turno");
         System.out.println("l'inserimento dei dati o l'uso della carta strumento");
@@ -283,11 +280,15 @@ public class MainClient {
                 handleToolCardEffects(toolCard);
                 return true;
             }catch (NumberFormatException e){
-                System.err.println("Il parametro inserito è invalido, inserire un numero");
+                System.err.println("Il parametro inserito è invalido, inserire un numero:");
             } catch (ToolCardNotExistException e) {
-                System.err.println("Non esite alcuna carta strumento nella posizione indicata");
+                System.err.println("Non esite alcuna carta strumento nella posizione indicata, riprovare:");
             } catch (AlreadyDoneOperationException e) {
                 System.err.println("L'operazione è già stata eseguita, non può essere eseguita nuovamente");
+                return false;
+            } catch (InvalidMoveException e) {
+                System.out.println(ANSI_RED + "Il server notifica che non è possibile giocare la carta strumento coi dati inseriti" + ANSI_RESET);
+                return false;
             }
         }while (true);
     }
@@ -299,7 +300,7 @@ public class MainClient {
      * @throws ServerIsDownException Thrown if the server is down.
      * @throws DisconnectionException Thrown if someone is trying to disconnect.
      */
-    private void handleToolCardEffects(ToolCardAdapter toolCard) throws ServerIsDownException, DisconnectionException {
+    private void handleToolCardEffects(ToolCardAdapter toolCard) throws ServerIsDownException, DisconnectionException, InvalidMoveException {
         List<EffectAdapter> effects= toolCard.getEffects();
         for(EffectAdapter effect: effects) {
             boolean ok = false;
@@ -313,11 +314,8 @@ public class MainClient {
                 }
             }
         }
-        try {
-            server.launchToolCards();
-        } catch (InvalidMoveException e) {
-            System.out.println(ANSI_RED + "Il server notifica che non è possibile giocare la carta strumento coi dati inseriti" + ANSI_RESET);
-        }
+        server.launchToolCards();
+
     }
 
 
@@ -399,7 +397,7 @@ public class MainClient {
      */
     private void printGridsDicePoolAndObjectives() {
         System.out.println("La tua mappa:");
-        System.out.println(Proxy.getInstance().getGridSelected().getGridInterface());
+        Proxy.getInstance().getGridSelected().getAdapterInterface().display();
     }
 
     private void waitForServerToUpdateProxy() {
@@ -426,10 +424,8 @@ public class MainClient {
         String request;
         int value;
 
-        ArrayList<GridInterface> gridSelection= (ArrayList<GridInterface>) Proxy.getInstance().getGridsSelection();
-        for(GridInterface grid:gridSelection){
-            System.out.println(grid.getGridInterface());
-        }
+        List<GridInterface> gridSelection= Proxy.getInstance().getGridsSelection();
+        gridSelection.stream().map(GridInterface::getAdapterInterface).forEach(Display::display);
         System.out.println("Scegli una mappa tra le seguenti (scegli un numero da 1 a "+Proxy.getInstance().getGridsSelectionDimension()+"):");
         do{
             request= scanner.nextLine();

@@ -172,7 +172,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             handleGameLogic();
         } catch (IOException e) {
             if(username==null)logger.log(Level.INFO, "A client disconnected during login");
-            else logger.log(Level.INFO, "{0} disconnected during login",username);
+            else logger.log(Level.INFO, "{0} disconnected",username);
             logger.log(Level.FINE, "",e);
         } catch (DisconnectionException e) {
             logger.log(Level.FINE, "Client logged out",e );

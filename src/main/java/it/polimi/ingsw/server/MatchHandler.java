@@ -196,7 +196,7 @@ public class MatchHandler extends Thread {
             lock.lock();
             condition.await();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.severe("Interrupted");
             Thread.currentThread().interrupt();
         }finally {
             lock.unlock();
