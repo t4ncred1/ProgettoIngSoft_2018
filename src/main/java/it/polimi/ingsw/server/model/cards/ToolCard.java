@@ -152,7 +152,7 @@ public class ToolCard implements Serializable {
         List<Integer> dCoordinatesY = new ArrayList<>(this.dieCoordinatesY);
         //Grid pGrid = new Grid(this.playerGrid);   this is commented out because it needs to be a link to original player grid.
         List<Integer>dDestinationCoordinatesX = new ArrayList<>(this.dieDestinationCoordinatesX);
-        List<Integer>dDestinationCoordinatesY = new ArrayList<>(this.dieDestinationCoordinatesX);
+        List<Integer>dDestinationCoordinatesY = new ArrayList<>(this.dieDestinationCoordinatesY);
 
         //EXECUTING EFFECTS
         for (Effect e : effects) {
