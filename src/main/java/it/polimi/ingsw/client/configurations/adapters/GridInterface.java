@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.configurations.adapters;
 
 import it.polimi.ingsw.client.configurations.AdapterInterface;
-import it.polimi.ingsw.client.configurations.Display;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.components.Die;

@@ -88,6 +88,9 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
 
     private Handler handler;
 
+    /**
+     * Constructor for ServerSocketCommunication.
+     */
     public ServerSocketCommunication(){
         this.lock = new ReentrantLock();
         this.condition= lock.newCondition();
@@ -139,6 +142,11 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
 
     }
 
+    /**
+     * Handle a user's grid selection.
+     *
+     * @throws IOException Thrown when an I/O error occurs.
+     */
     private void handleGridSetting() throws IOException {
         try {
             setGridSelectionInProxy();
@@ -148,6 +156,11 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         }
     }
 
+    /**
+     * Handles game logic (turn initialization, turn logic).
+     *
+     * @throws IOException Thrown when an I/O error occurs.
+     */
     private void handleGameLogic() throws IOException {
         do{
             String serverResponse= readRemoteInput();
@@ -174,6 +187,10 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         handleGameEnd();
     }
 
+    /**
+     * Handles match end logic (ranks, etc).
+     * @throws IOException Thrown when an I/O error occurs.
+     */
     private void handleGameEnd() throws IOException {
         String serverMessage = readRemoteInput();
         if(!serverMessage.equals(PLAYERS_POINTS)) logger.log(Level.SEVERE,"Unexpected data type from server: {0}", serverMessage);
@@ -187,6 +204,12 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         MainClient.getInstance().notifyEndDataInProxy();
     }
 
+    /**
+     * Handles turn logic (operations, data retrieving).
+     *
+     * @param myTurn True if this is "player"'s turn.
+     * @throws IOException Thrown when an I/O error occurs.
+     */
     private void handleTurn(boolean myTurn) throws IOException {
         boolean turnFinished=false;
         while(!turnFinished){
@@ -216,6 +239,12 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         doneOperation=false;
     }
 
+    /**
+     * Handles the data retrieving.
+     *
+     * @return True if data retrieving is fine.
+     * @throws IOException Thrown when an I/O error occurs.
+     */
     private boolean handleDataRetrieving() throws IOException {
         boolean endData=false;
         do{
@@ -251,6 +280,11 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         }
     }
 
+    /**
+     * Handles turn initialization.
+     *
+     * @throws IOException Thrown when an I/O error occurs.
+     */
     private void handleTurnInitialization() throws IOException {
         boolean ok=false;
         do{
@@ -265,6 +299,12 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         MainClient.getInstance().setGameToInitialized();
     }
 
+    /**
+     * Sets user's grid selection.
+     *
+     * @throws IOException Thrown when an I/O error occurs.
+     * @throws GameInProgressException Thrown when the game is already started.
+     */
     private void setGridSelectionInProxy() throws IOException, GameInProgressException {
         String serverResponse;
         String logUnexpectedResponse= "Unexpected response: {0}";
@@ -286,6 +326,11 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         }
     }
 
+    /**
+     * Handles game starting phase.
+     *
+     * @throws IOException Thrown when an I/O error occurs.
+     */
     private void handleGameStarting() throws IOException {
         boolean ok=false;
         String serverResponse;
@@ -307,6 +352,10 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         }while (!ok);
     }
 
+    /**
+     * Handles the 'waitForAMatch' phase.
+     * @throws IOException Thrown when an I/O error occurs.
+     */
     private void handleWaitForGame() throws IOException {
         String serverResponse;
         boolean ok=false;
@@ -335,7 +384,11 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         }
     }
 
-
+    /**
+     * Sets the connection.
+     *
+     * @throws ServerIsDownException Thrown if the server is down.
+     */
     public void setUpConnection() throws ServerIsDownException {
         try {
             getParametersFromConfigurations();
@@ -348,6 +401,9 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         }
     }
 
+    /**
+     * Gets server IP and socket port from config files.
+     */
     private void getParametersFromConfigurations() {
         try {
             serverPort = ConfigHandler.getInstance().getSocketPort();
@@ -357,6 +413,15 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         }
     }
 
+    /**
+     * Handles the login.
+     *
+     * @param username Username chosen.
+     * @throws ServerIsFullException Thrown if the server is full.
+     * @throws InvalidUsernameException Thrown when the username is not valid (already used).
+     * @throws ServerIsDownException Thrown when the server is down.
+     * @throws ReconnectionException Thrown if the user successfully reconnected.
+     */
     public void login(String username) throws ServerIsFullException, InvalidUsernameException, ServerIsDownException, ReconnectionException {
         String loginResponse;
         try {
@@ -555,7 +620,13 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         }
     }
 
-
+    /**
+     * Sends a logout request. Handles the response.
+     *
+     * @throws ServerIsDownException Thrown if the server is down.
+     * @throws GameStartingException Thrown if the game is starting.
+     * @throws LoggedOutException Thrown if the user has correctly logged out.
+     */
     public void askForLogout() throws ServerIsDownException, GameStartingException, LoggedOutException {
         try{
             lock.lock();
@@ -579,6 +650,12 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         }
     }
 
+    /**
+     * Gets a message from server.
+     *
+     * @return A string containing a message received from server.
+     * @throws IOException Thrown when an I/O error occurs.
+     */
     private String readRemoteInput() throws IOException {
         String read;
         do{
@@ -592,6 +669,14 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
         return read;
     }
 
+    /**
+     * Handles the grid choice.
+     *
+     * @param gridIndex Grid's index in the grid selection.
+     * @throws ServerIsDownException Thrown if the server is down.
+     * @throws DisconnectionException Thrown if the user is trying to disconnect.
+     * @throws InvalidIndexException Thrown if 'gridIndex' is not valid.
+     */
     public void selectGrid(int gridIndex) throws ServerIsDownException, DisconnectionException, InvalidIndexException {
         try {
             logger.log(Level.FINE,"sent CHOOSE_GRID to server. Parameter: {0}",gridIndex);

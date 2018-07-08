@@ -3,7 +3,6 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.configurations.adapters.EffectInterface;
 import it.polimi.ingsw.client.configurations.adapters.GridInterface;
 import it.polimi.ingsw.client.configurations.adapters.ToolCardInterface;
-import it.polimi.ingsw.client.configurations.Display;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.*;
 import it.polimi.ingsw.client.net.ServerCommunicatingInterface;

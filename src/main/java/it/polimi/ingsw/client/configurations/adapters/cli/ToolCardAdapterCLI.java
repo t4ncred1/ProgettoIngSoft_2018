@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.configurations.adapters.cli;
 
-import it.polimi.ingsw.client.configurations.Display;
 import it.polimi.ingsw.client.configurations.adapters.EffectInterface;
 import it.polimi.ingsw.client.configurations.adapters.ToolCardInterface;
 import it.polimi.ingsw.server.model.cards.ToolCard;

@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.configurations.adapters.cli;
 
 import it.polimi.ingsw.client.configurations.adapters.DicePoolInterface;
 import it.polimi.ingsw.client.configurations.adapters.DieInterface;
-import it.polimi.ingsw.client.configurations.Display;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.server.model.components.Die;
 

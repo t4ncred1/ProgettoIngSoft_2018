@@ -17,6 +17,11 @@ public class ConfigHandler {
     private static ConfigHandler instance;
     private static Configurations config;
 
+    /**
+     * Constructor for ConfigHandler. Load all configurations from config path.
+     *
+     * @throws NotValidConfigPathException Thrown if config path is not valid (no config.json file found).
+     */
     private ConfigHandler() throws NotValidConfigPathException {
         boolean succeed = true;
         File jarPath=new File(MainClient.class.getProtectionDomain().getCodeSource().getLocation().getPath());
@@ -43,6 +48,9 @@ public class ConfigHandler {
         if (instance==null) instance=new ConfigHandler();
         return instance;
     }
+
+
+    //GETTER FOR ALL CONFIGURATIONS
 
     public int getRmiPort() {
         return config.getRmiPort();
