@@ -10,7 +10,7 @@ public class PrivateObjective extends Objective {
     private final static String TYPE = "private";
 
     /**
-     * Constructor for PrivateObjective.
+     * Constructor for PrivateObjInterface.
      *
      * @param color The color of the private objective card.
      * @throws NotValidParameterException Thrown when 'color' is not one of the 5 admitted ones.
@@ -23,11 +23,30 @@ public class PrivateObjective extends Objective {
     }
 
     /**
+     * Constructor for PrivateObjInterface.
      *
-     * @return The type of the private objective.
+     * @param privateObjective is an existing private Object
+     */
+    public PrivateObjective(PrivateObjective privateObjective) {
+        color=privateObjective.getColor();
+        description=privateObjective.getDescription();
+        title=privateObjective.getTitle();
+    }
+
+    /**
+     *
+     * @return The type of the objective.
      */
     public String getType(){
         return TYPE;
+    }
+
+    /**
+     *
+     * @return The color of the objective.
+     */
+    public String getColor(){
+        return color;
     }
 
     /**

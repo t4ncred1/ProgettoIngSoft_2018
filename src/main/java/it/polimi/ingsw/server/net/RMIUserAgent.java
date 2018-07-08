@@ -4,6 +4,8 @@ import it.polimi.ingsw.client.net.ClientRemoteInterface;
 import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.custom_exception.*;
+import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.cards.PublicObjective;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
@@ -222,6 +224,16 @@ public class RMIUserAgent implements UserInterface {
         } catch (RemoteException e) {
             logger.fine(DISCONNECTED_LOG);
         }
+    }
+
+    @Override
+    public void sendPublicObjectives(List<PublicObjective> publicObjectives) {
+        // TODO: 08/07/2018
+    }
+
+    @Override
+    public void sendPrivateObjective(PrivateObjective privateObjective) {
+
     }
 
 

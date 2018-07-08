@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.configurations.adapters.EffectInterface;
 import it.polimi.ingsw.client.configurations.adapters.GridInterface;
+import it.polimi.ingsw.client.configurations.adapters.PublicObjInterface;
 import it.polimi.ingsw.client.configurations.adapters.ToolCardInterface;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.*;
@@ -186,6 +187,8 @@ public class MainClient {
      */
     private void printOtherPlayerTurnThings(String turnPlayer) {
         try {
+            System.out.println("Gli obiettivi pubblici:");
+            Proxy.getInstance().getPublicObjectives().forEach(PublicObjInterface::displayInterface);
             System.out.println("Le tool cards:");
             Proxy.getInstance().getToolCards().forEach(ToolCardInterface::displayInterface);
             Proxy.getInstance().getDicePool().displayInterface();
@@ -249,6 +252,9 @@ public class MainClient {
      * Shows current player' stuff.
      */
     private void printThingsOnMyTurn() {
+        Proxy.getInstance().getPrivateObjective().displayInterface();
+        System.out.println("Gli obiettivi pubblici:");
+        Proxy.getInstance().getPublicObjectives().forEach(PublicObjInterface::displayInterface);
         System.out.println("Le tool cards:");
         Proxy.getInstance().getToolCards().forEach(ToolCardInterface::displayInterface);
         Proxy.getInstance().getRoundTrack().displayInterface();
