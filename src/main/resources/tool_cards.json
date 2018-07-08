@@ -134,7 +134,7 @@
 		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInGridEffect"
 	}],
 	"title": "Tenaglia a Rotelle",
-	"description": "Dopo il tuo primo turno scegli\nimmediatamente un altro dado\nSalta il tuo secondo turno in\nquesto round",
+	"description": "Scegli un dado da inserire\nSalta il tuo secondo turno in\nquesto round\n",
 	"removeAllDiceFromDicePool": false,
 	"colourInRoundtrack": false,
 	"colorCheck": true,
@@ -143,7 +143,7 @@
 	"jumpNextTurn": true,
 	"mustBeSecondTurn": false,
 	"used": false,
-	"diceMustNotBeInserted": true
+	"diceMustNotBeInserted": false
 
 },
 {
@@ -153,7 +153,7 @@
 		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInGridEffect"
 	}],
 	"title": "Riga in Sughero",
-	"description": "Dopo aver scelto un dado,\npiazzalo in una casella che non\nsia adiacente a un altro dado\nDevi rispettare tutte le restrizioni\ndi piazzamento",
+	"description": "Dopo aver scelto un dado,\npiazzalo in una casella che non\nsia adiacente a un altro dado\nDevi rispettare tutte le restrizioni\ndi piazzamento\nNota: non devi aver inserito un dado in questo turno.\n",
 	"removeAllDiceFromDicePool": false,
 	"colourInRoundtrack": false,
 	"colorCheck": true,
@@ -195,7 +195,7 @@
 		"type": "it.polimi.ingsw.server.model.cards.effects.InsertDieInGridEffect"
 	}],
 	"title": "Diluente per Pasta Salda",
-	"description": "Dopo aver scelto un dado, riponilo nel\nSacchetto, poi pescane uno dal Sacchetto\nScegli il valore del nuovo dado e\npiazzalo, rispettando tutte le restrizioni di\npiazzamento",
+	"description": "Dopo aver scelto un dado, riponilo nel\nSacchetto, poi pescane uno dal Sacchetto\nScegli il valore del nuovo dado e\npiazzalo, rispettando tutte le restrizioni di\npiazzamento\nNota: Non devi aver inserito un dado in questo turno.\n",
 	"removeAllDiceFromDicePool": false,
 	"colourInRoundtrack": false,
 	"colorCheck": true,
