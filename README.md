@@ -9,7 +9,7 @@ A causa di problemi di visualizzazione dei colori nella console standard, per gl
 Il lavoro svolto dal tool in questione consiste nel convertire gli _escape charachters_ per la colorazione dell'output dal formato ansi a un formato windows friendly.
 Purtroppo, é risultato funzionante solo su _cmd_, di conseguenza ci troviamo costretti a sconsigliare l'utilizzo di _powershell_.
 
-Chiadiamo pertanto a coloro che decidessero di usare il sistema operativo in questione <sup>[1](#windowsFaSchifo)</sup> , se fosse possibile, di avviare uno di questi due file da riga di comando prima di procedere :
+Chiediamo pertanto a coloro che decidessero di usare il sistema operativo in questione <sup>[1](#windowsFaSchifo)</sup> , se fosse possibile, di avviare uno di questi due file da riga di comando prima di procedere :
 * `ansicon32` per sistemi operativi a 32 bit.
 * `ansicon64` per sistemi operativi a 64 bit.
 
@@ -20,4 +20,7 @@ Per l'avvio standard di Sagrada, è sufficiente l'avvio dei file .jar (forniti i
 
 Per configurare la propria esperienza di gioco, possono essere modificati i file di configurazione _clientconfig.json_ e _config.json_ (contenuti in deliverables\resources).
 
-<a name="windowsFaSchifo">1</a>: _(scelta, almeno per opinione personale, discutibile) --Covioli Tancredi_
+
+
+---
+<a name="windowsFaSchifo"><sup>1</sup></a>: _(scelta, almeno per opinione personale, discutibile) --Covioli Tancredi_
