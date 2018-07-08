@@ -12,12 +12,12 @@ public class DieAdapterCLI extends DieInterface {
 
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String[] faces = {
-            "\u2680",
-            "\u2681",
-            "\u2682",
-            "\u2683",
-            "\u2684",
-            "\u2685"
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
     };
     private static final Map<String,String> colors;
     static {

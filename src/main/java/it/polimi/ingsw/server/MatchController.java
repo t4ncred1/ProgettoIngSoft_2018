@@ -1025,6 +1025,8 @@ public class MatchController extends Thread{
         else {
             synchronized (modelGuard){
                 effectsToDo=model.getToolCard(toolCardIndex).getEffects();
+                int tokens = (model.getToolCard(toolCardIndex).isUsed()? 2: 1);
+                if(model.getCurrentPlayer().getFavorTokens()<tokens) throw new OperationAlreadyDoneException();
                 currentEffect=0;
             }
         }
@@ -1070,6 +1072,8 @@ public class MatchController extends Thread{
         synchronized (modelGuard){
             try {
                 model.getToolCard(index).useToolCard();
+                if(model.getToolCard(index).isUsed()) model.getCurrentPlayer().setFavorTokens(model.getCurrentPlayer().getFavorTokens()-2);
+                else model.getCurrentPlayer().setFavorTokens(model.getCurrentPlayer().getFavorTokens()-1);
             } catch (NotValidParameterException e) {
                 logger.log(Level.SEVERE, "Something went wrong when TryToUseToolCard was executed", e);
             }
