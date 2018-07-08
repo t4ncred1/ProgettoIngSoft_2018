@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
 import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.cards.PublicObjective;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.cards.effects.Effect;
 import it.polimi.ingsw.server.model.components.Die;
@@ -389,12 +390,43 @@ public class MatchController extends Thread{
         sendDicePool();
         sendRoundTrack();
         sendGrids();
+        sendPublicObjectives();
+        sendPrivateObjectives();
         sendToolCards();
         notifyGameInitialized();
         lock.lock();
         turnLogicStarted = true;
         condition.signal();
         lock.unlock();
+    }
+
+    private void sendPrivateObjectives() {
+        Map<String,PrivateObjective> privateObjectives;
+        synchronized (modelGuard){
+            privateObjectives=model.getAllPrivateObjectives();
+        }
+        privateObjectives.forEach(this::sendPrivateObjective);
+
+    }
+
+    private void sendPrivateObjective(String username, PrivateObjective privateObjective) {
+        synchronized (playersInMatchGuard){
+            try{
+                playersInMatch.get(username).sendPrivateObjective(privateObjective);
+            }catch (NullPointerException e){
+                logger.severe("Mismatch between players in model and in controller");
+            }
+        }
+    }
+
+    private void sendPublicObjectives() {
+        List<PublicObjective> publicObjectives;
+        synchronized (modelGuard){
+            publicObjectives=model.getPublicObjectives();
+        }
+        synchronized (playersInMatchGuard){
+            playersInMatch.forEach((username,player)->player.sendPublicObjectives(publicObjectives));
+        }
     }
 
     private void sendToolCards() {
@@ -697,16 +729,20 @@ public class MatchController extends Thread{
         Map<String,Grid> playersAndGrids;
         List<Die> dicePool;
         List<Die> roundTrack;
+        List<PublicObjective> publicObjectives;
         List<String> connectedPlayers;
+        // TODO: 08/07/2018
         synchronized (modelGuard){
             playersAndGrids = model.getAllGrids();
             dicePool=model.getDicePool().getDicePoolCopy();
             roundTrack= model.getRoundTrackCopy();
             connectedPlayers=model.getConnectedPlayers();
+            publicObjectives=model.getPublicObjectives();
             player.sendToolCards(model.getToolCards());
         }
         player.sendDicePool(dicePool);
         player.sendRoundTrack(roundTrack);
+        player.sendPublicObjectives(publicObjectives);
         player.sendGrids(playersAndGrids, connectedPlayers);
     }
 
