@@ -730,21 +730,33 @@ public class MatchController extends Thread{
         List<Die> dicePool;
         List<Die> roundTrack;
         List<PublicObjective> publicObjectives;
+        PrivateObjective privateObjective;
         List<String> connectedPlayers;
-        // TODO: 08/07/2018
         synchronized (modelGuard){
             playersAndGrids = model.getAllGrids();
             dicePool=model.getDicePool().getDicePoolCopy();
             roundTrack= model.getRoundTrackCopy();
             connectedPlayers=model.getConnectedPlayers();
             publicObjectives=model.getPublicObjectives();
+            privateObjective=getPrivateObjectFromModel(player);
             player.sendToolCards(model.getToolCards());
         }
         player.sendDicePool(dicePool);
         player.sendRoundTrack(roundTrack);
         player.sendPublicObjectives(publicObjectives);
+        player.sendPrivateObjective(privateObjective);
         player.sendGrids(playersAndGrids, connectedPlayers);
     }
+
+    private PrivateObjective getPrivateObjectFromModel(UserInterface player) {
+        try {
+            return model.getPrivateObjective(player.getUsername());
+        } catch (InvalidUsernameException e) {
+            logger.log(Level.SEVERE,"Mismatch between controller and model",e);
+            return null;
+        }
+    }
+
 
     private void reinsertPlayerInReconnected(UserInterface player) {
         String username=player.getUsername();

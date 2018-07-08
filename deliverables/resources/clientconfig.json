@@ -1,5 +1,5 @@
 {
-"ServerIp":"127.0.0.1",
+"ServerIp":"192.168.43.54",
 "RmiPort":"11001",
 "SocketPort":"11000",
 "RegisterName": "MatchHandler"
