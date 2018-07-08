@@ -206,7 +206,9 @@ public class MatchModel{
      * @return The list of public objectives of a match.
      */
     public List<PublicObjective> getPublicObjectives() {
-        return publicObjectives;
+        List<PublicObjective> publicObj= new ArrayList<>();
+        publicObjectives.forEach(objective -> publicObj.add(new PublicObjective(objective)));
+        return publicObj;
     }
 
     /**
