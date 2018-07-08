@@ -1,10 +1,12 @@
 package it.polimi.ingsw.client.configurations.adapters;
 
+import it.polimi.ingsw.client.configurations.AdapterInterface;
+import it.polimi.ingsw.client.configurations.Display;
 import it.polimi.ingsw.server.model.components.Die;
 
 import java.util.List;
 
-public abstract class RoundTrackInterface {
+public abstract class RoundTrackInterface implements AdapterInterface {
 
     private Die[] roundTrack;
 
@@ -17,7 +19,8 @@ public abstract class RoundTrackInterface {
         }
     }
 
-    public abstract String getRoundTrackInterface();
+    @Override
+    public abstract Display<Void> getAdapterInterface();
 
     public int getRoundTrackDimension(){
         return ROUND_TRACK_DIMENSION;

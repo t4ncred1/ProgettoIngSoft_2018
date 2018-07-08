@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client.configurations.adapters.cli;
 
 import it.polimi.ingsw.client.configurations.adapters.DieInterface;
+import it.polimi.ingsw.client.configurations.Display;
 import it.polimi.ingsw.client.configurations.adapters.RoundTrackInterface;
-import it.polimi.ingsw.client.configurations.adapters.cli.DieAdapterCLI;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.server.model.components.Die;
 
@@ -15,24 +15,29 @@ public class RoundTrackAdapterCLI extends RoundTrackInterface {
     }
 
     @Override
-    public String getRoundTrackInterface() {
+    public Display<Void> getAdapterInterface() {
+        return this::displayRoundTrack;
+    }
+
+    private Void displayRoundTrack() {
         Die[] roundTrack= super.getRoundTrack();
-        StringBuilder structure= new StringBuilder();
         int i=1;
+        System.out.println("La round track:");
         for(Die die : roundTrack){
-            structure.append(i++);
-            structure.append(".");
+            System.out.print(i++);
+            System.out.print(".");
             if(die!=null){
                 try {
                     DieInterface temp= new DieAdapterCLI(die);
-                    structure.append(temp.getDieInterface());
+                    temp.getAdapterInterface().display();
                 } catch (DieNotExistException e) {
-                    structure.append(" ");
+                    System.out.print(" ");
                 }
             }
-            structure.append("\t\t");
+            System.out.print("\t\t");
         }
-        return structure.toString();
+        System.out.println();
+        return null;
     }
 
 }

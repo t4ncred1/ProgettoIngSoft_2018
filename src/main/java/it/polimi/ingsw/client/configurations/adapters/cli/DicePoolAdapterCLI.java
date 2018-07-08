@@ -2,10 +2,10 @@ package it.polimi.ingsw.client.configurations.adapters.cli;
 
 import it.polimi.ingsw.client.configurations.adapters.DicePoolInterface;
 import it.polimi.ingsw.client.configurations.adapters.DieInterface;
+import it.polimi.ingsw.client.configurations.Display;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.server.model.components.Die;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DicePoolAdapterCLI extends DicePoolInterface {
@@ -15,22 +15,27 @@ public class DicePoolAdapterCLI extends DicePoolInterface {
     }
 
     @Override
-    public String getDicePoolInterface(){
-        ArrayList<Die> dicePool= (ArrayList<Die>) super.getDicePool();
-        StringBuilder structure= new StringBuilder();
+    public Display<Void> getAdapterInterface(){
+        return this::displayDicePool;
+    }
+
+    private Void displayDicePool() {
+        List<Die> dicePool= super.getDicePool();
         int i=1;
+        System.out.println("La riserva: ");
         for(Die die : dicePool){
-            structure.append(i++);
-            structure.append(".");
+            System.out.print(i++);
+            System.out.print(".");
             try {
                 DieInterface temp= new DieAdapterCLI(die);
-                structure.append(temp.getDieInterface());
+                temp.getAdapterInterface().display();
             } catch (DieNotExistException e) {
-                structure.append(" ");
+                System.out.print(" ");
             }
-            structure.append("\t\t");
+            System.out.print("\t\t");
         }
-        return structure.toString();
+        System.out.println();
+        return null;
     }
 
 

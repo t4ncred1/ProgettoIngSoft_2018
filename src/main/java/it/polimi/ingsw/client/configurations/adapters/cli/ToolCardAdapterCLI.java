@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client.configurations.adapters.cli;
 
+import it.polimi.ingsw.client.configurations.Display;
 import it.polimi.ingsw.client.configurations.adapters.EffectAdapter;
 import it.polimi.ingsw.client.configurations.adapters.ToolCardAdapter;
-import it.polimi.ingsw.client.configurations.adapters.cli.EffectAdapterCLI;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.cards.effects.Effect;
 
@@ -21,14 +21,22 @@ public class ToolCardAdapterCLI extends ToolCardAdapter {
     }
 
     @Override
-    public String getToolCardInterface() {
-        return "Nome: " +
-                super.getTitle() +
-                "\t Costo: " +
-                super.getCost() +
-                "\n" +
-                super.getDescription() +
-                "\n";
+    public Display<Void> getAdapterInterface() {
+        return this::displayToolCard;
+    }
+
+    public Void displayToolCard(){
+        StringBuilder structure=new StringBuilder();
+        structure.append("\n");
+        structure.append("Nome: ");
+        structure.append(super.getTitle());
+        structure.append("\t Difficoltà: ");
+        structure.append(super.getCost());
+        structure.append("\n");
+        structure.append(super.getDescription());
+        structure.append("\n");
+        System.out.println(structure.toString());
+        return null;
     }
 
 

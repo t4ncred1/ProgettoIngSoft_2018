@@ -1,9 +1,11 @@
 package it.polimi.ingsw.client.configurations.adapters;
 
+import it.polimi.ingsw.client.configurations.AdapterInterface;
+import it.polimi.ingsw.client.configurations.Display;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.server.model.components.Die;
 
-public abstract class DieInterface {
+public abstract class DieInterface implements AdapterInterface {
     private Die die;
 
     public DieInterface(Die die) throws DieNotExistException {
@@ -11,7 +13,8 @@ public abstract class DieInterface {
         this.die=die;
     }
 
-    public abstract String getDieInterface();
+    @Override
+    public abstract Display<Void> getAdapterInterface();
 
     protected Die getDie(){
         return this.die;
