@@ -57,6 +57,7 @@ public class MatchController extends Thread{
     private boolean disconnected;
     private int reconnectingPlayers;
     private boolean turnLogicStarted;
+    private boolean causedToolCard;
 
     /**
      * Constructor for MatchController.
@@ -271,7 +272,7 @@ public class MatchController extends Thread{
                 Thread.currentThread().interrupt();
             }
             lock.unlock();
-            if (dieInserted&&!updatedDie) {
+            if (dieInserted&&!updatedDie&&!causedToolCard) {
                 updatedDie=true;
                 timer.stop();
                 synchronized (playersInMatchGuard){
@@ -387,6 +388,7 @@ public class MatchController extends Thread{
     private void initializeTurn(String username){
         dieInserted= false;
         toolCardUsed=false;
+        causedToolCard=false;
         turnFinished=false;
         synchronized (playersInMatchGuard){
             turnPlayerGuard.lock();
@@ -1014,7 +1016,7 @@ public class MatchController extends Thread{
      * @throws NotValidParameterException See getToolCard doc in MatchModel class.
      * @throws IllegalRequestException Thrown when 'player' is not valid.
      */
-    public void tryToUseToolCard(UserInterface player, int toolCardIndex) throws OperationAlreadyDoneException, NotValidParameterException, IllegalRequestException {
+    public void tryToUseToolCard(UserInterface player, int toolCardIndex) throws OperationAlreadyDoneException, NotValidParameterException, IllegalRequestException, InvalidOperationException {
         securityControl(player);
         turnPlayerGuard.lock();
         if(!player.equals(turnPlayer)) throw new IllegalRequestException();
@@ -1026,7 +1028,7 @@ public class MatchController extends Thread{
             synchronized (modelGuard){
                 effectsToDo=model.getToolCard(toolCardIndex).getEffects();
                 int tokens = (model.getToolCard(toolCardIndex).isUsed()? 2: 1);
-                if(model.getCurrentPlayer().getFavorTokens()<tokens) throw new OperationAlreadyDoneException();
+                if(model.getCurrentPlayer().getFavorTokens()<tokens) throw new InvalidOperationException();
                 currentEffect=0;
             }
         }
@@ -1070,11 +1072,13 @@ public class MatchController extends Thread{
         // TODO: 07/07/2018 control currentEffect==size;
         turnPlayerGuard.unlock();
         synchronized (modelGuard){
+            int tok;
             try {
+                tok = (model.getToolCard(index).isUsed()?2:1);
                 model.getToolCard(index).useToolCard();
-                if(model.getToolCard(index).isUsed()) model.getCurrentPlayer().setFavorTokens(model.getCurrentPlayer().getFavorTokens()-2);
-                else model.getCurrentPlayer().setFavorTokens(model.getCurrentPlayer().getFavorTokens()-1);
+                model.getCurrentPlayer().setFavorTokens(model.getCurrentPlayer().getFavorTokens()-tok);
             } catch (NotValidParameterException e) {
+
                 logger.log(Level.SEVERE, "Something went wrong when TryToUseToolCard was executed", e);
             }
         }
@@ -1088,6 +1092,7 @@ public class MatchController extends Thread{
     public void dieWasInserted(){
         lock.lock();
         dieInserted=true;
+        causedToolCard=true;
         lock.unlock();
     }
 }

@@ -88,7 +88,7 @@ public interface ServerCommunicatingInterface {
      * @throws ToolCardNotExistException Thrown if the index 'i' is not valid.
      * @throws AlreadyDoneOperationException Thrown if this operation was already done in this turn.
      */
-    void useToolCard(int i) throws ServerIsDownException, DisconnectionException, ToolCardNotExistException, AlreadyDoneOperationException;
+    void useToolCard(int i) throws ServerIsDownException, DisconnectionException, ToolCardNotExistException, AlreadyDoneOperationException, NotEnoughTokensException;
 
     /**
      * Tool cards execution.

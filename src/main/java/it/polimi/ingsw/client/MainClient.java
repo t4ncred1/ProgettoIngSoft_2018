@@ -285,6 +285,7 @@ public class MainClient {
             try{
                 value = Integer.parseInt(scanner.nextLine());
                 toolCard=Proxy.getInstance().getToolCard(value-1);
+                if(toolCard.getCost()>Proxy.getInstance().getToken(Proxy.getInstance().getMyUsername())) throw new NotEnoughTokensException();
                 server.useToolCard(value-1);
                 handleToolCardEffects(toolCard);
                 return true;
@@ -297,6 +298,9 @@ public class MainClient {
                 return false;
             } catch (InvalidMoveException e) {
                 System.out.println(ANSI_RED + "Il server notifica che non è possibile giocare la carta strumento coi dati inseriti" + ANSI_RESET);
+                return false;
+            } catch (NotEnoughTokensException e) {
+                System.out.println(ANSI_RED + "Non hai abbastanza token!" + ANSI_RESET);
                 return false;
             }
         }while (true);

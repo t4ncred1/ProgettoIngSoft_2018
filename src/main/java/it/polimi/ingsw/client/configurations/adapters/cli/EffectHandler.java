@@ -182,7 +182,7 @@ public final class EffectHandler {
         do{
             try {
                 coordinate = Integer.parseInt(scanner.nextLine());
-                if(coordinate<1||coordinate>= limitValue){
+                if(coordinate<1||coordinate> limitValue){
                     System.out.println(ANSI_RED+"Errore: inserire un numero tra 1 e "+ limitValue +ANSI_RESET+":");
                 }else {
                     return coordinate-1;
