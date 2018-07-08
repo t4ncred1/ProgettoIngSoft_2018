@@ -24,6 +24,9 @@ public final class DataRetriever {
     private static final String DICE_POOL_DATA= "dice_pool";
     private static final String GRID_SELECTION_DATA = "grid_selection";
     private static final String ROUND_TRACK_DATA= "round_track";
+    private static final String PUBLIC_OBJ="public_objectives";
+    private static final String PRIVATE_OBJ = "private_objective";
+
     private static final Map<String, Function<DataInputStream,Logger>>
             DATA = new HashMap<>();
     static {
@@ -33,6 +36,8 @@ public final class DataRetriever {
         DATA.put(ROUND_TRACK_DATA, DataHandler::retrieveRoundTrack);
         DATA.put(TOOL_DATA, DataHandler::retrieveToolCards);
         DATA.put(GRID_SELECTION_DATA, DataHandler::retrieveGridSelection);
+        DATA.put(PUBLIC_OBJ,DataHandler::retrievePublicObjectives);
+        DATA.put(PRIVATE_OBJ,DataHandler::retrievePrivateObjective);
     }
 
     /**

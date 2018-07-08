@@ -7,6 +7,8 @@ import it.polimi.ingsw.client.MainClient;
 import it.polimi.ingsw.client.Proxy;
 import it.polimi.ingsw.server.configurations.RuntimeTypeAdapterFactory;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
+import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.cards.PublicObjective;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.cards.effects.*;
 import it.polimi.ingsw.server.model.components.Die;
@@ -201,5 +203,24 @@ public final class DataHandler {
         }
         logger.log(Level.FINE,"Grid retrieved and set in proxy");
         MainClient.getInstance().notifyGridsAreInProxy();
+    }
+
+    public static void retrievePublicObjectives(DataInputStream inputStream, Logger logger) throws IOException {
+        logger.log(Level.FINE,"Retrieving public objectives from server");
+        ArrayList<PublicObjective> publicObjectives;
+        Gson gson = new Gson();
+        TypeToken<ArrayList<PublicObjective>> typeToken= new TypeToken<ArrayList<PublicObjective>>(){};
+        publicObjectives=gson.fromJson(readRemoteInput(inputStream), typeToken.getType());
+        Proxy.getInstance().setPublicObjectives(publicObjectives);
+        logger.log(Level.FINE,"Public objectives retrieved and set");
+    }
+
+    public static void retrievePrivateObjective(DataInputStream inputStream, Logger logger) throws IOException {
+        logger.log(Level.FINE,"Retrieving private objective from server");
+        PrivateObjective privateObjective;
+        Gson gson = new Gson();
+        privateObjective=gson.fromJson(readRemoteInput(inputStream), PrivateObjective.class);
+        Proxy.getInstance().setPrivateObjective(privateObjective);
+        logger.log(Level.FINE,"Private objective retrieved and set");
     }
 }
