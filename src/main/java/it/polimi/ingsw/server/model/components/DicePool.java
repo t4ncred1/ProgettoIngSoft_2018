@@ -73,7 +73,7 @@ public class DicePool {
      * @throws NotValidParameterException Thrown when 'color' is not of the 5 admitted ones.
      */
     public void swapColor(String color, int index) throws NotValidParameterException {
-        if (!color.equals("red") && !color.equals("green") && !color.equals("yellow") && !color.equals("purple") && !color.equals("blue"))
+        if (!DieToConstraintsAdapter.getColorMap().containsKey(color))
             throw new NotValidParameterException("Invalid color string passed", "Must be either red, blue, purple, yellow or green");
         availableColors.add(color);
         availableColors.remove(index);
