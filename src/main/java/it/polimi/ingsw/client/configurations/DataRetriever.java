@@ -9,6 +9,11 @@ import java.util.logging.Logger;
 
 @FunctionalInterface
 interface Function<T,R>{
+    /**
+     * Define a model for retrieve method.
+     *
+     * @throws IOException Thrown if an I/O error occurs.
+     */
     void retrieve(T t,R r) throws IOException;
 }
 
@@ -30,11 +35,21 @@ public final class DataRetriever {
         DATA.put(GRID_SELECTION_DATA, DataHandler::retrieveGridSelection);
     }
 
+    /**
+     * Constructor for DataRetriever.
+     */
     private DataRetriever(){
         throw new AssertionError();
     }
 
-
+    /**
+     * Retrieves data from server.
+     *
+     * @param dataType The type of the data.
+     * @param inputStream Network input stream.
+     * @param logger A logger.
+     * @throws IOException Thrown if an I/O error occurs.
+     */
     public static void retrieve(String dataType, DataInputStream inputStream, Logger logger) throws IOException {
         Function<DataInputStream,Logger> function= DATA.get(dataType);
         if (function == null) {
