@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ToolCardAdapterCLI extends ToolCardInterface {
+    /**
+     * Constructor for ToolCardAdapterCLI.
+     *
+     * @param toolCard The toolCard selected.
+     */
     public ToolCardAdapterCLI(ToolCard toolCard) {
         super(toolCard);
         List<Effect> realEffects= toolCard.getEffects();

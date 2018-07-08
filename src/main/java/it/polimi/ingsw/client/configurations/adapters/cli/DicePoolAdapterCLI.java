@@ -8,7 +8,11 @@ import it.polimi.ingsw.server.model.components.Die;
 import java.util.List;
 
 public class DicePoolAdapterCLI extends DicePoolInterface {
-
+    /**
+     * Constructor for DicePoolAdapterCLI.
+     *
+     * @param dicePool The dice pool selected.
+     */
     public DicePoolAdapterCLI(List<Die> dicePool) {
         super(dicePool);
     }

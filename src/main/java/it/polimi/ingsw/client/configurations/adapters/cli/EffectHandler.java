@@ -11,10 +11,17 @@ public final class EffectHandler {
     private static final String ANSI_RED="\033[0;31m";
     private static final String ANSI_RESET="\u001B[0m";
 
+    /**
+     * Constructor for EffectHandler.
+     */
     private EffectHandler(){
         throw new AssertionError();
     }
 
+    /**
+     *
+     * @return The index of the removed die.
+     */
     public static List<String> removeASingleDieFromPoolEffect(){
         System.out.println("Inserisci l'indice del dado nella dice pool");
         List<String> toReturn=new ArrayList<>();
@@ -34,18 +41,34 @@ public final class EffectHandler {
         return toReturn;
     }
 
+    /**
+     *
+     * @return An empty arraylist.
+     */
     public static List<String> removeAllDiceFromPoolEffect(){
         return new ArrayList<>();
     }
 
+    /**
+     *
+     * @return An empty arraylist.
+     */
     public static List<String> inverseValueEffect(){
         return new ArrayList<>();
     }
 
+    /**
+     *
+     * @return An empty arraylist.
+     */
     public static List<String> insertDieInPoolEffect(){
         return new ArrayList<>();
     }
 
+    /**
+     *
+     * @return True if the die is correctly incremented.
+     */
     public static List<String> incrementDiceEffect(){
         System.out.println("Inserire true se vuoi incrementare il dado nella dicePool, altrimenti false per decrementarlo");
         final String FALSE="false";
@@ -74,6 +97,10 @@ public final class EffectHandler {
         return toReturn;
     }
 
+    /**
+     *
+     * @return A list containing column and row of the grid where to remove the die.
+     */
     public static List<String> removeDieFromGridEffect(){
         List<String> toReturn= new ArrayList<>();
         int row;
@@ -85,6 +112,10 @@ public final class EffectHandler {
         return toReturn;
     }
 
+    /**
+     *
+     * @return A list containing column and row of the grid where to insert the die.
+     */
     public static List<String> insertDieInGridEffect(){
         List<String> toReturn= new ArrayList<>();
         int row;
@@ -96,6 +127,10 @@ public final class EffectHandler {
         return toReturn;
     }
 
+    /**
+     *
+     * @return An integer containing the column of the grid where to remove the die.
+     */
     private static int chooseRemoveColumn() {
         final int MAX_COLUMN=5;
         System.out.println("Inserisci l'indice della colonna da cui rimuovere il dado");
@@ -103,6 +138,10 @@ public final class EffectHandler {
         return getCoordinate(MAX_COLUMN, scanner);
     }
 
+    /**
+     *
+     * @return An integer containing the column of the grid where to insert the die.
+     */
     private static int chooseInsertColumn() {
         final int MAX_COLUMN=5;
         System.out.println("Inserisci l'indice della colonna in cui inserire il dado");
@@ -110,6 +149,10 @@ public final class EffectHandler {
         return getCoordinate(MAX_COLUMN, scanner);
     }
 
+    /**
+     *
+     * @return An integer containing the row of the grid where to remove the die.
+     */
     private static int chooseRemoveRow() {
         final int MAX_ROW=4;
         System.out.println("Inserisci l'indice della riga da cui rimuovere il dado");
@@ -117,12 +160,23 @@ public final class EffectHandler {
         return getCoordinate(MAX_ROW, scanner);
     }
 
+    /**
+     *
+     * @return An integer containing the row of the grid where to insert the die.
+     */
     private static int chooseInsertRow() {
         final int MAX_ROW=4;
         System.out.println("Inserisci l'indice della riga da cui inserire il dado");
         Scanner scanner= new Scanner(System.in);
         return getCoordinate(MAX_ROW, scanner);
     }
+
+    /**
+     *
+     * @param limitValue Limit value of the rows.
+     * @param scanner A scanner.
+     * @return An integer containing the row coordinate of the grid.
+     */
     private static int getCoordinate(int limitValue, Scanner scanner) {
         int row;
         do{
@@ -139,6 +193,10 @@ public final class EffectHandler {
         }while (true);
     }
 
+    /**
+     *
+     * @return The index of the die removed.
+     */
     public static List<String> removeADieFromRoundTrackEffect(){
         System.out.println("Inserisci l'indice del dado nella round track");
         List<String> toReturn=new ArrayList<>();
@@ -158,6 +216,13 @@ public final class EffectHandler {
         return toReturn;
     }
 
+    /**
+     *
+     * @param toReturn A list of strings. The real content depends on which method calls okInsertion.
+     * @param index An index of the round track.
+     * @param roundTrackDimension The size of the round track.
+     * @return True if the operation goes fine.
+     */
     private static boolean okInsertion(List<String> toReturn, int index, int roundTrackDimension) {
         boolean ok;
         if(index<1||index>=roundTrackDimension){
@@ -170,18 +235,32 @@ public final class EffectHandler {
         return ok;
     }
 
+    /**
+     *
+     * @return An empty arraylist.
+     */
     public static List<String> changeValueDiceEffect(){
         return new ArrayList<>();
     }
 
+    /**
+     *
+     * @return An empty arraylist.
+     */
     public static List<String> swapDieEffect(){
         return new ArrayList<>();
     }
-
+    /**
+     *
+     * @return An empty arraylist.
+     */
     public static List<String> swapRTDieAndDPDieEffect(){
         return new ArrayList<>();
     }
-
+    /**
+     *
+     * @return An empty arraylist.
+     */
     public static List<String> insertDieInRoundtrackEffect(){
         return new ArrayList<>();
     }

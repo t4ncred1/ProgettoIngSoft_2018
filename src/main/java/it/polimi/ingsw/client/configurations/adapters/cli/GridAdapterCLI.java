@@ -58,7 +58,13 @@ public class GridAdapterCLI extends GridInterface {
         System.out.println(structure.toString());
     }
 
-
+    /**
+     * Builds the row structure of a grid.
+     *
+     * @param i Iterator parameter.
+     * @param constraints A matrix of constraints.
+     * @param diceInGrid A matrix of dice.
+     */
     private void appendDiceRow( int i, String[][] constraints, Die[][] diceInGrid) {
         for(int j=0;j<constraints[i].length&&j<diceInGrid[i].length;j++){
             System.out.print("\t");
@@ -72,6 +78,13 @@ public class GridAdapterCLI extends GridInterface {
         }
     }
 
+    /**
+     * Builds the constraints structure of a grid.
+     *
+     * @param i Iterator parameter.
+     * @param constraints A matrix of constraints.
+     * @param diceInGrid A matrix of dice.
+     */
     private void appendConstraintRow(int i, String[][] constraints, Die[][] diceInGrid) {
         for(int j=0;j<constraints[i].length&&j<diceInGrid[i].length;j++){
             System.out.print("\t");
@@ -80,6 +93,13 @@ public class GridAdapterCLI extends GridInterface {
         }
     }
 
+    /**
+     * Builds the dividers structure of a grid.
+     *
+     * @param i Iterator parameter.
+     * @param constraints A matrix of constraints.
+     * @param diceInGrid A matrix of dice.
+     */
     private void appendRowDividers(int i, String[][] constraints, Die[][] diceInGrid) {
         for(int j=0;j<constraints[i].length&&j<diceInGrid[i].length;j++){
             System.out.print("\t");
