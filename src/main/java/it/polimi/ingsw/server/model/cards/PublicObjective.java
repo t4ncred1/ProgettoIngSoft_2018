@@ -24,6 +24,25 @@ public class PublicObjective extends Objective{
     }
 
     /**
+     * Constructor for PublicObjective.
+     * @param objective is a notNull existing objective.
+     */
+    public PublicObjective(PublicObjective objective){
+        title=objective.getTitle();
+        description=objective.getDescription();
+        cardNumber=objective.getCardNumber();
+        value=objective.getValue();
+    }
+
+    /**
+     *
+     * @return the card number.
+     */
+    private int getCardNumber() {
+        return this.cardNumber;
+    }
+
+    /**
      *
      * @return A string containing the current values of the fields Description, CardNumber and Value, formatted nicely.
      */
@@ -42,6 +61,14 @@ public class PublicObjective extends Objective{
         build.append("\n");
 
         return build.toString();
+    }
+
+    /**
+     *
+     * @return the point a user would score if he accomplished this objective.
+     */
+    public int getValue(){
+        return this.value;
     }
 
     @Override

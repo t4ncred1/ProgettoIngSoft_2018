@@ -1,5 +1,9 @@
 package it.polimi.ingsw.client.configurations;
 
 public interface AdapterInterface {
-    Display<Void> getAdapterInterface();
+
+    /**
+     * Define a model for getAdapterInterface method.
+     */
+    void displayInterface();
 }

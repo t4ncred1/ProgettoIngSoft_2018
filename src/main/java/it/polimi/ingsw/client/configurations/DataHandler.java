@@ -26,10 +26,19 @@ public final class DataHandler {
     private static final String PING_MESSAGE="";
     private static final long SAMPLE_TIME = 30;
 
+    /**
+     * Constructor for DataHandler.
+     */
     private DataHandler(){
         throw new AssertionError();
     }
 
+    /**
+     *
+     * @param inputStream Network input stream.
+     * @return A string containing a server message.
+     * @throws IOException
+     */
     private static String readRemoteInput(DataInputStream inputStream) throws IOException {
         String read;
         do{
@@ -43,6 +52,10 @@ public final class DataHandler {
         return read;
     }
 
+    /**
+     *
+     * @return A Gson containing the grids.
+     */
     private static Gson getGsonForGrid() {
         GsonBuilder builder= new GsonBuilder();
         RuntimeTypeAdapterFactory<DieConstraints> adapterFactory= RuntimeTypeAdapterFactory.of(DieConstraints.class)
@@ -52,6 +65,10 @@ public final class DataHandler {
         return builder.create();
     }
 
+    /**
+     *
+     * @return A Gson containing the tool cards.
+     */
     private static Gson getGsonForToolCards() {
         GsonBuilder builder= new GsonBuilder();
         //Create a RuntimeTypeAdapterFactory for Effect interface
@@ -73,6 +90,13 @@ public final class DataHandler {
         return builder.create();
     }
 
+    /**
+     * Retrieves a single grid from server.
+     *
+     * @param inputStream Network input stream.
+     * @param logger A logger.
+     * @throws IOException Thrown if an I/O error occurs.
+     */
     static void retrieveGrid(DataInputStream inputStream, Logger logger) throws IOException {
         logger.log(Level.FINE,"Retrieving a single grid from server");
         String serverResponse;
@@ -83,6 +107,13 @@ public final class DataHandler {
         logger.log(Level.FINE,"Grid retrieved and set");
     }
 
+    /**
+     * Retrieve all grids from server.
+     *
+     * @param inputStream Network input stream.
+     * @param logger A logger.
+     * @throws IOException Thrown if an I/O error occurs.
+     */
     static void retrieveAllGrids(DataInputStream inputStream, Logger logger) throws IOException {
         logger.log(Level.FINE,"Retrieving all grids from server");
         String serverResponse;
@@ -99,6 +130,13 @@ public final class DataHandler {
         logger.log(Level.FINE,"Grids retrieved and set");
     }
 
+    /**
+     * Retrieve the dice pool from server.
+     *
+     * @param inputStream Network input stream.
+     * @param logger A logger.
+     * @throws IOException Thrown if an I/O error occurs.
+     */
     static void retrieveDicePool(DataInputStream inputStream, Logger logger) throws IOException {
         logger.log(Level.FINE,"Retrieving dice pool from server");
         ArrayList<Die> dicePool;
@@ -109,6 +147,13 @@ public final class DataHandler {
         logger.log(Level.FINE,"Dice pool retrieved and set");
     }
 
+    /**
+     * Retrieve the tool cards from server.
+     *
+     * @param inputStream Network input stream.
+     * @param logger A logger.
+     * @throws IOException Thrown if an I/O error occurs.
+     */
     static void retrieveToolCards(DataInputStream inputStream, Logger logger) throws IOException {
         logger.log(Level.FINE,"Retrieving tool cards from server");
         ArrayList<ToolCard> toolCards;
@@ -119,6 +164,12 @@ public final class DataHandler {
         logger.log(Level.FINE,"Tool Cards retrieved and set");
     }
 
+    /**
+     * Retrieve the round track from server.
+     * @param inputStream Network input stream.
+     * @param logger A logger.
+     * @throws IOException Thrown if an I/O error occurs.
+     */
     static void retrieveRoundTrack(DataInputStream inputStream, Logger logger) throws IOException {
         logger.log(Level.FINE,"Retrieving round track from server");
         ArrayList<Die> roundTrack;
@@ -129,6 +180,13 @@ public final class DataHandler {
         logger.log(Level.FINE,"Round track retrieved and set");
     }
 
+    /**
+     * Retrieve the grid selection (4 grids, 1 choice).
+     *
+     * @param inputStream Network input stream.
+     * @param logger A logger.
+     * @throws IOException Thrown if an I/O error occurs.
+     */
     static void retrieveGridSelection(DataInputStream inputStream, Logger logger) throws IOException{
         logger.log(Level.FINE,"Server will send grids within the next stream");
         ArrayList<Grid> grids;

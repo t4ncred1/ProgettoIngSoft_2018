@@ -1,9 +1,8 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.configurations.adapters.EffectAdapter;
+import it.polimi.ingsw.client.configurations.adapters.EffectInterface;
 import it.polimi.ingsw.client.configurations.adapters.GridInterface;
-import it.polimi.ingsw.client.configurations.adapters.ToolCardAdapter;
-import it.polimi.ingsw.client.configurations.Display;
+import it.polimi.ingsw.client.configurations.adapters.ToolCardInterface;
 import it.polimi.ingsw.client.custom_exception.*;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.*;
 import it.polimi.ingsw.client.net.ServerCommunicatingInterface;
@@ -188,11 +187,11 @@ public class MainClient {
     private void printOtherPlayerTurnThings(String turnPlayer) {
         try {
             System.out.println("Le tool cards:");
-            Proxy.getInstance().getToolCards().stream().map(ToolCardAdapter::getAdapterInterface).forEach(Display::display);
-            Proxy.getInstance().getDicePool().getAdapterInterface().display();
-            Proxy.getInstance().getRoundTrack().getAdapterInterface().display();
+            Proxy.getInstance().getToolCards().forEach(ToolCardInterface::displayInterface);
+            Proxy.getInstance().getDicePool().displayInterface();
+            Proxy.getInstance().getRoundTrack().displayInterface();
             System.out.println("La mappa di " + turnPlayer);
-            Proxy.getInstance().getGridsOf(turnPlayer).getAdapterInterface().display();
+            Proxy.getInstance().getGridsOf(turnPlayer).displayInterface();
         } catch (InvalidUsernameException e) {
             e.printStackTrace();
         }
@@ -251,11 +250,11 @@ public class MainClient {
      */
     private void printThingsOnMyTurn() {
         System.out.println("Le tool cards:");
-        Proxy.getInstance().getToolCards().stream().map(ToolCardAdapter::getAdapterInterface).forEach(Display::display);
-        Proxy.getInstance().getRoundTrack().getAdapterInterface().display();
-        Proxy.getInstance().getDicePool().getAdapterInterface().display();
+        Proxy.getInstance().getToolCards().forEach(ToolCardInterface::displayInterface);
+        Proxy.getInstance().getRoundTrack().displayInterface();
+        Proxy.getInstance().getDicePool().displayInterface();
         System.out.println("La tua mappa:");
-        Proxy.getInstance().getGridSelected().getAdapterInterface().display();
+        Proxy.getInstance().getGridSelected().displayInterface();
         System.out.println("E' il tuo turno");
         System.out.println("Ricorda, puoi eseguire solo una volta nel turno");
         System.out.println("l'inserimento dei dati o l'uso della carta strumento");
@@ -271,7 +270,7 @@ public class MainClient {
         System.out.println("Scegliere l'indice della tool card:");
         Scanner scanner= new Scanner(System.in);
         int value;
-        ToolCardAdapter toolCard;
+        ToolCardInterface toolCard;
         do{
             try{
                 value = Integer.parseInt(scanner.nextLine());
@@ -300,9 +299,9 @@ public class MainClient {
      * @throws ServerIsDownException Thrown if the server is down.
      * @throws DisconnectionException Thrown if someone is trying to disconnect.
      */
-    private void handleToolCardEffects(ToolCardAdapter toolCard) throws ServerIsDownException, DisconnectionException, InvalidMoveException {
-        List<EffectAdapter> effects= toolCard.getEffects();
-        for(EffectAdapter effect: effects) {
+    private void handleToolCardEffects(ToolCardInterface toolCard) throws ServerIsDownException, DisconnectionException, InvalidMoveException {
+        List<EffectInterface> effects= toolCard.getEffects();
+        for(EffectInterface effect: effects) {
             boolean ok = false;
             while (!ok) {
                 try {
@@ -397,7 +396,7 @@ public class MainClient {
      */
     private void printGridsDicePoolAndObjectives() {
         System.out.println("La tua mappa:");
-        Proxy.getInstance().getGridSelected().getAdapterInterface().display();
+        Proxy.getInstance().getGridSelected().displayInterface();
     }
 
     private void waitForServerToUpdateProxy() {
@@ -425,7 +424,7 @@ public class MainClient {
         int value;
 
         List<GridInterface> gridSelection= Proxy.getInstance().getGridsSelection();
-        gridSelection.stream().map(GridInterface::getAdapterInterface).forEach(Display::display);
+        gridSelection.forEach(GridInterface::displayInterface);
         System.out.println("Scegli una mappa tra le seguenti (scegli un numero da 1 a "+Proxy.getInstance().getGridsSelectionDimension()+"):");
         do{
             request= scanner.nextLine();
