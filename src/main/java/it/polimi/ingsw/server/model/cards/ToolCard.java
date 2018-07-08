@@ -173,14 +173,14 @@ public class ToolCard implements Serializable {
 
     //should set parameters back to original values again.
         this.indexOfDieToBeRemoved = 0;
-        this.dieRemovedFromDicePool = null;
+        this.dieRemovedFromDicePool = new ArrayList<>();
         this.increment = false;
-        this.dieCoordinatesX = null;
-        this.dieCoordinatesY = null;
+        this.dieCoordinatesX = new ArrayList<>();
+        this.dieCoordinatesY = new ArrayList<>();
         this.playerGrid=null;
         this.roundTrackColor = null;
-        this.dieDestinationCoordinatesX = null;
-        this.dieDestinationCoordinatesY = null;
+        this.dieDestinationCoordinatesX = new ArrayList<>();
+        this.dieDestinationCoordinatesY = new ArrayList<>();
         this.roundTrack = null;
         this.indexOfRoundTrackDie = 0;
         this.removedDieFromRoundTrack = null;
