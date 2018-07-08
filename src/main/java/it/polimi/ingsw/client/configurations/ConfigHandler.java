@@ -16,16 +16,19 @@ public class ConfigHandler {
     private static String CONFIG_PATH;
     private static ConfigHandler instance;
     private static Configurations config;
+    private static boolean customPath;
 
     private ConfigHandler() throws NotValidConfigPathException {
         boolean succeed = true;
         File jarPath=new File(MainClient.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         CONFIG_PATH=jarPath.getParentFile().getAbsolutePath()+"/resources/clientconfig.json";
+        customPath=true;
         Gson gson = new Gson();
         try {
             config = gson.fromJson(new FileReader(CONFIG_PATH), Configurations.class);
         } catch (FileNotFoundException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.CONFIG,"File not found "+CONFIG_PATH+", trying default: "+DEFAULT_CONFIG_PATH);
+            customPath=false;
             succeed = false;
         }
         if(!succeed){

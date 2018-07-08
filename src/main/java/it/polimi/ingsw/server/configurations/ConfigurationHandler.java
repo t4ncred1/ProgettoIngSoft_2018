@@ -28,8 +28,10 @@ public class ConfigurationHandler {
     private static final Object toolCardsGuard= new Object();
     private static final Object gridsGuard=new Object();
     private static final Object publicObjectivesGuard=new Object();
+    private static boolean customPath;
 
     private static final int NUMBER_OF_PUBLIC_OBJECTIVES = 10;
+    private File jarPath=new File(App.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 
     /**
      * Constructor for ConfigurationHandler.
@@ -38,12 +40,13 @@ public class ConfigurationHandler {
      */
     private ConfigurationHandler() throws NotValidConfigPathException {
         boolean succeed=false;
-        File jarPath=new File(App.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         CONFIG_PATH=jarPath.getParentFile().getAbsolutePath()+"/resources/config.json";
         Gson gson = new Gson();
+        customPath=true;
         try {
             config = gson.fromJson(new FileReader(CONFIG_PATH), Configurations.class);
         } catch (FileNotFoundException e) {
+            customPath=false;
             Logger.getLogger(this.getClass().getName()).log(Level.FINE,"File not found "+CONFIG_PATH+", trying default: "+DEFAULT_CONFIG_PATH);
             succeed = true;
         }
@@ -81,7 +84,10 @@ public class ConfigurationHandler {
         try {
             List<Grid> grids;
             synchronized (gridsGuard) {
-                grids = gson.fromJson(new FileReader(config.getGridsPath()), listType.getType());
+                String path;
+                if(customPath)path=jarPath.getParentFile().getAbsolutePath()+config.getGridsPath();
+                else path = config.getGridsPath();
+                grids = gson.fromJson(new FileReader(path), listType.getType());
             }
             for (Grid grid : grids) {
                 if (grid == null) throw new NotValidConfigPathException("Grids are not read correctly.");
@@ -106,8 +112,11 @@ public class ConfigurationHandler {
         Gson gson = new Gson();
         TypeToken<List<PublicObjective>> listType = new TypeToken<List<PublicObjective>>(){};
         synchronized (publicObjectivesGuard) {
+            String path;
+            if(customPath)path=jarPath.getParentFile().getAbsolutePath()+config.getPublicObjectivesPath();
+            else path = config.getPublicObjectivesPath();
             try {
-                return gson.fromJson(new FileReader(config.getPublicObjectivesPath()), listType.getType());
+                return gson.fromJson(new FileReader(path), listType.getType());
             } catch (FileNotFoundException e) {
                 throw new NotValidConfigPathException("Incorrect public objectives path in configuration file: " + config.getPublicObjectivesPath());
             }
@@ -211,7 +220,10 @@ public class ConfigurationHandler {
 
         synchronized (toolCardsGuard){
             try {
-                return gson.fromJson(new FileReader(config.getToolCardsPath()), listTypeToken.getType());
+                String path;
+                if(customPath)path=jarPath.getParentFile().getAbsolutePath()+config.getToolCardsPath();
+                else path = config.getToolCardsPath();
+                return gson.fromJson(new FileReader(path), listTypeToken.getType());
             } catch (FileNotFoundException e) {
                 throw new NotValidConfigPathException("Incorrect toolcards path in configuration file: "+config.getToolCardsPath());
             }
