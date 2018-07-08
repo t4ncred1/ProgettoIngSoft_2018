@@ -33,7 +33,7 @@ public class RoundTrackAdapterCLI extends RoundTrackInterface {
                     System.out.print(" ");
                 }
             }
-            System.out.print("\t\t");
+            System.out.print("   ");
         }
         System.out.println();
     }

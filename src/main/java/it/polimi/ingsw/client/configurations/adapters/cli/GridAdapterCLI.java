@@ -41,14 +41,14 @@ public class GridAdapterCLI extends GridInterface {
         StringBuilder structure= new StringBuilder();
         System.out.print("Nome: ");
         System.out.print(super.getName());
-        System.out.print("\t Difficoltà: ");
+        System.out.print("    Difficoltà: ");
         System.out.println(super.getDifficulty());
         String[][] constraints= super.getConstraints();
         Die[][] diceInGrid=super.getDiceInGrid();
         for(int i =0;i<constraints.length&&i<diceInGrid.length;i++){
             System.out.print("|");
             appendConstraintRow(i,constraints,diceInGrid);
-            System.out.print("\t\t|");
+            System.out.print("    |");
             appendDiceRow(i,constraints,diceInGrid);
             System.out.println();
             System.out.print("|");
@@ -67,14 +67,14 @@ public class GridAdapterCLI extends GridInterface {
      */
     private void appendDiceRow( int i, String[][] constraints, Die[][] diceInGrid) {
         for(int j=0;j<constraints[i].length&&j<diceInGrid[i].length;j++){
-            System.out.print("\t");
+            System.out.print("  ");
             try {
                 DieInterface die = new DieAdapterCLI(diceInGrid[i][j]);
                 die.displayInterface();
             } catch (DieNotExistException e) {
                 System.out.print(" ");
             }
-            System.out.print("\t|");
+            System.out.print("  |");
         }
     }
 
@@ -87,9 +87,9 @@ public class GridAdapterCLI extends GridInterface {
      */
     private void appendConstraintRow(int i, String[][] constraints, Die[][] diceInGrid) {
         for(int j=0;j<constraints[i].length&&j<diceInGrid[i].length;j++){
-            System.out.print("\t");
+            System.out.print("  ");
             System.out.print(colors.get(constraints[i][j]));
-            System.out.print("\t|");
+            System.out.print("  |");
         }
     }
 
@@ -102,15 +102,15 @@ public class GridAdapterCLI extends GridInterface {
      */
     private void appendRowDividers(int i, String[][] constraints, Die[][] diceInGrid) {
         for(int j=0;j<constraints[i].length&&j<diceInGrid[i].length;j++){
-            System.out.print("\t");
+            System.out.print("  ");
             System.out.print("-");
-            System.out.print("\t|");
+            System.out.print("  |");
         }
-        System.out.print("\t\t|");
+        System.out.print("    |");
         for(int j=0;j<constraints[i].length&&j<diceInGrid[i].length;j++){
-            System.out.print("\t");
+            System.out.print("  ");
             System.out.print("-");
-            System.out.print("\t|");
+            System.out.print("  |");
         }
     }
 }

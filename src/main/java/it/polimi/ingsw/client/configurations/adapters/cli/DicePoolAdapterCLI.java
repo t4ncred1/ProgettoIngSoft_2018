@@ -31,7 +31,7 @@ public class DicePoolAdapterCLI extends DicePoolInterface {
             } catch (DieNotExistException e) {
                 System.out.print(" ");
             }
-            System.out.print("\t\t");
+            System.out.print("   ");
         }
         System.out.println();
     }
