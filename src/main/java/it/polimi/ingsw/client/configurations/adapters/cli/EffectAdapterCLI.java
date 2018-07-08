@@ -16,7 +16,7 @@ interface Function<R>{
 
 public class EffectAdapterCLI extends EffectInterface {
 
-    private static HashMap<String,Function<List<String>>> parameters;
+    private HashMap<String,Function<List<String>>> parameters;
 
     /**
      * Constructor for EffectAdapterCLI.
@@ -27,10 +27,10 @@ public class EffectAdapterCLI extends EffectInterface {
     public EffectAdapterCLI(Effect effect, boolean removeAllDice) {
         super(effect);
         parameters=new HashMap<>();
-        if(!removeAllDice) {
-            parameters.put("RemoveDieFromPoolEffect", EffectHandler::removeASingleDieFromPoolEffect);
-        }else {
+        if(removeAllDice) {
             parameters.put("RemoveDieFromPoolEffect", EffectHandler::removeAllDiceFromPoolEffect);
+        }else {
+            parameters.put("RemoveDieFromPoolEffect", EffectHandler::removeASingleDieFromPoolEffect);
         }
         parameters.put("InverseValueEffect", EffectHandler::inverseValueEffect);
         parameters.put("InsertDieInPoolEffect", EffectHandler::insertDieInPoolEffect);

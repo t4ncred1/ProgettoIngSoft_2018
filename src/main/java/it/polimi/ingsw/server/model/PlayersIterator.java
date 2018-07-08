@@ -86,6 +86,7 @@ public class PlayersIterator implements Iterator<Player> {
                     justChanged = false;
                     int index=currentTurn+1;
                     while (index < playerList.size() && playerList.get(index).isDisconnected()) {
+                        playerList.get(index).setFirstTurn(true);
                         index++;
                     }
                     currentTurn=index;
@@ -103,17 +104,21 @@ public class PlayersIterator implements Iterator<Player> {
                 if (justChanged) {  //Se il verso di percorrenza è appena stato modificato currentTurn non deve cambiare.
                     index = currentTurn;
                     justChanged=false;
+                    playerList.get(index).setFirstTurn(false);
                 } else {
                     index = currentTurn - 1;
+                    playerList.get(index).setFirstTurn(false);
                 }
                 while (index >= 0 && (playerList.get(index).isDisconnected() || playerList.get(index).isJumpSecondTurn())) {
                     if (playerList.get(index).isJumpSecondTurn()) {
                         playerList.get(index).setJumpSecondTurn(false);
+                        playerList.get(index).setFirstTurn(false);
                     }
                     playerList.get(index).setFirstTurn(false);
                     index--;
                 }
                 currentTurn = index;
+                playerList.get(index).setFirstTurn(false);
 
             }
             return playerList.get(currentTurn);

@@ -178,14 +178,14 @@ public final class EffectHandler {
      * @return An integer containing the row coordinate of the grid.
      */
     private static int getCoordinate(int limitValue, Scanner scanner) {
-        int row;
+        int coordinate;
         do{
             try {
-                row = Integer.parseInt(scanner.nextLine());
-                if(row<1||row>= limitValue){
-                    System.out.println(ANSI_RED+"Errore: inserire un numero tra 1 e :"+ limitValue +ANSI_RESET);
+                coordinate = Integer.parseInt(scanner.nextLine());
+                if(coordinate<1||coordinate>= limitValue){
+                    System.out.println(ANSI_RED+"Errore: inserire un numero tra 1 e "+ limitValue +ANSI_RESET+":");
                 }else {
-                    return row-1;
+                    return coordinate-1;
                 }
             }catch (NumberFormatException e){
                 System.out.println(ANSI_RED+"Errore: inserire un valore numerico"+ANSI_RESET);
@@ -225,9 +225,9 @@ public final class EffectHandler {
      */
     private static boolean okInsertion(List<String> toReturn, int index, int roundTrackDimension) {
         boolean ok;
-        if(index<1||index>=roundTrackDimension){
+        if(index<1||index>roundTrackDimension){
             ok=false;
-            System.out.println(ANSI_RED+"Errore: inserire un numero tra 1 e :"+roundTrackDimension+ANSI_RESET);
+            System.out.println(ANSI_RED+"Errore: inserire un numero tra 1 e "+roundTrackDimension+ANSI_RESET+":");
         }else {
             ok=true;
             toReturn.add(Integer.toString(index-1));
