@@ -71,6 +71,7 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
     private static final String EXECUTE_TOOL_CARD = "execute_tool";
     private static final String INVALID_POSITION = "invalid_index";
     private static final String ALREADY_DONE_OPERATION = "already_done";
+    private static final String NOT_ENOUGH_TOKENS = "not_tokens";
     private static final String END_TURN ="end_turn";
 
 
@@ -566,7 +567,7 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
     }
 
     @Override
-    public void useToolCard(int i) throws ServerIsDownException, DisconnectionException, ToolCardNotExistException, AlreadyDoneOperationException {
+    public void useToolCard(int i) throws ServerIsDownException, DisconnectionException, ToolCardNotExistException, AlreadyDoneOperationException, NotEnoughTokensException {
         try {
             outputStream.writeUTF(USE_TOOL_CARD);
             outputStream.writeInt(i);
@@ -585,6 +586,9 @@ public class ServerSocketCommunication extends Thread implements ServerCommunica
                 case INVALID_POSITION:
                     logger.log(Level.FINE, "Server notified a tool card doesn't exist at that index");
                     throw new ToolCardNotExistException();
+                case NOT_ENOUGH_TOKENS:
+                    logger.log(Level.FINE,"Server notified not enough tokens");
+                    throw new NotEnoughTokensException();
                 default:
                     logger.log(Level.SEVERE,"Unexpected response during use tool card request: {0}",response);
             }

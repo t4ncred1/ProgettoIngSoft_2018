@@ -92,6 +92,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private static final String INVALID_POSITION = "invalid_index";
     private static final String ALREADY_DONE_OPERATION = "already_done";
     private static final String NOT_VALID_REQUEST = "not_valid_request";
+    private static final String NOT_ENOUGH_TOKENS = "not_tokens";
     private static final String END_TURN ="end_turn";
     private static final String GRID_DATA= "grid";
     private static final String GRID_SELECTION_DATA = "grid_selection";
@@ -231,6 +232,9 @@ public class SocketUserAgent extends Thread implements UserInterface {
         } catch (NotValidParameterException e) {
             logger.log(Level.FINE, "{0} notified that does not exist a tool card at that index", username);
             outputStream.writeUTF(INVALID_POSITION);
+        } catch (InvalidOperationException e) {
+            logger.log(Level.FINE, "{0} notified about not enough tokens", username);
+            outputStream.writeUTF(NOT_ENOUGH_TOKENS);
         }
     }
 
