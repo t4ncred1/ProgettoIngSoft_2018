@@ -43,6 +43,7 @@ public class InsertDieInGridEffect implements Effect {
             playerGrid.insertDieInXY(toolCard.getDieDestinationCoordinatesX().remove(0),toolCard.getDieDestinationCoordinatesY().remove(0),toolCard.isColorCheck(),toolCard.isValueCheck(),toolCard.isOpenCheck(), toolCard.getDiceRemoved().remove(0));
         } catch (NotValidParameterException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING,"Invalid parameters called in a toolcard.",e);
+            throw new EffectException("Can' insert the passed die.");
         } catch (InvalidOperationException e) {
             throw new EffectException("Can't insert the passed die.");
         }
