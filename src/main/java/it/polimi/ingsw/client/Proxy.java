@@ -1,10 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.configurations.adapters.*;
-import it.polimi.ingsw.client.configurations.adapters.cli.DicePoolAdapterCLI;
-import it.polimi.ingsw.client.configurations.adapters.cli.GridAdapterCLI;
-import it.polimi.ingsw.client.configurations.adapters.cli.RoundTrackAdapterCLI;
-import it.polimi.ingsw.client.configurations.adapters.cli.ToolCardAdapterCLI;
+import it.polimi.ingsw.client.configurations.adapters.cli.*;
 import it.polimi.ingsw.client.custom_exception.GameFinishedException;
 import it.polimi.ingsw.client.custom_exception.InvalidUsernameException;
 import it.polimi.ingsw.client.custom_exception.NoDisconnectionException;
@@ -12,6 +9,8 @@ import it.polimi.ingsw.client.custom_exception.invalid_operations.InvalidMoveExc
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.ToolCardNotExistException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
+import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.cards.PublicObjective;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.Grid;
@@ -25,13 +24,15 @@ public class Proxy {
 
     private String myUsername;
     private String turnPlayer;
-    private ArrayList<GridInterface> gridsSelection;
+    private ArrayList<GridInterface> gridsSelection; //fixme
     private List<String> playersJustReconnected;
     private GridInterface gridSelected;
     private Map<String,GridInterface> connectedPlayers;
     private Map<String,GridInterface> disconnectedPlayers;
     private Map<String,String> playersRanking;
     private List<ToolCardInterface> toolCards;
+    private List<PublicObjInterface> publicObjectives;
+    private PrivateObjInterface privateObjective;
     private DicePoolInterface dicePool;
     private RoundTrackInterface roundTrack;
     private boolean gameFinished;
@@ -48,6 +49,7 @@ public class Proxy {
         disconnectedPlayers = new LinkedHashMap<>();
         playersRanking = new LinkedHashMap<>();
         toolCards= new ArrayList<>();
+        publicObjectives= new ArrayList<>();
         useGUI=false;
         playersJustReconnected = new ArrayList<>();
     }
@@ -262,4 +264,37 @@ public class Proxy {
         if (!username.equals(myUsername) && !connectedPlayers.containsKey(username))
             disconnectedPlayers.put(username, newGridAdapter(grid));
     }
+
+    public void setPublicObjectives(List<PublicObjective> publicObj) {
+        publicObj.forEach(objective -> publicObjectives.add(newPublicObjectiveAdapter(objective)));
+    }
+
+    private PublicObjInterface newPublicObjectiveAdapter(PublicObjective objective) {
+        if(useGUI){
+            return null;
+        }else {
+            return new PublicObjAdapterCLI(objective);
+        }
+    }
+
+    public List<PublicObjInterface> getPublicObjectives() {
+        return publicObjectives;
+    }
+
+    public void setPrivateObjective(PrivateObjective privateObjective) {
+        this.privateObjective=newPrivateObjectiveAdapter(privateObjective);
+    }
+
+    private PrivateObjInterface newPrivateObjectiveAdapter(PrivateObjective objective) {
+        if(useGUI){
+            return null;
+        }else {
+            return new PrivateObjAdapterCLI(objective);
+        }
+    }
+
+    public PrivateObjInterface getPrivateObjective(){
+        return privateObjective;
+    }
+
 }
