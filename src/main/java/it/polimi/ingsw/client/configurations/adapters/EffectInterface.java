@@ -4,15 +4,14 @@ import it.polimi.ingsw.server.model.cards.effects.Effect;
 
 import java.util.List;
 
-public abstract class EffectAdapter {
+public abstract class EffectInterface {
     Effect effect;
-
     /**
-     * Constructor for EffectAdapter.
+     * Constructor for EffectInterface.
      *
      * @param effect The effect selected.
      */
-    public EffectAdapter(Effect effect){
+    public EffectInterface(Effect effect){
         this.effect=effect;
     }
 

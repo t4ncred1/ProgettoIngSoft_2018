@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.configurations.adapters.cli;
 
 import it.polimi.ingsw.client.configurations.adapters.DicePoolInterface;
 import it.polimi.ingsw.client.configurations.adapters.DieInterface;
-import it.polimi.ingsw.client.configurations.Display;
 import it.polimi.ingsw.client.custom_exception.invalid_operations.DieNotExistException;
 import it.polimi.ingsw.server.model.components.Die;
 
@@ -15,11 +14,7 @@ public class DicePoolAdapterCLI extends DicePoolInterface {
     }
 
     @Override
-    public Display<Void> getAdapterInterface(){
-        return this::displayDicePool;
-    }
-
-    private Void displayDicePool() {
+    public void displayInterface(){
         List<Die> dicePool= super.getDicePool();
         int i=1;
         System.out.println("La riserva: ");
@@ -28,15 +23,15 @@ public class DicePoolAdapterCLI extends DicePoolInterface {
             System.out.print(".");
             try {
                 DieInterface temp= new DieAdapterCLI(die);
-                temp.getAdapterInterface().display();
+                temp.displayInterface();
             } catch (DieNotExistException e) {
                 System.out.print(" ");
             }
             System.out.print("\t\t");
         }
         System.out.println();
-        return null;
     }
+
 
 
 }

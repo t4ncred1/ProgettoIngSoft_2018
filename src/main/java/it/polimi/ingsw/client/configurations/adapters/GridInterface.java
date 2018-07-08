@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.configurations.adapters;
 
 import it.polimi.ingsw.client.configurations.AdapterInterface;
-import it.polimi.ingsw.client.configurations.Display;
 import it.polimi.ingsw.server.custom_exception.InvalidOperationException;
 import it.polimi.ingsw.server.custom_exception.NotValidParameterException;
 import it.polimi.ingsw.server.model.components.Die;
@@ -12,8 +11,6 @@ public abstract class GridInterface implements AdapterInterface {
     private String[][] constraints;
     private Die[][] diceInGrid;
 
-    @Override
-    public abstract Display<Void> getAdapterInterface();
 
     /**
      * Constructor for GridInterface.

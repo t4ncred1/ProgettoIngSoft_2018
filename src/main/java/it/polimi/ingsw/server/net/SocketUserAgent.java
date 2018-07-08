@@ -507,12 +507,14 @@ public class SocketUserAgent extends Thread implements UserInterface {
                 throw new IOException();
             } catch (InvalidUsernameException e) {
                 outputStream.writeUTF(USERNAME_NOT_AVAILABLE);
-                logger.log(Level.INFO, "Username not available", e);
+                logger.log(Level.INFO, "Username not available");
+                logger.log(Level.CONFIG,"Relative exception: ",e);
             } catch (ReconnectionException e) {
                 outputStream.writeUTF(RECONNECTED);
                 outputStream.writeUTF(LAUNCHING_GAME);
                 outputStream.writeUTF(GAME_STARTED);
-                logger.log(Level.INFO,"Connection protocol ended. Client joined the game left before",e);
+                logger.log(Level.INFO,"Connection protocol ended. Client joined the game left before");
+                logger.log(Level.CONFIG,"Relative exception: ",e);
                 logged=true;
             }
         }

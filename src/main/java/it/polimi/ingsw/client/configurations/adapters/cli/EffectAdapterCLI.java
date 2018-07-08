@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.configurations.adapters.cli;
 
-import it.polimi.ingsw.client.configurations.adapters.EffectAdapter;
+import it.polimi.ingsw.client.configurations.adapters.EffectInterface;
 import it.polimi.ingsw.server.model.cards.effects.Effect;
 
 import java.util.HashMap;
@@ -11,7 +11,7 @@ interface Function<R>{
     R getParameters();
 }
 
-public class EffectAdapterCLI extends EffectAdapter {
+public class EffectAdapterCLI extends EffectInterface {
 
     private static HashMap<String,Function<List<String>>> parameters;
     public EffectAdapterCLI(Effect effect, boolean removeAllDice) {
