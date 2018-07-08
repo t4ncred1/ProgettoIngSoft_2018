@@ -236,6 +236,16 @@ public class RMIUserAgent implements UserInterface {
 
     }
 
+    @Override
+    public void sendAllTokens(Map<String, Integer> playersAndTokens) {
+
+    }
+
+    @Override
+    public void sendToken(Integer token) {
+
+    }
+
 
     @Override
     public void notifyDisconnection() {

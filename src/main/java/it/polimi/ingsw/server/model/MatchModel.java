@@ -461,6 +461,29 @@ public class MatchModel{
         playersInGame.forEach(player -> playersAndObjectives.put(player.getUsername(),new PrivateObjective(player.getObjective())));
         return playersAndObjectives;
     }
+
+    /**
+     * @return a map containing player's username as key an player's favour tokens as value.
+     */
+    public Map<String,Integer> getAllTokens(){
+        Map<String,Integer> playersAndTokens= new HashMap<>();
+        playersInGame.forEach(player -> playersAndTokens.put(player.getUsername(),player.getFavorTokens()));
+        return playersAndTokens;
+    }
+
+    /**
+     *
+     * @param username Player's username.
+     * @return Player's favour token.
+     * @throws InvalidUsernameException Thrown when there isn't a player whose username matches 'username'.
+     */
+    public int getToken(String username) throws InvalidUsernameException {
+        List<Integer> stream=  playersInGame.stream()
+                .filter(player->player.getUsername().equals(username))
+                .map(Player::getFavorTokens).collect(Collectors.toList());
+        if (stream.isEmpty()) throw new InvalidUsernameException();
+        return stream.get(0);
+    }
     /**
      *
      * @param index Die position in round track.

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -222,5 +223,24 @@ public final class DataHandler {
         privateObjective=gson.fromJson(readRemoteInput(inputStream), PrivateObjective.class);
         Proxy.getInstance().setPrivateObjective(privateObjective);
         logger.log(Level.FINE,"Private objective retrieved and set");
+    }
+
+    public static void retrieveAllTokens(DataInputStream inputStream, Logger logger) throws IOException {
+        logger.log(Level.FINE,"Retrieving all tokens from server");
+        Map<String,Integer> playersAndTokens;
+        TypeToken<HashMap<String,Integer>> typeToken= new TypeToken<HashMap<String,Integer>>(){};
+        Gson gson = new Gson();
+        playersAndTokens=gson.fromJson(readRemoteInput(inputStream), typeToken.getType());
+        Proxy.getInstance().setAllTokens(playersAndTokens);
+        logger.log(Level.FINE,"Tokens retrieved and set");
+    }
+
+    public static void retrieveAToken(DataInputStream inputStream, Logger logger) throws IOException {
+        logger.log(Level.FINE,"Retrieving a token from server");
+        Integer token;
+        Gson gson = new Gson();
+        token=gson.fromJson(readRemoteInput(inputStream), Integer.class);
+        Proxy.getInstance().setAToken(token);
+        logger.log(Level.FINE,"Token retrieved and set");
     }
 }

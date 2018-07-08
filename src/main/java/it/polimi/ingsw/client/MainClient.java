@@ -193,8 +193,10 @@ public class MainClient {
             Proxy.getInstance().getToolCards().forEach(ToolCardInterface::displayInterface);
             Proxy.getInstance().getDicePool().displayInterface();
             Proxy.getInstance().getRoundTrack().displayInterface();
+            System.out.println("I favour tokens di "+ turnPlayer+":");
+            System.out.println(Proxy.getInstance().getToken(turnPlayer));
             System.out.println("La mappa di " + turnPlayer);
-            Proxy.getInstance().getGridsOf(turnPlayer).displayInterface();
+            Proxy.getInstance().getGridOf(turnPlayer).displayInterface();
         } catch (InvalidUsernameException e) {
             e.printStackTrace();
         }
@@ -259,6 +261,8 @@ public class MainClient {
         Proxy.getInstance().getToolCards().forEach(ToolCardInterface::displayInterface);
         Proxy.getInstance().getRoundTrack().displayInterface();
         Proxy.getInstance().getDicePool().displayInterface();
+        System.out.println("I tuoi tokens: ");
+        System.out.println(Proxy.getInstance().getToken(Proxy.getInstance().getMyUsername()));
         System.out.println("La tua mappa:");
         Proxy.getInstance().getGridSelected().displayInterface();
         System.out.println("E' il tuo turno");

@@ -100,6 +100,8 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private static final String PUBLIC_OBJ="public_objectives";
     private static final String PRIVATE_OBJ = "private_objective";
     private static final String ROUND_TRACK_DATA= "round_track";
+    private static final String ALL_TOKENS="all_tokens";
+    private static final String TOKEN_DATA = "token";
     private static final String END_DATA= "end_data";
     private static final String DICE_POOL_DATA= "dice_pool";
     private static final String DISCONNECTION = "disconnected";
@@ -793,6 +795,21 @@ public class SocketUserAgent extends Thread implements UserInterface {
         Gson gson = new Gson();
         String dataToSend = gson.toJson(privateObjective);
         sendData(PRIVATE_OBJ,dataToSend);
+    }
+
+    @Override
+    public void sendAllTokens(Map<String, Integer> playersAndTokens) {
+        HashMap<String,Integer> tokens= (HashMap<String, Integer>) playersAndTokens;
+        Gson gson= new Gson();
+        String dataToSend= gson.toJson(tokens);
+        sendData(ALL_TOKENS, dataToSend);
+    }
+
+    @Override
+    public void sendToken(Integer token) {
+        Gson gson= new Gson();
+        String dataToSend= gson.toJson(token);
+        sendData(TOKEN_DATA, dataToSend);
     }
 
 

@@ -129,4 +129,8 @@ public interface UserInterface {
     void sendPublicObjectives(List<PublicObjective> publicObjectives);
 
     void sendPrivateObjective(PrivateObjective privateObjective);
+
+    void sendAllTokens(Map<String,Integer> playersAndTokens);
+
+    void sendToken(Integer token);
 }
