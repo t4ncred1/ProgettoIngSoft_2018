@@ -251,6 +251,7 @@ public class SocketUserAgent extends Thread implements UserInterface {
             gameHandling.executeToolCard(this, toolCardIndex);
             outputStream.writeUTF(OK_REQUEST);
         } catch (EffectException e) {
+            logger.log(Level.SEVERE, "something appened", e);
             outputStream.writeUTF(NOT_OK_REQUEST);
         }
 

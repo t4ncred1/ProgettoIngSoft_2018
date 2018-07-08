@@ -25,7 +25,8 @@ public class InsertDieInPoolEffect implements Effect {
     public void executeTest() throws EffectException {
         DicePool pool = new DicePool(model.getDicePool()) ;
         try {
-            for(int i=0; i<toolCard.getDiceRemoved().size()-1; i++){
+            int size=toolCard.getDiceRemoved().size();
+            for(int i=0; i<size; i++){
                 pool.insertDieInPool(toolCard.getDiceRemoved().remove(0), toolCard.getIndexOfDieToBeRemoved());
             }
         } catch (NotValidParameterException e){
@@ -47,7 +48,10 @@ public class InsertDieInPoolEffect implements Effect {
     public void execute(){
         DicePool pool = model.getDicePool();
         try {
-            pool.insertDieInPool(toolCard.getDiceRemoved().remove(0), toolCard.getIndexOfDieToBeRemoved());
+            int size=toolCard.getDiceRemoved().size();
+            for(int i=0; i<size; i++){
+                pool.insertDieInPool(toolCard.getDiceRemoved().remove(0), toolCard.getIndexOfDieToBeRemoved());
+            }
         } catch (NotValidParameterException e) {
             Logger logger = Logger.getLogger(getClass().getName());
             logger.log(Level.WARNING, "Failed execution of effect \""+ NAME + "\" in toolcard "+toolCard.getTitle(), e);

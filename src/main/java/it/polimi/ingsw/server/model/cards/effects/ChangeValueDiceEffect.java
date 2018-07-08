@@ -33,14 +33,15 @@ public class ChangeValueDiceEffect implements Effect {
                 .map(Die::new)
                 .collect(Collectors.toList());
         for(int i=0; i<dice.size();i++){
-            Die die = dice.remove(i);
+            Die die = dice.remove(0);
             try {
-                dice.add(i, new Die(die.getColor(),new Random().nextInt(6) + 1));
+                dice.add(new Die(die.getColor(),new Random().nextInt(6) + 1));
             } catch (NotValidParameterException e) {
                 throw new EffectException("Invalid value for die.");
             }
         }
         toolCard.saveDiceRemoved(dice); //set or save?
+
     }
 
     @Override
@@ -57,9 +58,9 @@ public class ChangeValueDiceEffect implements Effect {
     public void execute() {
         List<Die> dice = toolCard.getDiceRemoved();
         for(int i=0; i<dice.size();i++){
-            Die die = dice.remove(i);
+            Die die = dice.remove(0);
             try {
-                dice.add(i, new Die(die.getColor(),new Random().nextInt(6) + 1));
+                dice.add(new Die(die.getColor(),new Random().nextInt(6) + 1));
             } catch (NotValidParameterException e) {
                 Logger logger = Logger.getLogger(getClass().getName());
                 logger.log(Level.WARNING, "Failed execution of effect \""+ NAME + "\" in toolcard "+toolCard.getTitle(), e);
