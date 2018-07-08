@@ -19,9 +19,6 @@ public abstract class RoundTrackInterface implements AdapterInterface {
         }
     }
 
-    @Override
-    public abstract Display<Void> getAdapterInterface();
-
     public int getRoundTrackDimension(){
         return ROUND_TRACK_DIMENSION;
     }

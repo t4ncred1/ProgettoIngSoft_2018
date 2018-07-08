@@ -19,9 +19,6 @@ public abstract class DicePoolInterface implements AdapterInterface {
         return this.dicePool;
     }
 
-    @Override
-    public abstract Display<Void> getAdapterInterface();
-
     public Die getDie(int position){
         if(position<0||position>=dicePool.size()) throw new IndexOutOfBoundsException();
         return new Die(dicePool.get(position));

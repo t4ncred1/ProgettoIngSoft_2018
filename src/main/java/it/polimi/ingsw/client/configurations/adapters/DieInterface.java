@@ -13,9 +13,6 @@ public abstract class DieInterface implements AdapterInterface {
         this.die=die;
     }
 
-    @Override
-    public abstract Display<Void> getAdapterInterface();
-
     protected Die getDie(){
         return this.die;
     }

@@ -40,9 +40,6 @@ public abstract class ToolCardAdapter implements AdapterInterface {
         return this.effects;
     }
 
-    @Override
-    public abstract Display<Void> getAdapterInterface();
-
     protected boolean getRemoveAllDice(){
         return toolCard.getRemoveAllDiceFromDicePool();
     }

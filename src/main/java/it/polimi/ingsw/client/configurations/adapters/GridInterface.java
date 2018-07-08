@@ -12,8 +12,6 @@ public abstract class GridInterface implements AdapterInterface {
     private String[][] constraints;
     private Die[][] diceInGrid;
 
-    @Override
-    public abstract Display<Void> getAdapterInterface();
 
     protected GridInterface(Grid grid){
         final int indexForDimension= 0;
