@@ -454,6 +454,14 @@ public class MatchModel{
     }
 
     /**
+     * @return a map containing player's username as key an player's private objective as value.
+     */
+    public Map<String,PrivateObjective> getAllPrivateObjectives(){
+        Map<String,PrivateObjective> playersAndObjectives= new HashMap<>();
+        playersInGame.forEach(player -> playersAndObjectives.put(player.getUsername(),new PrivateObjective(player.getObjective())));
+        return playersAndObjectives;
+    }
+    /**
      *
      * @param index Die position in round track.
      * @return The chosen die.
