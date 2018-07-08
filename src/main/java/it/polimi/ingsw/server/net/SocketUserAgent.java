@@ -8,6 +8,8 @@ import it.polimi.ingsw.server.MatchController;
 import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.configurations.ConfigurationHandler;
 import it.polimi.ingsw.server.custom_exception.connection_exceptions.IllegalRequestException;
+import it.polimi.ingsw.server.model.cards.PrivateObjective;
+import it.polimi.ingsw.server.model.cards.PublicObjective;
 import it.polimi.ingsw.server.model.cards.ToolCard;
 import it.polimi.ingsw.server.model.components.Die;
 import it.polimi.ingsw.server.model.components.DieConstraints;
@@ -95,6 +97,8 @@ public class SocketUserAgent extends Thread implements UserInterface {
     private static final String GRID_SELECTION_DATA = "grid_selection";
     private static final String ALL_GRIDS_DATA= "all_grid";
     private static final String TOOL_DATA="tool";
+    private static final String PUBLIC_OBJ="public_objectives";
+    private static final String PRIVATE_OBJ = "private_objective";
     private static final String ROUND_TRACK_DATA= "round_track";
     private static final String END_DATA= "end_data";
     private static final String DICE_POOL_DATA= "dice_pool";
@@ -773,6 +777,21 @@ public class SocketUserAgent extends Thread implements UserInterface {
         } catch (IOException e) {
             logger.fine(DISCONNECTED_LOG);
         }
+    }
+
+    @Override
+    public void sendPublicObjectives(List<PublicObjective> publicObjectives) {
+        ArrayList<PublicObjective> publicObjectiveArrayList= (ArrayList<PublicObjective>) publicObjectives;
+        Gson gson = new Gson();
+        String dataToSend = gson.toJson(publicObjectiveArrayList);
+        sendData(PUBLIC_OBJ,dataToSend);
+    }
+
+    @Override
+    public void sendPrivateObjective(PrivateObjective privateObjective) {
+        Gson gson = new Gson();
+        String dataToSend = gson.toJson(privateObjective);
+        sendData(PRIVATE_OBJ,dataToSend);
     }
 
 
