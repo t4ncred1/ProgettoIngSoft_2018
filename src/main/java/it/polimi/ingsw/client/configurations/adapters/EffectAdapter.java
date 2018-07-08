@@ -7,6 +7,11 @@ import java.util.List;
 public abstract class EffectAdapter {
     Effect effect;
 
+    /**
+     * Constructor for EffectAdapter.
+     *
+     * @param effect The effect selected.
+     */
     public EffectAdapter(Effect effect){
         this.effect=effect;
     }
@@ -15,5 +20,9 @@ public abstract class EffectAdapter {
         return effect.getName();
     }
 
+    /**
+     *
+     * @return A list of strings containing the names of the parameters for this effect.
+     */
     public abstract List<String> computeEffect();
 }
